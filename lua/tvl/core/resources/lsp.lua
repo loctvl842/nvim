@@ -23,4 +23,7 @@ return {
       require("tvl.config.null-ls")
     end,
   },
+
+  -- java
+  "mfussenegger/nvim-jdtls",
 }
