@@ -58,12 +58,12 @@ local logo3 = [[
   ╚══════╝ ╚═════╝  ╚═════╝    ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝
 ]]
 
-dashboard.section.header.val = vim.split(logo1, '\n')
+dashboard.section.header.val = vim.split(logo2, '\n')
 dashboard.section.buttons.val = {
   dashboard.button("r", "  Recently files", ":Telescope oldfiles <CR>"),
   dashboard.button("s", "  Find Session", ":SearchSession<CR>"),
   dashboard.button("p", "  Find project", ":Telescope projects <CR>"),
-  dashboard.button("i", "  Configuration", ":e ~/.config/nvim/init.lua<CR>"),
+  dashboard.button("i", "  Configuration", ":e /home/loc/.config/nvim/init.lua<CR>"),
   dashboard.button("q", "  Quit Neovim", ":qa<CR>"),
 }
 
@@ -78,6 +78,7 @@ if vim.o.filetype == "lazy" then
   vim.cmd.close()
 end
 
+-- Remove statusline and tabline when in Alpha
 vim.api.nvim_create_autocmd("User", {
   pattern = "AlphaReady",
   callback = function()

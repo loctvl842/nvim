@@ -47,6 +47,7 @@ local options = {
 	linespace = 8,
 	mousemoveevent = true,
 	syntax = "on",
+	foldlevelstart = 99,
 }
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
@@ -63,4 +64,3 @@ vim.cmd("set whichwrap+=<,>,[,]")
 vim.cmd([[set iskeyword+=-]])
 -- diable open fold with `l`
 vim.cmd([[set foldopen-=hor]])
-

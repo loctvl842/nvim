@@ -35,6 +35,8 @@ project.setup({
     ">polybar",
     ">bspwm",
     ".vscode",
+    "README.*",
+    "LICENSE.*",
   },
 
   ---@ Show hidden files in telescope when searching for files in a project

@@ -1,4 +1,5 @@
 return {
+  "folke/tokyonight.nvim",
   {
     "loctvl842/monokai-pro.nvim",
     lazy = true,
@@ -10,6 +11,7 @@ return {
         italic_comments = true,
         filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
         inc_search = "underline", -- underline | background
+        background_clear = {},
         diagnostic = {
           background = true,
         },
@@ -17,21 +19,6 @@ return {
           bufferline = {
             underline_selected = true,
             underline_visible = false,
-          },
-          toggleterm = {
-            background_clear = false,
-          },
-          telescope = {
-            background_clear = false,
-          },
-          cmp = {
-            background_clear = false,
-          },
-          whichkey = {
-            background_clear = false,
-          },
-          renamer = {
-            background_clear = false,
           },
           indent_blankline = {
             context_highlight = "pro", -- default | pro
