@@ -2,7 +2,7 @@ return {
   "folke/tokyonight.nvim",
   {
     "loctvl842/monokai-pro.nvim",
-    lazy = true,
+    lazy = false,
     priority = 1000,
     config = function()
       local monokai = require("monokai-pro")
@@ -27,8 +27,8 @@ return {
       })
       monokai.load()
     end,
-    init = function()
-      vim.cmd([[colorscheme monokai-pro]])
-    end,
+    -- init = function()
+    --   vim.cmd([[colorscheme monokai-pro]])
+    -- end,
   },
 }
