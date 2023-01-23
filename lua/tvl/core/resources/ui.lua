@@ -30,6 +30,7 @@ return {
 
   {
     "nvim-lualine/lualine.nvim",
+    dependencies = { "loctvl842/monokai-pro.nvim" },
     config = function()
       require("tvl.config.lualine")
     end,
@@ -60,7 +61,6 @@ return {
 
   {
     "nvim-tree/nvim-web-devicons",
-    -- "loctvl842/nvim-web-devicons",
     config = function()
       require("tvl.config.nvim-web-devicons")
     end,
@@ -81,9 +81,7 @@ return {
       "loctvl842/monokai-pro.nvim",
     },
     config = function()
-      require("barbecue").setup({
-        theme = "monokai-pro",
-      })
+      require("tvl.config.barbecue")
     end,
   },
 }
