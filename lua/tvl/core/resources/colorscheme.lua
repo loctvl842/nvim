@@ -1,5 +1,8 @@
 return {
-  "folke/tokyonight.nvim",
+  {
+    "folke/tokyonight.nvim",
+    lazy = false,
+  },
   {
     "loctvl842/monokai-pro.nvim",
     lazy = false,
@@ -10,7 +13,7 @@ return {
         transparent_background = true,
         italic_comments = true,
         filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
-        inc_search = "underline", -- underline | background
+        inc_search = "background", -- underline | background
         background_clear = {},
         diagnostic = {
           background = true,
@@ -27,8 +30,5 @@ return {
       })
       monokai.load()
     end,
-    -- init = function()
-    --   vim.cmd([[colorscheme monokai-pro]])
-    -- end,
   },
 }

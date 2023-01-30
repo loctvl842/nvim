@@ -43,7 +43,7 @@ local servers = require("tvl.config.lsp.servers")
 local lspconfig = require("lspconfig")
 for server_name, opts in pairs(servers) do
   if server_name == "jdtls" then
-    -- goto continue
+    goto continue
   end
 	local server = lspconfig[server_name]
 	opts.capabilities = capabilities

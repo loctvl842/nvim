@@ -22,6 +22,7 @@ require("illuminate").configure({
     "neo-tree-popup",
     "mason",
     "lazy",
+    "dashboard",
     "",
   },
   -- filetypes_allowlist: filetypes to illuminate, this is overriden by filetypes_denylist
