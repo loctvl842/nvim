@@ -4,13 +4,16 @@ return {
     lazy = false,
   },
   {
+    "catppuccin/nvim",
+  },
+  {
     "loctvl842/monokai-pro.nvim",
     lazy = false,
     priority = 1000,
     config = function()
       local monokai = require("monokai-pro")
       monokai.setup({
-        transparent_background = true,
+        transparent_background = false,
         italic_comments = true,
         filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
         inc_search = "background", -- underline | background

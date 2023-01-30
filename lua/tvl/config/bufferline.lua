@@ -1,7 +1,5 @@
 local status_ok, bufferline = pcall(require, "bufferline")
-if not status_ok then
-  return
-end
+if not status_ok then return end
 
 bufferline.setup({
   options = {
@@ -29,7 +27,13 @@ bufferline.setup({
     truncate_names = true, -- whether or not tab names should be truncated
     tab_size = 18,
     diagnostics = "nvim_lsp", -- | "nvim_lsp" | "coc",
-    separator_style = "slant", -- | "thick" | "thin" | { 'any', 'any' },
+    -- separator_style = "slant", -- | "thick" | "thin" | { 'any', 'any' },
+    separator_style = { "", "" }, -- | "thick" | "thin" | { 'any', 'any' },
+    indicator = {
+      icon = " ",
+      -- style = 'icon',
+      -- style = "underline",
+    },
 
     numbers = "none", -- | "ordinal" | "buffer_id" | "both" | function({ ordinal, id, lower, raise }): string,
     close_command = "Bdelete! %d", -- can be a string | function, see "Mouse actions"
@@ -39,20 +43,13 @@ bufferline.setup({
     -- NOTE: this plugin is designed with this icon in mind,
     -- and so changing this is NOT recommended, this is intended
     -- as an escape hatch for people who cannot bear it for whatever reason
-    indicator = {
-      -- icon = "▏",
-      -- style = 'icon',
-      -- style = "underline",
-    },
     -- buffer_close_icon = "",
     -- close_icon = '',
     left_trunc_marker = "",
     right_trunc_marker = "",
     diagnostics_update_in_insert = false,
     diagnostics_indicator = function(count, level, diagnostics_dict, context)
-      if count > 9 then
-        return "9+"
-      end
+      if count > 9 then return "9+" end
       return tostring(count)
     end,
     color_icons = true,
