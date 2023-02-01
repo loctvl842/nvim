@@ -6,6 +6,7 @@ return {
   {
     "catppuccin/nvim",
   },
+  "tanvirtin/monokai.nvim",
   {
     "loctvl842/monokai-pro.nvim",
     lazy = false,
