@@ -17,7 +17,7 @@ return {
         italic_comments = true,
         filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
         inc_search = "background", -- underline | background
-        background_clear = {},
+        background_clear = { "neo-tree" },
         diagnostic = {
           background = true,
         },
@@ -25,6 +25,7 @@ return {
           bufferline = {
             underline_selected = true,
             underline_visible = false,
+            bold = false,
           },
           indent_blankline = {
             context_highlight = "pro", -- default | pro

@@ -10,7 +10,6 @@ noice.setup({
     hover = {
       enabled = false,
       view = nil, -- when nil, use defaults from documentation
-      ---@type NoiceViewOptions
       opts = {}, -- merged with defaults from documentation
     },
     signature = {
@@ -22,7 +21,6 @@ noice.setup({
         throttle = 50, -- Debounce lsp signature help request by 50ms
       },
       view = nil, -- when nil, use defaults from documentation
-      ---@type NoiceViewOptions
       opts = {}, -- merged with defaults from documentation
     },
   },

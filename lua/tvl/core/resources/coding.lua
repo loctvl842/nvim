@@ -6,14 +6,12 @@ return {
     config = function()
       require("luasnip.loaders.from_vscode").lazy_load()
       require("luasnip.loaders.from_snipmate").lazy_load()
-    end
+    end,
   },
 
   {
     "mattn/emmet-vim",
-    config = function()
-      require("tvl.config.emmet")
-    end,
+    config = function() require("tvl.config.emmet") end,
   },
 
   {
@@ -28,24 +26,18 @@ return {
       "hrsh7th/cmp-cmdline",
       "saadparwaiz1/cmp_luasnip",
     },
-    config = function()
-      require("tvl.config.cmp")
-    end,
+    config = function() require("tvl.config.cmp") end,
   },
 
   {
     "loctvl842/compile-nvim",
-    config = function()
-      require("tvl.config.compile")
-    end,
+    config = function() require("tvl.config.compile") end,
   },
 
   {
     "filipdutescu/renamer.nvim",
     branch = "master",
-    config = function()
-      require("tvl.config.renamer")
-    end,
+    config = function() require("tvl.config.renamer") end,
   },
 
   "iamcco/markdown-preview.nvim",
@@ -54,8 +46,6 @@ return {
 
   {
     "ray-x/lsp_signature.nvim",
-    config = function()
-      require("tvl.config.lsp-signature")
-    end,
+    config = function() require("tvl.config.lsp-signature") end,
   },
 }
