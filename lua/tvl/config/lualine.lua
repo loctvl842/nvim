@@ -4,12 +4,11 @@ local M = {
   float = false,
   separator = "", -- bubble | triangle
   theme = "auto", -- nil combine with separator "bubble" and float
-  colorful = false,
+  colorful = true,
 }
-
 require("monokai-pro.config").extend({
   plugins = {
-    lualine = { float = M.float, colorful = M.colorful},
+    lualine = { float = M.float, colorful = M.colorful },
   },
 })
 
@@ -30,45 +29,76 @@ end
 local normal_hl = require("tvl.util").get_highlight_value("Normal")
 ---@type any
 local theme = M.theme
-    or {
-      normal = {
-        a = { fg = normal_hl.background, bg = normal_hl.background, gui = "bold" },
-        b = { fg = normal_hl.background, bg = normal_hl.background },
-        c = { fg = normal_hl.background, bg = normal_hl.background },
-        x = { fg = normal_hl.background, bg = normal_hl.background },
-        y = { fg = normal_hl.background, bg = normal_hl.background },
-        z = { fg = normal_hl.background, bg = normal_hl.background },
+  or {
+    normal = {
+      a = {
+        fg = normal_hl.background,
+        bg = normal_hl.background,
+        gui = "bold",
       },
-      insert = { a = { fg = normal_hl.background, bg = normal_hl.background, gui = "bold" } },
-      visual = { a = { fg = normal_hl.background, bg = normal_hl.background, gui = "bold" } },
-      command = { a = { fg = normal_hl.background, bg = normal_hl.background, gui = "bold" } },
-      replace = { a = { fg = normal_hl.background, bg = normal_hl.background, gui = "bold" } },
-      inactive = {
-        a = { fg = normal_hl.background, bg = normal_hl.background },
-        b = { fg = normal_hl.background, bg = normal_hl.background },
-        c = { fg = normal_hl.background, bg = normal_hl.background },
-        x = { fg = normal_hl.background, bg = normal_hl.background },
-        y = { fg = normal_hl.background, bg = normal_hl.background },
-        z = { fg = normal_hl.background, bg = normal_hl.background },
+      b = { fg = normal_hl.background, bg = normal_hl.background },
+      c = { fg = normal_hl.background, bg = normal_hl.background },
+      x = { fg = normal_hl.background, bg = normal_hl.background },
+      y = { fg = normal_hl.background, bg = normal_hl.background },
+      z = { fg = normal_hl.background, bg = normal_hl.background },
+    },
+    insert = {
+      a = {
+        fg = normal_hl.background,
+        bg = normal_hl.background,
+        gui = "bold",
       },
-    }
+    },
+    visual = {
+      a = {
+        fg = normal_hl.background,
+        bg = normal_hl.background,
+        gui = "bold",
+      },
+    },
+    command = {
+      a = {
+        fg = normal_hl.background,
+        bg = normal_hl.background,
+        gui = "bold",
+      },
+    },
+    replace = {
+      a = {
+        fg = normal_hl.background,
+        bg = normal_hl.background,
+        gui = "bold",
+      },
+    },
+    inactive = {
+      a = { fg = normal_hl.background, bg = normal_hl.background },
+      b = { fg = normal_hl.background, bg = normal_hl.background },
+      c = { fg = normal_hl.background, bg = normal_hl.background },
+      x = { fg = normal_hl.background, bg = normal_hl.background },
+      y = { fg = normal_hl.background, bg = normal_hl.background },
+      z = { fg = normal_hl.background, bg = normal_hl.background },
+    },
+  }
 
-local hide_in_width = function()
-  return vim.fn.winwidth(0) > 150
-end
+local hide_in_width = function() return vim.fn.winwidth(0) > 150 end
 
 -- tvl
 local hl_str = function(str, hl_cur, hl_after)
   if hl_after == nil then
     return "%#" .. hl_cur .. "#" .. str .. "%*"
   end
-  return "%#" .. hl_cur .. "#" .. str .. "%*" .. "%#" .. hl_after .. "#"
+  return "%#"
+    .. hl_cur
+    .. "#"
+    .. str
+    .. "%*"
+    .. "%#"
+    .. hl_after
+    .. "#"
 end
 
 local padding_pad = {
-  function()
-    return hl_str(" ", "SLPadding")
-  end,
+  function() return hl_str(" ", "SLPadding") end,
   padding = 0,
 }
 
@@ -78,14 +108,12 @@ local branch = {
   icon = hl_str("", "SLGitIcon", "SLBranchName"),
   colored = false,
   fmt = function(str)
-    if str == "" or str == nil then
-      str = "!=vcs"
-    end
+    if str == "" or str == nil then str = "!=vcs" end
     local icon = hl_str(" ", "SLGitIcon", "SLBranchName")
     return hl_str(separator_icon.left, "SLSeparator")
-        .. hl_str(icon, "SLGitIcon")
-        .. hl_str(str, "SLBranchName")
-        .. hl_str(separator_icon.right, "SLSeparator", "SLSeparator")
+      .. hl_str(icon, "SLGitIcon")
+      .. hl_str(str, "SLBranchName")
+      .. hl_str(separator_icon.right, "SLSeparator", "SLSeparator")
   end,
 }
 
@@ -93,16 +121,23 @@ local position = function()
   local current_line = vim.fn.line(".")
   local current_column = vim.fn.col(".")
   local left_sep = hl_str(separator_icon.left, "SLSeparator")
-  local right_sep = hl_str(separator_icon.right, "SLSeparator", "SLSeparator")
+  local right_sep =
+    hl_str(separator_icon.right, "SLSeparator", "SLSeparator")
   local str = "Ln " .. current_line .. ", Col " .. current_column
-  return left_sep .. hl_str(str, "SLPosition", "SLPosition") .. right_sep
+  return left_sep
+    .. hl_str(str, "SLPosition", "SLPosition")
+    .. right_sep
 end
 
 local spaces = function()
   local left_sep = hl_str(separator_icon.left, "SLSeparator")
-  local right_sep = hl_str(separator_icon.right, "SLSeparator", "SLSeparator")
-  local str = "Spaces: " .. vim.api.nvim_buf_get_option(0, "shiftwidth")
-  return left_sep .. hl_str(str, "SLShiftWidth", "SLShiftWidth") .. right_sep
+  local right_sep =
+    hl_str(separator_icon.right, "SLSeparator", "SLSeparator")
+  local str = "Spaces: "
+    .. vim.api.nvim_buf_get_option(0, "shiftwidth")
+  return left_sep
+    .. hl_str(str, "SLShiftWidth", "SLShiftWidth")
+    .. right_sep
 end
 
 local diagnostics = function()
@@ -113,19 +148,28 @@ local diagnostics = function()
       count[diagnostic.severity] = count[diagnostic.severity] + 1
     end
     return count[vim.diagnostic.severity.ERROR],
-        count[vim.diagnostic.severity.WARN],
-        count[vim.diagnostic.severity.INFO],
-        count[vim.diagnostic.severity.HINT]
+      count[vim.diagnostic.severity.WARN],
+      count[vim.diagnostic.severity.INFO],
+      count[vim.diagnostic.severity.HINT]
   end
 
-  local error_count, warn_count, info_count, hint_count = nvim_diagnostic()
+  local error_count, warn_count, info_count, hint_count =
+    nvim_diagnostic()
   local error_hl = hl_str(" " .. error_count, "SLError", "SLError")
-  local warn_hl = hl_str(" " .. warn_count, "SLWarning", "SLWarning")
+  local warn_hl =
+    hl_str(" " .. warn_count, "SLWarning", "SLWarning")
   local info_hl = hl_str(" " .. info_count, "SLInfo", "SLInfo")
   local hint_hl = hl_str(" " .. hint_count, "SLInfo", "SLInfo")
   local left_sep = hl_str(alt_separator_icon.left, "SLSeparator")
-  local right_sep = hl_str(alt_separator_icon.right, "SLSeparator", "SLSeparator")
-  return left_sep .. error_hl .. " " .. warn_hl .. " " .. hint_hl .. right_sep
+  local right_sep =
+    hl_str(alt_separator_icon.right, "SLSeparator", "SLSeparator")
+  return left_sep
+    .. error_hl
+    .. " "
+    .. warn_hl
+    .. " "
+    .. hint_hl
+    .. right_sep
 end
 
 local diff = {
@@ -138,11 +182,10 @@ local diff = {
   },
   symbols = { added = " ", modified = " ", removed = " " }, -- changes diff symbols
   fmt = function(str)
-    if str == "" then
-      return ""
-    end
+    if str == "" then return "" end
     local left_sep = hl_str(alt_separator_icon.left, "SLSeparator")
-    local right_sep = hl_str(alt_separator_icon.right, "SLSeparator", "SLSeparator")
+    local right_sep =
+      hl_str(alt_separator_icon.right, "SLSeparator", "SLSeparator")
     return left_sep .. str .. right_sep
   end,
 }
@@ -150,8 +193,10 @@ local diff = {
 local mode = {
   "mode",
   fmt = function(str)
-    local left_sep = hl_str(separator_icon.left, "SLSeparator", "SLPadding")
-    local right_sep = hl_str(separator_icon.right, "SLSeparator", "SLPadding")
+    local left_sep =
+      hl_str(separator_icon.left, "SLSeparator", "SLPadding")
+    local right_sep =
+      hl_str(separator_icon.right, "SLSeparator", "SLPadding")
     return left_sep .. hl_str(str, "SLMode") .. right_sep
   end,
 }
@@ -180,13 +225,12 @@ local filetype = {
 
     if str == "toggleterm" then
       -- 
-      filetype_str = " " .. vim.api.nvim_buf_get_var(0, "toggle_number")
+      filetype_str = " "
+        .. vim.api.nvim_buf_get_var(0, "toggle_number")
     elseif str == "TelescopePrompt" then
       filetype_str = ""
     elseif str == "neo-tree" or str == "neo-tree-popup" then
-      if prev_filetype == "" then
-        return
-      end
+      if prev_filetype == "" then return end
       filetype_str = prev_filetype
     elseif str == "help" then
       filetype_str = ""
@@ -197,10 +241,12 @@ local filetype = {
       filetype_str = str
     end
     local left_sep = hl_str(separator_icon.left, "SLSeparator")
-    local right_sep = hl_str(separator_icon.right, "SLSeparator", "SLSeparator")
+    local right_sep =
+      hl_str(separator_icon.right, "SLSeparator", "SLSeparator")
     -- Upper case first character
     filetype_str = filetype_str:gsub("%a", string.upper, 1)
-    local filetype_hl = hl_str(filetype_str, "SLFiletype", "SLFiletype")
+    local filetype_hl =
+      hl_str(filetype_str, "SLFiletype", "SLFiletype")
     return left_sep .. filetype_hl .. right_sep
   end,
 }
@@ -270,4 +316,4 @@ local float_config = {
 }
 
 lualine.setup(float_config)
--- vim.cmd([[colorscheme monokai-pro]])
+vim.cmd([[colorscheme monokai-pro]])
