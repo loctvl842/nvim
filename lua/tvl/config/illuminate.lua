@@ -23,6 +23,7 @@ require("illuminate").configure({
     "mason",
     "lazy",
     "dashboard",
+    "checkhealth",
     "",
   },
   -- filetypes_allowlist: filetypes to illuminate, this is overriden by filetypes_denylist

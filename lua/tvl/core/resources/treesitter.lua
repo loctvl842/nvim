@@ -31,7 +31,7 @@ return {
           -- disable = { "scss", "css" }, -- list of language that will be disabled
           additional_vim_regex_highlighting = false,
         },
-        indent = { enable = true, disable = { "yaml", "python" } },
+        indent = { enable = true, disable = { "yaml", "python", "html" } },
         context_commentstring = {
           enable = true,
         },

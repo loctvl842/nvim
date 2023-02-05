@@ -1,9 +1,9 @@
 local lualine = require("lualine")
 
 local M = {
-  float = true,
-  separator = "bubble", -- bubble | triangle
-  theme = nil, -- nil combine with separator "bubble" and float
+  float = false,
+  separator = "", -- bubble | triangle
+  theme = "auto", -- nil combine with separator "bubble" and float
   colorful = true,
 }
 require("monokai-pro.config").extend({

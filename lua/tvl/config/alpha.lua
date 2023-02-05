@@ -57,12 +57,24 @@ local logo = {
   ]],
 }
 
-dashboard.section.header.val = vim.split(logo.night_fury, "\n")
+dashboard.section.header.val = vim.split(logo.western_dragon, "\n")
 dashboard.section.buttons.val = {
-  dashboard.button("r", "  Recently files", ":Telescope oldfiles <CR>"),
+  dashboard.button(
+    "r",
+    "  Recently files",
+    ":Telescope oldfiles <CR>"
+  ),
   dashboard.button("s", "  Find Session", ":SearchSession<CR>"),
-  dashboard.button("p", "  Find project", ":Telescope projects <CR>"),
-  dashboard.button("i", "  Configuration", ":e /home/loc/.config/nvim/init.lua<CR>"),
+  dashboard.button(
+    "p",
+    "  Find project",
+    ":Telescope projects <CR>"
+  ),
+  dashboard.button(
+    "i",
+    "  Configuration",
+    ":e /home/loc/.config/nvim/init.lua<CR>"
+  ),
   dashboard.button("q", "  Quit Neovim", ":qa<CR>"),
 }
 -- dashboard.section.buttons.type = "button"
@@ -94,10 +106,10 @@ vim.api.nvim_create_autocmd("User", {
     local stats = require("lazy").stats()
     local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
     dashboard.section.footer.val = " Neovim loaded "
-      .. stats.count
-      .. " plugins in "
-      .. ms
-      .. "ms"
+        .. stats.count
+        .. " plugins in "
+        .. ms
+        .. "ms"
     pcall(vim.cmd.AlphaRedraw)
   end,
 })
