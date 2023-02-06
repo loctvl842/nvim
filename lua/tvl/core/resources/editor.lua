@@ -8,8 +8,8 @@ return {
 
   {
     "folke/which-key.nvim",
-    commit = "6885b669523ff4238de99a7c653d47b081b5506d",
-    init = function() require("tvl.config.whichkey") end,
+    -- commit = "6885b669523ff4238de99a7c653d47b081b5506d",
+    config = function() require("tvl.config.whichkey") end,
   },
 
   {
@@ -27,13 +27,11 @@ return {
 
   {
     "ahmedkhalf/project.nvim",
-    commit = "685bc8e3890d2feb07ccf919522c97f7d33b94e4",
     config = function() require("tvl.config.project") end,
   },
 
   {
     "kevinhwang91/nvim-ufo",
-    commit = "5da70eb121a890df8a5b25e6cc30d88665af97b8",
     dependencies = "kevinhwang91/promise-async",
     config = function() require("tvl.config.ufo") end,
   },
@@ -70,11 +68,12 @@ return {
 
   {
     "kevinhwang91/rnvimr",
-    config = function() require("tvl.config.ranger") end,
+    init = function() require("tvl.config.ranger") end,
   },
 
   {
-    "norcalli/nvim-colorizer.lua",
+    "NvChad/nvim-colorizer.lua",
+    event = "BufReadPre",
     config = function() require("tvl.config.colorizer") end,
   },
 

@@ -1,12 +1,14 @@
 return {
   {
     "folke/tokyonight.nvim",
-    lazy = false,
+    lazy = true,
   },
+
   {
     "catppuccin/nvim",
+    lazy = true,
   },
-  "tanvirtin/monokai.nvim",
+
   {
     "loctvl842/monokai-pro.nvim",
     lazy = false,
@@ -16,7 +18,7 @@ return {
       monokai.setup({
         transparent_background = false,
         italic_comments = true,
-        filter = "spectrum", -- classic | octagon | pro | machine | ristretto | spectrum
+        filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
         inc_search = "background", -- underline | background
         background_clear = { "neo-tree" },
         diagnostic = {

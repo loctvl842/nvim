@@ -39,20 +39,19 @@ return {
     config = function() require("tvl.config.indent-blankline") end,
   },
 
-  {
-    "goolord/alpha-nvim",
-    event = "VimEnter",
-    config = function() require("tvl.config.alpha") end,
-  },
-
   -- {
-  --   "glepnir/dashboard-nvim",
+  --   "goolord/alpha-nvim",
   --   event = "VimEnter",
-  --   dependencies = { { "nvim-tree/nvim-web-devicons" } },
-  --   config = function()
-  --     require("tvl.config.dashboard")
-  --   end,
+  --   config = function() require("tvl.config.alpha") end,
   -- },
+
+  {
+    "glepnir/dashboard-nvim",
+    lazy = true,
+    event = "VimEnter",
+    dependencies = { { "nvim-tree/nvim-web-devicons" } },
+    config = function() require("tvl.config.dashboard") end,
+  },
 
   {
     "nvim-tree/nvim-web-devicons",
@@ -82,7 +81,8 @@ return {
 
   {
     "echasnovski/mini.indentscope",
-    lazy = true,
+    enabled = false,
+    -- lazy = true,
     version = false, -- wait till new 0.7.0 release to put it back on semver
     -- event = "BufReadPre",
     opts = {
@@ -114,8 +114,6 @@ return {
       { "anuvyklack/middleclass" },
       { "anuvyklack/animation.nvim", enabled = true },
     },
-    config = function()
-      require("tvl.config.windows")
-    end,
+    config = function() require("tvl.config.windows") end,
   },
 }

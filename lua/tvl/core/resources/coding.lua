@@ -11,7 +11,7 @@ return {
 
   {
     "mattn/emmet-vim",
-    config = function() require("tvl.config.emmet") end,
+    init = function() require("tvl.config.emmet") end,
   },
 
   {
