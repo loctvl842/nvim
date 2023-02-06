@@ -64,7 +64,7 @@ return {
         desc = "Peek (Markdown Preview)",
       },
     },
-    opts = { theme = "light" },
+    opts = { theme = "dark" },
   },
 
   "lvimuser/lsp-inlayhints.nvim",

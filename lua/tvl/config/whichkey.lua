@@ -89,6 +89,7 @@ local opts = {
 }
 local mappings = {
   ["a"] = { "<cmd>Alpha<cr>", "Alpha" },
+  ["0"] = { "<cmd>Dashboard<CR>", "Dashboard" },
   -- ["b"] = {
   -- 	"<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>",
   -- 	"Buffers",

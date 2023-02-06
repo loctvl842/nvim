@@ -40,7 +40,7 @@ neotree.setup({
       last_indent_marker = "▏",
       highlight = "NeoTreeIndentMarker",
       -- expander config, needed for nesting files
-      with_expanders = true, -- if nil and file nesting is enabled, will enable expanders
+      with_expanders = false, -- if nil and file nesting is enabled, will enable expanders
       -- expander_collapsed = "",
       -- expander_expanded = "",
 
@@ -49,8 +49,8 @@ neotree.setup({
       expander_highlight = "NeoTreeExpander",
     },
     icon = {
-      -- folder_closed = "",
-      -- folder_open = "",
+      folder_closed = "",
+      folder_open = "",
       -- folder_closed = "",
       -- folder_open = "",
       -- folder_closed = " ",
