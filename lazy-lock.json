@@ -25,6 +25,8 @@
   "mason-null-ls.nvim": { "branch": "main", "commit": "13c6ab4a4f810cbbb1799a9cf4d4a27fd862d885" },
   "mason.nvim": { "branch": "main", "commit": "4952a48722b3fa01e03c67ab939d5b7d3037309e" },
   "middleclass": { "branch": "master", "commit": "9fab4d5bca67262614960960ca35c4740eb2be2c" },
+  "mini.animate": { "branch": "main", "commit": "54002f54e2bb61f4834bd5442a19ddc4fa2e4ac0" },
+  "mini.indentscope": { "branch": "main", "commit": "cbabbf3be4a59c7f23725b74ed15e0fba951e328" },
   "monokai-pro.nvim": { "branch": "master", "commit": "37a45accdc2635909764543ce903611e34721cf3" },
   "neo-tree.nvim": { "branch": "v2.x", "commit": "fc44b51e8b3e948c4af4add5e67dda96bfb5a127" },
   "noice.nvim": { "branch": "main", "commit": "bf83a2d8567d7af65a4aacab47cc5ef94cd7ffb1" },
