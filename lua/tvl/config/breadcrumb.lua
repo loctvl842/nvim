@@ -1,8 +1,4 @@
 local breadcrumb = require("breadcrumb")
--- local status_ok, breadcrumb = pcall(require, "breadcrumb")
--- if not status_ok then
---   return
--- end
 
 breadcrumb.setup({
   disabled_filetype = {

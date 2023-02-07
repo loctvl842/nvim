@@ -8,7 +8,7 @@ return {
 
   {
     "folke/which-key.nvim",
-    -- commit = "6885b669523ff4238de99a7c653d47b081b5506d",
+    commit = "6885b669523ff4238de99a7c653d47b081b5506d",
     config = function() require("tvl.config.whichkey") end,
   },
 
@@ -22,8 +22,6 @@ return {
     "RRethy/vim-illuminate",
     config = function() require("tvl.config.illuminate") end,
   },
-
-  "moll/vim-bbye",
 
   {
     "ahmedkhalf/project.nvim",
@@ -50,7 +48,7 @@ return {
 
   {
     "j-hui/fidget.nvim",
-    config = {
+    opts = {
       window = {
         relative = "win", -- where to anchor, either "win" or "editor"
         blend = 0, -- &winblend for the window
@@ -60,22 +58,4 @@ return {
     },
   },
 
-  {
-    "numToStr/Comment.nvim",
-    dependencies = "JoosepAlviste/nvim-ts-context-commentstring",
-    config = function() require("tvl.config.comment") end,
-  },
-
-  {
-    "kevinhwang91/rnvimr",
-    init = function() require("tvl.config.ranger") end,
-  },
-
-  {
-    "NvChad/nvim-colorizer.lua",
-    event = "BufReadPre",
-    config = function() require("tvl.config.colorizer") end,
-  },
-
-  "mg979/vim-visual-multi",
 }

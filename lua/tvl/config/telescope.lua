@@ -8,7 +8,6 @@ local actions = require("telescope.actions")
 telescope.setup({
   defaults = {
     file_ignore_patterns = {
-      "/home/loc/.config/nvim",
       ".git/",
       "target/",
       "docs/",

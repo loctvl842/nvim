@@ -16,9 +16,9 @@ webDevicons.set_icon({
 	woff2 = { icon = "", name = "WebOpenFontFormat2" },
 	xz = { icon = "", name = "Xz" },
 	zip = { icon = "", name = "Zip" },
-	-- lua = {
-	-- 	icon = "",
-	-- 	color = "#78dce8",
-	-- 	name = "Lua",
-	-- },
+	lua = {
+		icon = "",
+		color = "#78dce8",
+		name = "Lua",
+	},
 })

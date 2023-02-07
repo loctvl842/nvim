@@ -49,13 +49,13 @@ return {
     "glepnir/dashboard-nvim",
     lazy = true,
     event = "VimEnter",
-    dependencies = { { "nvim-tree/nvim-web-devicons" } },
+    -- dependencies = { { "nvim-tree/nvim-web-devicons" } },
     config = function() require("tvl.config.dashboard") end,
   },
 
   {
     "nvim-tree/nvim-web-devicons",
-    config = function() require("tvl.config.nvim-web-devicons") end,
+    -- config = function() require("tvl.config.nvim-web-devicons") end,
   },
 
   {
@@ -81,6 +81,7 @@ return {
 
   {
     "echasnovski/mini.indentscope",
+    lazy = true,
     enabled = false,
     -- lazy = true,
     version = false, -- wait till new 0.7.0 release to put it back on semver
@@ -116,4 +117,11 @@ return {
     },
     config = function() require("tvl.config.windows") end,
   },
+
+  {
+    "NvChad/nvim-colorizer.lua",
+    event = "BufReadPre",
+    config = function() require("tvl.config.colorizer") end,
+  },
+
 }

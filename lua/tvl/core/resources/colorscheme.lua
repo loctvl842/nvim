@@ -35,7 +35,7 @@ return {
           },
         },
       })
-      monokai.load()
+      -- monokai.load()
     end,
   },
 }

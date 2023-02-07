@@ -80,6 +80,15 @@ vim.api.nvim_create_autocmd("User", {
             action = "Telescope oldfiles",
           },
           {
+            icon = "   ",
+            icon_hl = "DashboardQuit",
+            desc = "Last Session",
+            -- desc_hi = "String",
+            key = "s",
+            -- key_hi = "Number",
+            action = "lua require('persistence').load({last = true})",
+          },
+          {
             icon = "   ",
             icon_hl = "DashboardProject",
             desc = "Find Project",
@@ -108,11 +117,7 @@ vim.api.nvim_create_autocmd("User", {
           },
         },
         footer = {
-          " Neovim loaded "
-            .. stats.count
-            .. " plugins in "
-            .. ms
-            .. "ms",
+          " Neovim loaded " .. stats.count .. " plugins in " .. ms .. "ms",
         }, --your footer
       },
     })

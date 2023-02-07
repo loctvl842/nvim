@@ -8,6 +8,7 @@ require("scrollbar").setup({
     "dashboard",
     "alpha",
     "lazy",
+    "mason",
     "",
   },
   handlers = {

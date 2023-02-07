@@ -5,9 +5,7 @@ vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 
 local status_ok, ufo = pcall(require, "ufo")
-if not status_ok then
-  return
-end
+if not status_ok then return end
 
 local handler = function(virtText, lnum, endLnum, width, truncate)
   local newVirtText = {}

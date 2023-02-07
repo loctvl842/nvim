@@ -29,44 +29,6 @@ return {
     config = function() require("tvl.config.cmp") end,
   },
 
-  {
-    "loctvl842/compile-nvim",
-    lazy = true,
-    config = function() require("tvl.config.compile") end,
-  },
-
-  {
-    "filipdutescu/renamer.nvim",
-    lazy = true,
-    branch = "master",
-    config = function() require("tvl.config.renamer") end,
-  },
-
-  -- {
-  --   "iamcco/markdown-preview.nvim",
-  --   -- lazy = true,
-  -- },
-
-  {
-    "toppair/peek.nvim",
-    build = "deno task --quiet build:fast",
-    keys = {
-      {
-        "<leader>op",
-        function()
-          local peek = require("peek")
-          if peek.is_open() then
-            peek.close()
-          else
-            peek.open()
-          end
-        end,
-        desc = "Peek (Markdown Preview)",
-      },
-    },
-    opts = { theme = "dark" },
-  },
-
   "lvimuser/lsp-inlayhints.nvim",
 
   {

@@ -1,4 +1,4 @@
-M = {}
+local M = {}
 
 M.on_attach = function(client, buffer)
   local status_ok, navic = pcall(require, "nvim-navic")
