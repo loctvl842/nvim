@@ -22,11 +22,11 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
 	end,
 })
 
-vim.api.nvim_create_autocmd({ "VimResized" }, {
-	callback = function()
-		vim.cmd("tabdo wincmd =")
-	end,
-})
+-- vim.api.nvim_create_autocmd({ "VimResized" }, {
+-- 	callback = function()
+-- 		vim.cmd("tabdo wincmd =")
+-- 	end,
+-- })
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
 	pattern = { "qf", "help", "man", "lspinfo", "spectre_panel", "lir" },
