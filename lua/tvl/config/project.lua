@@ -30,11 +30,12 @@ project.setup({
     "Makefile",
     "package.json",
     "pom.xml",
-    ">polybar",
-    ">bspwm",
     ".vscode",
     "README.*",
     "LICENSE.*",
+    ">rofi",
+    ">polybar",
+    ">bspwm",
   },
 
   ---@ Show hidden files in telescope when searching for files in a project
