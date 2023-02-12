@@ -7,6 +7,7 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
   border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" },
   width = 60,
 })
+
 vim.lsp.handlers["textDocument/signatureHelp"] =
 vim.lsp.with(vim.lsp.handlers.signature_help, {
   border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" },
@@ -16,8 +17,8 @@ vim.lsp.with(vim.lsp.handlers.signature_help, {
 util.on_attach(function(client, buffer)
   require("tvl.config.lsp.keymaps").on_attach(client, buffer)
   require("tvl.config.lsp.inlayhints").on_attach(client, buffer)
-  require("tvl.config.lsp.breadcrumb").on_attach(client, buffer)
-  require("tvl.config.lsp.navic").on_attach(client, buffer)
+  -- require("tvl.config.lsp.breadcrumb").on_attach(client, buffer)
+  -- require("tvl.config.lsp.navic").on_attach(client, buffer)
 end)
 
 --- The default LSP capabilities

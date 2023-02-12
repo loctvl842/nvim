@@ -1,5 +1,5 @@
 require("barbecue").setup({
-	theme = "monokai-pro",
+	theme = "auto",
 	-- include_buftypes = { "neo-tree" },
 	exclude_filetypes = { "gitcommit", "toggleterm" },
 	show_modified = false,

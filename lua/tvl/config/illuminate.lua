@@ -24,6 +24,7 @@ require("illuminate").configure({
     "lazy",
     "dashboard",
     "checkhealth",
+    "lspsagafinder",
     "",
   },
   -- filetypes_allowlist: filetypes to illuminate, this is overriden by filetypes_denylist

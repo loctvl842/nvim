@@ -18,7 +18,7 @@ return {
       monokai.setup({
         transparent_background = false,
         italic_comments = true,
-        filter = "spectrum", -- classic | octagon | pro | machine | ristretto | spectrum
+        filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
         inc_search = "background", -- underline | background
         background_clear = { "neo-tree" },
         diagnostic = {
@@ -35,7 +35,7 @@ return {
           },
         },
       })
-      -- monokai.load()
+      monokai.load()
     end,
   },
 }

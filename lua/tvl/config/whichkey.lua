@@ -282,6 +282,7 @@ which_key.register(search_mapping, search_opts)
 
 local goto_mapping = {
   ["d"] = { "<cmd>Telescope lsp_definitions<cr>", "Go to definition" },
+  -- ["d"] = { "<cmd>lua vim.lsp.buf.definition()<cr>", "Go to definition" },
   ["r"] = { "<cmd>Telescope lsp_references<cr>", "Go to references" },
   ["i"] = {
     "<cmd>Telescope lsp_implementations<cr>",

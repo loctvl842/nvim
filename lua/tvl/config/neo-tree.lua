@@ -18,11 +18,12 @@ neotree.setup({
     winbar = true,
     statusline = false, -- toggle to show selector on statusline
     content_layout = "center",
+    tabs_layout = "equal",
     tab_labels = {
       filesystem = "" .. " Files",
       buffers = "" .. " Bufs",
       git_status = "" .. " Git",
-      diagnostics = "裂" .. " Diagnostic",
+      diagnostics = "裂" .. " Diagnostics",
     },
   },
   default_component_configs = {
@@ -71,25 +72,25 @@ neotree.setup({
     git_status = {
       symbols = {
         -- Change type
-        added = "A", -- or "✚", but this is redundant info if you use git_status_colors on the name
-        modified = "M", -- or "", but this is redundant info if you use git_status_colors on the name
+        added = "✚", -- or "✚", but this is redundant info if you use git_status_colors on the name
+        modified = "", -- or "", but this is redundant info if you use git_status_colors on the name
         deleted = "D", -- this can only be used in the git_status source
         renamed = "", -- this can only be used in the git_status source
         -- Status type
-        untracked = "U",
+        untracked = "",
         ignored = "",
         -- unstaged = "",
-        unstaged = "",
-        staged = "S",
+        unstaged = "",
+        staged = "",
         conflict = "",
       },
     },
     diagnostics = {
       symbols = {
         hint = "",
-        info = " ",
-        warn = " ",
-        error = " ",
+        info = "",
+        warn = "",
+        error = "",
       },
       highlights = {
         hint = "DiagnosticSignHint",

@@ -1,4 +1,3 @@
--- we have to set termguicolors before this
 local colorizer = require("colorizer")
 
 colorizer.setup({

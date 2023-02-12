@@ -14,7 +14,16 @@ vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 -- load lazy
 require("lazy").setup({
   spec = "tvl.core.resources",
-  defaults = { lazy = false, version = "*" },
-  install = { colorscheme = { "monokai-pro" } },
-  checker = { enabled = false },
+  defaults = {
+    lazy = false,
+    version = "*",
+  },
+  install = {
+    colorscheme = {
+      "monokai-pro",
+    },
+  },
+  checker = {
+    enabled = false,
+  },
 })
