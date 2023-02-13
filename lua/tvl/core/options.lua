@@ -60,8 +60,8 @@ vim.g.maplocalleader = " "
 vim.opt.shortmess:append("c")
 
 vim.opt.list = true
-vim.opt.listchars:append "space:⋅"
-vim.opt.listchars:append "eol:↴"
+-- vim.opt.listchars:append "space:⋅"
+-- vim.opt.listchars:append "eol:↴"
 
 for k, v in pairs(options) do
   vim.opt[k] = v

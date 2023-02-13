@@ -92,8 +92,16 @@ keymap("n", "<c-m-n>", "<cmd>only | Compile<CR>", opts)
 -------------------- Inspect --------------------------------
 keymap("n", "<F2>", "<cmd>Inspect<CR>", opts)
 
+keymap("t", "<Leader>e", "<cmd>Neotree toggle<CR>", opts)
+keymap("t", "<c-h>", "<c-w>h", opts)
+keymap("t", "<c-l>", "<c-w>l", opts)
+keymap("t", "<c-j>", "<c-w>j", opts)
+keymap("t", "<c-k>", "<c-w>k", opts)
+
 -------------------- Fuzzy Search --------------------------------
 vim.keymap.set("n", "<C-f>", function()
   -- You can pass additional configuration to telescope to change theme, layout, etc.
-  require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes"))
+  require("telescope.builtin").current_buffer_fuzzy_find(
+    require("telescope.themes")
+  )
 end, { desc = "[/] Fuzzily search in current buffer]" })

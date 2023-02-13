@@ -11,6 +11,7 @@ return {
 
   {
     "loctvl842/monokai-pro.nvim",
+    branch = "master",
     lazy = false,
     priority = 1000,
     config = function()
@@ -18,9 +19,9 @@ return {
       monokai.setup({
         transparent_background = false,
         italic_comments = true,
-        filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
+        filter = "spectrum", -- classic | octagon | pro | machine | ristretto | spectrum
         inc_search = "background", -- underline | background
-        background_clear = { "neo-tree" },
+        background_clear = {},
         diagnostic = {
           background = true,
         },
