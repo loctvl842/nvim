@@ -12,9 +12,8 @@ return {
 
   {
     "nvim-tree/nvim-tree.lua",
-    config = function ()
-      require("nvim-tree").setup()
-    end
+    lazy = true,
+    config = function() require("nvim-tree").setup() end,
   },
 
   {
@@ -30,7 +29,6 @@ return {
 
   {
     "nvim-lualine/lualine.nvim",
-    dependencies = { "loctvl842/monokai-pro.nvim" },
     config = function() require("tvl.config.lualine") end,
   },
 
@@ -56,7 +54,7 @@ return {
     "glepnir/dashboard-nvim",
     lazy = true,
     event = "VimEnter",
-    -- dependencies = { { "nvim-tree/nvim-web-devicons" } },
+    dependencies = { { "nvim-tree/nvim-web-devicons" } },
     config = function() require("tvl.config.dashboard") end,
   },
 
@@ -76,7 +74,6 @@ return {
     dependencies = {
       "SmiteshP/nvim-navic",
       "nvim-tree/nvim-web-devicons",
-      "loctvl842/monokai-pro.nvim",
     },
     config = function() require("tvl.config.barbecue") end,
   },

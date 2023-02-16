@@ -116,7 +116,6 @@ cmp.setup({
       -- winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
     },
     completion = {
-      -- border = "none",
       -- border = "rounded",
       -- border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
     },

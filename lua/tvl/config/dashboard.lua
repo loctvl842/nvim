@@ -172,7 +172,16 @@ vim.api.nvim_create_autocmd("User", {
             -- desc_hi = "String",
             key = "i",
             key_hl = "DashboardConfiguration",
-            action = "e $MYVIMRC",
+            action = "edit $MYVIMRC",
+          },
+          {
+            icon = "󰤄   ",
+            icon_hl = "DashboardLazy",
+            desc = "Lazy",
+            -- desc_hi = "String",
+            key = "l",
+            key_hl = "DashboardLazy",
+            action = "Lazy",
           },
           {
             icon = "   ",

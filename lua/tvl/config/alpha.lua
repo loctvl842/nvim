@@ -73,7 +73,7 @@ dashboard.section.buttons.val = {
   dashboard.button(
     "i",
     "  Configuration",
-    ":e /home/loc/.config/nvim/init.lua<CR>"
+    ":edit $MYVIMRC<CR>"
   ),
   dashboard.button("q", "  Quit Neovim", ":qa<CR>"),
 }

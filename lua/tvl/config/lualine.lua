@@ -3,13 +3,108 @@ local lualine = require("lualine")
 local M = {
   float = false,
   separator = "", -- bubble | triangle
+  ---@type any
   theme = "auto", -- nil combine with separator "bubble" and float
   colorful = true,
 }
+
+if M.float and (M.separator ~= "bubble" and M.separator ~= "triangle") then
+  M.separator = "bubble"
+end
+
+local hide_in_width = function() return vim.fn.winwidth(0) > 150 end
+
 require("monokai-pro.config").extend({
-  plugins = {
-    lualine = { float = M.float, colorful = M.colorful },
-  },
+  override = function(c)
+    M.background = c.editor.background
+    local float = M.float
+    local colorful = M.colorful
+    local float_background = c.editorSuggestWidget.background
+    -- local float_background =statusBarBg
+    local alt_float_background = c.editor.background
+    local statusbar_bg = c.statusBar.background
+    return {
+      -- Mine
+      DashboardRecent = { fg = c.base.magenta },
+      DashboardProject = { fg = c.base.blue },
+      DashboardConfiguration = { fg = c.base.white },
+      DashboardSession = { fg = c.base.green },
+      DashboardLazy = { fg = c.base.cyan },
+      DashboardQuit = { fg = c.base.red },
+
+      SLDiffAdd = {
+        bg = float and alt_float_background or statusbar_bg,
+        fg = colorful and c.gitDecoration.addedResourceForeground
+            or c.statusBar.foreground,
+      },
+      SLDiffChange = {
+        bg = float and alt_float_background or statusbar_bg,
+        fg = colorful and c.gitDecoration.modifiedResourceForeground
+            or c.statusBar.foreground,
+      },
+      SLDiffDelete = {
+        bg = float and alt_float_background or statusbar_bg,
+        fg = colorful and c.gitDecoration.deletedResourceForeground
+            or c.statusBar.foreground,
+      },
+      SLGitIcon = {
+        bg = float and float_background or statusbar_bg,
+        fg = colorful and c.base.yellow or c.statusBar.foreground,
+      },
+      SLBranchName = {
+        bg = float and float_background or statusbar_bg,
+        fg = colorful and c.base.white or c.statusBar.foreground,
+      },
+      SLError = {
+        bg = float and alt_float_background or statusbar_bg,
+        fg = colorful and c.inputValidation.errorForeground
+            or c.statusBar.foreground,
+      },
+      SLWarning = {
+        bg = float and alt_float_background or statusbar_bg,
+        fg = colorful and c.inputValidation.warningForeground
+            or c.statusBar.foreground,
+      },
+      SLInfo = {
+        bg = float and alt_float_background or statusbar_bg,
+        fg = colorful and c.inputValidation.infoForeground
+            or c.statusBar.foreground,
+      },
+      SLPosition = {
+        bg = float and float_background or statusbar_bg,
+        fg = colorful and c.base.magenta or c.statusBar.foreground,
+      },
+      SLShiftWidth = {
+        bg = float and float_background or statusbar_bg,
+        fg = colorful and c.base.yellow or c.statusBar.foreground,
+      },
+      SLEncoding = {
+        bg = float and float_background or statusbar_bg,
+        fg = colorful and c.base.green or c.statusBar.foreground,
+      },
+      SLFiletype = {
+        bg = float and float_background or statusbar_bg,
+        fg = colorful and c.base.cyan or c.statusBar.foreground,
+      },
+      SLMode = {
+        bg = float and float_background or statusbar_bg,
+        fg = colorful and c.base.green or c.statusBar.foreground,
+        bold = true,
+      },
+      SLSeparatorUnused = {
+        bg = float and float_background or statusbar_bg,
+        fg = colorful and c.editor.background or c.statusBar.foreground,
+      },
+      SLSeparator = {
+        bg = float and c.editor.background or statusbar_bg,
+        fg = float and float_background or statusbar_bg,
+      },
+      SLPadding = {
+        bg = float and c.editor.background or statusbar_bg,
+        fg = c.editor.background,
+      },
+    }
+  end,
 })
 
 local separator_icon = {}
@@ -26,72 +121,11 @@ else
   alt_separator_icon = { left = "", right = " " }
 end
 
-local normal_hl = require("tvl.util").get_highlight_value("Normal")
----@type any
-local theme = M.theme
-    or {
-      normal = {
-        a = {
-          fg = normal_hl.background,
-          bg = normal_hl.background,
-          gui = "bold",
-        },
-        b = { fg = normal_hl.background, bg = normal_hl.background },
-        c = { fg = normal_hl.background, bg = normal_hl.background },
-        x = { fg = normal_hl.background, bg = normal_hl.background },
-        y = { fg = normal_hl.background, bg = normal_hl.background },
-        z = { fg = normal_hl.background, bg = normal_hl.background },
-      },
-      insert = {
-        a = {
-          fg = normal_hl.background,
-          bg = normal_hl.background,
-          gui = "bold",
-        },
-      },
-      visual = {
-        a = {
-          fg = normal_hl.background,
-          bg = normal_hl.background,
-          gui = "bold",
-        },
-      },
-      command = {
-        a = {
-          fg = normal_hl.background,
-          bg = normal_hl.background,
-          gui = "bold",
-        },
-      },
-      replace = {
-        a = {
-          fg = normal_hl.background,
-          bg = normal_hl.background,
-          gui = "bold",
-        },
-      },
-      inactive = {
-        a = { fg = normal_hl.background, bg = normal_hl.background },
-        b = { fg = normal_hl.background, bg = normal_hl.background },
-        c = { fg = normal_hl.background, bg = normal_hl.background },
-        x = { fg = normal_hl.background, bg = normal_hl.background },
-        y = { fg = normal_hl.background, bg = normal_hl.background },
-        z = { fg = normal_hl.background, bg = normal_hl.background },
-      },
-    }
-
-local hide_in_width = function() return vim.fn.winwidth(0) > 150 end
-
 -- tvl
 local hl_str = function(str, hl_cur, hl_after)
   if hl_after == nil then return "%#" .. hl_cur .. "#" .. str .. "%*" end
   return "%#" .. hl_cur .. "#" .. str .. "%*" .. "%#" .. hl_after .. "#"
 end
-
-local padding_pad = {
-  function() return hl_str(" ", "SLPadding") end,
-  padding = 0,
-}
 
 local prev_branch = ""
 local branch = {
@@ -170,6 +204,7 @@ local diff = {
     hl_str(alt_separator_icon.right, "SLSeparator", "SLSeparator")
     return left_sep .. str .. right_sep
   end,
+  cond = hide_in_width,
 }
 
 local mode = {
@@ -228,17 +263,9 @@ local filetype = {
   end,
 }
 
--- local breadcrumb = function()
---   local breadcrumb_status_ok, breadcrumb = pcall(require, "breadcrumb")
---   if not breadcrumb_status_ok then
---     return
---   end
---   return breadcrumb.get_breadcrumb()
--- end
-
 local float_config = {
   options = {
-    theme = theme,
+    theme = M.theme,
     icons_enabled = true,
     component_separators = { left = "", right = "" },
     section_separators = { left = "", right = "" },
@@ -294,3 +321,7 @@ local float_config = {
 
 lualine.setup(float_config)
 vim.cmd([[colorscheme monokai-pro]])
+
+if M.float then
+  vim.api.nvim_set_hl(0, "lualine_c_normal", { bg = M.background })
+end

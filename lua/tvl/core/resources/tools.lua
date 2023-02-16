@@ -50,20 +50,32 @@ return {
   {
     "folke/persistence.nvim",
     event = "BufReadPre",
-    opts = { options = { "buffers", "curdir", "tabpages", "winsize", "help" } },
+    opts = {
+      options = {
+        "buffers",
+        "curdir",
+        "tabpages",
+        "winsize",
+        "help",
+        "blank",
+        "terminal",
+        "folds",
+        "tabpages",
+      },
+    },
     keys = {
       {
-        "<leader>qs",
+        "<leader>us",
         function() require("persistence").load() end,
         desc = "Restore Session",
       },
       {
-        "<leader>ql",
+        "<leader>ul",
         function() require("persistence").load({ last = true }) end,
         desc = "Restore Last Session",
       },
       {
-        "<leader>qd",
+        "<leader>ud",
         function() require("persistence").stop() end,
         desc = "Don't Save Current Session",
       },
