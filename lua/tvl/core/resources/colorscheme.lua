@@ -41,6 +41,7 @@ return {
 
   {
     "loctvl842/monokai-pro.nvim",
+    branch = "master",
     lazy = true,
     priority = 1000,
     opts = {
@@ -56,9 +57,6 @@ return {
       },
       inc_search = "background", -- underline | background
       background_clear = {},
-      diagnostic = {
-        background = true,
-      },
       plugins = {
         bufferline = {
           underline_selected = true,

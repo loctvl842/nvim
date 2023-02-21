@@ -194,7 +194,7 @@ vim.api.nvim_create_autocmd("User", {
           },
         },
         footer = {
-          " Neovim loaded " .. stats.count .. " plugins in " .. ms .. "ms",
+          " Neovim loaded " .. stats.loaded .. " plugins in " .. ms .. "ms",
         }, --your footer
       },
     })

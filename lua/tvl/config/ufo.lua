@@ -49,3 +49,9 @@ ufo.setup({
 
 vim.keymap.set("n", "zR", ufo.openAllFolds)
 vim.keymap.set("n", "zM", ufo.closeAllFolds)
+
+-- require("ufo").setup({
+--   provider_selector = function(buffer, filetype, buftype)
+--     return { "treesitter", "indent" }
+--   end,
+-- })

@@ -34,7 +34,6 @@ local options = {
   wrap = false, -- display lines as one long line
   -- scrolloff = 6, -- is one of my fav
   -- sidescrolloff = 8,
-  guifont = "Fira Code:h8", -- the font used in graphical neovim applications
   laststatus = 3,
   guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20",
   -- guicursor = "a:xxx",
@@ -71,3 +70,8 @@ vim.cmd("set whichwrap+=<,>,[,]")
 vim.cmd([[set iskeyword+=-]])
 -- diable open fold with `l`
 vim.cmd([[set foldopen-=hor]])
+
+if vim.g.neovide then
+  vim.opt.guifont = "Cascadia Code:h10" -- the font used in graphical neovim applications
+  vim.g.neovide_scale_factor = 1
+end

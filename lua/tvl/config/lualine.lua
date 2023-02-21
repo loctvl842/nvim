@@ -1,4 +1,5 @@
 local lualine = require("lualine")
+local icons = require("tvl.core.icons")
 
 local M = {
   float = false,
@@ -12,7 +13,7 @@ if M.float and (M.separator ~= "bubble" and M.separator ~= "triangle") then
   M.separator = "bubble"
 end
 
-local hide_in_width = function() return vim.fn.winwidth(0) > 150 end
+local function hide_in_width() return vim.fn.winwidth(0) > 85 end
 
 require("monokai-pro.config").extend({
   override = function(c)
@@ -31,21 +32,20 @@ require("monokai-pro.config").extend({
       DashboardSession = { fg = c.base.green },
       DashboardLazy = { fg = c.base.cyan },
       DashboardQuit = { fg = c.base.red },
-
       SLDiffAdd = {
         bg = float and alt_float_background or statusbar_bg,
         fg = colorful and c.gitDecoration.addedResourceForeground
-            or c.statusBar.foreground,
+        or c.statusBar.foreground,
       },
       SLDiffChange = {
         bg = float and alt_float_background or statusbar_bg,
         fg = colorful and c.gitDecoration.modifiedResourceForeground
-            or c.statusBar.foreground,
+        or c.statusBar.foreground,
       },
       SLDiffDelete = {
         bg = float and alt_float_background or statusbar_bg,
         fg = colorful and c.gitDecoration.deletedResourceForeground
-            or c.statusBar.foreground,
+        or c.statusBar.foreground,
       },
       SLGitIcon = {
         bg = float and float_background or statusbar_bg,
@@ -58,17 +58,17 @@ require("monokai-pro.config").extend({
       SLError = {
         bg = float and alt_float_background or statusbar_bg,
         fg = colorful and c.inputValidation.errorForeground
-            or c.statusBar.foreground,
+        or c.statusBar.foreground,
       },
       SLWarning = {
         bg = float and alt_float_background or statusbar_bg,
         fg = colorful and c.inputValidation.warningForeground
-            or c.statusBar.foreground,
+        or c.statusBar.foreground,
       },
       SLInfo = {
         bg = float and alt_float_background or statusbar_bg,
         fg = colorful and c.inputValidation.infoForeground
-            or c.statusBar.foreground,
+        or c.statusBar.foreground,
       },
       SLPosition = {
         bg = float and float_background or statusbar_bg,
@@ -178,13 +178,20 @@ local diagnostics = function()
   end
 
   local error_count, warn_count, info_count, hint_count = nvim_diagnostic()
-  local error_hl = hl_str(" " .. error_count, "SLError", "SLError")
-  local warn_hl = hl_str(" " .. warn_count, "SLWarning", "SLWarning")
-  local info_hl = hl_str(" " .. info_count, "SLInfo", "SLInfo")
-  local hint_hl = hl_str(" " .. hint_count, "SLInfo", "SLInfo")
+  local error_hl =
+      hl_str(icons.diagnostics.Error .. " " .. error_count, "SLError", "SLError")
+  local warn_hl = hl_str(
+    icons.diagnostics.Warn .. " " .. warn_count,
+    "SLWarning",
+    "SLWarning"
+  )
+  local info_hl =
+      hl_str(icons.diagnostics.Info .. " " .. info_count, "SLInfo", "SLInfo")
+  local hint_hl =
+      hl_str(icons.diagnostics.Hint .. " " .. hint_count, "SLInfo", "SLInfo")
   local left_sep = hl_str(alt_separator_icon.left, "SLSeparator")
   local right_sep =
-  hl_str(alt_separator_icon.right, "SLSeparator", "SLSeparator")
+      hl_str(alt_separator_icon.right, "SLSeparator", "SLSeparator")
   return left_sep .. error_hl .. " " .. warn_hl .. " " .. hint_hl .. right_sep
 end
 
@@ -196,12 +203,16 @@ local diff = {
     modified = "SLDiffChange",
     removed = "SLDiffDelete",
   },
-  symbols = { added = " ", modified = " ", removed = " " }, -- changes diff symbols
+  symbols = {
+    added = icons.git.added .. " ",
+    modified = icons.git.modified .. " ",
+    removed = icons.git.removed .. " ",
+  }, -- changes diff symbols
   fmt = function(str)
     if str == "" then return "" end
     local left_sep = hl_str(alt_separator_icon.left, "SLSeparator")
     local right_sep =
-    hl_str(alt_separator_icon.right, "SLSeparator", "SLSeparator")
+        hl_str(alt_separator_icon.right, "SLSeparator", "SLSeparator")
     return left_sep .. str .. right_sep
   end,
   cond = hide_in_width,
@@ -263,7 +274,7 @@ local filetype = {
   end,
 }
 
-local float_config = {
+lualine.setup({
   options = {
     theme = M.theme,
     icons_enabled = true,
@@ -300,26 +311,9 @@ local float_config = {
     lualine_z = {},
   },
   tabline = {},
-  -- winbar = {
-  -- 	lualine_a = {},
-  -- 	lualine_b = {},
-  -- 	lualine_c = {},
-  -- 	lualine_x = {},
-  -- 	lualine_y = {},
-  -- 	lualine_z = {},
-  -- },
-  -- inactive_winbar = {
-  -- 	lualine_a = {},
-  -- 	lualine_b = {},
-  -- 	lualine_c = {},
-  -- 	lualine_x = {},
-  -- 	lualine_y = {},
-  -- 	lualine_z = {},
-  -- },
   extensions = {},
-}
+})
 
-lualine.setup(float_config)
 vim.cmd([[colorscheme monokai-pro]])
 
 if M.float then

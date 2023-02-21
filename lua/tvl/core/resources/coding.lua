@@ -1,12 +1,13 @@
 return {
-  "L3MON4D3/LuaSnip",
-
   {
-    "rafamadriz/friendly-snippets",
-    config = function()
-      require("luasnip.loaders.from_vscode").lazy_load()
-      require("luasnip.loaders.from_snipmate").lazy_load()
-    end,
+    "L3MON4D3/LuaSnip",
+    dependencies = {
+      "rafamadriz/friendly-snippets",
+      config = function()
+        require("luasnip.loaders.from_vscode").lazy_load()
+        require("luasnip.loaders.from_snipmate").lazy_load()
+      end,
+    },
   },
 
   {
@@ -16,7 +17,8 @@ return {
 
   {
     "hrsh7th/nvim-cmp",
-    commit = "0e436ee23abc6c3fe5f3600145d2a413703e7272",
+    -- commit = "0e436ee23abc6c3fe5f3600145d2a413703e7272",
+    version = false,
     event = "InsertEnter",
     dependencies = {
       "mfussenegger/nvim-jdtls",
@@ -34,5 +36,10 @@ return {
   {
     "ray-x/lsp_signature.nvim",
     config = function() require("tvl.config.lsp-signature") end,
+  },
+
+  {
+    "glepnir/lspsaga.nvim",
+    lazy = true,
   },
 }

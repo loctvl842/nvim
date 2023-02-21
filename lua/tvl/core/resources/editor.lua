@@ -61,15 +61,11 @@ return {
   {
     "luukvbaal/statuscol.nvim",
     lazy = true,
-    config = function()
-      local statuscol = require("statuscol")
-      statuscol.setup({
-        setopt = true,
-        lnumfunc = function()
-          return ((vim.v.lnum % 2 > 0) and "%#DiffDelete#%=" or "%#DiffAdd#%=")
-              .. vim.v.lnum
-        end,
-      })
-    end,
+    opts = {
+      foldfunc = "builtin",
+      separator = "",
+      relculright = true,
+      setopt = true,
+    },
   },
 }

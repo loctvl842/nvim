@@ -3,7 +3,7 @@ local servers = {
   cssls = {},
   html = {},
   jsonls = {},
-  sumneko_lua = {
+  lua_ls = {
     settings = {
       Lua = {
         hint = {
@@ -26,8 +26,8 @@ local servers = {
         },
         workspace = {
           library = {
-            [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-            [vim.fn.stdpath("config") .. "/lua"] = true,
+            [vim.fn.expand("$VIMRUNTIME/lua")] = false,
+            [vim.fn.stdpath("config") .. "/lua"] = false,
           },
         },
         telemetry = {
@@ -77,10 +77,6 @@ local servers = {
     },
   },
   bashls = {},
-  jdtls = {},
-  cssmodules_ls = {},
-  lemminx = {},
-  sqls = {},
 }
 
 return servers

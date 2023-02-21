@@ -1,11 +1,57 @@
 return {
   {
     "neovim/nvim-lspconfig",
-    event = "BufReadPre",
-    config = function() require("tvl.config.lsp") end,
+    branch = "master",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = {
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+    },
+    config = function()
+      -- special attach lsp
+      require("tvl.util").on_attach(function(client, buffer)
+        require("tvl.config.lsp.keymaps").on_attach(client, buffer)
+        require("tvl.config.lsp.inlayhints").on_attach(client, buffer)
+      end)
+
+      -- diagnostics
+      for name, icon in pairs(require("tvl.core.icons").diagnostics) do
+        name = "DiagnosticSign" .. name
+        vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
+      end
+      vim.diagnostic.config(require("tvl.config.lsp.diagnostics")["on"])
+
+      local servers = require("tvl.config.lsp.servers")
+      local capabilities = require("cmp_nvim_lsp").default_capabilities(
+        vim.lsp.protocol.make_client_capabilities()
+      )
+
+      local function setup(server)
+        local server_opts = vim.tbl_deep_extend("force", {
+          capabilities = vim.deepcopy(capabilities),
+        }, servers[server] or {})
+        require("lspconfig")[server].setup(server_opts)
+      end
+
+      local mason_lspconfig = require("mason-lspconfig")
+      local available = mason_lspconfig.get_available_servers()
+
+      local ensure_installed = {}
+      for server, server_opts in pairs(servers) do
+        if server_opts then
+          if not vim.tbl_contains(available, server) then
+            setup(server)
+          else
+            ensure_installed[#ensure_installed + 1] = server
+          end
+        end
+      end
+
+      require("mason-lspconfig").setup({ ensure_installed = ensure_installed })
+      require("mason-lspconfig").setup_handlers({ setup })
+    end,
   },
 
-  -- cmdline tools and language servers manager (e.g. pyright)
   {
     "williamboman/mason.nvim",
     opts = {
@@ -44,18 +90,15 @@ return {
 
   {
     "jay-babu/mason-null-ls.nvim",
-    config = function()
-      require("mason-null-ls").setup({
-        ensure_installed = {
-          "prettier",
-          "stylua",
-          "google_java_format",
-          "black",
-          "sqlfluff",
-        },
-        automatic_setup = true,
-      })
-    end,
+    opts = {
+      ensure_installed = {
+        "prettier",
+        "stylua",
+        "google_java_format",
+        "black",
+      },
+      automatic_setup = true,
+    },
   },
 
   "mfussenegger/nvim-jdtls",

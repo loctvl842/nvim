@@ -18,6 +18,7 @@ return {
 
   {
     "akinsho/bufferline.nvim",
+    event = "VeryLazy",
     config = function() require("tvl.config.bufferline") end,
   },
 
@@ -60,6 +61,7 @@ return {
 
   {
     "nvim-tree/nvim-web-devicons",
+    lazy = true,
     -- config = function() require("tvl.config.nvim-web-devicons") end,
   },
 

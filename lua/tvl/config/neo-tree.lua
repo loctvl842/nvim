@@ -1,22 +1,5 @@
-local status_ok, neotree = pcall(require, "neo-tree")
-if not status_ok then return end
--- If you want icons for diagnostic errors, you'll need to define them somewhere:
-vim.fn.sign_define(
-  "DiagnosticSignError",
-  { text = " ", texthl = "DiagnosticSignError" }
-)
-vim.fn.sign_define(
-  "DiagnosticSignWarn",
-  { text = " ", texthl = "DiagnosticSignWarn" }
-)
-vim.fn.sign_define(
-  "DiagnosticSignInfo",
-  { text = " ", texthl = "DiagnosticSignInfo" }
-)
-vim.fn.sign_define(
-  "DiagnosticSignHint",
-  { text = "", texthl = "DiagnosticSignHint" }
-)
+local neotree = require("neo-tree")
+local icons = require("tvl.core.icons")
 
 neotree.setup({
   close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
@@ -37,7 +20,7 @@ neotree.setup({
     tab_labels = {
       filesystem = "" .. " Files",
       buffers = "" .. " Bufs",
-      git_status = "" .. " Git",
+      -- git_status = "" .. " Git",
       -- diagnostics = "裂" .. " Diagnostics",
     },
   },
@@ -87,9 +70,9 @@ neotree.setup({
     git_status = {
       symbols = {
         -- Change type
-        added = "✚", -- or "✚", but this is redundant info if you use git_status_colors on the name
-        modified = "", -- or "", but this is redundant info if you use git_status_colors on the name
-        deleted = "D", -- this can only be used in the git_status source
+        added = icons.git.added, -- or "✚", but this is redundant info if you use git_status_colors on the name
+        modified = icons.git.modified, -- or "", but this is redundant info if you use git_status_colors on the name
+        deleted = icons.git.removed, -- this can only be used in the git_status source
         renamed = "", -- this can only be used in the git_status source
         -- Status type
         untracked = "",
@@ -102,10 +85,10 @@ neotree.setup({
     },
     diagnostics = {
       symbols = {
-        hint = "",
-        info = "",
-        warn = "",
-        error = "",
+        hint = icons.diagnostics.Hint,
+        info = icons.diagnostics.Info,
+        warn = icons.diagnostics.Warn,
+        error = icons.diagnostics.Error,
       },
       highlights = {
         hint = "DiagnosticSignHint",
@@ -117,7 +100,7 @@ neotree.setup({
   },
   window = {
     position = "left",
-    width = 35,
+    width = 30,
     mapping_options = {
       noremap = true,
       nowait = true,
@@ -234,7 +217,7 @@ neotree.setup({
       {
         "container",
         content = {
-          { "name", zindex = 10 },
+          { "name",      zindex = 10 },
           -- {
           --   "symlink_target",
           --   zindex = 10,
@@ -272,17 +255,17 @@ neotree.setup({
           --   zindex = 10,
           --   highlight = "NeoTreeSymbolicLinkTarget",
           -- },
-          { "clipboard", zindex = 10 },
-          { "bufnr", zindex = 10 },
-          { "modified", zindex = 20, align = "right" },
+          { "clipboard",   zindex = 10 },
+          { "bufnr",       zindex = 10 },
+          { "modified",    zindex = 20, align = "right" },
           { "diagnostics", zindex = 20, align = "right" },
-          { "git_status", zindex = 15, align = "right" },
+          { "git_status",  zindex = 15, align = "right" },
         },
       },
     },
     message = {
       { "indent", with_markers = false },
-      { "name", highlight = "NeoTreeMessage" },
+      { "name",   highlight = "NeoTreeMessage" },
     },
     terminal = {
       { "indent" },
