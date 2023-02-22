@@ -1,7 +1,6 @@
 return {
   {
     "rcarriga/nvim-notify",
-    commit = "7caeaaef257ecbe95473ec79e5a82757b544f1fd",
     config = function() require("tvl.config.notify") end,
   },
 
@@ -35,7 +34,6 @@ return {
 
   {
     "akinsho/toggleterm.nvim",
-    commit = "8f2e78d0256eba4896c8514aa150e41e63f7d5b2",
     config = function() require("tvl.config.toggleterm") end,
   },
 
@@ -62,12 +60,27 @@ return {
   {
     "nvim-tree/nvim-web-devicons",
     lazy = true,
-    -- config = function() require("tvl.config.nvim-web-devicons") end,
   },
 
   {
     "petertriho/nvim-scrollbar",
-    config = function() require("tvl.config.scrollbar") end,
+    opts = {
+      set_highlights = false,
+      excluded_filetypes = {
+        "prompt",
+        "TelescopePrompt",
+        "noice",
+        "neo-tree",
+        "dashboard",
+        "alpha",
+        "lazy",
+        "mason",
+        "",
+      },
+      handlers = {
+        gitsigns = true,
+      },
+    },
   },
 
   {
@@ -122,7 +135,15 @@ return {
       { "anuvyklack/middleclass" },
       { "anuvyklack/animation.nvim", enabled = true },
     },
-    config = function() require("tvl.config.windows") end,
+    opts = {
+      animation = { enable = true, duration = 150, fps = 60 },
+      autowidth = { enable = true },
+    },
+    init = function()
+      vim.o.winwidth = 30
+      vim.o.winminwidth = 30
+      vim.o.equalalways = true
+    end,
   },
 
   {
@@ -147,6 +168,5 @@ return {
         virtualtext = "■",
       },
     },
-    -- config = function() require("tvl.config.colorizer") end,
   },
 }

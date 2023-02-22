@@ -1,14 +1,11 @@
 return {
-
   {
     "nvim-telescope/telescope.nvim",
-    commit = "f174a0367b4fc7cb17710d867e25ea792311c418",
     config = function() require("tvl.config.telescope") end,
   },
 
   {
     "folke/which-key.nvim",
-    commit = "6885b669523ff4238de99a7c653d47b081b5506d",
     config = function() require("tvl.config.whichkey") end,
   },
 
