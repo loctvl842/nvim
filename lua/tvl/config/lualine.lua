@@ -31,6 +31,7 @@ require("monokai-pro.config").extend({
       DashboardConfiguration = { fg = c.base.white },
       DashboardSession = { fg = c.base.green },
       DashboardLazy = { fg = c.base.cyan },
+      DashboardServer = { fg = c.base.yellow },
       DashboardQuit = { fg = c.base.red },
       SLDiffAdd = {
         bg = float and alt_float_background or statusbar_bg,
@@ -284,6 +285,7 @@ lualine.setup({
       statusline = {},
       winbar = { "neo-tree" },
       "alpha",
+      "dashboard"
     },
     ignore_focus = {},
     always_divide_middle = true,

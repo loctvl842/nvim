@@ -27,7 +27,7 @@ bufferline.setup({
     truncate_names = true, -- whether or not tab names should be truncated
     tab_size = 18,
     diagnostics = "nvim_lsp", -- | "nvim_lsp" | "coc",
-    -- separator_style = "slant", -- | "thick" | "thin" | { 'any', 'any' },
+    -- separator_style = "slope", -- | "thick" | "thin" | "slope" | { 'any', 'any' },
     separator_style = { "", "" }, -- | "thick" | "thin" | { 'any', 'any' },
     indicator = {
       icon = " ",

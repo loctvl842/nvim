@@ -54,19 +54,22 @@ return {
 
   {
     "williamboman/mason.nvim",
-    opts = {
-      ui = {
-        -- border = "rounded",
-        border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" },
-        icons = {
-          package_installed = "◍",
-          package_pending = "◍",
-          package_uninstalled = "◍",
-        },
-      },
-      log_level = vim.log.levels.INFO,
-      max_concurrent_installers = 4,
-    },
+    config = function()
+      require("mason").setup()
+    end
+    -- opts = {
+    --   ui = {
+    --     -- border = "rounded",
+    --     border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" },
+    --     icons = {
+    --       package_installed = "◍",
+    --       package_pending = "◍",
+    --       package_uninstalled = "◍",
+    --     },
+    --   },
+    --   log_level = vim.log.levels.INFO,
+    --   max_concurrent_installers = 4,
+    -- },
   },
 
   -- formatters
@@ -75,6 +78,8 @@ return {
     config = function()
       local null_ls = require("null-ls")
       local formatting = null_ls.builtins.formatting
+      -- print(vim.inspect(formatting.sql_formatter))
+      -- print(vim.inspect(formatting.black))
       null_ls.setup({
         debug = false,
         sources = {
@@ -82,7 +87,7 @@ return {
           formatting.stylua,
           formatting.google_java_format,
           formatting.black.with({ extra_args = { "--fast" } }),
-          formatting.sqlfluff,
+          formatting.sql_formatter,
         },
       })
     end,

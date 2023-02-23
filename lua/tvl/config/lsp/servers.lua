@@ -3,6 +3,7 @@ local servers = {
   cssls = {},
   html = {},
   jsonls = {},
+  sqlls = {},
   lua_ls = {
     settings = {
       Lua = {

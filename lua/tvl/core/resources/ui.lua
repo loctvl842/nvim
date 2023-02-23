@@ -17,14 +17,8 @@ return {
 
   {
     "akinsho/bufferline.nvim",
-    event = "VeryLazy",
+    event = "BufWinEnter",
     config = function() require("tvl.config.bufferline") end,
-  },
-
-  {
-    "loctvl842/breadcrumb.nvim",
-    lazy = true,
-    init = function() require("tvl.config.breadcrumb") end,
   },
 
   {
@@ -51,7 +45,6 @@ return {
 
   {
     "glepnir/dashboard-nvim",
-    lazy = true,
     event = "VimEnter",
     dependencies = { { "nvim-tree/nvim-web-devicons" } },
     config = function() require("tvl.config.dashboard") end,
