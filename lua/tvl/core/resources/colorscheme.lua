@@ -42,7 +42,7 @@ return {
   {
     "loctvl842/monokai-pro.nvim",
     branch = "master",
-    lazy = true,
+    lazy = false,
     priority = 1000,
     opts = {
       lualine = {
