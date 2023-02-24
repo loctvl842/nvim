@@ -3,7 +3,7 @@ local icons = require("tvl.core.icons")
 
 local M = {
   float = false,
-  separator = "", -- bubble | triangle
+  separator = "triangle", -- bubble | triangle
   ---@type any
   theme = "auto", -- nil combine with separator "bubble" and float
   colorful = true,
@@ -11,6 +11,8 @@ local M = {
 
 if M.float and (M.separator ~= "bubble" and M.separator ~= "triangle") then
   M.separator = "bubble"
+else
+  M.separator = ""
 end
 
 local function hide_in_width() return vim.fn.winwidth(0) > 85 end
@@ -110,7 +112,6 @@ require("monokai-pro.config").extend({
 
 local separator_icon = {}
 local alt_separator_icon = {}
-
 if M.separator == "bubble" then
   separator_icon = { left = "", right = "" }
   alt_separator_icon = { left = "", right = "" }
@@ -121,6 +122,7 @@ else
   separator_icon = { left = "", right = " " }
   alt_separator_icon = { left = "", right = " " }
 end
+
 
 -- tvl
 local hl_str = function(str, hl_cur, hl_after)
