@@ -9,7 +9,7 @@ cd ~/.config/nvim/neovim
 sudo rm /usr/local/bin/nvim
 sudo rm -r /usr/local/share/nvim/
 
-make CMAKE_BUILD_TYPE=Release
+make CMAKE_BUILD_TYPE=RelWithDebInfo
 
 sudo make install
 

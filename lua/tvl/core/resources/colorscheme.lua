@@ -46,7 +46,7 @@ return {
     priority = 1000,
     opts = {
       lualine = {
-        float = true,
+        float = false,
         separator = "triangle", -- bubble | triangle
         ---@type any
         theme = "auto", -- nil combine with separator "bubble" and float
@@ -65,8 +65,8 @@ return {
         filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
         day_night = {
           enable = true,
-          day_filter = "pro",
-          night_filter = "spectrum",
+          day_filter = "classic",
+          night_filter = "octagon",
         },
         inc_search = "background", -- underline | background
         background_clear = {},
@@ -173,7 +173,7 @@ return {
           }
         end,
       })
-      vim.cmd([[colorscheme monokai-pro]])
+      monokai.load()
     end
   },
 }
