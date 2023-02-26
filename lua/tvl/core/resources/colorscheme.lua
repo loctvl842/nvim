@@ -41,13 +41,12 @@ return {
 
   {
     "loctvl842/monokai-pro.nvim",
-    branch = "master",
     lazy = false,
     priority = 1000,
     opts = {
       lualine = {
         float = false,
-        separator = "triangle", -- bubble | triangle
+        separator = "bubble", -- bubble | triangle
         ---@type any
         theme = "auto", -- nil combine with separator "bubble" and float
         colorful = true,
@@ -64,7 +63,7 @@ return {
         italic_comments = true,
         filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
         day_night = {
-          enable = true,
+          enable = false,
           day_filter = "classic",
           night_filter = "octagon",
         },
@@ -78,6 +77,7 @@ return {
           },
           indent_blankline = {
             context_highlight = "pro", -- default | pro
+            context_start_underline = true,
           },
         },
       })
