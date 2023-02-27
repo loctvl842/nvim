@@ -41,6 +41,7 @@ return {
 
   {
     "loctvl842/monokai-pro.nvim",
+    branch = "master",
     lazy = false,
     priority = 1000,
     opts = {
@@ -72,7 +73,7 @@ return {
         plugins = {
           bufferline = {
             underline_selected = true,
-            underline_visible = false,
+            underline_visible = true,
             bold = false,
           },
           indent_blankline = {

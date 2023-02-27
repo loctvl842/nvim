@@ -87,7 +87,7 @@ return {
           formatting.stylua,
           formatting.google_java_format,
           formatting.black.with({ extra_args = { "--fast" } }),
-          formatting.sql_formatter,
+          formatting.sql_formatter.with({ extra_args = { "--config" } }),
         },
       })
     end,
@@ -101,6 +101,7 @@ return {
         "stylua",
         "google_java_format",
         "black",
+        "sql_formatter",
       },
       automatic_setup = true,
     },

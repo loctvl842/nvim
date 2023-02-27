@@ -11,6 +11,7 @@ neotree.setup({
     "filesystem",
     "buffers",
     "git_status",
+    "diagnostics"
   },
   source_selector = {
     winbar = true,
@@ -20,8 +21,8 @@ neotree.setup({
     tab_labels = {
       filesystem = "" .. " Files",
       buffers = "" .. " Bufs",
-      -- git_status = "" .. " Git",
-      -- diagnostics = "裂" .. " Diagnostics",
+      git_status = "" .. " Git",
+      diagnostics = "裂" .. " Diags",
     },
   },
   default_component_configs = {
