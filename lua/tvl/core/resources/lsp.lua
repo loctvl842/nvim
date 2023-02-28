@@ -12,6 +12,7 @@ return {
       require("tvl.util").on_attach(function(client, buffer)
         require("tvl.config.lsp.keymaps").on_attach(client, buffer)
         require("tvl.config.lsp.inlayhints").on_attach(client, buffer)
+        require("tvl.config.lsp.gitsigns").on_attach(client, buffer)
       end)
 
       -- diagnostics

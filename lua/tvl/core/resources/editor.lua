@@ -12,7 +12,23 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",
-    config = function() require("tvl.config.gitsigns") end,
+    opts = {
+      signs = {
+        add = { text = "┃" },
+        change = { text = "┋", },
+        delete = { text = "契" },
+        topdelhfe = { text = "契" },
+        changedelete = { text = "┃" },
+      },
+      current_line_blame = true,
+      current_line_blame_opts = {
+        delay = 300
+      },
+      current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
+      preview_config = {
+        border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" }, -- [ top top top - right - bottom bottom bottom - left ]
+      }
+    },
   },
 
   {
@@ -57,12 +73,20 @@ return {
 
   {
     "luukvbaal/statuscol.nvim",
-    lazy = true,
+    lazy = false,
     opts = {
       foldfunc = "builtin",
-      separator = "",
+      separator = " ",
       relculright = true,
       setopt = true,
+      order = "sNSFs",
     },
+    init = function()
+      vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
+      vim.o.foldcolumn = "1"
+      vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+      vim.o.foldlevelstart = 99
+      vim.o.foldenable = true
+    end
   },
 }
