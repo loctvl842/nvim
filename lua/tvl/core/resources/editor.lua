@@ -53,10 +53,18 @@ return {
     config = function() require("tvl.config.lightbulb") end,
   },
 
+  -- {
+  --   "windwp/nvim-autopairs",
+  --   event = "VeryLazy",
+  --   config = function() require("tvl.config.autopairs") end,
+  -- },
+
   {
-    "windwp/nvim-autopairs",
+    "echasnovski/mini.pairs",
     event = "VeryLazy",
-    config = function() require("tvl.config.autopairs") end,
+    config = function(_, opts)
+      require("mini.pairs").setup(opts)
+    end,
   },
 
   {
