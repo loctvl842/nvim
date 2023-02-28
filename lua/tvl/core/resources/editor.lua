@@ -82,19 +82,20 @@ return {
   {
     "luukvbaal/statuscol.nvim",
     lazy = false,
-    opts = {
-      foldfunc = "builtin",
-      separator = " ",
-      relculright = true,
-      setopt = true,
-      order = "sNSFs",
-    },
-    init = function()
-      vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
-      vim.o.foldcolumn = "1"
-      vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
-      vim.o.foldlevelstart = 99
-      vim.o.foldenable = true
+    config = function()
+      local builtin = require("statuscol.builtin")
+      require("statuscol").setup({
+        relculright = true,
+        segments = {
+          { -- line number
+            text = { " ", builtin.lnumfunc },
+            condition = { true, builtin.not_empty },
+            click = "v:lua.ScLa",
+          },
+          { text = { "%s" },      click = "v:lua.ScSa" }, -- Sign
+          { text = { "%C", " " }, click = "v:lua.ScFa" }, -- Fold
+        }
+      })
     end
   },
 }
