@@ -57,6 +57,9 @@ return {
     },
     config = function(_, opts)
       local monokai = require("monokai-pro")
+      require("tvl.config.lualine").setup(opts.lualine)
+      local lualine_config = require("tvl.config.lualine.config").options
+
       monokai.setup({
         transparent_background = false,
         terminal_colors = true,
@@ -81,10 +84,6 @@ return {
             context_start_underline = true,
           },
         },
-      })
-      require("tvl.config.lualine").setup(opts.lualine)
-      local lualine_config = require("tvl.config.lualine.config").options
-      require("monokai-pro.config").extend({
         override = function(c)
           local float = lualine_config.float
           local colorful = lualine_config.colorful
