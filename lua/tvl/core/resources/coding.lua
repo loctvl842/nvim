@@ -21,7 +21,7 @@ return {
         end,
         expr = true, silent = true, mode = "i",
       },
-      { "<tab>",   function() require("luasnip").jump(1) end,  mode = "s" },
+      { "<tab>",   function() require("luasnip").jump(1) end,   mode = "s" },
       { "<s-tab>", function() require("luasnip").jump( -1) end, mode = { "i", "s" } },
     },
   },
@@ -33,9 +33,8 @@ return {
 
   {
     "hrsh7th/nvim-cmp",
-    -- commit = "0e436ee23abc6c3fe5f3600145d2a413703e7272",
     version = false,
-    event = "InsertEnter",
+    event = "BufEnter",
     dependencies = {
       "mfussenegger/nvim-jdtls",
       "hrsh7th/cmp-nvim-lsp",
