@@ -23,6 +23,7 @@ return {
 
   {
     "nvim-lualine/lualine.nvim",
+    lazy = true,
     config = function()
       require("tvl.config.lualine").load()
     end

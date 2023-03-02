@@ -101,11 +101,6 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   callback = function() vim.cmd([[wincmd L]]) end,
 })
 
-vim.api.nvim_create_autocmd("User", {
-  pattern = { "LazyDone", "LazyInstall" },
-  callback = function() vim.cmd([[Dashboard]]) end,
-})
-
 vim.api.nvim_create_autocmd({ "TermOpen" }, {
   pattern = { "*" },
   callback = function()
