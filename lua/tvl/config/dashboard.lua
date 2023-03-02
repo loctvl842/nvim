@@ -119,6 +119,11 @@ local days_of_week = {
 ╚══════╝ ╚═════╝ ╚═╝  ╚═══╝╚═════╝ ╚═╝  ╚═╝   ╚═╝⠀⠀⠀
   ]],
 }
+
+if vim.o.filetype == "lazy" then
+  vim.cmd.close()
+end
+
 vim.api.nvim_create_autocmd("User", {
   pattern = "LazyVimStarted",
   callback = function()
@@ -203,7 +208,7 @@ vim.api.nvim_create_autocmd("User", {
           },
         },
         footer = {
-          " Neovim loaded " .. stats.count .. " plugins in " .. ms .. "ms",
+          "⚡ Neovim loaded " .. stats.count .. " plugins in " .. ms .. "ms",
         }, --your footer
       },
     })

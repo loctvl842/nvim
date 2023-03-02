@@ -1,7 +1,7 @@
 require("barbecue").setup({
 	theme = "auto",
 	-- include_buftypes = { "neo-tree" },
-	exclude_filetypes = { "gitcommit", "toggleterm" },
+	exclude_filetypes = { "gitcommit", "toggleterm", "Trouble" },
 	show_modified = false,
 	kinds = {
 		File = "", -- File

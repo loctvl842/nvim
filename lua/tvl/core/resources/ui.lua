@@ -1,12 +1,27 @@
 return {
   {
     "rcarriga/nvim-notify",
-    config = function() require("tvl.config.notify") end,
-  },
-
-  {
-    "loctvl842/neo-tree.nvim",
-    config = function() require("tvl.config.neo-tree") end,
+    keys = {
+      {
+        "<leader>u",
+        function()
+          require("notify").dismiss({ silent = true, pending = true })
+        end,
+        desc = "Delete all Notifications",
+      },
+    },
+    opts = {
+      timeout = 3000,
+      max_height = function()
+        return math.floor(vim.o.lines * 0.75)
+      end,
+      max_width = function()
+        return math.floor(vim.o.columns * 0.75)
+      end,
+    },
+    init = function()
+      vim.notify = require("notify")
+    end
   },
 
   {
@@ -17,82 +32,78 @@ return {
 
   {
     "akinsho/bufferline.nvim",
-    event = "BufWinEnter",
-    config = function() require("tvl.config.bufferline") end,
+    event = "VeryLazy",
+    opts = {
+      options = {
+        diagnostics = "nvim_lsp", -- | "nvim_lsp" | "coc",
+        -- separator_style = "slant", -- | "thick" | "thin" | "slope" | { 'any', 'any' },
+        separator_style = { "", "" }, -- | "thick" | "thin" | { 'any', 'any' },
+        indicator = {
+          -- icon = " ",
+          -- style = 'icon',
+          style = "underline",
+        },
+        close_command = "Bdelete! %d", -- can be a string | function, see "Mouse actions"
+        diagnostics_indicator = function(count, _, _, _)
+          if count > 9 then return "9+" end
+          return tostring(count)
+        end,
+        offsets = {
+          {
+            filetype = "neo-tree",
+            text = "EXPLORER",
+            padding = 0,
+            text_align = "center",
+            highlight = "Directory",
+          },
+        }
+      }
+    },
+    -- config = function() require("tvl.config.bufferline") end,
   },
 
   {
     "nvim-lualine/lualine.nvim",
-    lazy = true,
+    event = "VeryLazy",
     config = function()
-      require("tvl.config.lualine").load()
+      require("tvl.config.lualine.init").load("monokai-pro")
     end
   },
 
   {
-    "akinsho/toggleterm.nvim",
-    config = function() require("tvl.config.toggleterm") end,
-  },
-
-  {
     "lukas-reineke/indent-blankline.nvim",
-    event = "BufReadPre",
-    config = function() require("tvl.config.indent-blankline") end,
-  },
-
-  -- {
-  --   "goolord/alpha-nvim",
-  --   event = "VimEnter",
-  --   config = function() require("tvl.config.alpha") end,
-  -- },
-
-  {
-    "glepnir/dashboard-nvim",
-    event = "VimEnter",
-    dependencies = { { "nvim-tree/nvim-web-devicons" } },
-    config = function() require("tvl.config.dashboard") end,
-  },
-
-  {
-    "nvim-tree/nvim-web-devicons",
-    lazy = true,
-  },
-
-  {
-    "petertriho/nvim-scrollbar",
+    event = { "BufReadPost", "BufNewFile" },
     opts = {
-      set_highlights = false,
-      excluded_filetypes = {
-        "prompt",
-        "TelescopePrompt",
-        "noice",
-        "neo-tree",
+
+      char = "▏",
+      context_char = "▏",
+      show_end_of_line = false,
+      space_char_blankline = " ",
+      show_current_context = true,
+      show_current_context_start = true,
+      filetype_exclude = {
+        "help",
+        "startify",
         "dashboard",
+        "packer",
+        "neogitstatus",
+        "NvimTree",
+        "Trouble",
         "alpha",
-        "lazy",
-        "mason",
-        "",
       },
-      handlers = {
-        gitsigns = true,
+      buftype_exclude = {
+        "terminal",
+        "nofile",
       },
+      -- char_highlight_list = {
+      --   "IndentBlanklineIndent1",
+      --   "IndentBlanklineIndent2",
+      --   "IndentBlanklineIndent3",
+      --   "IndentBlanklineIndent4",
+      --   "IndentBlanklineIndent5",
+      --   "IndentBlanklineIndent6",
+      -- },
     },
-  },
-
-  {
-    "utilyre/barbecue.nvim",
-    lazy = false,
-    dependencies = {
-      "SmiteshP/nvim-navic",
-      "nvim-tree/nvim-web-devicons",
-    },
-    config = function() require("tvl.config.barbecue") end,
-  },
-
-  {
-    "folke/noice.nvim",
-    lazy = true,
-    config = function() require("tvl.config.noice") end,
   },
 
   {
@@ -122,6 +133,66 @@ return {
       })
       require("mini.indentscope").setup(opts)
     end,
+  },
+
+  {
+    "utilyre/barbecue.nvim",
+    lazy = false,
+    dependencies = {
+      "SmiteshP/nvim-navic",
+      "nvim-tree/nvim-web-devicons",
+    },
+    config = function() require("tvl.config.barbecue") end,
+  },
+
+  {
+    "akinsho/toggleterm.nvim",
+    config = function() require("tvl.config.toggleterm") end,
+  },
+
+  {
+    "glepnir/dashboard-nvim",
+    event = "VimEnter",
+    dependencies = { { "nvim-tree/nvim-web-devicons" } },
+    config = function() require("tvl.config.dashboard") end,
+  },
+
+  -- {
+  --   "goolord/alpha-nvim",
+  --   event = "VimEnter",
+  --   config = function() require("tvl.config.alpha") end,
+  -- },
+
+  {
+    "nvim-tree/nvim-web-devicons",
+    lazy = true,
+  },
+
+  {
+    "petertriho/nvim-scrollbar",
+    opts = {
+      set_highlights = false,
+      excluded_filetypes = {
+        "prompt",
+        "TelescopePrompt",
+        "noice",
+        "neo-tree",
+        "dashboard",
+        "alpha",
+        "lazy",
+        "mason",
+        "",
+      },
+      handlers = {
+        gitsigns = true,
+      },
+    },
+  },
+
+  {
+    "folke/noice.nvim",
+    lazy = true,
+    config = function() require("tvl.config.noice") end,
   },
 
   {

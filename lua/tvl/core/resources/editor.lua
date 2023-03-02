@@ -1,6 +1,14 @@
 return {
   {
+    "loctvl842/neo-tree.nvim",
+    cmd = "Neotree",
+    config = function() require("tvl.config.neo-tree") end,
+  },
+
+  {
     "nvim-telescope/telescope.nvim",
+    cmd = "Telescope",
+    version = "false",
     config = function() require("tvl.config.telescope") end,
   },
 
@@ -11,7 +19,7 @@ return {
 
   {
     "lewis6991/gitsigns.nvim",
-    event = "BufReadPre",
+    event = { "BufReadPre", "BufNewFile" },
     opts = {
       signs = {
         add = { text = "┃" },
@@ -19,6 +27,7 @@ return {
         delete = { text = "契" },
         topdelhfe = { text = "契" },
         changedelete = { text = "┃" },
+        untracked = { text = "┃" },
       },
       current_line_blame = true,
       current_line_blame_opts = {
@@ -31,9 +40,36 @@ return {
     },
   },
 
+  -- references
   {
     "RRethy/vim-illuminate",
-    config = function() require("tvl.config.illuminate") end,
+    event = { "BufReadPost", "BufNewFile" },
+    opts = { delay = 200 },
+    config = function(_, opts)
+      require("illuminate").configure(opts)
+
+      local function map(key, dir, buffer)
+        vim.keymap.set("n", key, function()
+          require("illuminate")["goto_" .. dir .. "_reference"](false)
+        end, { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer })
+      end
+
+      map("]]", "next")
+      map("[[", "prev")
+
+      -- also set it after loading ftplugins, since a lot overwrite [[ and ]]
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+          local buffer = vim.api.nvim_get_current_buf()
+          map("]]", "next", buffer)
+          map("[[", "prev", buffer)
+        end,
+      })
+    end,
+    keys = {
+      { "]]", desc = "Next Reference" },
+      { "[[", desc = "Prev Reference" },
+    },
   },
 
   {
@@ -45,26 +81,6 @@ return {
     "kevinhwang91/nvim-ufo",
     dependencies = "kevinhwang91/promise-async",
     config = function() require("tvl.config.ufo") end,
-  },
-
-  {
-    "kosayoda/nvim-lightbulb",
-    dependencies = "antoinemadec/FixCursorHold.nvim",
-    config = function() require("tvl.config.lightbulb") end,
-  },
-
-  -- {
-  --   "windwp/nvim-autopairs",
-  --   event = "VeryLazy",
-  --   config = function() require("tvl.config.autopairs") end,
-  -- },
-
-  {
-    "echasnovski/mini.pairs",
-    event = "VeryLazy",
-    config = function(_, opts)
-      require("mini.pairs").setup(opts)
-    end,
   },
 
   {
@@ -81,11 +97,12 @@ return {
 
   {
     "luukvbaal/statuscol.nvim",
-    lazy = false,
+    lazy = true,
     config = function()
       local builtin = require("statuscol.builtin")
       require("statuscol").setup({
         relculright = false,
+        ft_ignore = { "neo-tree" },
         segments = {
           { -- line number
             text = { builtin.lnumfunc },
@@ -99,7 +116,7 @@ return {
       vim.api.nvim_create_autocmd({ "BufEnter" }, {
         callback = function()
           if vim.bo.filetype == "neo-tree" then
-            vim.o.statuscolumn = ""
+            vim.opt_local.statuscolumn = ""
           end
         end
       })

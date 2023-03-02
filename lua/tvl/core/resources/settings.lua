@@ -1,3 +1,4 @@
+---@param name "autocmds" | "options" | "keymaps"
 local function load(name)
   local Util = require("lazy.core.util")
   -- always load lazyvim, then user file
@@ -15,6 +16,7 @@ local function load(name)
   })
 end
 
+require("tvl.util").lazy_notify()
 load("options")
 
 -- load options here, before lazy init while sourcing plugin modules
@@ -22,17 +24,12 @@ load("options")
 -- after installing missing plugins
 
 -- autocmds and keymaps can wait to load
-if vim.fn.argc( -1) == 0 then
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "VeryLazy",
-    callback = function()
-      load("autocmds")
-      load("keymaps")
-    end,
-  })
-else
-  load("autocmds")
-  load("keymaps")
-end
+vim.api.nvim_create_autocmd("User", {
+  pattern = "VeryLazy",
+  callback = function()
+    load("autocmds")
+    load("keymaps")
+  end,
+})
 
 return {}
