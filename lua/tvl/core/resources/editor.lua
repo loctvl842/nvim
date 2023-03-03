@@ -1,15 +1,35 @@
 return {
   {
     "loctvl842/neo-tree.nvim",
-    cmd = "Neotree",
     config = function() require("tvl.config.neo-tree") end,
   },
 
   {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
-    version = "false",
-    config = function() require("tvl.config.telescope") end,
+    version = false, -- telescope did only one release, so use HEAD for now
+    opts = {
+      defaults = {
+        prompt_prefix = "  ",
+        selection_caret = "❯ ",
+        borderchars = { "█", " ", "▀", "█", "█", " ", " ", "▀" },
+        sorting_strategy = "ascending",
+        layout_config = {
+          horizontal = {
+            prompt_position = "top",
+            preview_width = 0.55,
+            results_width = 0.8,
+          },
+          vertical = {
+            mirror = false,
+          },
+          width = 0.87,
+          height = 0.80,
+          preview_cutoff = 120,
+        },
+      },
+    },
+    -- config = function() require("tvl.config.telescope") end,
   },
 
   {
@@ -88,9 +108,9 @@ return {
     opts = {
       window = {
         relative = "win", -- where to anchor, either "win" or "editor"
-        blend = 0, -- &winblend for the window
-        zindex = nil, -- the zindex value for the window
-        border = "none", -- style of border for the fidget window
+        blend = 0,        -- &winblend for the window
+        zindex = nil,     -- the zindex value for the window
+        border = "none",  -- style of border for the fidget window
       },
     },
   },
@@ -103,7 +123,8 @@ return {
         relculright = false,
         ft_ignore = { "neo-tree" },
         segments = {
-          { -- line number
+          {
+            -- line number
             text = { builtin.lnumfunc },
             condition = { true, builtin.not_empty },
             click = "v:lua.ScLa",

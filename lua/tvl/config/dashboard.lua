@@ -133,7 +133,7 @@ vim.api.nvim_create_autocmd("User", {
       theme = "doom",
       hide = {
         statusline = 0,
-        tabline = true,
+        tabline = 0,
         winbar = 0,
       },
       shortcut = {

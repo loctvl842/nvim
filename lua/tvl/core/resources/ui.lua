@@ -25,17 +25,11 @@ return {
   },
 
   {
-    "nvim-tree/nvim-tree.lua",
-    lazy = true,
-    config = function() require("nvim-tree").setup() end,
-  },
-
-  {
     "akinsho/bufferline.nvim",
-    event = "VeryLazy",
+    event = { "BufReadPost" },
     opts = {
       options = {
-        diagnostics = "nvim_lsp", -- | "nvim_lsp" | "coc",
+        diagnostics = "nvim_lsp",     -- | "nvim_lsp" | "coc",
         -- separator_style = "slant", -- | "thick" | "thin" | "slope" | { 'any', 'any' },
         separator_style = { "", "" }, -- | "thick" | "thin" | { 'any', 'any' },
         indicator = {
@@ -56,10 +50,14 @@ return {
             text_align = "center",
             highlight = "Directory",
           },
+        },
+        hover = {
+          enabled = true,
+          delay = 0,
+          reveal = { 'close' }
         }
       }
     },
-    -- config = function() require("tvl.config.bufferline") end,
   },
 
   {
@@ -74,7 +72,6 @@ return {
     "lukas-reineke/indent-blankline.nvim",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
-
       char = "▏",
       context_char = "▏",
       show_end_of_line = false,
@@ -147,7 +144,25 @@ return {
 
   {
     "akinsho/toggleterm.nvim",
-    config = function() require("tvl.config.toggleterm") end,
+    opts = {
+      open_mapping = [[<C-\>]],
+      start_in_insert = true,
+      direction = "float",
+      autochdir = false,
+      float_opts = {
+        border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" }, -- [ top top top - right - bottom bottom bottom - left ]
+        winblend = 0,
+      },
+      highlights = {
+        FloatBorder = { link = "ToggleTermBorder" },
+        Normal = { link = "ToggleTerm" },
+        NormalFloat = { link = "ToggleTerm" },
+      },
+      winbar = {
+        enabled = true,
+        name_formatter = function(term) return string.format("%d:%s", term.id, term:_display_name()) end,
+      },
+    },
   },
 
   {
@@ -220,15 +235,15 @@ return {
       filetypes = { "*", "!lazy" },
       buftype = { "*", "!prompt", "!nofile" },
       user_default_options = {
-        RGB = true, -- #RGB hex codes
-        RRGGBB = true, -- #RRGGBB hex codes
-        names = false, -- "Name" codes like Blue
-        RRGGBBAA = true, -- #RRGGBBAA hex codes
+        RGB = true,       -- #RGB hex codes
+        RRGGBB = true,    -- #RRGGBB hex codes
+        names = false,    -- "Name" codes like Blue
+        RRGGBBAA = true,  -- #RRGGBBAA hex codes
         AARRGGBB = false, -- 0xAARRGGBB hex codes
-        rgb_fn = true, -- CSS rgb() and rgba() functions
-        hsl_fn = true, -- CSS hsl() and hsla() functions
-        css = false, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-        css_fn = true, -- Enable all CSS *functions*: rgb_fn, hsl_fn
+        rgb_fn = true,    -- CSS rgb() and rgba() functions
+        hsl_fn = true,    -- CSS hsl() and hsla() functions
+        css = false,      -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+        css_fn = true,    -- Enable all CSS *functions*: rgb_fn, hsl_fn
         -- Available modes: foreground, background
         -- Available modes for `mode`: foreground, background,  virtualtext
         mode = "background", -- Set the display mode.

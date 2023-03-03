@@ -49,7 +49,7 @@ return {
         float = false,
         separator = "bubble", -- bubble | triangle
         ---@type any
-        theme = "auto", -- nil combine with separator "bubble" and float
+        theme = "auto",       -- nil combine with separator "bubble" and float
         colorful = true,
         separator_icon = { left = "", right = " " },
         thin_separator_icon = { left = "", right = " " },
@@ -91,6 +91,7 @@ return {
           local alt_float_background = c.editor.background
           local statusbar_bg = c.statusBar.background
           return {
+            ColorColumn = { bg = c.base.dimmed3 },
             -- Mine
             DashboardRecent = { fg = c.base.magenta },
             DashboardProject = { fg = c.base.blue },
@@ -102,17 +103,17 @@ return {
             SLDiffAdd = {
               bg = float and alt_float_background or statusbar_bg,
               fg = colorful and c.gitDecoration.addedResourceForeground
-              or c.statusBar.foreground,
+                  or c.statusBar.foreground,
             },
             SLDiffChange = {
               bg = float and alt_float_background or statusbar_bg,
               fg = colorful and c.gitDecoration.modifiedResourceForeground
-              or c.statusBar.foreground,
+                  or c.statusBar.foreground,
             },
             SLDiffDelete = {
               bg = float and alt_float_background or statusbar_bg,
               fg = colorful and c.gitDecoration.deletedResourceForeground
-              or c.statusBar.foreground,
+                  or c.statusBar.foreground,
             },
             SLGitIcon = {
               bg = float and float_background or statusbar_bg,
@@ -125,17 +126,17 @@ return {
             SLError = {
               bg = float and alt_float_background or statusbar_bg,
               fg = colorful and c.inputValidation.errorForeground
-              or c.statusBar.foreground,
+                  or c.statusBar.foreground,
             },
             SLWarning = {
               bg = float and alt_float_background or statusbar_bg,
               fg = colorful and c.inputValidation.warningForeground
-              or c.statusBar.foreground,
+                  or c.statusBar.foreground,
             },
             SLInfo = {
               bg = float and alt_float_background or statusbar_bg,
               fg = colorful and c.inputValidation.infoForeground
-              or c.statusBar.foreground,
+                  or c.statusBar.foreground,
             },
             SLPosition = {
               bg = float and float_background or statusbar_bg,

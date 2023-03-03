@@ -19,16 +19,50 @@ return {
         function()
           return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
         end,
-        expr = true, silent = true, mode = "i",
+        expr = true,
+        silent = true,
+        mode = "i",
       },
-      { "<tab>",   function() require("luasnip").jump(1) end,   mode = "s" },
-      { "<s-tab>", function() require("luasnip").jump( -1) end, mode = { "i", "s" } },
+      { "<tab>",   function() require("luasnip").jump(1) end,  mode = "s" },
+      { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
     },
   },
 
   {
     "mattn/emmet-vim",
-    init = function() require("tvl.config.emmet") end,
+    init = function()
+      vim.g.user_emmet_leader_key = "e"
+      vim.g.user_emmet_mode = "n"
+      vim.g.user_emmet_settings = {
+        variables = { lang = "ja" },
+        javascript = {
+          extends = "jsx",
+        },
+        html = {
+          default_attributes = {
+            option = { value = vim.null },
+            textarea = {
+              id = vim.null,
+              name = vim.null,
+              cols = 10,
+              rows = 10,
+            },
+          },
+          snippets = {
+                ["!"] = "<!DOCTYPE html>\n"
+            .. '<html lang="en">\n'
+            .. "<head>\n"
+            .. '\t<meta charset="${charset}">\n'
+            .. '\t<meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
+            .. '\t<meta http-equiv="X-UA-Compatible" content="ie=edge">\n'
+            .. "\t<title></title>\n"
+            .. "</head>\n"
+            .. "<body>\n\t${child}|\n</body>\n"
+            .. "</html>",
+          },
+        },
+      }
+    end,
   },
 
   {
@@ -69,15 +103,15 @@ return {
           end,
         },
         mapping = cmp.mapping.preset.insert({
-          ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["<C-b>"] = cmp.mapping.scroll_docs( -4),
-          ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-Space>"] = cmp.mapping.complete(),
-          ["<C-e>"] = cmp.mapping.abort(),
-          ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-          ["<Tab>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["<S-Tab>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+              ["<C-j>"] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }), { "i", "c" }),
+              ["<C-k>"] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }), { "i", "c" }),
+              ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+              ["<C-f>"] = cmp.mapping.scroll_docs(4),
+              ["<C-Space>"] = cmp.mapping.complete(),
+              ["<C-e>"] = cmp.mapping.abort(),
+              ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+              ["<Tab>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+              ["<S-Tab>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
         }),
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
@@ -133,9 +167,9 @@ return {
   {
     "ray-x/lsp_signature.nvim",
     opts = {
-      floating_window = false, -- show hint in a floating window, set to false for virtual text only mode
+      floating_window = false,               -- show hint in a floating window, set to false for virtual text only mode
       floating_window_above_cur_line = true, -- try to place the floating above the current line when possible Note:
-      hint_scheme = "Comment", -- highlight group for the virtual text
+      hint_scheme = "Comment",               -- highlight group for the virtual text
     },
   },
 

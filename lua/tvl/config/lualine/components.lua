@@ -135,7 +135,7 @@ M.filetype = {
 
     if str == "toggleterm" then
       -- 
-      filetype_str = " " .. vim.api.nvim_buf_get_var(0, "toggle_number")
+      filetype_str = "ToggleTerm " .. vim.api.nvim_buf_get_var(0, "toggle_number")
     elseif str == "TelescopePrompt" then
       filetype_str = ""
     elseif str == "neo-tree" or str == "neo-tree-popup" then
