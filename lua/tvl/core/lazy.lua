@@ -16,8 +16,18 @@ require("lazy").setup({
   install = { colorscheme = { "monokai-pro", "habamax" } },
   checker = { enabled = false },
   performance = {
-    cache = {
-      enabled = true
-    }
-  }
+    rtp = {
+      -- disable some rtp plugins
+      disabled_plugins = {
+        "gzip",
+        -- "matchit",
+        -- "matchparen",
+        -- "netrwPlugin",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
+    },
+  },
 })

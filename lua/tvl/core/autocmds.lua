@@ -1,5 +1,47 @@
+-- Highlight on yank
+vim.api.nvim_create_autocmd({ "TextYankPost" }, {
+  callback = function()
+    vim.highlight.on_yank({ higroup = "Visual" })
+  end,
+})
+
+-- resize splits if window got resized
+vim.api.nvim_create_autocmd({ "VimResized" }, {
+  callback = function()
+    vim.cmd("tabdo wincmd =")
+  end,
+})
+
+-- close some filetypes with <q>
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = {
+    "qf",
+    "help",
+    "man",
+    "notify",
+    "lspinfo",
+    "spectre_panel",
+    "startuptime",
+    "tsplayground",
+    "PlenaryTestPopup",
+  },
+  callback = function(event)
+    vim.bo[event.buf].buflisted = false
+    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+  end,
+})
+
+-- Set wrap and spell in markdown and gitcommit
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = { "gitcommit", "markdown" },
+  callback = function()
+    vim.opt_local.wrap = true
+    vim.opt_local.spell = true
+  end,
+})
+
 local remember_folds_id =
-vim.api.nvim_create_augroup("remember_folds", { clear = false })
+    vim.api.nvim_create_augroup("remember_folds", { clear = false })
 vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
   pattern = "?*",
   group = remember_folds_id,
@@ -15,38 +57,6 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
   pattern = { "*.cpp" },
   callback = function() vim.cmd("setlocal noexpandtab") end,
-})
-
--- vim.api.nvim_create_autocmd({ "VimResized" }, {
--- 	callback = function()
---     vim.cmd([[echon '']])
--- 	end,
--- })
-
-vim.api.nvim_create_autocmd({ "FileType" }, {
-  pattern = { "qf", "help", "man", "lspinfo", "spectre_panel", "lir" },
-  callback = function()
-    vim.api.nvim_buf_set_keymap(
-      0,
-      "n",
-      "q",
-      "<cmd>q!<CR>",
-      { noremap = true, silent = true }
-    )
-    vim.cmd([[
-      " nnoremap <silent> <buffer> q! :close<CR> 
-      set nobuflisted 
-    ]])
-  end,
-})
-
--- Set wrap and spell in markdown and gitcommit
-vim.api.nvim_create_autocmd({ "FileType" }, {
-  pattern = { "gitcommit", "markdown" },
-  callback = function()
-    vim.opt_local.wrap = true
-    vim.opt_local.spell = true
-  end,
 })
 
 -- fix comment
@@ -67,28 +77,6 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
 
     vim.opt.titlestring = get_project_dir()
   end,
-})
-
-vim.api.nvim_create_autocmd({ "TextYankPost" }, {
-  callback = function()
-    vim.highlight.on_yank({ higroup = "Visual", timeout = 200 })
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "CursorHold" }, {
-  callback = function()
-    local status_ok, luasnip = pcall(require, "luasnip")
-    if not status_ok then return end
-    if luasnip.expand_or_jumpable() then
-      -- ask maintainer for option to make this silent
-      -- luasnip.unlink_current()
-      vim.cmd([[silent! lua require("luasnip").unlink_current()]])
-    end
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "VimLeave" }, {
-  callback = function() vim.cmd([[silent! NeoTreeClose]]) end,
 })
 
 -- clear cmd output
