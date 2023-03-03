@@ -43,7 +43,7 @@ vim.keymap.set("n", "K", function()
 end)
 
 ufo.setup({
-  fold_virt_text_handler = handler,
+  -- fold_virt_text_handler = handler,
   open_fold_hl_timeout = 0,
 })
 

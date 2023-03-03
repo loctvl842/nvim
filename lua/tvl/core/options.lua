@@ -23,7 +23,7 @@ local options = {
   termguicolors = true, -- set term gui colors (most terminals support this)
   timeoutlen = 100,     -- time to wait for a mapped sequence to complete (in milliseconds)
   -- undofile = true,                         -- enable persistent undo
-  updatetime = 2000,     -- faster completion (4000ms default)
+  updatetime = 2000,    -- faster completion (4000ms default)
   writebackup = false,  -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
   expandtab = true,     -- convert tabs to spaces
   shiftwidth = 2,       -- the number of spaces inserted for each indentation
@@ -48,10 +48,12 @@ local options = {
   linespace = 8,
   mousemoveevent = true,
   syntax = "on",
+  -- use fold
   foldlevelstart = 99,
   foldlevel = 99,
   foldenable = true,
   foldcolumn = "1",
+  fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]],
 }
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1

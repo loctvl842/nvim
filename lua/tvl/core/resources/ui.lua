@@ -185,6 +185,7 @@ return {
 
   {
     "petertriho/nvim-scrollbar",
+    event = "BufReadPost",
     opts = {
       set_highlights = false,
       excluded_filetypes = {
