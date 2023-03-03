@@ -113,7 +113,8 @@ return {
 
   {
     "kevinhwang91/nvim-ufo",
-    dependencies = "kevinhwang91/promise-async",
+    event = { "BufEnter" },
+    dependencies = { "kevinhwang91/promise-async", event = "BufEnter" },
     opts = {
       fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
         local newVirtText = {}

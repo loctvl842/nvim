@@ -97,3 +97,11 @@ vim.api.nvim_create_autocmd({ "TermOpen" }, {
     vim.opt_local["foldcolumn"] = "0"
   end,
 })
+
+-- fix comment on new line
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+	pattern = { "*" },
+	callback = function()
+		vim.cmd([[set formatoptions-=cro]])
+	end,
+})

@@ -4,7 +4,10 @@ local servers = {
   html = {},
   jsonls = {},
   sqlls = {},
-  phpactor = {},
+  phpactor = {
+        ["language_server_phpstan.enabled"] = false,
+        ["language_server_psalm.enabled"] = false
+  },
   lua_ls = {
     settings = {
       Lua = {

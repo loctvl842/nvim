@@ -21,7 +21,7 @@ return {
         "php",
       },
       highlight = { enable = true, },
-      indent = { enable = true, disable = { "yaml", "python", "html" } },
+      indent = { enable = true, disable = { "yaml", "python", "html", "php" } },
       context_commentstring = { enable = true },
       rainbow = {
         enable = true,
