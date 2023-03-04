@@ -23,9 +23,7 @@ return {
       vim.diagnostic.config(require("doctorfree.config.lsp.diagnostics")["on"])
 
       local servers = require("doctorfree.config.lsp.servers")
-      local capabilities = require("cmp_nvim_lsp").default_capabilities(
-        vim.lsp.protocol.make_client_capabilities()
-      )
+      local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
       local function setup(server)
         local server_opts = vim.tbl_deep_extend("force", {
@@ -57,7 +55,7 @@ return {
     "williamboman/mason.nvim",
     config = function()
       require("mason").setup()
-    end
+    end,
     -- opts = {
     --   ui = {
     --     -- border = "rounded",
@@ -76,6 +74,8 @@ return {
   -- formatters
   {
     "jose-elias-alvarez/null-ls.nvim",
+    event = { "BufReadPre", "BufNewFile" },
+    dependencies = { "mason.nvim" },
     config = function()
       local null_ls = require("null-ls")
       local formatting = null_ls.builtins.formatting
@@ -96,6 +96,7 @@ return {
 
   {
     "jay-babu/mason-null-ls.nvim",
+    event = { "BufReadPre", "BufNewFile" },
     opts = {
       ensure_installed = {
         "prettier",

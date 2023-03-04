@@ -4,6 +4,7 @@ local servers = {
   html = {},
   jsonls = {},
   sqlls = {},
+  intelephense = {}, -- php language server
   lua_ls = {
     settings = {
       Lua = {

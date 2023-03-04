@@ -4,11 +4,15 @@ local icons = require("doctorfree.core.icons")
 local M = {}
 
 local hl_str = function(str, hl_cur, hl_after)
-  if hl_after == nil then return "%#" .. hl_cur .. "#" .. str .. "%*" end
+  if hl_after == nil then
+    return "%#" .. hl_cur .. "#" .. str .. "%*"
+  end
   return "%#" .. hl_cur .. "#" .. str .. "%*" .. "%#" .. hl_after .. "#"
 end
 
-local function hide_in_width() return vim.fn.winwidth(0) > 85 end
+local function hide_in_width()
+  return vim.fn.winwidth(0) > 85
+end
 
 local prev_branch = ""
 M.branch = {
@@ -25,9 +29,9 @@ M.branch = {
     prev_branch = str
     local icon = hl_str(" ", "SLGitIcon", "SLBranchName")
     return hl_str(config.separator_icon.left, "SLSeparator")
-        .. hl_str(icon, "SLGitIcon")
-        .. hl_str(str, "SLBranchName")
-        .. hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
+      .. hl_str(icon, "SLGitIcon")
+      .. hl_str(str, "SLBranchName")
+      .. hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
   end,
 }
 
@@ -56,26 +60,18 @@ M.diagnostics = function()
       count[diagnostic.severity] = count[diagnostic.severity] + 1
     end
     return count[vim.diagnostic.severity.ERROR],
-        count[vim.diagnostic.severity.WARN],
-        count[vim.diagnostic.severity.INFO],
-        count[vim.diagnostic.severity.HINT]
+      count[vim.diagnostic.severity.WARN],
+      count[vim.diagnostic.severity.INFO],
+      count[vim.diagnostic.severity.HINT]
   end
 
   local error_count, warn_count, info_count, hint_count = nvim_diagnostic()
-  local error_hl =
-      hl_str(icons.diagnostics.Error .. " " .. error_count, "SLError", "SLError")
-  local warn_hl = hl_str(
-    icons.diagnostics.Warn .. " " .. warn_count,
-    "SLWarning",
-    "SLWarning"
-  )
-  local info_hl =
-      hl_str(icons.diagnostics.Info .. " " .. info_count, "SLInfo", "SLInfo")
-  local hint_hl =
-      hl_str(icons.diagnostics.Hint .. " " .. hint_count, "SLInfo", "SLInfo")
+  local error_hl = hl_str(icons.diagnostics.Error .. " " .. error_count, "SLError", "SLError")
+  local warn_hl = hl_str(icons.diagnostics.Warn .. " " .. warn_count, "SLWarning", "SLWarning")
+  local info_hl = hl_str(icons.diagnostics.Info .. " " .. info_count, "SLInfo", "SLInfo")
+  local hint_hl = hl_str(icons.diagnostics.Hint .. " " .. hint_count, "SLInfo", "SLInfo")
   local left_sep = hl_str(config.thin_separator_icon.left, "SLSeparator")
-  local right_sep =
-      hl_str(config.thin_separator_icon.right, "SLSeparator", "SLSeparator")
+  local right_sep = hl_str(config.thin_separator_icon.right, "SLSeparator", "SLSeparator")
   return left_sep .. error_hl .. " " .. warn_hl .. " " .. hint_hl .. right_sep
 end
 
@@ -93,10 +89,11 @@ M.diff = {
     removed = icons.git.removed .. " ",
   }, -- changes diff symbols
   fmt = function(str)
-    if str == "" then return "" end
+    if str == "" then
+      return ""
+    end
     local left_sep = hl_str(config.thin_separator_icon.left, "SLSeparator")
-    local right_sep =
-        hl_str(config.thin_separator_icon.right, "SLSeparator", "SLSeparator")
+    local right_sep = hl_str(config.thin_separator_icon.right, "SLSeparator", "SLSeparator")
     return left_sep .. str .. right_sep
   end,
   cond = hide_in_width,
@@ -135,11 +132,13 @@ M.filetype = {
 
     if str == "toggleterm" then
       -- 
-      filetype_str = " " .. vim.api.nvim_buf_get_var(0, "toggle_number")
+      filetype_str = "ToggleTerm " .. vim.api.nvim_buf_get_var(0, "toggle_number")
     elseif str == "TelescopePrompt" then
       filetype_str = ""
     elseif str == "neo-tree" or str == "neo-tree-popup" then
-      if prev_filetype == "" then return end
+      if prev_filetype == "" then
+        return
+      end
       filetype_str = prev_filetype
     elseif str == "help" then
       filetype_str = ""

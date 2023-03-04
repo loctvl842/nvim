@@ -11,10 +11,7 @@ comment.setup({
     local line_end = ctx.erow or ctx.range.erow
     require("lsp-inlayhints.core").clear(0, line_start, line_end)
 
-    if vim.bo.filetype == "javascript"
-        or vim.bo.filetype == "typescript"
-        or vim.bo.filetype == "javascriptreact"
-    then
+    if vim.bo.filetype == "javascript" or vim.bo.filetype == "typescript" or vim.bo.filetype == "javascriptreact" then
       local U = require("Comment.utils")
 
       -- Determine whether to use linewise or blockwise commentstring

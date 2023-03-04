@@ -35,5 +35,4 @@ vim.api.nvim_create_user_command("ToggleDiagnostic", function()
   end
 end, { nargs = 0 })
 
-
 return diagnostics

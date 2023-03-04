@@ -2,13 +2,15 @@ local options = {
   backup = false, -- creates a backup file
   clipboard = "unnamedplus", -- allows neovim to access the system clipboard
   cmdheight = 0, -- more space in the neovim command line for displaying messages
-  completeopt = { "menuone", "noselect" }, -- mostly just for cmp
+  completeopt = { "menu", "menuone", "noselect" }, -- mostly just for cmp
   conceallevel = 0, -- so that `` is visible in markdown files
   fileencoding = "utf-8", -- the encoding written to a file
   incsearch = true,
   hlsearch = true, -- highlight all matches on previous search pattern
   inccommand = "nosplit",
   ignorecase = true, -- ignore case in search patterns
+  grepformat = "%f:%l:%c:%m",
+  grepprg = "rg --vimgrep",
   mouse = "a", -- allow the mouse to be used in neovim
   pumheight = 10, -- pop up menu height
   showmode = false, -- we don't need to see things like -- INSERT -- anymore
@@ -21,15 +23,15 @@ local options = {
   termguicolors = true, -- set term gui colors (most terminals support this)
   timeoutlen = 100, -- time to wait for a mapped sequence to complete (in milliseconds)
   -- undofile = true,                         -- enable persistent undo
-  updatetime = 500, -- faster completion (4000ms default)
+  updatetime = 2000, -- faster completion (4000ms default)
   writebackup = false, -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
   expandtab = true, -- convert tabs to spaces
   shiftwidth = 2, -- the number of spaces inserted for each indentation
   tabstop = 2, -- insert 2 spaces for a tab
   cursorline = true, -- highlight the current line
-  number = false, -- set numbered lines
+  number = true, -- set numbered lines
   -- relativenumber = true,                   -- set relative numbered lines
-  numberwidth = 2, -- set number column width to 2 {default 4}
+  numberwidth = 4, -- set number column width to 2 {default 4}
   signcolumn = "yes", -- always show the sign column, otherwise it would shift the text each time
   wrap = false, -- display lines as one long line
   -- scrolloff = 6, -- is one of my fav
@@ -46,15 +48,20 @@ local options = {
   linespace = 8,
   mousemoveevent = true,
   syntax = "on",
+  spelllang = { "en" },
+  -- use fold
   foldlevelstart = 99,
   foldlevel = 99,
   foldenable = true,
   foldcolumn = "1",
+  fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]],
+  -- session
+  sessionoptions = { "buffers", "curdir", "tabpages", "winsize" },
 }
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
-vim.g.mapleader = ","
-vim.g.maplocalleader = ","
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 vim.opt.shortmess:append("c")
 

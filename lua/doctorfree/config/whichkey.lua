@@ -93,8 +93,8 @@ local mappings = {
       "<cmd>lua vim.lsp.buf.format()<CR><cmd>w!<CR>",
       "Format and Save",
     },
-    ["q"] = { "<cmd>q!<CR>", "Quit" },
-    ["Q"] = { "<cmd>qa!<CR>", "Quit All" },
+    ["q"] = { "<cmd>q<CR>", "Quit" },
+    ["Q"] = { "<cmd>qa<CR>", "Quit All" },
     ["d"] = { "<cmd>Bdelete!<CR>", "Close Buffer" },
     ["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
     ["c"] = {
@@ -242,7 +242,4 @@ local mappings = {
 }
 
 which_key.register(mappings, { mode = "n", prefix = "" })
-which_key.register(
-  { ["f"] = { "zf", "Create fold" } },
-  { mode = "v", prefix = "f" }
-)
+which_key.register({ ["f"] = { "zf", "Create fold" } }, { mode = "v", prefix = "f" })

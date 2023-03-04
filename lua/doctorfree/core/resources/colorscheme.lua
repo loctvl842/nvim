@@ -6,8 +6,7 @@ return {
     config = function()
       local tokyonight = require("tokyonight")
       tokyonight.setup({
-        style = "moon",
-        -- style = "deep ocean",
+        style = "night",
         -- transparent = true,
         -- styles = {
         --   sidebars = "transparent",
@@ -54,7 +53,7 @@ return {
         colorful = true,
         separator_icon = { left = "", right = " " },
         thin_separator_icon = { left = "", right = " " },
-      }
+      },
     },
     config = function(_, opts)
       local monokai = require("monokai-pro")
@@ -92,6 +91,7 @@ return {
           local alt_float_background = c.editor.background
           local statusbar_bg = c.statusBar.background
           return {
+            ColorColumn = { bg = c.base.dimmed3 },
             -- Mine
             DashboardRecent = { fg = c.base.magenta },
             DashboardProject = { fg = c.base.blue },
@@ -102,18 +102,15 @@ return {
             DashboardQuit = { fg = c.base.red },
             SLDiffAdd = {
               bg = float and alt_float_background or statusbar_bg,
-              fg = colorful and c.gitDecoration.addedResourceForeground
-              or c.statusBar.foreground,
+              fg = colorful and c.gitDecoration.addedResourceForeground or c.statusBar.foreground,
             },
             SLDiffChange = {
               bg = float and alt_float_background or statusbar_bg,
-              fg = colorful and c.gitDecoration.modifiedResourceForeground
-              or c.statusBar.foreground,
+              fg = colorful and c.gitDecoration.modifiedResourceForeground or c.statusBar.foreground,
             },
             SLDiffDelete = {
               bg = float and alt_float_background or statusbar_bg,
-              fg = colorful and c.gitDecoration.deletedResourceForeground
-              or c.statusBar.foreground,
+              fg = colorful and c.gitDecoration.deletedResourceForeground or c.statusBar.foreground,
             },
             SLGitIcon = {
               bg = float and float_background or statusbar_bg,
@@ -125,18 +122,15 @@ return {
             },
             SLError = {
               bg = float and alt_float_background or statusbar_bg,
-              fg = colorful and c.inputValidation.errorForeground
-              or c.statusBar.foreground,
+              fg = colorful and c.inputValidation.errorForeground or c.statusBar.foreground,
             },
             SLWarning = {
               bg = float and alt_float_background or statusbar_bg,
-              fg = colorful and c.inputValidation.warningForeground
-              or c.statusBar.foreground,
+              fg = colorful and c.inputValidation.warningForeground or c.statusBar.foreground,
             },
             SLInfo = {
               bg = float and alt_float_background or statusbar_bg,
-              fg = colorful and c.inputValidation.infoForeground
-              or c.statusBar.foreground,
+              fg = colorful and c.inputValidation.infoForeground or c.statusBar.foreground,
             },
             SLPosition = {
               bg = float and float_background or statusbar_bg,
@@ -175,6 +169,6 @@ return {
         end,
       })
       monokai.load()
-    end
+    end,
   },
 }
