@@ -49,12 +49,13 @@ return {
         float = false,
         separator = "bubble", -- bubble | triangle
         ---@type any
-        theme = "auto", -- nil combine with separator "bubble" and float
+        theme = "auto",       -- nil combine with separator "bubble" and float
         colorful = true,
         separator_icon = { left = "", right = " " },
         thin_separator_icon = { left = "", right = " " },
       },
     },
+    keys = { { "<leader>c", "<cmd>MonokaiProSelect<cr>", desc = "Select Moonokai pro filter" } },
     config = function(_, opts)
       local monokai = require("monokai-pro")
       require("tvl.config.lualine").setup(opts.lualine)

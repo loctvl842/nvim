@@ -71,10 +71,10 @@ neotree.setup({
     git_status = {
       symbols = {
         -- Change type
-        added = icons.git.added, -- or "✚", but this is redundant info if you use git_status_colors on the name
+        added = icons.git.added,       -- or "✚", but this is redundant info if you use git_status_colors on the name
         modified = icons.git.modified, -- or "", but this is redundant info if you use git_status_colors on the name
-        deleted = icons.git.removed, -- this can only be used in the git_status source
-        renamed = "", -- this can only be used in the git_status source
+        deleted = icons.git.removed,   -- this can only be used in the git_status source
+        renamed = "",               -- this can only be used in the git_status source
         -- Status type
         untracked = "",
         ignored = "",
@@ -107,47 +107,48 @@ neotree.setup({
       nowait = true,
     },
     mappings = {
-      ["<space>"] = {
+          ["<space>"] = {
         "toggle_node",
         nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use
       },
-      ["<1-LeftMouse>"] = "open",
-      ["<cr>"] = "open",
-      ["l"] = "open",
-      ["S"] = "open_split",
-      ["s"] = "open_vsplit",
+          ["<1-LeftMouse>"] = "open",
+          ["<cr>"] = "open",
+          ["l"] = "open",
+          ["S"] = "open_split",
+          ["s"] = "open_vsplit",
       -- ["S"] = "split_with_window_picker",
       -- ["s"] = "vsplit_with_window_picker",
-      ["t"] = "open_tabnew",
-      ["w"] = "open_with_window_picker",
-      ["C"] = "close_node",
-      ["a"] = {
+          ["t"] = "open_tabnew",
+          ["w"] = "open_with_window_picker",
+          ["C"] = "close_node",
+          ["a"] = {
         "add",
         -- some commands may take optional config options, see `:h neo-tree-mappings` for details
         config = {
           show_path = "none", -- "none", "relative", "absolute"
         },
       },
-      ["A"] = "add_directory", -- also accepts the config.show_path option.
-      ["d"] = "delete",
-      ["r"] = "rename",
-      ["y"] = "copy_to_clipboard",
-      ["x"] = "cut_to_clipboard",
-      ["p"] = "paste_from_clipboard",
-      ["c"] = "copy", -- takes text input for destination
-      ["m"] = "move", -- takes text input for destination
-      ["q"] = "close_window",
-      ["R"] = "refresh",
-      ["?"] = "show_help",
+          ["A"] = "add_directory", -- also accepts the config.show_path option.
+          ["d"] = "delete",
+          ["r"] = "rename",
+          ["y"] = "copy_to_clipboard",
+          ["x"] = "cut_to_clipboard",
+          ["p"] = "paste_from_clipboard",
+          ["c"] = "copy", -- takes text input for destination
+          ["m"] = "move", -- takes text input for destination
+          ["q"] = "close_window",
+          ["R"] = "refresh",
+          ["?"] = "show_help",
     },
   },
   nesting_rules = {
     -- ["js"] = { "js.map" },
   },
   filesystem = {
+    bind_to_cwd = true,
     filtered_items = {
       visible = false, -- when true, they will just be displayed differently than normal items
-      hide_dotfiles = true,
+      hide_dotfiles = false,
       hide_gitignored = false,
       hide_by_name = {
         --"node_modules"
@@ -160,9 +161,9 @@ neotree.setup({
         --"thumbs.db"
       },
     },
-    follow_current_file = true, -- This will find and focus the file in the active buffer every
+    follow_current_file = true,             -- This will find and focus the file in the active buffer every
     -- time the current file is changed while the tree is open.
-    group_empty_dirs = false, -- when true, empty folders will be grouped together
+    group_empty_dirs = false,               -- when true, empty folders will be grouped together
     hijack_netrw_behavior = "open_default", -- netrw disabled, opening a directory opens neo-tree
     -- in whatever position is specified in window.position
     -- "open_current",  -- netrw disabled, opening a directory opens within the
@@ -172,27 +173,27 @@ neotree.setup({
     -- instead of relying on nvim autocmd events.
     window = {
       mappings = {
-        ["H"] = "navigate_up",
-        ["<bs>"] = "toggle_hidden",
-        ["."] = "set_root",
-        ["/"] = "fuzzy_finder",
-        ["f"] = "filter_on_submit",
-        ["<c-x>"] = "clear_filter",
-        ["[g"] = "prev_git_modified",
-        ["]g"] = "next_git_modified",
+            ["H"] = "navigate_up",
+            ["<bs>"] = "toggle_hidden",
+            ["."] = "set_root",
+            ["/"] = "fuzzy_finder",
+            ["f"] = "filter_on_submit",
+            ["<c-x>"] = "clear_filter",
+            ["[g"] = "prev_git_modified",
+            ["]g"] = "next_git_modified",
       },
     },
   },
   buffers = {
     follow_current_file = true, -- This will find and focus the file in the active buffer every
     -- time the current file is changed while the tree is open.
-    group_empty_dirs = true, -- when true, empty folders will be grouped together
+    group_empty_dirs = true,    -- when true, empty folders will be grouped together
     show_unloaded = true,
     window = {
       mappings = {
-        ["bd"] = "buffer_delete",
-        ["<bs>"] = "navigate_up",
-        ["."] = "set_root",
+            ["bd"] = "buffer_delete",
+            ["<bs>"] = "navigate_up",
+            ["."] = "set_root",
       },
     },
   },
@@ -200,13 +201,13 @@ neotree.setup({
     window = {
       position = "float",
       mappings = {
-        ["A"] = "git_add_all",
-        ["gu"] = "git_unstage_file",
-        ["ga"] = "git_add_file",
-        ["gr"] = "git_revert_file",
-        ["gc"] = "git_commit",
-        ["gp"] = "git_push",
-        ["gg"] = "git_commit_and_push",
+            ["A"] = "git_add_all",
+            ["gu"] = "git_unstage_file",
+            ["ga"] = "git_add_file",
+            ["gr"] = "git_revert_file",
+            ["gc"] = "git_commit",
+            ["gp"] = "git_push",
+            ["gg"] = "git_commit_and_push",
       },
     },
   },
@@ -218,7 +219,7 @@ neotree.setup({
       {
         "container",
         content = {
-          { "name", zindex = 10 },
+          { "name",      zindex = 10 },
           -- {
           --   "symlink_target",
           --   zindex = 10,
@@ -256,17 +257,17 @@ neotree.setup({
           --   zindex = 10,
           --   highlight = "NeoTreeSymbolicLinkTarget",
           -- },
-          { "clipboard", zindex = 10 },
-          { "bufnr", zindex = 10 },
-          { "modified", zindex = 20, align = "right" },
+          { "clipboard",   zindex = 10 },
+          { "bufnr",       zindex = 10 },
+          { "modified",    zindex = 20, align = "right" },
           { "diagnostics", zindex = 20, align = "right" },
-          { "git_status", zindex = 15, align = "right" },
+          { "git_status",  zindex = 15, align = "right" },
         },
       },
     },
     message = {
       { "indent", with_markers = false },
-      { "name", highlight = "NeoTreeMessage" },
+      { "name",   highlight = "NeoTreeMessage" },
     },
     terminal = {
       { "indent" },

@@ -1,5 +1,7 @@
 local M = {}
 
+M.root_patterns = { ".git" }
+
 --- @param on_attach fun(client, buffer)
 M.on_attach = function(on_attach)
   vim.api.nvim_create_autocmd("LspAttach", {
@@ -33,8 +35,8 @@ function M.get_root()
           and vim.tbl_map(function(ws)
             return vim.uri_to_fname(ws.uri)
           end, workspace)
-        or client.config.root_dir and { client.config.root_dir }
-        or {}
+          or client.config.root_dir and { client.config.root_dir }
+          or {}
       for _, p in ipairs(paths) do
         local r = vim.loop.fs_realpath(p)
         if path:find(r, 1, true) then
@@ -92,6 +94,35 @@ function M.lazy_notify()
   end)
   -- or if it took more than 500ms, then something went wrong
   timer:start(500, 0, replay)
+end
+
+---@param type "ivy" | "dropdown" | "cursor" | nil
+M.telescope_theme = function(type)
+  if type == nil then
+    return {}
+  end
+  return require("telescope.themes")["get_" .. type]({
+    cwd = M.get_root(),
+    borderchars = { "█", "█", "▀", "█", "█", "█", "▀", "▀" },
+  })
+end
+
+---@param type "ivy" | "dropdown" | "cursor" | nil
+M.telescope = function(builtin, type, opts)
+  local params = { builtin = builtin, type = type, opts = opts }
+  return function()
+    builtin = params.builtin
+    type = params.type
+    opts = params.opts
+    opts = vim.tbl_deep_extend("force", { cwd = M.get_root() }, opts or {})
+    local theme
+    if vim.tbl_contains({ "ivy", "dropdown", "cursor" }, type) then
+      theme = M.telescope_theme(type)
+    else
+      theme = opts
+    end
+    require("telescope.builtin")[builtin](theme)
+  end
 end
 
 return M
