@@ -21,18 +21,12 @@ return {
     },
     init = function()
       vim.notify = require("notify")
-    end
-  },
-
-  {
-    "nvim-tree/nvim-tree.lua",
-    lazy = true,
-    config = function() require("nvim-tree").setup() end,
+    end,
   },
 
   {
     "akinsho/bufferline.nvim",
-    event = "VeryLazy",
+    event = { "BufReadPost" },
     opts = {
       options = {
         diagnostics = "nvim_lsp", -- | "nvim_lsp" | "coc",
@@ -45,7 +39,9 @@ return {
         },
         close_command = "Bdelete! %d", -- can be a string | function, see "Mouse actions"
         diagnostics_indicator = function(count, _, _, _)
-          if count > 9 then return "9+" end
+          if count > 9 then
+            return "9+"
+          end
           return tostring(count)
         end,
         offsets = {
@@ -56,10 +52,14 @@ return {
             text_align = "center",
             highlight = "Directory",
           },
-        }
-      }
+        },
+        hover = {
+          enabled = true,
+          delay = 0,
+          reveal = { "close" },
+        },
+      },
     },
-    -- config = function() require("tvl.config.bufferline") end,
   },
 
   {
@@ -67,14 +67,13 @@ return {
     event = "VeryLazy",
     config = function()
       require("tvl.config.lualine.init").load("monokai-pro")
-    end
+    end,
   },
 
   {
     "lukas-reineke/indent-blankline.nvim",
     event = { "BufReadPost", "BufNewFile" },
     opts = {
-
       char = "▏",
       context_char = "▏",
       show_end_of_line = false,
@@ -129,7 +128,9 @@ return {
           "lazy",
           "mason",
         },
-        callback = function() vim.b.miniindentscope_disable = true end,
+        callback = function()
+          vim.b.miniindentscope_disable = true
+        end,
       })
       require("mini.indentscope").setup(opts)
     end,
@@ -142,19 +143,43 @@ return {
       "SmiteshP/nvim-navic",
       "nvim-tree/nvim-web-devicons",
     },
-    config = function() require("tvl.config.barbecue") end,
+    config = function()
+      require("tvl.config.barbecue")
+    end,
   },
 
   {
     "akinsho/toggleterm.nvim",
-    config = function() require("tvl.config.toggleterm") end,
+    opts = {
+      open_mapping = [[<C-\>]],
+      start_in_insert = true,
+      direction = "float",
+      autochdir = false,
+      float_opts = {
+        border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" }, -- [ top top top - right - bottom bottom bottom - left ]
+        winblend = 0,
+      },
+      highlights = {
+        FloatBorder = { link = "ToggleTermBorder" },
+        Normal = { link = "ToggleTerm" },
+        NormalFloat = { link = "ToggleTerm" },
+      },
+      winbar = {
+        enabled = true,
+        name_formatter = function(term)
+          return string.format("%d:%s", term.id, term:_display_name())
+        end,
+      },
+    },
   },
 
   {
     "glepnir/dashboard-nvim",
     event = "VimEnter",
     dependencies = { { "nvim-tree/nvim-web-devicons" } },
-    config = function() require("tvl.config.dashboard") end,
+    config = function()
+      require("tvl.config.dashboard")
+    end,
   },
 
   -- {
@@ -170,6 +195,7 @@ return {
 
   {
     "petertriho/nvim-scrollbar",
+    event = "BufReadPost",
     opts = {
       set_highlights = false,
       excluded_filetypes = {
@@ -192,7 +218,9 @@ return {
   {
     "folke/noice.nvim",
     lazy = true,
-    config = function() require("tvl.config.noice") end,
+    config = function()
+      require("tvl.config.noice")
+    end,
   },
 
   {

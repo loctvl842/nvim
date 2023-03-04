@@ -13,10 +13,7 @@ local function setup(custom_theme)
       component_separators = { left = "", right = "" },
       section_separators = { left = "", right = "" },
       disabled_filetypes = {
-        statusline = {},
-        winbar = { "neo-tree" },
-        "alpha",
-        "dashboard"
+        statusline = { "dashboard", "lazy", "alpha" },
       },
       ignore_focus = {},
       always_divide_middle = true,
@@ -24,7 +21,7 @@ local function setup(custom_theme)
       refresh = {
         statusline = 1000,
         tabline = 1000,
-        winbar = 100,
+        -- winbar = 100,
       },
     },
     sections = {
@@ -56,7 +53,7 @@ M.load = function(theme)
   vim.api.nvim_create_autocmd("ColorScheme", {
     callback = function()
       setup(theme)
-    end
+    end,
   })
 end
 

@@ -18,18 +18,15 @@ require("monokai-pro.config").extend({
       DashboardQuit = { fg = c.base.red },
       SLDiffAdd = {
         bg = float and alt_float_background or statusbar_bg,
-        fg = colorful and c.gitDecoration.addedResourceForeground
-        or c.statusBar.foreground,
+        fg = colorful and c.gitDecoration.addedResourceForeground or c.statusBar.foreground,
       },
       SLDiffChange = {
         bg = float and alt_float_background or statusbar_bg,
-        fg = colorful and c.gitDecoration.modifiedResourceForeground
-        or c.statusBar.foreground,
+        fg = colorful and c.gitDecoration.modifiedResourceForeground or c.statusBar.foreground,
       },
       SLDiffDelete = {
         bg = float and alt_float_background or statusbar_bg,
-        fg = colorful and c.gitDecoration.deletedResourceForeground
-        or c.statusBar.foreground,
+        fg = colorful and c.gitDecoration.deletedResourceForeground or c.statusBar.foreground,
       },
       SLGitIcon = {
         bg = float and float_background or statusbar_bg,
@@ -41,18 +38,15 @@ require("monokai-pro.config").extend({
       },
       SLError = {
         bg = float and alt_float_background or statusbar_bg,
-        fg = colorful and c.inputValidation.errorForeground
-        or c.statusBar.foreground,
+        fg = colorful and c.inputValidation.errorForeground or c.statusBar.foreground,
       },
       SLWarning = {
         bg = float and alt_float_background or statusbar_bg,
-        fg = colorful and c.inputValidation.warningForeground
-        or c.statusBar.foreground,
+        fg = colorful and c.inputValidation.warningForeground or c.statusBar.foreground,
       },
       SLInfo = {
         bg = float and alt_float_background or statusbar_bg,
-        fg = colorful and c.inputValidation.infoForeground
-        or c.statusBar.foreground,
+        fg = colorful and c.inputValidation.infoForeground or c.statusBar.foreground,
       },
       SLPosition = {
         bg = float and float_background or statusbar_bg,

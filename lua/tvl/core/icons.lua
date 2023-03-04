@@ -50,5 +50,5 @@ return {
   ui = {
     Pencil = "",
     Bug = "",
-  }
+  },
 }
