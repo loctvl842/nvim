@@ -40,29 +40,36 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
-local remember_folds_id =
-    vim.api.nvim_create_augroup("remember_folds", { clear = false })
+local remember_folds_id = vim.api.nvim_create_augroup("remember_folds", { clear = false })
 vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
   pattern = "?*",
   group = remember_folds_id,
-  callback = function() vim.cmd([[silent! mkview 1]]) end,
+  callback = function()
+    vim.cmd([[silent! mkview 1]])
+  end,
 })
 vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
   pattern = "?*",
   group = remember_folds_id,
-  callback = function() vim.cmd([[silent! loadview 1]]) end,
+  callback = function()
+    vim.cmd([[silent! loadview 1]])
+  end,
 })
 
 -- fix tab in python
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
   pattern = { "*.cpp" },
-  callback = function() vim.cmd("setlocal noexpandtab") end,
+  callback = function()
+    vim.cmd("setlocal noexpandtab")
+  end,
 })
 
 -- fix comment
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
   pattern = { "*" },
-  callback = function() vim.cmd([[set formatoptions-=cro]]) end,
+  callback = function()
+    vim.cmd([[set formatoptions-=cro]])
+  end,
 })
 
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
@@ -81,12 +88,16 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
 
 -- clear cmd output
 vim.api.nvim_create_autocmd({ "CursorHold" }, {
-  callback = function() vim.cmd([[echon '']]) end,
+  callback = function()
+    vim.cmd([[echon '']])
+  end,
 })
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
   pattern = { "help" },
-  callback = function() vim.cmd([[wincmd L]]) end,
+  callback = function()
+    vim.cmd([[wincmd L]])
+  end,
 })
 
 vim.api.nvim_create_autocmd({ "TermOpen" }, {
@@ -100,8 +111,8 @@ vim.api.nvim_create_autocmd({ "TermOpen" }, {
 
 -- fix comment on new line
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
-	pattern = { "*" },
-	callback = function()
-		vim.cmd([[set formatoptions-=cro]])
-	end,
+  pattern = { "*" },
+  callback = function()
+    vim.cmd([[set formatoptions-=cro]])
+  end,
 })

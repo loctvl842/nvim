@@ -141,7 +141,10 @@ vim.api.nvim_create_autocmd("User", {
       },
       config = {
         -- header = vim.split(logo[random_logo_name], "\n"), --your header
-        header = vim.split("\n\n\n" .. days_of_week[current_day] .. "\n\n" .. os.date('%Y-%m-%d %H:%M:%S' .. '\n'), "\n"), --your header
+        header = vim.split(
+          "\n\n\n" .. days_of_week[current_day] .. "\n\n" .. os.date("%Y-%m-%d %H:%M:%S" .. "\n"),
+          "\n"
+        ), --your header
         center = {
           {
             icon = "   ",

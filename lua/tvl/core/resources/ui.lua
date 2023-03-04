@@ -21,7 +21,7 @@ return {
     },
     init = function()
       vim.notify = require("notify")
-    end
+    end,
   },
 
   {
@@ -29,7 +29,7 @@ return {
     event = { "BufReadPost" },
     opts = {
       options = {
-        diagnostics = "nvim_lsp",     -- | "nvim_lsp" | "coc",
+        diagnostics = "nvim_lsp", -- | "nvim_lsp" | "coc",
         -- separator_style = "slant", -- | "thick" | "thin" | "slope" | { 'any', 'any' },
         separator_style = { "", "" }, -- | "thick" | "thin" | { 'any', 'any' },
         indicator = {
@@ -39,7 +39,9 @@ return {
         },
         close_command = "Bdelete! %d", -- can be a string | function, see "Mouse actions"
         diagnostics_indicator = function(count, _, _, _)
-          if count > 9 then return "9+" end
+          if count > 9 then
+            return "9+"
+          end
           return tostring(count)
         end,
         offsets = {
@@ -54,9 +56,9 @@ return {
         hover = {
           enabled = true,
           delay = 0,
-          reveal = { 'close' }
-        }
-      }
+          reveal = { "close" },
+        },
+      },
     },
   },
 
@@ -65,7 +67,7 @@ return {
     event = "VeryLazy",
     config = function()
       require("tvl.config.lualine.init").load("monokai-pro")
-    end
+    end,
   },
 
   {
@@ -126,7 +128,9 @@ return {
           "lazy",
           "mason",
         },
-        callback = function() vim.b.miniindentscope_disable = true end,
+        callback = function()
+          vim.b.miniindentscope_disable = true
+        end,
       })
       require("mini.indentscope").setup(opts)
     end,
@@ -139,7 +143,9 @@ return {
       "SmiteshP/nvim-navic",
       "nvim-tree/nvim-web-devicons",
     },
-    config = function() require("tvl.config.barbecue") end,
+    config = function()
+      require("tvl.config.barbecue")
+    end,
   },
 
   {
@@ -160,7 +166,9 @@ return {
       },
       winbar = {
         enabled = true,
-        name_formatter = function(term) return string.format("%d:%s", term.id, term:_display_name()) end,
+        name_formatter = function(term)
+          return string.format("%d:%s", term.id, term:_display_name())
+        end,
       },
     },
   },
@@ -169,7 +177,9 @@ return {
     "glepnir/dashboard-nvim",
     event = "VimEnter",
     dependencies = { { "nvim-tree/nvim-web-devicons" } },
-    config = function() require("tvl.config.dashboard") end,
+    config = function()
+      require("tvl.config.dashboard")
+    end,
   },
 
   -- {
@@ -208,7 +218,9 @@ return {
   {
     "folke/noice.nvim",
     lazy = true,
-    config = function() require("tvl.config.noice") end,
+    config = function()
+      require("tvl.config.noice")
+    end,
   },
 
   {
@@ -236,15 +248,15 @@ return {
       filetypes = { "*", "!lazy" },
       buftype = { "*", "!prompt", "!nofile" },
       user_default_options = {
-        RGB = true,       -- #RGB hex codes
-        RRGGBB = true,    -- #RRGGBB hex codes
-        names = false,    -- "Name" codes like Blue
-        RRGGBBAA = true,  -- #RRGGBBAA hex codes
+        RGB = true, -- #RGB hex codes
+        RRGGBB = true, -- #RRGGBB hex codes
+        names = false, -- "Name" codes like Blue
+        RRGGBBAA = true, -- #RRGGBBAA hex codes
         AARRGGBB = false, -- 0xAARRGGBB hex codes
-        rgb_fn = true,    -- CSS rgb() and rgba() functions
-        hsl_fn = true,    -- CSS hsl() and hsla() functions
-        css = false,      -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-        css_fn = true,    -- Enable all CSS *functions*: rgb_fn, hsl_fn
+        rgb_fn = true, -- CSS rgb() and rgba() functions
+        hsl_fn = true, -- CSS hsl() and hsla() functions
+        css = false, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+        css_fn = true, -- Enable all CSS *functions*: rgb_fn, hsl_fn
         -- Available modes: foreground, background
         -- Available modes for `mode`: foreground, background,  virtualtext
         mode = "background", -- Set the display mode.

@@ -1,7 +1,21 @@
 return {
   {
     "loctvl842/neo-tree.nvim",
-    config = function() require("tvl.config.neo-tree") end,
+    deactivate = function()
+      vim.cmd([[Neotree close]])
+    end,
+    init = function()
+      vim.g.neo_tree_remove_legacy_commands = 1
+      if vim.fn.argc() == 1 then
+        local stat = vim.loop.fs_stat(vim.fn.argv(0))
+        if stat and stat.type == "directory" then
+          require("neo-tree")
+        end
+      end
+    end,
+    config = function()
+      require("tvl.config.neo-tree")
+    end,
   },
 
   {
@@ -35,7 +49,9 @@ return {
   {
     "folke/which-key.nvim",
     -- opts = {}
-    config = function() require("tvl.config.whichkey") end,
+    config = function()
+      require("tvl.config.whichkey")
+    end,
   },
 
   {
@@ -44,7 +60,7 @@ return {
     opts = {
       signs = {
         add = { text = "┃" },
-        change = { text = "┋", },
+        change = { text = "┋" },
         delete = { text = "契" },
         topdelhfe = { text = "契" },
         changedelete = { text = "┃" },
@@ -52,12 +68,12 @@ return {
       },
       current_line_blame = true,
       current_line_blame_opts = {
-        delay = 300
+        delay = 300,
       },
-      current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
+      current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
       preview_config = {
         border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" }, -- [ top top top - right - bottom bottom bottom - left ]
-      }
+      },
     },
   },
 
@@ -75,9 +91,9 @@ return {
         "neo-tree",
         "dashboard",
         "TelescopePrompt",
-        ""
+        "",
       },
-      delay = 200
+      delay = 200,
     },
     config = function(_, opts)
       require("illuminate").configure(opts)
@@ -108,7 +124,9 @@ return {
 
   {
     "ahmedkhalf/project.nvim",
-    config = function() require("tvl.config.project") end,
+    config = function()
+      require("tvl.config.project")
+    end,
   },
 
   {
@@ -152,9 +170,9 @@ return {
     opts = {
       window = {
         relative = "win", -- where to anchor, either "win" or "editor"
-        blend = 0,        -- &winblend for the window
-        zindex = nil,     -- the zindex value for the window
-        border = "none",  -- style of border for the fidget window
+        blend = 0, -- &winblend for the window
+        zindex = nil, -- the zindex value for the window
+        border = "none", -- style of border for the fidget window
       },
     },
   },
@@ -173,17 +191,17 @@ return {
             condition = { true, builtin.not_empty },
             click = "v:lua.ScLa",
           },
-          { text = { "%s" },      click = "v:lua.ScSa" }, -- Sign
+          { text = { "%s" }, click = "v:lua.ScSa" }, -- Sign
           { text = { "%C", " " }, click = "v:lua.ScFa" }, -- Fold
-        }
+        },
       })
       vim.api.nvim_create_autocmd({ "BufEnter" }, {
         callback = function()
           if vim.bo.filetype == "neo-tree" then
             vim.opt_local.statuscolumn = ""
           end
-        end
+        end,
       })
-    end
+    end,
   },
 }

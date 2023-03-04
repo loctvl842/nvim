@@ -49,16 +49,16 @@ return {
             },
           },
           snippets = {
-                ["!"] = "<!DOCTYPE html>\n"
-            .. '<html lang="en">\n'
-            .. "<head>\n"
-            .. '\t<meta charset="${charset}">\n'
-            .. '\t<meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
-            .. '\t<meta http-equiv="X-UA-Compatible" content="ie=edge">\n'
-            .. "\t<title></title>\n"
-            .. "</head>\n"
-            .. "<body>\n\t${child}|\n</body>\n"
-            .. "</html>",
+            ["!"] = "<!DOCTYPE html>\n"
+              .. '<html lang="en">\n'
+              .. "<head>\n"
+              .. '\t<meta charset="${charset}">\n'
+              .. '\t<meta name="viewport" content="width=device-width, initial-scale=1.0">\n'
+              .. '\t<meta http-equiv="X-UA-Compatible" content="ie=edge">\n'
+              .. "\t<title></title>\n"
+              .. "</head>\n"
+              .. "<body>\n\t${child}|\n</body>\n"
+              .. "</html>",
           },
         },
       }
@@ -97,15 +97,15 @@ return {
           end,
         },
         mapping = cmp.mapping.preset.insert({
-              ["<C-j>"] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }), { "i", "c" }),
-              ["<C-k>"] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }), { "i", "c" }),
-              ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-              ["<C-f>"] = cmp.mapping.scroll_docs(4),
-              ["<C-Space>"] = cmp.mapping.complete(),
-              ["<C-e>"] = cmp.mapping.abort(),
-              ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-              ["<Tab>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-              ["<S-Tab>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+          ["<C-j>"] = cmp.mapping(cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }), { "i", "c" }),
+          ["<C-k>"] = cmp.mapping(cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }), { "i", "c" }),
+          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-f>"] = cmp.mapping.scroll_docs(4),
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<C-e>"] = cmp.mapping.abort(),
+          ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          ["<Tab>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+          ["<S-Tab>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
         }),
         sources = cmp.config.sources({
           { name = "nvim_lsp" },
@@ -119,18 +119,18 @@ return {
             local icons = require("tvl.core.icons").kinds
             item.kind = icons[item.kind]
             item.menu = ({
-                  nvim_lsp = "Lsp",
-                  nvim_lua = "Lua",
-                  luasnip = "Snippet",
-                  buffer = "Buffer",
-                  path = "Path",
-                })[entry.source.name]
+              nvim_lsp = "Lsp",
+              nvim_lua = "Lua",
+              luasnip = "Snippet",
+              buffer = "Buffer",
+              path = "Path",
+            })[entry.source.name]
             return item
           end,
         },
         experimental = { ghost_text = true },
       }
-    end
+    end,
   },
 
   {
@@ -153,7 +153,9 @@ return {
         end,
       },
     },
-    config = function(_, opts) require("mini.comment").setup(opts) end,
+    config = function(_, opts)
+      require("mini.comment").setup(opts)
+    end,
   },
 
   "lvimuser/lsp-inlayhints.nvim",
@@ -161,9 +163,9 @@ return {
   {
     "ray-x/lsp_signature.nvim",
     opts = {
-      floating_window = false,               -- show hint in a floating window, set to false for virtual text only mode
+      floating_window = false, -- show hint in a floating window, set to false for virtual text only mode
       floating_window_above_cur_line = true, -- try to place the floating above the current line when possible Note:
-      hint_scheme = "Comment",               -- highlight group for the virtual text
+      hint_scheme = "Comment", -- highlight group for the virtual text
     },
   },
 

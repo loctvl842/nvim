@@ -20,8 +20,8 @@ return {
         "yaml",
         "php",
       },
-      highlight = { enable = true, },
-      indent = { enable = true, disable = { "yaml", "python", "html", "php" } },
+      highlight = { enable = true },
+      indent = { enable = true, disable = { "yaml", "python", "html" } },
       context_commentstring = { enable = true },
       rainbow = {
         enable = true,
@@ -39,7 +39,7 @@ return {
       playground = {
         enable = true,
         disable = {},
-        updatetime = 25,         -- Debounced time for highlighting nodes in the playground from source code
+        updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
         persist_queries = false, -- Whether the query persists across vim sessions
         keybindings = {
           toggle_query_editor = "o",
@@ -62,13 +62,13 @@ return {
 
   {
     "windwp/nvim-ts-autotag",
-    opts = { enable = true, },
+    opts = { enable = true },
   },
 
   { "nvim-treesitter/playground", cmd = "TSPlaygroundToggle" },
 
   {
     "p00f/nvim-ts-rainbow",
-    event = { "BufReadPost" }
-  }
+    event = { "BufReadPost" },
+  },
 }

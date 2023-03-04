@@ -11,7 +11,7 @@ neotree.setup({
     "filesystem",
     "buffers",
     "git_status",
-    "diagnostics"
+    "diagnostics",
   },
   source_selector = {
     winbar = true,
@@ -147,7 +147,7 @@ neotree.setup({
   filesystem = {
     filtered_items = {
       visible = false, -- when true, they will just be displayed differently than normal items
-      hide_dotfiles = false,
+      hide_dotfiles = true,
       hide_gitignored = false,
       hide_by_name = {
         --"node_modules"
@@ -218,7 +218,7 @@ neotree.setup({
       {
         "container",
         content = {
-          { "name",      zindex = 10 },
+          { "name", zindex = 10 },
           -- {
           --   "symlink_target",
           --   zindex = 10,
@@ -256,17 +256,17 @@ neotree.setup({
           --   zindex = 10,
           --   highlight = "NeoTreeSymbolicLinkTarget",
           -- },
-          { "clipboard",   zindex = 10 },
-          { "bufnr",       zindex = 10 },
-          { "modified",    zindex = 20, align = "right" },
+          { "clipboard", zindex = 10 },
+          { "bufnr", zindex = 10 },
+          { "modified", zindex = 20, align = "right" },
           { "diagnostics", zindex = 20, align = "right" },
-          { "git_status",  zindex = 15, align = "right" },
+          { "git_status", zindex = 15, align = "right" },
         },
       },
     },
     message = {
       { "indent", with_markers = false },
-      { "name",   highlight = "NeoTreeMessage" },
+      { "name", highlight = "NeoTreeMessage" },
     },
     terminal = {
       { "indent" },
