@@ -1,6 +1,9 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
+    version = false, -- last release is way too old and doesn't work on Windows
+    build = ":TSUpdate",
+    event = { "BufReadPost", "BufNewFile" },
     opts = {
       ensure_installed = {
         "bash",
@@ -62,6 +65,7 @@ return {
 
   {
     "windwp/nvim-ts-autotag",
+    event = { "InsertEnter" },
     opts = { enable = true },
   },
 
