@@ -1,4 +1,5 @@
 return {
+  -- Notifications
   {
     "rcarriga/nvim-notify",
     keys = {
@@ -30,14 +31,20 @@ return {
     config = function() require("nvim-tree").setup() end,
   },
 
+  -- Buffer Management
+
   {
     "akinsho/bufferline.nvim",
-    event = "VeryLazy",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
+    version = "v3.5.0",
     opts = {
       options = {
         diagnostics = "nvim_lsp", -- | "nvim_lsp" | "coc",
         -- separator_style = "slant", -- | "thick" | "thin" | "slope" | { 'any', 'any' },
-        separator_style = { "", "" }, -- | "thick" | "thin" | { 'any', 'any' },
+        -- separator_style = { "", "" }, -- | "thick" | "thin" | { 'any', 'any' },
+        separator_style = "slant",
         indicator = {
           -- icon = " ",
           -- style = 'icon',
@@ -59,8 +66,17 @@ return {
         }
       }
     },
-    -- config = function() require("tvl.config.bufferline") end,
+    --config = function() require("bufferline").setup({}) end,
   },
+
+  {
+    "tiagovla/scope.nvim",
+    config = function()
+      require("scope").setup()
+    end
+  },
+
+  -- Status Line
 
   {
     "nvim-lualine/lualine.nvim",

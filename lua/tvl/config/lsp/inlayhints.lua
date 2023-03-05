@@ -5,7 +5,7 @@ M.on_attach = function(client, buffer)
   if not status_ok then
     return
   end
-  inlayhints.on_attach(client, buffer)
+  inlayhints.on_attach(client, buffer, false)
 end
 
 return M

@@ -84,7 +84,7 @@ keymap("n", "<leader>/", ":split<CR>", opts)
 keymap("n", "<A-o>", "<C-w>r", opts)
 
 -------------------- Ranger --------------------------------
-keymap("n", "<leader>o", ":RnvimrToggle<CR>", opts)
+-- keymap("n", "<leader>o", ":RnvimrToggle<CR>", opts)
 
 -------------------- Compile --------------------------------
 keymap("n", "<c-m-n>", "<cmd>only | Compile<CR>", opts)
@@ -99,3 +99,7 @@ vim.keymap.set("n", "<C-f>", function()
     require("telescope.themes")
   )
 end, { desc = "[/] Fuzzily search in current buffer]" })
+
+-------------------- Doom Emacs Compatability --------------------
+keymap("n", "<C-g>", "<C-c>", opts)
+

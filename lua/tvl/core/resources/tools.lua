@@ -20,24 +20,39 @@ return {
   },
 
   {
-    "toppair/peek.nvim",
-    build = "deno task --quiet build:fast",
-    keys = {
-      {
-        "<leader>op",
-        function()
-          local peek = require("peek")
-          if peek.is_open() then
-            peek.close()
-          else
-            peek.open()
-          end
-        end,
-        desc = "Peek (Markdown Preview)",
-      },
-    },
-    opts = { theme = "dark" },
+    "iamcco/markdown-preview.nvim",
+    build = "cd app && yarn install",
   },
+
+  -- {
+  --   "toppair/peek.nvim",
+  --   build = "deno task --quiet build:fast",
+  --   -- keys = {
+  --   --   {
+  --   --     "<leader>mp",
+  --   --     function()
+  --   --       local peek = require("peek")
+  --   --       if peek.is_open() then
+  --   --         peek.close()
+  --   --       else
+  --   --         peek.open()
+  --   --       end
+  --   --     end,
+  --   --     desc = "Peek (Markdown Preview)",
+  --   --   },
+  --   -- },
+  --   opts = { theme = "dark" },
+  -- },
+
+  -- {
+  --   "edluffy/hologram.nvim",
+  --   -- lazy = true,
+  --   config = function()
+  --     require("hologram").setup({
+  --       auto_display = true,
+  --     })
+  --   end,
+  -- },
 
   "moll/vim-bbye",
 

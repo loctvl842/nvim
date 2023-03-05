@@ -65,7 +65,7 @@ return {
         terminal_colors = true,
         devicons = true,
         italic_comments = true,
-        filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
+        filter = "octagon", -- classic | octagon | pro | machine | ristretto | spectrum
         day_night = {
           enable = false,
           day_filter = "classic",
@@ -175,5 +175,12 @@ return {
       })
       monokai.load()
     end
+  },
+
+  { 
+    "catppuccin/nvim", 
+    name = "catppuccin" ,
+    -- lazy = false,
+    -- priority = 1000,
   },
 }

@@ -80,6 +80,7 @@ telescope.setup({
 
     mappings = {
       i = {
+        ["<C-g>"] = actions.close,
         ["<C-n>"] = actions.cycle_history_next,
         ["<C-p>"] = actions.cycle_history_prev,
 
@@ -110,6 +111,7 @@ telescope.setup({
 
       n = {
         ["<esc>"] = actions.close,
+        ["<C-g>"] = actions.close,
         ["<CR>"] = actions.select_default,
         ["<C-x>"] = actions.select_horizontal,
         ["<C-v>"] = actions.select_vertical,

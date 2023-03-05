@@ -1,5 +1,6 @@
 local config = require("tvl.config.lualine.config").options
 local icons = require("tvl.core.icons")
+local project = require("project_nvim.project")
 
 local M = {}
 
@@ -17,16 +18,24 @@ M.branch = {
   icon = hl_str("", "SLGitIcon", "SLBranchName"),
   colored = false,
   fmt = function(str)
+    -- handle setting the branch
     if vim.bo.filetype == "toggleterm" then
       str = prev_branch
     elseif str == "" or str == nil then
       str = "!=vcs"
     end
     prev_branch = str
+
+    -- Get the project directory from project.nvim
+    local project_dir, method = project.get_project_root()
+    -- Get the 'root' project name
+    local root = string.match(project_dir or "", "[%a%-%_]+$") or ""
+
     local icon = hl_str(" ", "SLGitIcon", "SLBranchName")
     return hl_str(config.separator_icon.left, "SLSeparator")
         .. hl_str(icon, "SLGitIcon")
-        .. hl_str(str, "SLBranchName")
+        .. hl_str(root, "SLFiletype")
+        .. hl_str("/" .. str, "SLBranchName")
         .. hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
   end,
 }

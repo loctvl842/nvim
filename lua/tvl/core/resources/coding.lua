@@ -26,10 +26,11 @@ return {
     },
   },
 
-  {
-    "mattn/emmet-vim",
-    init = function() require("tvl.config.emmet") end,
-  },
+  "tpope/vim-surround",
+  -- {
+  --   "mattn/emmet-vim",
+  --   init = function() require("tvl.config.emmet") end,
+  -- },
 
   {
     "hrsh7th/nvim-cmp",
@@ -75,6 +76,7 @@ return {
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
+          ["<C-g>"] = cmp.mapping.abort(),
           ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
           ["<Tab>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
           ["<S-Tab>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
@@ -91,12 +93,12 @@ return {
             local icons = require("tvl.core.icons").kinds
             item.kind = icons[item.kind]
             item.menu = ({
-                  nvim_lsp = "Lsp",
-                  nvim_lua = "Lua",
-                  luasnip = "Snippet",
-                  buffer = "Buffer",
-                  path = "Path",
-                })[entry.source.name]
+              nvim_lsp = "Lsp",
+              nvim_lua = "Lua",
+              luasnip = "Snippet",
+              buffer = "Buffer",
+              path = "Path",
+            })[entry.source.name]
             return item
           end,
         },
@@ -113,19 +115,50 @@ return {
     end,
   },
 
-  -- comments
-  { "JoosepAlviste/nvim-ts-context-commentstring", lazy = true },
+  -- Git Workflow
   {
-    "echasnovski/mini.comment",
+    "TimUntersberger/neogit",
     event = "VeryLazy",
-    opts = {
-      hooks = {
-        pre = function()
-          require("ts_context_commentstring.internal").update_commentstring({})
-        end,
-      },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
     },
-    config = function(_, opts) require("mini.comment").setup(opts) end,
+    config = function()
+      local config = {
+        disable_commit_confirmation = true,
+        mappings = {
+          status = {
+            ["P"] = require("neogit").popups.pull.create,
+            ["p"] = require("neogit").popups.push.create
+          }
+        }
+      }
+      require("neogit").setup(config)
+    end
+  },
+
+  -- Buffer Management
+  -- "Asheq/close-buffers.vim",
+
+  -- comments
+  -- { "JoosepAlviste/nvim-ts-context-commentstring", lazy = true },
+  -- {
+  --   "echasnovski/mini.comment",
+  --   event = "VeryLazy",
+  --   opts = {
+  --     hooks = {
+  --       pre = function()
+  --         require("ts_context_commentstring.internal").update_commentstring({})
+  --       end,
+  --     },
+  --   },
+  --   config = function(_, opts) require("mini.comment").setup(opts) end,
+  -- },
+
+  {
+    "numToStr/Comment.nvim",
+    config = function()
+      require("Comment").setup()
+    end,
   },
 
   "lvimuser/lsp-inlayhints.nvim",
@@ -139,8 +172,23 @@ return {
     },
   },
 
-  {
-    "glepnir/lspsaga.nvim",
-    lazy = true,
-  },
+  -- {
+  --   "glepnir/lspsaga.nvim",
+  --   lazy = true,
+  -- },
+
+    -- {
+    --   "ray-x/go.nvim",
+    --   dependencies = {  -- optional packages
+    --     "ray-x/guihua.lua",
+    --     "neovim/nvim-lspconfig",
+    --     "nvim-treesitter/nvim-treesitter",
+    --   },
+    --   config = function()
+    --     require("go").setup()
+    --   end,
+    --   event = {"CmdlineEnter"},
+    --   ft = {"go", 'gomod'},
+    --   -- build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
+    -- }
 }

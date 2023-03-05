@@ -50,6 +50,45 @@ return {
 
       require("mason-lspconfig").setup({ ensure_installed = ensure_installed })
       require("mason-lspconfig").setup_handlers({ setup })
+
+      -- Manually setting up lua-lsp-server because of NixOS
+      -- Manson does not install the lua-lsp-server with the RUNTIME of the executable set. Using the
+      -- package from nixos appropriately builds the LSP server. It is discoverable on the PATH for 
+      -- Neovim so the following settings can be applied without any additional steps
+      require("lspconfig").lua_ls.setup({
+        settings = {
+          Lua = {
+            hint = {
+              enable = true,
+              arrayIndex = "Disable", -- "Enable", "Auto", "Disable"
+              await = true,
+              paramName = "Disable", -- "All", "Literal", "Disable"
+              paramType = false,
+              semicolon = "Disable", -- "All", "SameLine", "Disable"
+              setType = true,
+            },
+            runtime = {
+              version = "LuaJIT",
+              special = {
+                reload = "require",
+              },
+            },
+            diagnostics = {
+              globals = { "vim" },
+            },
+            workspace = {
+              library = vim.api.nvim_get_runtime_file("", true),
+              -- library = {
+              --   [vim.fn.expand("$VIMRUNTIME/lua")] = false,
+              --   [vim.fn.stdpath("config") .. "/lua"] = false,
+              -- },
+            },
+            telemetry = {
+              enable = false,
+            },
+          },
+        },
+      })
     end,
   },
 

@@ -27,15 +27,15 @@ project.setup({
     ".hg",
     ".bzr",
     ".svn",
-    "Makefile",
-    "package.json",
-    "pom.xml",
-    ".vscode",
-    "README.*",
-    "LICENSE.*",
-    ">rofi",
-    ">polybar",
-    ">bspwm",
+    -- "Makefile",
+    -- "package.json",
+    -- "pom.xml",
+    -- ".vscode",
+    -- "README.*",
+    -- "LICENSE.*",
+    -- ">rofi",
+    -- ">polybar",
+    -- ">bspwm",
   },
 
   ---@ Show hidden files in telescope when searching for files in a project
@@ -51,6 +51,9 @@ project.setup({
   -- @usage Don't calculate root dir on specific directories
   -- Ex: { "~/.cargo/*", ... }
   -- exclude_dirs = { "~/.config/nvim" },
+
+  -- scope_chdir = "tab",
+  session_autoload = true,
 
   ---@type string
   ---@usage path to store the project history for use in telescope

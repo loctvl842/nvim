@@ -73,7 +73,7 @@ which_key.setup({
     i = { "j", "k" },
     v = { "j", "k" },
   },
-})
+}, {})
 
 local mappings = {
   ["<leader>"] = {
@@ -83,49 +83,110 @@ local mappings = {
     -- 	"<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>",
     -- 	"Buffers",
     -- },
-    ["e"] = { "<cmd>Neotree toggle position=left<cr>", "Explorer" },
-    ["E"] = {
-      "<cmd>Neotree toggle position=float<cr>",
-      "Explorer Float",
-    },
-    ["w"] = { "<cmd>w!<CR>", "Save" },
-    ["W"] = {
-      "<cmd>lua vim.lsp.buf.format()<CR><cmd>w!<CR>",
-      "Format and Save",
-    },
     ["q"] = { "<cmd>q!<CR>", "Quit" },
     ["Q"] = { "<cmd>qa!<CR>", "Quit All" },
-    ["d"] = { "<cmd>Bdelete!<CR>", "Close Buffer" },
-    ["h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
-    ["c"] = {
-      "<cmd>MonokaiProSelect<CR>",
-      "Choose moonokai pro filter",
-    },
-    ["m"] = { "<cmd>WindowsMaximize<CR>", "Zoom window" },
     ["r"] = {
       "<cmd>source ~/.config/nvim/lua/tvl/core/resources/colorscheme.lua<CR>",
       "Reload monokai-pro",
     },
+
+    ["b"] = {
+      d = { "<cmd>Bdelete!<CR>", "Close Buffer" },
+      l = {
+        "<cmd>lua require('telescope.builtin').buffers()<cr>",
+        "Buffer list"
+      },
+      -- Close all other buffers, performing the following operations:
+      -- * :w - Save the current file
+      -- * %bdelete - Close all buffers
+      -- * edit# - open the last edited file (the buffer we want to keep)
+      -- * bdelete# - Close the unnamed buffer
+      O = { "<cmd>:w <bar> %bdelete <bar> edit# <bar> bdelete# <bar> normal `\"<CR>", "Delete other buffers" },
+    },
+
     ["f"] = {
-      "<cmd>lua require('telescope.builtin').find_files()<cr>",
-      "Find files",
+      name = "file",
+      f = {
+        "<cmd>lua require('telescope.builtin').find_files()<cr>",
+        "Find files",
+      },
+      s = { "<cmd>w!<CR>", "Save" },
+      S = {
+        "<cmd>lua vim.lsp.buf.format()<CR><cmd>w!<CR>",
+        "Format and Save",
+      },
     },
-    -- ["F"] = { "<cmd>Telescope live_grep theme=ivy<cr>", "Find Text" },
-    ["F"] = { "<cmd>Telescope live_grep<cr>", "Find Text" },
+
+    ["o"] = {
+      name = "open",
+
+      p = { "<cmd>Neotree toggle position=left<cr>", "Explorer" },
+      P = {
+        "<cmd>Neotree toggle position=float<cr>",
+        "Explorer Float",
+      },
+      t = { "<cmd>ToggleTerm<cr>", "Terminal"},
+    },
+
+    ["h"] = {
+      name = "help",
+      ["'"] = { "<cmd>Inspect<CR>", "Inspect Element" },
+      a = { "<cmd>lua require('telescope.builtin').autocommands()<CR>", "Display Autocommands" },
+      h = { "<cmd>lua require('telescope.builtin').highlights()<CR>", "Display Highlights" },
+      c = { "<cmd>lua require('telescope.builtin').commands()<CR>", "Display Commands" },
+      f = { "<cmd>lua require('telescope.builtin').filetypes()<CR>", "Display Filetypes" },
+      k = { "<cmd>lua require('telescope.builtin').keymaps()<CR>", "Display Keymaps"},
+      n = { "<cmd>Notifications<CR>", "Display Notifications"},
+      v = { "<cmd>lua require('telescope.builtin').treesitter()<CR>", "Display Buffer Variables"},
+    },
+
+    -- Window Management
+    ["w"] = {
+      name = "window",
+      -- Window Movement
+      h = { "<C-w>h<cr>", "Move left a window"},
+      l = { "<C-w>l<cr>", "Move right a window"},
+      k = { "<C-w>k<cr>", "Move up a window"},
+      j = { "<C-w>j<cr>", "Move down a window"},
+
+      -- Window Creation
+      s = { "<C-w>s<cr>", "Create split horizontally"},
+      v = { "<C-w>v<cr>", "Create split vertically"},
+
+      -- Window clean up
+      d = { "<C-w>c<CR>", "Delete Window" },
+    },
+
+    ["s"] = {
+      name = "search",
+      p = { "<cmd>Telescope live_grep<cr>", "Find Text" },
+    },
+
     ["p"] = {
-      "<cmd>lua require('telescope').extensions.projects.projects()<cr>",
-      "Projects",
+      name = "project",
+      p = {
+        "<cmd>lua require('telescope').extensions.projects.projects()<cr>",
+        "Projects",
+      },
+      f = {
+        "<cmd>lua require('telescope.builtin').find_files()<cr>",
+        "Find files",
+      },
     },
+
+    -- Buffer Movement
     ["<Tab>"] = { "<c-6>", "Move back and forth" },
+    ["<space>"] = { "<c-6>", "Move back and forth" },
+
     ["l"] = {
       name = "LSP",
       a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },
       d = {
-        "<cmd>Telescope lsp_document_diagnostics<cr>",
+        "<cmd>Telescope diagnostics bufnr=0<cr>",
         "Document Diagnostics",
       },
       w = {
-        "<cmd>Telescope lsp_workspace_diagnostics<cr>",
+        "<cmd>Telescope diagnostics<cr>",
         "Workspace Diagnostics",
       },
       f = { "<cmd>lua vim.lsp.buf.formatting()<cr>", "Format" },
@@ -156,7 +217,8 @@ local mappings = {
     },
     ["g"] = {
       name = "Git",
-      g = { "<cmd>lua _LAZYGIT_TOGGLE()<CR>", "Lazygit" },
+      -- g = { "<cmd>lua _LAZYGIT_TOGGLE()<CR>", "Lazygit" },
+      g = { "<cmd>lua require('neogit').open()<cr>", "Neogit" },
       j = { "<cmd>lua require 'gitsigns'.next_hunk()<cr>", "Next Hunk" },
       k = { "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", "Prev Hunk" },
       l = { "<cmd>lua require 'gitsigns'.blame_line()<cr>", "Blame" },
@@ -177,6 +239,17 @@ local mappings = {
       },
     },
 
+    ["c"] = {
+      name = "code",
+      d = { "<cmd>Telescope lsp_definitions<cr>", "Go to definition" },
+      -- ["d"] = { "<cmd>lua vim.lsp.buf.definition()<cr>", "Go to definition" },
+      r = { "<cmd>Telescope lsp_references<cr>", "Go to references" },
+      i = {
+        "<cmd>Telescope lsp_implementations<cr>",
+        "Go to implementations",
+      },
+      b = { "<cmd>BufferLinePick<CR>", "Bufferline: pick buffer" },
+    },
     -- t = {
     -- 	name = "Terminal",
     -- 	n = { "<cmd>lua _NODE_TOGGLE()<cr>", "Node" },
@@ -229,16 +302,16 @@ local mappings = {
     ["k"] = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
     ["C"] = { "<cmd>Telescope commands<cr>", "Commands" },
   },
-  ["g"] = {
-    ["d"] = { "<cmd>Telescope lsp_definitions<cr>", "Go to definition" },
-    -- ["d"] = { "<cmd>lua vim.lsp.buf.definition()<cr>", "Go to definition" },
-    ["r"] = { "<cmd>Telescope lsp_references<cr>", "Go to references" },
-    ["i"] = {
-      "<cmd>Telescope lsp_implementations<cr>",
-      "Go to implementations",
-    },
-    ["b"] = { "<cmd>BufferLinePick<CR>", "Bufferline: pick buffer" },
-  },
+--  ["g"] = {
+--    ["d"] = { "<cmd>Telescope lsp_definitions<cr>", "Go to definition" },
+--    -- ["d"] = { "<cmd>lua vim.lsp.buf.definition()<cr>", "Go to definition" },
+--    ["r"] = { "<cmd>Telescope lsp_references<cr>", "Go to references" },
+--    ["i"] = {
+--      "<cmd>Telescope lsp_implementations<cr>",
+--      "Go to implementations",
+--    },
+--    ["b"] = { "<cmd>BufferLinePick<CR>", "Bufferline: pick buffer" },
+--  },
 }
 
 which_key.register(mappings, { mode = "n", prefix = "" })

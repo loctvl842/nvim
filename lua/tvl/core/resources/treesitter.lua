@@ -2,22 +2,29 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     config = function()
+      -- require("nvim-treesitter.install").compilers = { "clang++" }
       require("nvim-treesitter.configs").setup({
         -- ensure_installed = "all", -- one of "all", "maintained" (parsers with maintainers), or a list of languages
         ensure_installed = {
           "bash",
+          "cmake",
+          "dockerfile",
           "help",
           "html",
           "javascript",
           "json",
           "lua",
+          "go",
+          "make",
           "markdown",
           "markdown_inline",
+          "nix",
           "python",
           "query",
           "regex",
           "tsx",
           "typescript",
+          "terraform",
           "vim",
           "yaml",
         },
@@ -104,5 +111,7 @@ return {
   "nvim-treesitter/playground",
 
   "p00f/nvim-ts-rainbow",
+
+  "towolf/vim-helm",
 
 }

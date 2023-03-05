@@ -11,7 +11,7 @@ neotree.setup({
     "filesystem",
     "buffers",
     "git_status",
-    "diagnostics"
+    -- "diagnostics"
   },
   source_selector = {
     winbar = true,
@@ -19,11 +19,12 @@ neotree.setup({
     content_layout = "center",
     tabs_layout = "equal",
     tab_labels = {
-      filesystem = "" .. " Files",
-      buffers = "" .. " Bufs",
-      git_status = "" .. " Git",
-      diagnostics = "裂" .. " Diags",
+      filesystem = " File",
+      buffers = " Bufs",
+      git_status = " Git",
+      diagnostics = "裂",
     },
+    -- padding = { left = 2, right = 0 },
   },
   default_component_configs = {
     container = {
@@ -51,10 +52,6 @@ neotree.setup({
     icon = {
       folder_closed = "",
       folder_open = "",
-      -- folder_closed = "",
-      -- folder_open = "",
-      -- folder_closed = " ",
-      -- folder_open = " ",
       folder_empty = "",
       default = " ",
       highlight = "NeoTreeFileIcon",

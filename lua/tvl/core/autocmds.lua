@@ -109,3 +109,71 @@ vim.api.nvim_create_autocmd({ "TermOpen" }, {
     vim.opt_local["foldcolumn"] = "0"
   end,
 })
+
+-- NeoGit
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = { "NeogitCommitMessage" },
+  callback = function()
+    vim.api.nvim_buf_set_keymap(
+      0,
+      "n",
+      "<C-c><C-c>",
+      "<cmd>wq!<CR>",
+      { noremap = true, silent = true }
+    )
+  end
+})
+
+-- Markdown
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = { "markdown" },
+  callback = function()
+    vim.api.nvim_buf_set_keymap(
+      0,
+      "n",
+      "<leader>mp",
+      "<Plug>MarkdownPreview",
+      -- "<cmd>lua require('peek').open()<CR>",
+      { noremap = true, silent = true }
+    )
+  end
+})
+
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = { "go" },
+  callback = function()
+    vim.bo.shiftwidth = 4
+    vim.bo.tabstop = 4
+    vim.bo.softtabstop = 4
+    vim.bo.expandtab = false
+  end
+})
+
+local go_format_sync_group = vim.api.nvim_create_augroup("GoFormat", {})
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.go",
+  callback = function()
+    vim.lsp.buf.format()
+  end,
+  group = go_format_sync_group,
+})
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = { "*.go" },
+	callback = function()
+		local params = vim.lsp.util.make_range_params(nil, vim.lsp.util._get_offset_encoding())
+		params.context = {only = {"source.organizeImports"}}
+
+		local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
+		for _, res in pairs(result or {}) do
+			for _, r in pairs(res.result or {}) do
+				if r.edit then
+					vim.lsp.util.apply_workspace_edit(r.edit, vim.lsp.util._get_offset_encoding())
+				else
+					vim.lsp.buf.execute_command(r.command)
+				end
+			end
+		end
+	end,
+  group = go_format_sync_group
+})
