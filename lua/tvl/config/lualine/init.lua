@@ -2,10 +2,10 @@ local config = require("tvl.config.lualine.config")
 
 local M = {}
 
-local function setup(custom_theme)
+local function setup()
   local cpn = require("tvl.config.lualine.components")
-  local bg = require("tvl.util").get_highlight_value("Normal").background
-  local theme = custom_theme or (config.options.float and { normal = { c = { bg = bg } } } or config.options.theme)
+  local theme = require("tvl.config.lualine.highlights").custom(config.options)
+
   require("lualine").setup({
     options = {
       theme = theme,
@@ -47,12 +47,11 @@ end
 
 M.setup = config.setup
 
----@param theme string
-M.load = function(theme)
-  setup(theme)
+M.load = function()
+  setup()
   vim.api.nvim_create_autocmd("ColorScheme", {
     callback = function()
-      setup(theme)
+      setup()
     end,
   })
 end

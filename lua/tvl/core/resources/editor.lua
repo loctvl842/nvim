@@ -54,27 +54,27 @@ return {
     },
     keys = {
       -- goto
-      { "gd",         "<cmd>Telescope lsp_definitions<cr>",        desc = "Go to definition" },
-      { "gr",         "<cmd>Telescope lsp_references<cr>",         desc = "Go to references" },
-      { "gi",         "<cmd>Telescope lsp_implementations<cr>",    desc = "Go to implementations" },
+      { "gd", "<cmd>Telescope lsp_definitions<cr>", desc = "Go to definition" },
+      { "gr", "<cmd>Telescope lsp_references<cr>", desc = "Go to references" },
+      { "gi", "<cmd>Telescope lsp_implementations<cr>", desc = "Go to implementations" },
       -- search
-      { "sb",         "<cmd>Telescope git_branches<cr>",           desc = "Checkout branch" },
-      { "sc",         "<cmd>Telescope colorscheme<cr>",            desc = "Colorscheme" },
-      { "sh",         "<cmd>Telescope help_tags<cr>",              desc = "Find Help" },
-      { "sM",         "<cmd>Telescope man_pages<cr>",              desc = "Man Pages" },
-      { "sr",         "<cmd>Telescope oldfiles<cr>",               desc = "Open Recent File" },
-      { "sR",         "<cmd>Telescope registers<cr>",              desc = "Registers" },
-      { "sk",         "<cmd>Telescope keymaps<cr>",                desc = "Keymaps" },
-      { "sC",         "<cmd>Telescope commands<cr>",               desc = "Commands" },
+      { "sb", "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
+      { "sc", "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme" },
+      { "sh", "<cmd>Telescope help_tags<cr>", desc = "Find Help" },
+      { "sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
+      { "sr", "<cmd>Telescope oldfiles<cr>", desc = "Open Recent File" },
+      { "sR", "<cmd>Telescope registers<cr>", desc = "Registers" },
+      { "sk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
+      { "sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
       -- Git
-      { "<leader>go", "<cmd>Telescope git_status<cr>",             desc = "Open changed file" },
-      { "<leader>gb", "<cmd>Telescope git_branches<cr>",           desc = "Checkout branch" },
-      { "<leader>gc", "<cmd>Telescope git_commits<cr>",            desc = "Checkout commit" },
+      { "<leader>go", "<cmd>Telescope git_status<cr>", desc = "Open changed file" },
+      { "<leader>gb", "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
+      { "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Checkout commit" },
       -- Find
       -- { "<leader>f",  "<cmd>lua require('telescope.builtin').find_files()<cr>", desc = "Find files" },
-      { "<leader>f",  require("tvl.util").telescope("find_files"), desc = "Find files" },
+      { "<leader>f", require("tvl.util").telescope("find_files"), desc = "Find files" },
       -- { "<leader>F",  "<cmd>Telescope live_grep<cr>",                           desc = "Find Text" },
-      { "<leader>F",  require("tvl.util").telescope("live_grep"),  desc = "Find Text" },
+      { "<leader>F", require("tvl.util").telescope("live_grep"), desc = "Find Text" },
     },
     -- config = function() require("tvl.config.telescope") end,
   },
@@ -87,8 +87,14 @@ return {
         presets = { motions = false, g = false }, -- This fix mapping for fold when press f and nothing show up
       },
       window = {
-        margin = { 1, 0, 2, 0 },  -- extra window margin [top, right, bottom, left]
+        margin = { 1, 0, 2, 0 }, -- extra window margin [top, right, bottom, left]
         padding = { 1, 2, 1, 2 }, -- extra window padding [top, right, bottom, left]
+      },
+      layout = {
+        -- height = { min = 3, max = 25 }, -- min and max height of the columns
+        -- width = { min = 20, max = 50 }, -- min and max width of the columns
+        -- spacing = 5, -- spacing between columns
+        align = "center", -- align columns left, center or right
       },
     },
     config = function(_, opts)
@@ -96,17 +102,18 @@ return {
       local wk = require("which-key")
       wk.setup(opts)
       local keymaps = {
-            ["<leader>w"] = { "<cmd>w!<CR>", "Save" },
-            ["<leader>W"] = { "<cmd>lua vim.lsp.buf.format()<CR><cmd>w!<CR>", "Format and Save" },
-            ["<leader>q"] = { "<cmd>q<CR>", "Quit" },
-            ["<leader>Q"] = { "<cmd>qa<CR>", "Quit All" },
-            ["<leader>h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
-            ["<leader><Tab>"] = { "<c-6>", "Navigate previous buffer" },
-            ["<leader>g"] = { name = "+Git" },
-            ["<leader>l"] = { name = "+LSP" },
-            ["f"] = { name = "+Fold" },
-            ["g"] = { name = "+Goto" },
-            ["s"] = { name = "+Search" },
+        ["<leader>w"] = { "<cmd>w!<CR>", "Save" },
+        ["<leader>W"] = { "<cmd>lua vim.lsp.buf.format()<CR><cmd>w!<CR>", "Format and Save" },
+        ["<leader>q"] = { "<cmd>q<CR>", "Quit" },
+        ["<leader>Q"] = { "<cmd>qa<CR>", "Quit All" },
+        ["<leader>h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
+        ["<leader><Tab>"] = { "<c-6>", "Navigate previous buffer" },
+        ["<leader>g"] = { name = "+Git" },
+        ["<leader>l"] = { name = "+LSP" },
+        ["<leader>s"] = { name = "+Session" },
+        ["f"] = { name = "+Fold" },
+        ["g"] = { name = "+Goto" },
+        ["s"] = { name = "+Search" },
       }
       wk.register(keymaps)
     end,
@@ -134,16 +141,16 @@ return {
       },
     },
     keys = {
-      { "<leader>gg", "<cmd>lua _LAZYGIT_TOGGLE()<CR>",                    desc = "Lazygit" },
-      { "<leader>gj", "<cmd>lua require 'gitsigns'.next_hunk()<cr>",       desc = "Next Hunk" },
-      { "<leader>gk", "<cmd>lua require 'gitsigns'.prev_hunk()<cr>",       desc = "Prev Hunk" },
-      { "<leader>gl", "<cmd>lua require 'gitsigns'.blame_line()<cr>",      desc = "Blame" },
-      { "<leader>gp", "<cmd>lua require 'gitsigns'.preview_hunk()<cr>",    desc = "Preview Hunk" },
-      { "<leader>gr", "<cmd>lua require 'gitsigns'.reset_hunk()<cr>",      desc = "Reset Hunk" },
-      { "<leader>gR", "<cmd>lua require 'gitsigns'.reset_buffer()<cr>",    desc = "Reset Buffer" },
-      { "<leader>gs", "<cmd>lua require 'gitsigns'.stage_hunk()<cr>",      desc = "Stage Hunk" },
+      { "<leader>gg", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", desc = "Lazygit" },
+      { "<leader>gj", "<cmd>lua require 'gitsigns'.next_hunk()<cr>", desc = "Next Hunk" },
+      { "<leader>gk", "<cmd>lua require 'gitsigns'.prev_hunk()<cr>", desc = "Prev Hunk" },
+      { "<leader>gl", "<cmd>lua require 'gitsigns'.blame_line()<cr>", desc = "Blame" },
+      { "<leader>gp", "<cmd>lua require 'gitsigns'.preview_hunk()<cr>", desc = "Preview Hunk" },
+      { "<leader>gr", "<cmd>lua require 'gitsigns'.reset_hunk()<cr>", desc = "Reset Hunk" },
+      { "<leader>gR", "<cmd>lua require 'gitsigns'.reset_buffer()<cr>", desc = "Reset Buffer" },
+      { "<leader>gs", "<cmd>lua require 'gitsigns'.stage_hunk()<cr>", desc = "Stage Hunk" },
       { "<leader>gu", "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>", desc = "Undo Stage Hunk" },
-      { "<leader>gd", "<cmd>Gitsigns diffthis HEAD<cr>",                   desc = "Diff" },
+      { "<leader>gd", "<cmd>Gitsigns diffthis HEAD<cr>", desc = "Diff" },
     },
   },
 
@@ -271,9 +278,9 @@ return {
     opts = {
       window = {
         relative = "win", -- where to anchor, either "win" or "editor"
-        blend = 0,        -- &winblend for the window
-        zindex = nil,     -- the zindex value for the window
-        border = "none",  -- style of border for the fidget window
+        blend = 0, -- &winblend for the window
+        zindex = nil, -- the zindex value for the window
+        border = "none", -- style of border for the fidget window
       },
     },
   },
@@ -292,7 +299,7 @@ return {
             condition = { true, builtin.not_empty },
             click = "v:lua.ScLa",
           },
-          { text = { "%s" },      click = "v:lua.ScSa" }, -- Sign
+          { text = { "%s" }, click = "v:lua.ScSa" }, -- Sign
           { text = { "%C", " " }, click = "v:lua.ScFa" }, -- Fold
         },
       })

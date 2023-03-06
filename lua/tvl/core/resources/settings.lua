@@ -32,4 +32,14 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
+-- require("lazy.core.util").try(function()
+--   vim.cmd.colorscheme("monokai-pro")
+-- end, {
+--   msg = "Could not load your colorscheme",
+--   on_error = function(msg)
+--     require("lazy.core.util").error(msg)
+--     vim.cmd.colorscheme("habamax")
+--   end,
+-- })
+--
 return {}
