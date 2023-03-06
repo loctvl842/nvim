@@ -173,4 +173,9 @@ return {
     "glepnir/lspsaga.nvim",
     lazy = true,
   },
+
+  {
+    "ahmedkhalf/project.nvim",
+    lazy = true,
+  },
 }

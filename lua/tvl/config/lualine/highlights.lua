@@ -14,13 +14,13 @@ local function generate(config, palette)
   local float = config.float
   local colorful = config.colorful
   if colorful then
-    palette.yellow = util.get_highlight_value("String").foreground
-    palette.white = util.get_highlight_value("Normal").foreground
-    palette.red = util.get_highlight_value("DiagnosticError").foreground
-    palette.orange = util.get_highlight_value("DiagnosticWarn").foreground
-    palette.blue = util.get_highlight_value("DiagnosticHint").foreground
-    palette.magenta = util.get_highlight_value("Statement").foreground
-    palette.green = util.get_highlight_value("healthSuccess").foreground
+    palette.yellow = util.get_highlight_value("String").foreground or "#ffff00"
+    palette.white = util.get_highlight_value("Normal").foreground or "#ffffff"
+    palette.red = util.get_highlight_value("DiagnosticError").foreground or "#ff0000"
+    palette.orange = util.get_highlight_value("DiagnosticWarn").foreground or "#ff7700"
+    palette.blue = util.get_highlight_value("DiagnosticHint").foreground or "#00ffff"
+    palette.magenta = util.get_highlight_value("Statement").foreground or "#ff00ff"
+    palette.green = util.get_highlight_value("healthSuccess").foreground or "#00ff00"
   end
   return {
     SLGitIcon = {

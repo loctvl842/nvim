@@ -14,10 +14,13 @@ M.on_attach = function(on_attach)
 end
 
 M.get_highlight_value = function(group)
-  local hl = vim.api.nvim_get_hl_by_name(group, true)
+  local found, hl = pcall(vim.api.nvim_get_hl_by_name, group, true)
+  if not found then
+    error("Invalid highlight name: " .. group)
+  end
   local hl_config = {}
   for key, value in pairs(hl) do
-    hl_config[key] = string.format("#%02x", value)
+    _, hl_config[key] = pcall(string.format, "#%02x", value)
   end
   return hl_config
 end
@@ -35,8 +38,8 @@ function M.get_root()
           and vim.tbl_map(function(ws)
             return vim.uri_to_fname(ws.uri)
           end, workspace)
-          or client.config.root_dir and { client.config.root_dir }
-          or {}
+        or client.config.root_dir and { client.config.root_dir }
+        or {}
       for _, p in ipairs(paths) do
         local r = vim.loop.fs_realpath(p)
         if path:find(r, 1, true) then
