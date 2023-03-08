@@ -65,15 +65,15 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
-    opts = {
-      float = false,
-      separator = "bubble", -- bubble | triangle
-      ---@type any
-      colorful = true,
-    },
-    config = function(_, opts)
+    opts = {},
+    config = function()
       local lualine_config = require("tvl.config.lualine")
-      lualine_config.setup(opts)
+      lualine_config.setup({
+        float = true,
+        separator = "bubble", -- bubble | triangle
+        ---@type any
+        colorful = true,
+      })
       lualine_config.load()
     end,
   },

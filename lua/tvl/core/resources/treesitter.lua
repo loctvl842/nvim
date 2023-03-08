@@ -28,16 +28,8 @@ return {
       context_commentstring = { enable = true },
       rainbow = {
         enable = true,
-        extended_mode = false,
-        colors = {
-          "#ff6188",
-          "#fc9867",
-          "#ffd866",
-          "#a9dc76",
-          "#78dce8",
-          "#ab9df2",
-        },
-        disable = { "html" },
+        query = "rainbow-parens",
+        disable = {},
       },
       playground = {
         enable = true,
@@ -64,9 +56,8 @@ return {
   },
 
   {
-    "windwp/nvim-ts-autotag",
-    event = { "InsertEnter" },
-    opts = { enable = true },
+    "HiPhish/nvim-ts-rainbow2",
+    event = "InsertEnter",
   },
 
   { "nvim-treesitter/playground", cmd = "TSPlaygroundToggle" },
