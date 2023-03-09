@@ -31,15 +31,6 @@ return {
   },
 
   {
-    "filipdutescu/renamer.nvim",
-    lazy = true,
-    branch = "master",
-    config = function()
-      require("tvl.config.renamer")
-    end,
-  },
-
-  {
     "toppair/peek.nvim",
     build = "deno task --quiet build:fast",
     keys = {

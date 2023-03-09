@@ -98,12 +98,10 @@ return {
       },
     },
     config = function(_, opts)
-      -- require("tvl.config.whichkey")
       local wk = require("which-key")
       wk.setup(opts)
       local keymaps = {
         ["<leader>w"] = { "<cmd>w!<CR>", "Save" },
-        ["<leader>W"] = { "<cmd>lua vim.lsp.buf.format()<CR><cmd>w!<CR>", "Format and Save" },
         ["<leader>q"] = { "<cmd>q<CR>", "Quit" },
         ["<leader>Q"] = { "<cmd>qa<CR>", "Quit All" },
         ["<leader>h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
@@ -203,8 +201,9 @@ return {
 
   {
     "kevinhwang91/nvim-ufo",
+    event = "BufEnter",
     lazy = false,
-    dependencies = { "kevinhwang91/promise-async" },
+    dependencies = { "kevinhwang91/promise-async", event = "BufEnter" },
     opts = {
       fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
         local newVirtText = {}

@@ -29,7 +29,7 @@ return {
       rainbow = {
         enable = true,
         query = "rainbow-parens",
-        disable = {},
+        disable = { "jsx", "cpp" },
       },
       playground = {
         enable = true,

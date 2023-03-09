@@ -37,7 +37,7 @@ return {
           -- style = 'icon',
           style = "underline",
         },
-        close_command = "Bdelete! %d", -- can be a string | function, see "Mouse actions"
+        close_command = "bdelete! %d", -- can be a string | function, see "Mouse actions"
         diagnostics_indicator = function(count, _, _, _)
           if count > 9 then
             return "9+"
@@ -69,7 +69,7 @@ return {
     config = function()
       local lualine_config = require("tvl.config.lualine")
       lualine_config.setup({
-        float = true,
+        float = false,
         separator = "bubble", -- bubble | triangle
         ---@type any
         colorful = true,

@@ -68,7 +68,7 @@ return {
   {
     "hrsh7th/nvim-cmp",
     version = false,
-    event = "BufEnter",
+    event = { "InsertEnter", "CmdlineEnter" },
     dependencies = {
       "mfussenegger/nvim-jdtls",
       "hrsh7th/cmp-nvim-lsp",
