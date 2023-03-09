@@ -1,6 +1,8 @@
 return {
   {
     "kevinhwang91/rnvimr",
+    event = { "BufReadPost" },
+    keys = { { "<leader>r", "<cmd>RnvimrToggle<cr>", desc = "Open file manager" } },
     init = function()
       -- Make Ranger to be hidden after picking a file
       vim.g.rnvimr_enable_picker = 1
@@ -32,6 +34,7 @@ return {
 
   {
     "toppair/peek.nvim",
+    ft = "markdown",
     build = "deno task --quiet build:fast",
     keys = {
       {

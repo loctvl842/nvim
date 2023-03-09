@@ -42,6 +42,8 @@ return {
 
   {
     "mattn/emmet-vim",
+    event = { "BufReadPost" },
+    keys = { { "e", "", desc = "Generate emmet" } },
     init = function()
       vim.g.user_emmet_leader_key = "e"
       vim.g.user_emmet_mode = "n"
@@ -170,10 +172,9 @@ return {
     end,
   },
 
-  "lvimuser/lsp-inlayhints.nvim",
-
   {
     "ray-x/lsp_signature.nvim",
+    event = { "InsertEnter" },
     opts = {
       floating_window = false, -- show hint in a floating window, set to false for virtual text only mode
       floating_window_above_cur_line = true, -- try to place the floating above the current line when possible Note:

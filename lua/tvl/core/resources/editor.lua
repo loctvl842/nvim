@@ -201,9 +201,8 @@ return {
 
   {
     "kevinhwang91/nvim-ufo",
-    event = "BufEnter",
-    lazy = false,
-    dependencies = { "kevinhwang91/promise-async", event = "BufEnter" },
+    event = "BufReadPost",
+    dependencies = { "kevinhwang91/promise-async", event = "BufReadPost" },
     opts = {
       fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
         local newVirtText = {}
@@ -286,6 +285,7 @@ return {
 
   {
     "luukvbaal/statuscol.nvim",
+    event = "BufReadPost",
     config = function()
       local builtin = require("statuscol.builtin")
       require("statuscol").setup({

@@ -148,7 +148,7 @@ return {
   {
     "utilyre/barbecue.nvim",
     branch = "fix/E36",
-    lazy = false,
+    event = { "BufReadPost" },
     dependencies = {
       "SmiteshP/nvim-navic",
       "nvim-tree/nvim-web-devicons",
@@ -192,6 +192,7 @@ return {
 
   {
     "akinsho/toggleterm.nvim",
+    event = { "BufAdd" },
     opts = {
       open_mapping = [[<C-\>]],
       start_in_insert = true,
