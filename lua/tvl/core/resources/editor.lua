@@ -20,7 +20,7 @@ return {
             dir = require("tvl.util").get_root(),
           })
         end,
-        desc = "Explorer Float",
+        desc = "Explorer Float (root dir)",
       },
     },
     init = function()
@@ -129,7 +129,7 @@ return {
 
   {
     "lewis6991/gitsigns.nvim",
-    event = { "BufReadPre", "BufNewFile", "BufEnter" },
+    event = { "BufReadPre", "BufNewFile" },
     opts = {
       signs = {
         add = { text = "┃" },

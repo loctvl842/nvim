@@ -93,11 +93,12 @@ end
 
 ---@param config LualineConfig
 M.custom = function(config)
+  local statusline_hl = util.get_highlight_value("StatusLine")
   local palette = {
     float_background = util.get_highlight_value("CursorLine").background,
-    editor_bg = util.get_highlight_value("Normal").background,
-    statusbar_bg = util.get_highlight_value("StatusLine").background,
-    statusbar_fg = util.get_highlight_value("StatusLine").foreground,
+    editor_bg = util.get_highlight_value("Normal").background or "NONE",
+    statusbar_bg = statusline_hl.background or "#000000",
+    statusbar_fg = statusline_hl.foreground or "#505050",
   }
   local groups = generate(config, palette)
 

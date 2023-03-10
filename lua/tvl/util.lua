@@ -1,6 +1,6 @@
 local M = {}
 
-M.root_patterns = { ".git" }
+M.root_patterns = { ".git", "lua" }
 
 --- @param on_attach fun(client, buffer)
 M.on_attach = function(on_attach)
@@ -16,7 +16,7 @@ end
 M.get_highlight_value = function(group)
   local found, hl = pcall(vim.api.nvim_get_hl_by_name, group, true)
   if not found then
-    error("Invalid highlight name: " .. group)
+    return {}
   end
   local hl_config = {}
   for key, value in pairs(hl) do
@@ -61,6 +61,10 @@ M.get_root = function()
   end
   ---@cast root string
   return root
+end
+
+M.set_root = function(dir)
+  vim.api.nvim_set_current_dir(dir)
 end
 
 M.lazy_notify = function()

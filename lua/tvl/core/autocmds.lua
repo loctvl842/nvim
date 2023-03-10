@@ -116,3 +116,11 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
     vim.cmd([[set formatoptions-=cro]])
   end,
 })
+
+vim.api.nvim_create_autocmd({ "BufReadPost" }, {
+  callback = function()
+    local util = require("tvl.util")
+    util.set_root(util.get_root())
+    return true
+  end,
+})
