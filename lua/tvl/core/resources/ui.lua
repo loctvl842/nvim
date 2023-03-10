@@ -195,7 +195,7 @@ return {
 
   {
     "akinsho/toggleterm.nvim",
-    event = { "BufAdd" },
+    event = { "BufReadPost" },
     opts = {
       open_mapping = [[<C-\>]],
       start_in_insert = true,
