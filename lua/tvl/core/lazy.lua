@@ -9,7 +9,7 @@ if not vim.loop.fs_stat(lazypath) then
     lazypath,
   })
 end
-vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
+vim.opt.rtp:prepend(lazypath)
 
 -- load lazy
 require("lazy").setup({
@@ -20,7 +20,7 @@ require("lazy").setup({
     version = "*", -- try installing the latest stable version for plugins that support semver
   },
   install = { colorscheme = { "monokai-pro", "habamax" } },
-  checker = { enabled = false },
+  checker = { enabled = false, notify = false },
   performance = {
     rtp = {
       -- disable some rtp plugins

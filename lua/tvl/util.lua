@@ -25,7 +25,7 @@ M.get_highlight_value = function(group)
   return hl_config
 end
 
-function M.get_root()
+M.get_root = function()
   ---@type string?
   local path = vim.api.nvim_buf_get_name(0)
   path = path ~= "" and vim.loop.fs_realpath(path) or nil
@@ -63,7 +63,7 @@ function M.get_root()
   return root
 end
 
-function M.lazy_notify()
+M.lazy_notify = function()
   local notifs = {}
   local function temp(...)
     table.insert(notifs, vim.F.pack_len(...))
@@ -126,6 +126,33 @@ M.telescope = function(builtin, type, opts)
     end
     require("telescope.builtin")[builtin](theme)
   end
+end
+
+---@param name "autocmds" | "options" | "keymaps"
+M.load = function(name)
+  local Util = require("lazy.core.util")
+  -- always load lazyvim, then user file
+  local mod = "tvl.core." .. name
+  Util.try(function()
+    require(mod)
+  end, {
+    msg = "Failed loading " .. mod,
+    on_error = function(msg)
+      local modpath = require("lazy.core.cache").find(mod)
+      if modpath then
+        Util.error(msg)
+      end
+    end,
+  })
+end
+
+M.on_very_lazy = function(fn)
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "VeryLazy",
+    callback = function()
+      fn()
+    end,
+  })
 end
 
 return M

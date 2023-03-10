@@ -34,11 +34,11 @@ return {
 
   {
     "toppair/peek.nvim",
-    ft = "markdown",
+    priority = 10,
     build = "deno task --quiet build:fast",
     keys = {
       {
-        "<leader>op",
+        "<leader>p",
         function()
           local peek = require("peek")
           if peek.is_open() then

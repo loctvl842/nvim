@@ -83,9 +83,6 @@ keymap("n", "<leader>/", ":split<CR>", opts)
 -------------------- Switch two windows ------------------------
 keymap("n", "<A-o>", "<C-w>r", opts)
 
--------------------- Ranger --------------------------------
-keymap("n", "<leader>o", ":RnvimrToggle<CR>", opts)
-
 -------------------- Compile --------------------------------
 keymap("n", "<c-m-n>", "<cmd>only | Compile<CR>", opts)
 

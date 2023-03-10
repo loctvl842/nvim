@@ -20,7 +20,9 @@ return {
       end,
     },
     init = function()
-      vim.notify = require("notify")
+      require("tvl.util").on_very_lazy(function()
+        vim.notify = require("notify")
+      end)
     end,
   },
 
@@ -50,7 +52,8 @@ return {
             text = "EXPLORER",
             padding = 0,
             text_align = "center",
-            highlight = "Directory",
+            separator = true,
+            -- highlight = "Directory",
           },
         },
         hover = {
@@ -199,7 +202,8 @@ return {
       direction = "float",
       autochdir = false,
       float_opts = {
-        border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" }, -- [ top top top - right - bottom bottom bottom - left ]
+        -- border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" }, -- [ top top top - right - bottom bottom bottom - left ]
+        border = { " ", "▁", " ", "▎", " ", "▔", " ", "▕" }, -- [ top top top - right - bottom bottom bottom - left ]
         winblend = 0,
       },
       highlights = {

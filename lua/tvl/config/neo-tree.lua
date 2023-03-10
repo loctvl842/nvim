@@ -19,10 +19,10 @@ neotree.setup({
     content_layout = "center",
     tabs_layout = "equal",
     tab_labels = {
-      filesystem = "" .. " Files",
-      buffers = "" .. " Bufs",
-      git_status = "" .. " Git",
-      diagnostics = "裂" .. " Diags",
+      filesystem = "",
+      buffers = "",
+      git_status = "",
+      diagnostics = "裂",
     },
   },
   default_component_configs = {

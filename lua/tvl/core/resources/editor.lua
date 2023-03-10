@@ -6,12 +6,22 @@ return {
       {
         "<leader>e",
         function()
-          require("neo-tree.command").execute({ toggle = true, dir = require("tvl.util").get_root() })
+          require("neo-tree.command").execute({ toggle = true, position = "left", dir = require("tvl.util").get_root() })
         end,
         desc = "Explorer (root dir)",
         remap = true,
       },
-      { "<leader>E", "<cmd>Neotree toggle position=float<cr>", desc = "Explorer Float" },
+      {
+        "<leader>E",
+        function()
+          require("neo-tree.command").execute({
+            toggle = true,
+            position = "float",
+            dir = require("tvl.util").get_root(),
+          })
+        end,
+        desc = "Explorer Float",
+      },
     },
     init = function()
       vim.g.neo_tree_remove_legacy_commands = 1
@@ -294,7 +304,7 @@ return {
         segments = {
           {
             -- line number
-            text = { builtin.lnumfunc },
+            text = { " ", builtin.lnumfunc },
             condition = { true, builtin.not_empty },
             click = "v:lua.ScLa",
           },
