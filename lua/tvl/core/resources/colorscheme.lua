@@ -5,18 +5,21 @@ return {
   },
 
   {
+    "catppuccin/nvim",
+    lazy = true,
+  },
+
+  {
     "loctvl842/monokai-pro.nvim",
-    branch = "master",
     lazy = false,
+    branch = "master",
     priority = 1000,
     keys = { { "<leader>c", "<cmd>MonokaiProSelect<cr>", desc = "Select Moonokai pro filter" } },
     config = function()
       local monokai = require("monokai-pro")
       monokai.setup({
         transparent_background = false,
-        terminal_colors = true,
         devicons = true,
-        italic_comments = true,
         filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
         day_night = {
           enable = false,

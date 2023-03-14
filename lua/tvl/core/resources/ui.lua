@@ -39,7 +39,7 @@ return {
           -- style = 'icon',
           style = "underline",
         },
-        close_command = "bdelete! %d", -- can be a string | function, see "Mouse actions"
+        close_command = "Bdelete! %d", -- can be a string | function, see "Mouse actions"
         diagnostics_indicator = function(count, _, _, _)
           if count > 9 then
             return "9+"
@@ -50,10 +50,8 @@ return {
           {
             filetype = "neo-tree",
             text = "EXPLORER",
-            padding = 0,
             text_align = "center",
-            separator = true,
-            -- highlight = "Directory",
+            -- separator = true,
           },
         },
         hover = {

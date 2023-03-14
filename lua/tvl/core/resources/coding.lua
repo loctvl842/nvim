@@ -42,10 +42,9 @@ return {
 
   {
     "mattn/emmet-vim",
-    event = { "BufReadPost" },
-    keys = { { "e", "", desc = "Generate emmet" } },
+    event = { "BufRead" },
     init = function()
-      vim.g.user_emmet_leader_key = "e"
+      vim.g.user_emmet_leader_key = "f"
       vim.g.user_emmet_mode = "n"
       vim.g.user_emmet_settings = {
         variables = { lang = "ja" },
@@ -184,11 +183,6 @@ return {
 
   {
     "glepnir/lspsaga.nvim",
-    lazy = true,
-  },
-
-  {
-    "ahmedkhalf/project.nvim",
     lazy = true,
   },
 }
