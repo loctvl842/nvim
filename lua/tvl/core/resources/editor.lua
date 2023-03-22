@@ -72,7 +72,6 @@ return {
           ".vscode/",
           "__pycache__/",
           "build/",
-          "env/",
           "gradle/",
           "node_modules/",
           "%.pdb",
@@ -154,9 +153,9 @@ return {
         padding = { 1, 2, 1, 2 }, -- extra window padding [top, right, bottom, left]
       },
       layout = {
-        -- height = { min = 3, max = 25 }, -- min and max height of the columns
-        -- width = { min = 20, max = 50 }, -- min and max width of the columns
-        -- spacing = 5, -- spacing between columns
+        height = { min = 3, max = 25 }, -- min and max height of the columns
+        width = { min = 20, max = 50 }, -- min and max width of the columns
+        spacing = 5, -- spacing between columns
         align = "center", -- align columns left, center or right
       },
     },
