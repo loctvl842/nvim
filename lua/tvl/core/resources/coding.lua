@@ -119,7 +119,7 @@ return {
           ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
           ["<Tab>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
           ["<S-Tab>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["Esc"] = cmp.mapping(function(fallback)
+          ["<Esc>"] = cmp.mapping(function(fallback)
             require("luasnip").unlink_current()
             fallback()
           end),
