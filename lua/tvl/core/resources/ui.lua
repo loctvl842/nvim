@@ -32,8 +32,8 @@ return {
     opts = {
       options = {
         diagnostics = "nvim_lsp", -- | "nvim_lsp" | "coc",
-        -- separator_style = "slant", -- | "thick" | "thin" | "slope" | { 'any', 'any' },
-        separator_style = { "", "" }, -- | "thick" | "thin" | { 'any', 'any' },
+        separator_style = "slant", -- | "thick" | "thin" | "slope" | { 'any', 'any' },
+        -- separator_style = { "", "" }, -- | "thick" | "thin" | { 'any', 'any' },
         indicator = {
           -- icon = " ",
           -- style = 'icon',
@@ -201,8 +201,9 @@ return {
       autochdir = false,
       float_opts = {
         -- border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" }, -- [ top top top - right - bottom bottom bottom - left ]
-        border = { " ", "▁", " ", "▎", " ", "▔", " ", "▕" }, -- [ top top top - right - bottom bottom bottom - left ]
-        winblend = 0,
+        -- border = { " ", "▁", " ", "▎", " ", "▔", " ", "▕" }, -- [ top top top - right - bottom bottom bottom - left ]
+        border = "single",
+        winblend = 10,
       },
       highlights = {
         FloatBorder = { link = "ToggleTermBorder" },
@@ -296,7 +297,7 @@ return {
     "NvChad/nvim-colorizer.lua",
     event = "BufReadPre",
     opts = {
-      filetypes = { "*", "!lazy" },
+      filetypes = { "*", "!lazy", "!neo-tree" },
       buftype = { "*", "!prompt", "!nofile" },
       user_default_options = {
         RGB = true, -- #RGB hex codes

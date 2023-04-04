@@ -1,6 +1,6 @@
 local M = {}
 
-M.root_patterns = { ".git", "lua" }
+M.root_patterns = { ".git", "lua", "package.json" }
 
 --- @param on_attach fun(client, buffer)
 M.on_attach = function(on_attach)
