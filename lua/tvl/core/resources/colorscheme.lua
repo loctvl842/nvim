@@ -170,6 +170,21 @@ return {
               bg = float and c.editor.background or statusbar_bg,
               fg = c.editor.background,
             },
+
+            -- Base Overrides
+            Type = { fg = c.base.cyan, italic = true },
+            ["@property"] = { fg = c.base.green },
+
+            -- Better Semantic Tokens
+            ["@lsp.type.namespace"] = { fg = c.base.red },
+            ["@lsp.type.namespace.go"] = { fg = c.base.red },
+            ["@lsp.type.variable.go"] = { fg = c.base.white },
+            ["@lsp.mod.definition.go"] = { fg = c.base.red },
+            -- ["@lsp.typemod.variable.definition.go"] = { fg = c.base.red },
+            -- ["@lsp.type.variable.definition.go"] = { fg = c.base.red },
+            ["@lsp.typemod.function.definition.go"] = { fg = c.base.green },
+            ["@lsp.typemod.parameter.definition.go"] = { fg = c.base.magenta, italic = true },
+            ["@lsp.type.parameter.go"] = { fg = c.base.magenta, italic = true },
           }
         end,
       })

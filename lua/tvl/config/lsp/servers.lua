@@ -3,7 +3,38 @@ local servers = {
   cssls = {},
   html = {},
   jsonls = {},
-  gopls = {},
+  gopls = {
+    settings = {
+      gopls = {
+        semanticTokens = true,
+        usePlaceholders = true,
+        ["local"] = "github.com/procore",
+        codelenses = {
+          generate = true,
+          test = true,
+          tidy = true,
+        },
+        hints = {
+          assignVariableTypes = true,
+          compositeLiteralFields = true,
+          compositeLiteralTypes = true,
+          constantValues = true,
+          functionTypeParameters = true,
+          parameterNames = true,
+          rangeVariableTypes = true,
+        },
+        -- formatting = {
+        --   ["local"] = "github.com/procore",
+        -- },
+        -- ui = {
+        --   semanticTokens = true,
+        -- },
+        -- completions = {
+        --   usePlaceholders = true,
+        -- },
+      },
+    },
+  },
   sqlls = {},
   tsserver = {
     settings = {

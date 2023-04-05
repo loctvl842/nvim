@@ -10,6 +10,9 @@ return {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
     version = "false",
+    dependencies = {
+      "coffebar/project.nvim",
+    },
     config = function() require("tvl.config.telescope") end,
   },
 

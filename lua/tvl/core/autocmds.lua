@@ -177,3 +177,47 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 	end,
   group = go_format_sync_group
 })
+
+----------------------------- Golang Highlighting -----------------------------
+
+vim.api.nvim_create_autocmd("LspTokenUpdate", {
+  pattern = "*.go",
+  callback = function(args)
+    local token = args.data.token
+    local captures = {}
+    local captures_human = ""
+    for _, capture in pairs(vim.treesitter.get_captures_at_pos(args.buf, token.line, token.start_col)) do
+      table.insert(captures, "@" .. capture.capture)
+      captures_human = captures_human .. " @" .. capture.capture
+    end
+
+    -- if token.type == "variable"
+    --   or token.type == "constant" then
+      -- print("{token: " .. token.type
+      --   .. " pos: {line: " .. token.line .. " col:(" .. token.start_col .. " " .. token.end_col .. ")}"
+      --   .. " captures: [" .. captures_human .. "]}")
+      -- print("modifiers: " .. vim.inspect(token.modifiers))
+    -- end
+
+    if token.type ~= "variable" then return end
+
+    if token.type == "variable"
+      -- and not vim.tbl_contains(token.modifiers, "readonly")
+      and not token.modifiers.readonly
+      and vim.tbl_contains(captures, "@variable")
+      and not vim.tbl_contains(captures, "@field")
+      and not vim.tbl_contains(captures, "@constant") then
+      vim.lsp.semantic_tokens.highlight_token(
+        token, args.buf, args.data.client_id, "@variable"
+      )
+    end
+
+    if token.type == "variable" and vim.tbl_contains(captures, "@field") then
+      vim.lsp.semantic_tokens.highlight_token(
+        token, args.buf, args.data.client_id, "@field"
+      )
+    end
+
+    -- end
+  end
+})

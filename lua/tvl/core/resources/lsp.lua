@@ -13,6 +13,16 @@ return {
         require("tvl.config.lsp.keymaps").on_attach(client, buffer)
         require("tvl.config.lsp.inlayhints").on_attach(client, buffer)
         require("tvl.config.lsp.gitsigns").on_attach(client, buffer)
+        -- Gopls Semantic Token Hack
+        -- https://github.com/golang/go/issues/54531
+        if client.name == 'gopls' and not client.server_capabilities.semanticTokensProvider then
+          local semantic = client.config.capabilities.textDocument.semanticTokens
+          client.server_capabilities.semanticTokensProvider = {
+            full = true,
+            legend = {tokenModifiers = semantic.tokenModifiers, tokenTypes = semantic.tokenTypes},
+            range = true,
+          }
+        end
       end)
 
       -- diagnostics
