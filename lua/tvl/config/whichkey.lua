@@ -83,12 +83,15 @@ local mappings = {
     -- 	"<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>",
     -- 	"Buffers",
     -- },
-    ["q"] = { "<cmd>q!<CR>", "Quit" },
-    ["Q"] = { "<cmd>qa!<CR>", "Quit All" },
-    ["r"] = {
-      "<cmd>source ~/.config/nvim/lua/tvl/core/resources/colorscheme.lua<CR>",
-      "Reload monokai-pro",
+    ["q"] = {
+      ["q"] = { "<cmd>q!<CR>", "Quit" },
+      ["Q"] = { "<cmd>qa!<CR>", "Quit All" },
+      ["r"] = { "<cmd>:source $MYVIMRC<CR>", "Reload" },
     },
+    -- ["r"] = {
+    --   "<cmd>source ~/.config/nvim/lua/tvl/core/resources/colorscheme.lua<CR>",
+    --   "Reload monokai-pro",
+    -- },
 
     ["b"] = {
       d = { "<cmd>Bdelete!<CR>", "Close Buffer" },
@@ -134,6 +137,7 @@ local mappings = {
       a = { "<cmd>lua require('telescope.builtin').autocommands()<CR>", "Display Autocommands" },
       h = { "<cmd>lua require('telescope.builtin').highlights()<CR>", "Display Highlights" },
       c = { "<cmd>lua require('telescope.builtin').commands()<CR>", "Display Commands" },
+      C = { "<cmd>lua require('telescope.builtin').colorscheme()<CR>", "Display Colorschemes" },
       f = { "<cmd>lua require('telescope.builtin').filetypes()<CR>", "Display Filetypes" },
       k = { "<cmd>lua require('telescope.builtin').keymaps()<CR>", "Display Keymaps"},
       n = { "<cmd>Notifications<CR>", "Display Notifications"},
@@ -160,6 +164,7 @@ local mappings = {
     ["s"] = {
       name = "search",
       p = { "<cmd>Telescope live_grep<cr>", "Find Text" },
+      i = { "<cmd>IconPickerInsert<cr>", "Find Icon" },
     },
 
     ["p"] = {

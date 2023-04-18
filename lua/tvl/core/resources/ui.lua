@@ -38,7 +38,7 @@ return {
     dependencies = {
       "nvim-tree/nvim-web-devicons",
     },
-    version = "v3.5.0",
+    -- version = "v3.5.0",
     opts = {
       options = {
         diagnostics = "nvim_lsp", -- | "nvim_lsp" | "coc",
@@ -66,7 +66,7 @@ return {
         }
       }
     },
-    --config = function() require("bufferline").setup({}) end,
+    -- config = function() require("bufferline").setup({}) end,
   },
 
   {
@@ -82,7 +82,8 @@ return {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     config = function()
-      require("tvl.config.lualine.init").load("monokai-pro")
+      -- require("tvl.config.lualine.init").load("monokai-pro")
+      require("tvl.config.lualine.init").load("auto")
     end
   },
 

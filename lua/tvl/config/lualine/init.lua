@@ -30,7 +30,7 @@ local function setup(custom_theme)
     sections = {
       lualine_a = { cpn.branch },
       lualine_b = { cpn.diagnostics },
-      lualine_c = {},
+      lualine_c = { },
       lualine_x = { cpn.diff },
       lualine_y = { cpn.position, cpn.filetype },
       lualine_z = { cpn.spaces, cpn.mode },

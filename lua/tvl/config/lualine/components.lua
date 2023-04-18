@@ -79,9 +79,11 @@ M.diagnostics = function()
     "SLWarning"
   )
   local info_hl =
-      hl_str(icons.diagnostics.Info .. " " .. info_count, "SLInfo", "SLInfo")
+      hl_str("" .. " " .. info_count, "SLInfo", "SLInfo")
+      -- hl_str(icons.diagnostics.Info .. " " .. info_count, "SLInfo", "SLInfo")
   local hint_hl =
-      hl_str(icons.diagnostics.Hint .. " " .. hint_count, "SLInfo", "SLInfo")
+      hl_str("" .. " " .. hint_count, "SLInfo", "SLInfo")
+      -- hl_str(icons.diagnostics.Hint .. " " .. hint_count, "SLInfo", "SLInfo")
   local left_sep = hl_str(config.thin_separator_icon.left, "SLSeparator")
   local right_sep =
       hl_str(config.thin_separator_icon.right, "SLSeparator", "SLSeparator")

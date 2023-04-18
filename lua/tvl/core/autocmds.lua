@@ -221,3 +221,9 @@ vim.api.nvim_create_autocmd("LspTokenUpdate", {
     -- end
   end
 })
+
+vim.api.nvim_create_autocmd("UIEnter", {
+  callback = function(args)
+    print("ui enter happened")
+  end
+})

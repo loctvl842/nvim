@@ -50,7 +50,7 @@ neotree.setup({
       expander_highlight = "NeoTreeExpander",
     },
     icon = {
-      folder_closed = "",
+      folder_closed = "",
       folder_open = "",
       folder_empty = "",
       default = " ",
