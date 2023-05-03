@@ -29,7 +29,7 @@ config.settings = {
       updateBuildConfiguration = "interactive",
       runtimes = {
         {
-          name = "OpenJDK Runtime Environment",
+          name = "JavaSE-17",
           path = "/usr/lib/jvm/java-17-openjdk",
         },
       },

@@ -1,5 +1,10 @@
+local function augroup(name)
+  return vim.api.nvim_create_augroup("tvl_" .. name, { clear = true })
+end
+
 -- Highlight on yank
 vim.api.nvim_create_autocmd({ "TextYankPost" }, {
+  group = augroup("highlight_yank"),
   callback = function()
     vim.highlight.on_yank({ higroup = "Visual" })
   end,
@@ -7,6 +12,7 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
 
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd({ "VimResized" }, {
+  group = augroup("resize_splits"),
   callback = function()
     vim.cmd("tabdo wincmd =")
   end,
@@ -14,6 +20,7 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
 
 -- close some filetypes with <q>
 vim.api.nvim_create_autocmd("FileType", {
+  group = augroup("close_with_q"),
   pattern = {
     "qf",
     "help",
@@ -33,6 +40,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Set wrap and spell in markdown and gitcommit
 vim.api.nvim_create_autocmd({ "FileType" }, {
+  group = augroup("wrap_spell"),
   pattern = { "gitcommit", "markdown" },
   callback = function()
     vim.opt_local.wrap = true
@@ -40,32 +48,24 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
-local remember_folds_id = vim.api.nvim_create_augroup("remember_folds", { clear = false })
 vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
   pattern = "?*",
-  group = remember_folds_id,
+  group = augroup("remember_folds"),
   callback = function()
     vim.cmd([[silent! mkview 1]])
   end,
 })
 vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
   pattern = "?*",
-  group = remember_folds_id,
+  group = augroup("remember_folds"),
   callback = function()
     vim.cmd([[silent! loadview 1]])
   end,
 })
 
--- fix tab in python
-vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
-  pattern = { "*.cpp" },
-  callback = function()
-    vim.cmd("setlocal noexpandtab")
-  end,
-})
-
 -- fix comment
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+  group = augroup("comment_newline"),
   pattern = { "*" },
   callback = function()
     vim.cmd([[set formatoptions-=cro]])
@@ -88,6 +88,7 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
 
 -- clear cmd output
 vim.api.nvim_create_autocmd({ "CursorHold" }, {
+  group = augroup("clear_term"),
   callback = function()
     vim.cmd([[echon '']])
   end,
@@ -117,17 +118,14 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
   end,
 })
 
-vim.api.nvim_create_autocmd({ "BufReadPost" }, {
-  callback = function()
-    local util = require("tvl.util")
-    util.set_root(util.get_root())
-    return true
+-- Auto create dir when saving a file, in case some intermediate directory does not exist
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  group = augroup("auto_create_dir"),
+  callback = function(event)
+    if event.match:match("^%w%w+://") then
+      return
+    end
+    local file = vim.loop.fs_realpath(event.match) or event.match
+    vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
   end,
 })
-
--- vim.api.nvim_create_autocmd({ "FileType" }, {
---   pattern = { "java" },
---   callback = function()
---     vim.cmd("setlocal cmdheight=1")
---   end,
--- })
