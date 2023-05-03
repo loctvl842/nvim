@@ -17,7 +17,7 @@ end
 
 vim.opt_local.shiftwidth = 2
 vim.opt_local.tabstop = 2
-vim.opt_local.cmdheight = 0
+vim.opt_local.cmdheight = 1
 local config = {}
 
 config.settings = {
@@ -29,7 +29,7 @@ config.settings = {
       updateBuildConfiguration = "interactive",
       runtimes = {
         {
-          name = "JavaSE-17",
+          name = "OpenJDK Runtime Environment",
           path = "/usr/lib/jvm/java-17-openjdk",
         },
       },

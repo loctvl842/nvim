@@ -124,3 +124,10 @@ vim.api.nvim_create_autocmd({ "BufReadPost" }, {
     return true
   end,
 })
+
+-- vim.api.nvim_create_autocmd({ "FileType" }, {
+--   pattern = { "java" },
+--   callback = function()
+--     vim.cmd("setlocal cmdheight=1")
+--   end,
+-- })

@@ -27,7 +27,7 @@ return {
           night_filter = "octagon",
         },
         inc_search = "background", -- underline | background
-        background_clear = { "toggleterm" },
+        background_clear = {},
         plugins = {
           bufferline = {
             underline_selected = true,

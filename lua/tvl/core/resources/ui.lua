@@ -32,8 +32,8 @@ return {
     opts = {
       options = {
         diagnostics = "nvim_lsp", -- | "nvim_lsp" | "coc",
-        separator_style = "slant", -- | "thick" | "thin" | "slope" | { 'any', 'any' },
-        -- separator_style = { "", "" }, -- | "thick" | "thin" | { 'any', 'any' },
+        -- separator_style = "", -- | "thick" | "thin" | "slope" | { 'any', 'any' },
+        separator_style = { "", "" }, -- | "thick" | "thin" | { 'any', 'any' },
         indicator = {
           -- icon = " ",
           -- style = 'icon',
@@ -148,7 +148,7 @@ return {
 
   {
     "utilyre/barbecue.nvim",
-    branch = "fix/E36",
+    -- branch = "fix/E36",
     event = { "BufReadPost" },
     dependencies = {
       "SmiteshP/nvim-navic",
@@ -200,10 +200,10 @@ return {
       direction = "float",
       autochdir = false,
       float_opts = {
-        -- border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" }, -- [ top top top - right - bottom bottom bottom - left ]
+        border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" }, -- [ top top top - right - bottom bottom bottom - left ]
         -- border = { " ", "▁", " ", "▎", " ", "▔", " ", "▕" }, -- [ top top top - right - bottom bottom bottom - left ]
-        border = "single",
-        winblend = 10,
+        -- border = "single",
+        winblend = 0,
       },
       highlights = {
         FloatBorder = { link = "ToggleTermBorder" },

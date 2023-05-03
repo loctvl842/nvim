@@ -51,11 +51,18 @@ return {
       vim.diagnostic.config(require("tvl.config.lsp.diagnostics")["on"])
 
       local servers = require("tvl.config.lsp.servers")
-      local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-      capabilities.textDocument.foldingRange = {
-        dynamicRegistration = false,
-        lineFoldingOnly = true,
-      }
+      local capabilities = vim.tbl_deep_extend(
+        "force",
+        {},
+        vim.lsp.protocol.make_client_capabilities(),
+        require("cmp_nvim_lsp").default_capabilities(),
+        { textDocument = { foldingRange = { dynamicRegistration = false, lineFoldingOnly = true } } }
+      )
+      -- local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+      -- capabilities.textDocument.foldingRange = {
+      --   dynamicRegistration = false,
+      --   lineFoldingOnly = true,
+      -- }
 
       local function setup(server)
         local server_opts = vim.tbl_deep_extend("force", {
@@ -119,7 +126,6 @@ return {
           formatting.stylua,
           formatting.google_java_format,
           formatting.black.with({ extra_args = { "--fast" } }),
-          formatting.sql_formatter.with({ extra_args = { "--config" } }),
           formatting.markdownlint,
           formatting.beautysh.with({ extra_args = { "--indent-size", "2" } }),
         },
@@ -136,7 +142,6 @@ return {
         "stylua",
         "google_java_format",
         "black",
-        "sql_formatter",
         "markdownlint",
         "beautysh",
       },

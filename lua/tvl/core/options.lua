@@ -47,14 +47,21 @@ local options = {
   titlestring = "%<%F%=%l/%L - nvim",
   linespace = 8,
   mousemoveevent = true,
-  syntax = "on",
+  syntax = "off",
   spelllang = { "en" },
   -- use fold
   foldlevelstart = 99,
   foldlevel = 99,
   foldenable = true,
   foldcolumn = "1",
-  fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]],
+  fillchars = {
+    foldopen = "",
+    foldclose = "",
+    fold = " ",
+    foldsep = " ",
+    diff = "╱",
+    eob = " ",
+  },
   -- session
   sessionoptions = { "buffers", "curdir", "tabpages", "winsize" },
 }
