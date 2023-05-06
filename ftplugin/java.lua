@@ -8,6 +8,7 @@ local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
 -- This variable is used to configure eclipse to use the directory name of the
 -- current project found using the root_marker as the folder for project specific data.
 local workspace_dir = home .. "/.local/share/eclipse/" .. project_name
+-- local workspace_dir = home .. "/Documents/LocNek/java/Course/onno/" .. project_name
 local JDTLS_LOCATION = vim.fn.stdpath("data") .. "/mason/packages/jdtls"
 
 if root_dir == "" then
