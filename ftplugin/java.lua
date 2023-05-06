@@ -3,10 +3,16 @@ local root_markers = { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }
 local root_dir = require("jdtls.setup").find_root(root_markers)
 local home = os.getenv("HOME")
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+-- eclipse.jdt.ls stores project specific data within a folder. If you are working
+-- with multiple different projects, each project must use a dedicated data directory.
+-- This variable is used to configure eclipse to use the directory name of the
+-- current project found using the root_marker as the folder for project specific data.
 local workspace_dir = home .. "/.local/share/eclipse/" .. project_name
 local JDTLS_LOCATION = vim.fn.stdpath("data") .. "/mason/packages/jdtls"
 
-if root_dir == "" then return end
+if root_dir == "" then
+  return
+end
 if vim.fn.has("mac") == 1 then
   CONFIG = "config_mac"
 elseif vim.fn.has("unix") == 1 then
@@ -28,10 +34,7 @@ config.settings = {
     configuration = {
       updateBuildConfiguration = "interactive",
       runtimes = {
-        {
-          name = "JavaSE-17",
-          path = "/usr/lib/jvm/java-17-openjdk",
-        },
+        { name = "JavaSE-17", path = "/usr/lib/jvm/java-17-openjdk" },
       },
     },
     maven = {
@@ -65,6 +68,13 @@ config.settings = {
       "java.util.Objects.requireNonNull",
       "java.util.Objects.requireNonNullElse",
       "org.mockito.Mockito.*",
+    },
+    filteredTypes = {
+      "com.sun.*",
+      "io.micrometer.shaded.*",
+      "java.awt.*",
+      "jdk.*",
+      "sun.*",
     },
   },
   contentProvider = { preferred = "fernflower" },
@@ -125,29 +135,26 @@ local jar_patterns = {
   "/dev/testforstephen/vscode-pde/server/*.jar",
 }
 local plugin_path =
-"/dev/microsoft/vscode-java-test/java-extension/com.microsoft.java.test.plugin.site/target/repository/plugins/"
-local bundle_list = vim.tbl_map(
-  function(x) return require("jdtls.path").join(plugin_path, x) end,
-  {
-    "junit-jupiter-*.jar",
-    "junit-platform-*.jar",
-    "junit-vintage-engine_*.jar",
-    "org.opentest4j*.jar",
-    "org.apiguardian.api_*.jar",
-    "org.eclipse.jdt.junit4.runtime_*.jar",
-    "org.eclipse.jdt.junit5.runtime_*.jar",
-    "org.opentest4j_*.jar",
-  }
-)
+  "/dev/microsoft/vscode-java-test/java-extension/com.microsoft.java.test.plugin.site/target/repository/plugins/"
+local bundle_list = vim.tbl_map(function(x)
+  return require("jdtls.path").join(plugin_path, x)
+end, {
+  "junit-jupiter-*.jar",
+  "junit-platform-*.jar",
+  "junit-vintage-engine_*.jar",
+  "org.opentest4j*.jar",
+  "org.apiguardian.api_*.jar",
+  "org.eclipse.jdt.junit4.runtime_*.jar",
+  "org.eclipse.jdt.junit5.runtime_*.jar",
+  "org.opentest4j_*.jar",
+})
 vim.list_extend(jar_patterns, bundle_list)
 local bundles = {}
 for _, jar_pattern in ipairs(jar_patterns) do
   for _, bundle in ipairs(vim.split(vim.fn.glob(home .. jar_pattern), "\n")) do
-    if not vim.endswith(
-      bundle,
-      "com.microsoft.java.test.runner-jar-with-dependencies.jar"
-    )
-        and not vim.endswith(bundle, "com.microsoft.java.test.runner.jar")
+    if
+      not vim.endswith(bundle, "com.microsoft.java.test.runner-jar-with-dependencies.jar")
+      and not vim.endswith(bundle, "com.microsoft.java.test.runner.jar")
     then
       table.insert(bundles, bundle)
     end
