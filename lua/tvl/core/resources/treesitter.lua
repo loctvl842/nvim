@@ -24,6 +24,7 @@ return {
         "php",
         "scss",
         "cpp",
+        "java",
       },
       highlight = { enable = true },
       indent = { enable = true, disable = { "yaml", "python", "html" } },

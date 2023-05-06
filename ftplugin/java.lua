@@ -1,5 +1,5 @@
 local jdtls = require("jdtls")
-local root_markers = { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }
+local root_markers = { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle", "release", ".project" }
 local root_dir = require("jdtls.setup").find_root(root_markers)
 local home = os.getenv("HOME")
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
@@ -125,6 +125,8 @@ config.cmd = {
   "-data",
   workspace_dir,
 }
+
+config.root_dir = root_dir
 
 local jar_patterns = {
   "/dev/microsoft/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar",
