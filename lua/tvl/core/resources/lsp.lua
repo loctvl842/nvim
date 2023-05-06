@@ -124,7 +124,6 @@ return {
         sources = {
           formatting.prettier,
           formatting.stylua,
-          formatting.google_java_format,
           formatting.black.with({ extra_args = { "--fast" } }),
           formatting.markdownlint,
           formatting.beautysh.with({ extra_args = { "--indent-size", "2" } }),
