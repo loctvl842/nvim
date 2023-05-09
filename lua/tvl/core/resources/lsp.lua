@@ -65,14 +65,16 @@ return {
       -- }
 
       local function setup(server)
+        if servers[server] and servers[server].disabled then
+          return
+        end
         local server_opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
         }, servers[server] or {})
         require("lspconfig")[server].setup(server_opts)
       end
 
-      local mason_lspconfig = require("mason-lspconfig")
-      local available = mason_lspconfig.get_available_servers()
+      local available = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
 
       local ensure_installed = {}
       for server, server_opts in pairs(servers) do

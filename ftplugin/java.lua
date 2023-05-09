@@ -8,7 +8,6 @@ local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
 -- This variable is used to configure eclipse to use the directory name of the
 -- current project found using the root_marker as the folder for project specific data.
 local workspace_dir = home .. "/.local/share/eclipse/" .. project_name
--- local workspace_dir = home .. "/Documents/LocNek/java/Course/onno/" .. project_name
 local JDTLS_LOCATION = vim.fn.stdpath("data") .. "/mason/packages/jdtls"
 
 if root_dir == "" then
@@ -129,6 +128,15 @@ config.cmd = {
 
 config.root_dir = root_dir
 
+local capabilities = vim.tbl_deep_extend(
+  "force",
+  {},
+  vim.lsp.protocol.make_client_capabilities(),
+  require("cmp_nvim_lsp").default_capabilities(),
+  { textDocument = { foldingRange = { dynamicRegistration = false, lineFoldingOnly = true } } }
+)
+
+config.capabilities = capabilities
 local jar_patterns = {
   "/dev/microsoft/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar",
   "/dev/dgileadi/vscode-java-decompiler/server/*.jar",

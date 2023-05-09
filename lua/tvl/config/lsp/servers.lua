@@ -5,7 +5,9 @@ local servers = {
   jsonls = {},
   sqlls = {},
   intelephense = {}, -- php language server
-  jdtls = {},
+  jdtls = {
+    disabled = true
+  },
   lua_ls = {
     settings = {
       Lua = {
