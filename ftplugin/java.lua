@@ -1,5 +1,5 @@
 local jdtls = require("jdtls")
-local root_markers = { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle", "release", ".project" }
+local root_markers = { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" }
 local root_dir = require("jdtls.setup").find_root(root_markers)
 local home = os.getenv("HOME")
 local project_name = vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
@@ -23,7 +23,7 @@ end
 
 vim.opt_local.shiftwidth = 2
 vim.opt_local.tabstop = 2
-vim.opt_local.cmdheight = 1
+
 local config = {}
 
 config.settings = {
@@ -108,7 +108,7 @@ config.cmd = {
   "java.base/java.util=ALL-UNNAMED",
   "--add-opens",
   "java.base/java.lang=ALL-UNNAMED",
-
+  "-XX:+ShowCodeDetailsInExceptionMessages",
   "-jar",
   vim.fn.glob(JDTLS_LOCATION .. "/plugins/org.eclipse.equinox.launcher_*.jar"),
   -- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^                                       ^^^^^^^^^^^^^^
@@ -128,15 +128,8 @@ config.cmd = {
 
 config.root_dir = root_dir
 
-local capabilities = vim.tbl_deep_extend(
-  "force",
-  {},
-  vim.lsp.protocol.make_client_capabilities(),
-  require("cmp_nvim_lsp").default_capabilities(),
-  { textDocument = { foldingRange = { dynamicRegistration = false, lineFoldingOnly = true } } }
-)
+config.capabilities = require("tvl.util").capabilities()
 
-config.capabilities = capabilities
 local jar_patterns = {
   "/dev/microsoft/java-debug/com.microsoft.java.debug.plugin/target/com.microsoft.java.debug.plugin-*.jar",
   "/dev/dgileadi/vscode-java-decompiler/server/*.jar",

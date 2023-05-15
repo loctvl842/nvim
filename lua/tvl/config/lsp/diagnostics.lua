@@ -8,7 +8,11 @@ local diagnostics = {
     update_in_insert = false,
   },
   on = {
-    virtual_text = true, -- disable virtual text
+    virtual_text = {
+      spacing = 4,
+      source = "if_many",
+      prefix = "●",
+    }, -- disable virtual text
     virtual_lines = false,
     update_in_insert = true,
     underline = true,

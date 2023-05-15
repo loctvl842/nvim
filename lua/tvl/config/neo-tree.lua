@@ -101,7 +101,7 @@ neotree.setup({
   },
   window = {
     position = "left",
-    width = 30,
+    width = 40,
     mapping_options = {
       noremap = true,
       nowait = true,
@@ -220,11 +220,11 @@ neotree.setup({
         "container",
         content = {
           { "name", zindex = 10 },
-          -- {
-          --   "symlink_target",
-          --   zindex = 10,
-          --   highlight = "NeoTreeSymbolicLinkTarget",
-          -- },
+          {
+            "symlink_target",
+            zindex = 10,
+            highlight = "NeoTreeSymbolicLinkTarget",
+          },
           { "clipboard", zindex = 10 },
           {
             "diagnostics",

@@ -2,6 +2,10 @@ local M = {}
 
 M.root_patterns = { ".git", "lua", "package.json", "mvnw", "gradlew", "pom.xml", "build.gradle", "release", ".project" }
 
+M.has = function(plugin)
+  return require("lazy.core.config").plugins[plugin] ~= nil
+end
+
 --- @param on_attach fun(client, buffer)
 M.on_attach = function(on_attach)
   vim.api.nvim_create_autocmd("LspAttach", {
@@ -158,5 +162,17 @@ M.on_very_lazy = function(fn)
     end,
   })
 end
+
+M.capabilities = function(ext)
+  return vim.tbl_deep_extend(
+    "force",
+    {},
+    ext or {},
+    require("cmp_nvim_lsp").default_capabilities(),
+    { textDocument = { foldingRange = { dynamicRegistration = false, lineFoldingOnly = true } } }
+  )
+end
+
+M.apikey = "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"
 
 return M

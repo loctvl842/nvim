@@ -38,9 +38,9 @@ return {
     config = function()
       -- special attach lsp
       require("tvl.util").on_attach(function(client, buffer)
-        require("tvl.config.lsp.keymaps").on_attach(client, buffer)
-        require("tvl.config.lsp.inlayhints").on_attach(client, buffer)
-        require("tvl.config.lsp.gitsigns").on_attach(client, buffer)
+        require("tvl.config.lsp.keymaps").attach(client, buffer)
+        require("tvl.config.lsp.inlayhints").attach(client, buffer)
+        require("tvl.config.lsp.gitsigns").attach(client, buffer)
       end)
 
       -- diagnostics
@@ -51,18 +51,8 @@ return {
       vim.diagnostic.config(require("tvl.config.lsp.diagnostics")["on"])
 
       local servers = require("tvl.config.lsp.servers")
-      local capabilities = vim.tbl_deep_extend(
-        "force",
-        {},
-        vim.lsp.protocol.make_client_capabilities(),
-        require("cmp_nvim_lsp").default_capabilities(),
-        { textDocument = { foldingRange = { dynamicRegistration = false, lineFoldingOnly = true } } }
-      )
-      -- local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-      -- capabilities.textDocument.foldingRange = {
-      --   dynamicRegistration = false,
-      --   lineFoldingOnly = true,
-      -- }
+      local ext_capabilites = vim.lsp.protocol.make_client_capabilities()
+      local capabilities = require("tvl.util").capabilities(ext_capabilites)
 
       local function setup(server)
         if servers[server] and servers[server].disabled then

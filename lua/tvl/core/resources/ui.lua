@@ -20,9 +20,12 @@ return {
       end,
     },
     init = function()
-      require("tvl.util").on_very_lazy(function()
-        vim.notify = require("notify")
-      end)
+      local util = require("tvl.util")
+      if not util.has("noice.nvim") then
+        util.on_very_lazy(function()
+          vim.notify = require("notify")
+        end)
+      end
     end,
   },
 
@@ -267,14 +270,6 @@ return {
   },
 
   {
-    "folke/noice.nvim",
-    lazy = true,
-    config = function()
-      require("tvl.config.noice")
-    end,
-  },
-
-  {
     "anuvyklack/windows.nvim",
     event = "WinNew",
     dependencies = {
@@ -340,5 +335,67 @@ return {
         return vim.ui.input(...)
       end
     end,
+  },
+
+  {
+    "kosayoda/nvim-lightbulb",
+    opts = {
+      sign = {
+        enabled = true,
+        -- Priority of the gutter sign
+        priority = 20,
+      },
+      status_text = {
+        enabled = true,
+        -- Text to provide when code actions are available
+        text = "status_text",
+        -- Text to provide when no actions are available
+        text_unavailable = "",
+      },
+      autocmd = {
+        enabled = true,
+        -- see :help autocmd-pattern
+        pattern = { "*" },
+        -- see :help autocmd-events
+        events = { "CursorHold", "CursorHoldI", "LspAttach" },
+      },
+    },
+  },
+
+  -- noicer ui
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+      -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+      override = {
+        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+        ["vim.lsp.util.stylize_markdown"] = true,
+        ["cmp.entry.get_documentation"] = true,
+      },
+      cmdline = {
+        view = "cmdline",
+        format = {
+          cmdline = { icon = "  " },
+          search_down = { icon = "  󰄼 " },
+          search_up = { icon = "  " },
+        },
+      },
+      lsp = {
+        progress = { enabled = true },
+        hover = { enabled = false },
+        signature = { enabled = false },
+      },
+      routes = {
+        {
+          filter = {
+            event = "msg_show",
+            kind = "",
+            find = "written",
+          },
+          opts = { skip = true },
+        },
+      },
+    },
   },
 }

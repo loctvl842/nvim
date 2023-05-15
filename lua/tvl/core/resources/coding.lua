@@ -194,4 +194,14 @@ return {
     "glepnir/lspsaga.nvim",
     lazy = true,
   },
+
+  {
+    "jackMort/ChatGPT.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("chatgpt").setup({
+        api_key_cmd = require("tvl.util").apikey
+      })
+    end,
+  },
 }

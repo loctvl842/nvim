@@ -1,6 +1,6 @@
 local M = {}
 
-M.on_attach = function(client, buffer)
+M.attach = function(client, buffer)
   local opts = { noremap = true, silent = true }
   local map = vim.api.nvim_buf_set_keymap
   map(buffer, "n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)

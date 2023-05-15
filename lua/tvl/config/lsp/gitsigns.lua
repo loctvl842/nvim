@@ -1,6 +1,6 @@
 local M = {}
 
-M.on_attach = function(_, buffer)
+M.attach = function(_, buffer)
   local gs = package.loaded.gitsigns
   local function map(mode, l, r, opts)
     opts = opts or {}
