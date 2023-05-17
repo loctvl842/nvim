@@ -55,7 +55,7 @@ config.settings = {
       },
     },
     format = {
-      enabled = false,
+      enabled = true,
     },
   },
   signatureHelp = { enabled = true },
