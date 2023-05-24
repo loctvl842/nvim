@@ -197,7 +197,7 @@ return {
 
   {
     "jackMort/ChatGPT.nvim",
-    event = "VeryLazy",
+    lazy = require("tvl.util").apikey == nil,
     config = function()
       require("chatgpt").setup({
         api_key_cmd = require("tvl.util").apikey
