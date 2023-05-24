@@ -6,7 +6,7 @@ local servers = {
   sqlls = {},
   intelephense = {}, -- php language server
   jdtls = {
-    disabled = true
+    disabled = true,
   },
   lua_ls = {
     settings = {
@@ -30,10 +30,10 @@ local servers = {
           globals = { "vim" },
         },
         workspace = {
-          library = {
-            [vim.fn.expand("$VIMRUNTIME/lua")] = false,
-            [vim.fn.stdpath("config") .. "/lua"] = false,
-          },
+          checkThirdParty = false,
+        },
+        completion = {
+          callSnippet = "Replace",
         },
         telemetry = {
           enable = false,
