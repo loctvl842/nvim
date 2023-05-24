@@ -44,6 +44,8 @@ neotree.setup({
       -- expander_collapsed = "",
       -- expander_expanded = "",
 
+      -- expander_collapsed = " ",
+      -- expander_expanded = " ",
       expander_collapsed = "",
       expander_expanded = "",
       expander_highlight = "NeoTreeExpander",
@@ -51,11 +53,10 @@ neotree.setup({
     icon = {
       folder_closed = "",
       folder_open = "",
-      -- folder_closed = "",
-      -- folder_open = "",
-      -- folder_closed = " ",
-      -- folder_open = " ",
       folder_empty = "",
+      -- folder_closed = "",
+      -- folder_open = "",
+      -- folder_empty = "",
       default = " ",
       highlight = "NeoTreeFileIcon",
     },

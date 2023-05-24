@@ -151,7 +151,6 @@ return {
 
   {
     "utilyre/barbecue.nvim",
-    -- branch = "fix/E36",
     event = { "BufReadPost" },
     dependencies = {
       "SmiteshP/nvim-navic",

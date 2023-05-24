@@ -192,7 +192,10 @@ return {
 
   {
     "glepnir/lspsaga.nvim",
-    lazy = false,
+    lazy = true,
+    config = function ()
+      require("lspsaga").setup({})
+    end
   },
 
   {
