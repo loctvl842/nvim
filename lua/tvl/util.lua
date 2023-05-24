@@ -173,6 +173,4 @@ M.capabilities = function(ext)
   )
 end
 
-M.apikey = "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"
-
 return M
