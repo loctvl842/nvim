@@ -192,7 +192,7 @@ return {
 
   {
     "glepnir/lspsaga.nvim",
-    lazy = true,
+    lazy = false,
   },
 
   {
