@@ -18,7 +18,7 @@ local prev_branch = ""
 M.branch = {
   "branch",
   icons_enabled = false,
-  icon = hl_str("", "SLGitIcon", "SLBranchName"),
+  icon = hl_str("", "SLGitIcon", "SLBranchName"),
   colored = false,
   fmt = function(str)
     if vim.bo.filetype == "toggleterm" then
@@ -27,7 +27,7 @@ M.branch = {
       str = "!=vcs"
     end
     prev_branch = str
-    local icon = hl_str(" ", "SLGitIcon", "SLBranchName")
+    local icon = hl_str("  ", "SLGitIcon", "SLBranchName")
     return hl_str(config.separator_icon.left, "SLSeparator")
       .. hl_str(icon, "SLGitIcon")
       .. hl_str(str, "SLBranchName")

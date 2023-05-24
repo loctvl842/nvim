@@ -25,11 +25,11 @@ local function generate(config, palette)
   return {
     SLGitIcon = {
       bg = float and palette.float_background or palette.statusbar_bg,
-      fg = colorful and palette.yellow or palette.statusbar_fg,
+      fg = colorful and palette.white or palette.statusbar_fg,
     },
     SLBranchName = {
       bg = float and palette.float_background or palette.statusbar_bg,
-      fg = colorful and palette.white or palette.statusbar_fg,
+      fg = colorful and palette.yellow or palette.statusbar_fg,
     },
     SLError = {
       bg = float and palette.editor_bg or palette.statusbar_bg,

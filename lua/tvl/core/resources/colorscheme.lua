@@ -19,7 +19,7 @@ return {
       monokai.setup({
         transparent_background = false,
         devicons = true,
-        filter = "spectrum", -- classic | octagon | pro | machine | ristretto | spectrum
+        filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
         day_night = {
           enable = false,
           day_filter = "classic",
