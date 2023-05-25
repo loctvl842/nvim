@@ -11,6 +11,11 @@ return {
       },
     },
     opts = {
+      icons = {
+        ERROR = " ",
+        INFO = " ",
+        WARN = " ",
+      },
       timeout = 3000,
       max_height = function()
         return math.floor(vim.o.lines * 0.75)
@@ -36,7 +41,8 @@ return {
       options = {
         diagnostics = "nvim_lsp", -- | "nvim_lsp" | "coc",
         -- separator_style = "", -- | "thick" | "thin" | "slope" | { 'any', 'any' },
-        separator_style = { "", "" }, -- | "thick" | "thin" | { 'any', 'any' },
+        -- separator_style = { "", "" }, -- | "thick" | "thin" | { 'any', 'any' },
+        separator_style = "slant", -- | "thick" | "thin" | { 'any', 'any' },
         indicator = {
           -- icon = " ",
           -- style = 'icon',
@@ -366,34 +372,32 @@ return {
     "folke/noice.nvim",
     event = "VeryLazy",
     opts = {
-      -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
-      override = {
-        ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-        ["vim.lsp.util.stylize_markdown"] = true,
-        ["cmp.entry.get_documentation"] = true,
-      },
       cmdline = {
         view = "cmdline",
         format = {
           cmdline = { icon = "  " },
           search_down = { icon = "  󰄼" },
           search_up = { icon = "  " },
-          lua = {icon = " "}
+          lua = { icon = " " },
         },
       },
       lsp = {
         progress = { enabled = true },
         hover = { enabled = false },
         signature = { enabled = false },
+        -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true,
+        },
       },
       routes = {
         {
           filter = {
             event = "msg_show",
-            kind = "",
-            find = "written",
+            find = "%d+L, %d+B",
           },
-          opts = { skip = true },
         },
       },
     },

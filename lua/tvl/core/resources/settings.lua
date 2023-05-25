@@ -9,7 +9,6 @@ vim.api.nvim_create_autocmd("User", {
   end,
 })
 
-util.lazy_notify()
 util.load("options")
 
 return {}

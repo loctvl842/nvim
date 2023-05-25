@@ -1,4 +1,11 @@
 local servers = {
+  rust_analyzer = {
+    settings = {
+      ["rust-analyzer"] = {
+        inlayHints = true,
+      },
+    },
+  },
   clangd = {},
   cssls = {},
   html = {},
