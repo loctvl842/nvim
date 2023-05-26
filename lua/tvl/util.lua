@@ -78,7 +78,8 @@ M.telescope_theme = function(type)
   end
   return require("telescope.themes")["get_" .. type]({
     cwd = M.get_root(),
-    borderchars = { "█", "█", "▀", "█", "█", "█", "▀", "▀" },
+    borderchars = { "█", "█", "▔", "█", "█", "█", "▔", "▔" },
+    -- borderchars = { "1", "2", "3", "4", "5", "6", "7", "8" },
   })
 end
 

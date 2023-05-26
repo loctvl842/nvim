@@ -320,7 +320,7 @@ return {
   -- better vim.ui
   {
     "stevearc/dressing.nvim",
-    lazy = true,
+    lazy = false,
     opts = {
       input = {
         border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" }, -- [ top top top - right - bottom bottom bottom - left ]
