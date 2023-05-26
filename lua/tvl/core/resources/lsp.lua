@@ -1,10 +1,5 @@
 return {
   {
-    "lvimuser/lsp-inlayhints.nvim",
-    opts = {}
-  },
-
-  {
     "neovim/nvim-lspconfig",
     branch = "master",
     event = { "BufReadPre", "BufNewFile" },

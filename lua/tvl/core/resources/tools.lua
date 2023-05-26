@@ -89,4 +89,18 @@ return {
       },
     },
   },
+
+  {
+    "wintermute-cell/gitignore.nvim",
+    keys = {
+      {
+        "<leader>gi",
+        function()
+          local gitignore = require("gitignore")
+          gitignore.generate()
+        end,
+        desc = "Don't Save Current Session",
+      },
+    },
+  },
 }
