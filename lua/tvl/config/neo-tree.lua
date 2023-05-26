@@ -37,7 +37,7 @@ neotree.setup({
       indent_marker = "│",
       last_indent_marker = "└",-- └
       -- indent_marker = "▏",
-      -- last_indent_marker = "▏",
+      -- last_indent_marker = "🭼",
       highlight = "NeoTreeIndentMarker",
       -- expander config, needed for nesting files
       with_expanders = true, -- if nil and file nesting is enabled, will enable expanders

@@ -99,6 +99,7 @@ return {
           "%.flac",
           "%.tar.gz",
         },
+        results_title = '',
         layout_config = {
           horizontal = {
             prompt_position = "top",
