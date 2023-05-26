@@ -326,7 +326,7 @@ return {
         border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" }, -- [ top top top - right - bottom bottom bottom - left ]
         win_options = { winblend = 0 },
       },
-      select = { telescope = require("tvl.util").telescope_theme("dropdown") },
+      select = { telescope = require("tvl.util").telescope_theme() },
     },
     init = function()
       ---@diagnostic disable-next-line: duplicate-set-field
