@@ -45,7 +45,11 @@ return {
       defaults = {
         prompt_prefix = "  ",
         selection_caret = "❯ ",
-        borderchars = { "█", " ", "▀", "█", "█", " ", " ", "▀" },
+        borderchars = {
+          prompt = { "█", " ", "▀", "█", "█", " ", "", "▀" },
+          results = { "█", " ", "▀", "█", "█", " ", " ", "▀" },
+          preview = { "█", "█", "▀", "█", "█", "█", "▀", "▀" },
+        },
         sorting_strategy = "ascending",
         file_ignore_patterns = {
           ".git/",
@@ -99,7 +103,7 @@ return {
           "%.flac",
           "%.tar.gz",
         },
-        results_title = '',
+        results_title = "",
         layout_config = {
           horizontal = {
             prompt_position = "top",
@@ -152,6 +156,7 @@ return {
       window = {
         margin = { 1, 0, 2, 0 }, -- extra window margin [top, right, bottom, left]
         padding = { 1, 2, 1, 2 }, -- extra window padding [top, right, bottom, left]
+        winblend = 5, -- value between 0-100 0 for fully opaque and 100 for fully transparent
       },
       layout = {
         height = { min = 3, max = 25 }, -- min and max height of the columns
@@ -334,18 +339,6 @@ return {
       { "fL", "zL", desc = "Half screen to the right" },
     },
   },
-
-  -- {
-  --   "j-hui/fidget.nvim",
-  --   opts = {
-  --     window = {
-  --       relative = "win", -- where to anchor, either "win" or "editor"
-  --       blend = 0, -- &winblend for the window
-  --       zindex = nil, -- the zindex value for the window
-  --       border = "none", -- style of border for the fidget window
-  --     },
-  --   },
-  -- },
 
   {
     "luukvbaal/statuscol.nvim",

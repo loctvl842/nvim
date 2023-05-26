@@ -74,12 +74,17 @@ end
 ---@param type "ivy" | "dropdown" | "cursor" | nil
 M.telescope_theme = function(type)
   if type == nil then
-    return {}
+    return {
+      borderchars = { "█", "█", "▀", "█", "█", "█", "▀", "▀" },
+      layout_config = {
+        width = 80,
+        height = 0.5,
+      },
+    }
   end
   return require("telescope.themes")["get_" .. type]({
     cwd = M.get_root(),
     borderchars = { "█", "█", "▔", "█", "█", "█", "▔", "▔" },
-    -- borderchars = { "1", "2", "3", "4", "5", "6", "7", "8" },
   })
 end
 
