@@ -1,3 +1,5 @@
+local Util = require("tvl.util")
+
 return {
   {
     "rcarriga/nvim-notify",
@@ -25,9 +27,8 @@ return {
       end,
     },
     init = function()
-      local util = require("tvl.util")
-      if not util.has("noice.nvim") then
-        util.on_very_lazy(function()
+      if not Util.has("noice.nvim") then
+        Util.on_very_lazy(function()
           vim.notify = require("notify")
         end)
       end
@@ -208,9 +209,7 @@ return {
       direction = "float",
       autochdir = false,
       float_opts = {
-        border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" }, -- [ top top top - right - bottom bottom bottom - left ]
-        -- border = { " ", "▁", " ", "▎", " ", "▔", " ", "▕" }, -- [ top top top - right - bottom bottom bottom - left ]
-        -- border = "single",
+        border = Util.generate_borderchars("thick", "tl-t-tr-r-bl-b-br-l"),
         winblend = 0,
       },
       highlights = {
@@ -323,10 +322,10 @@ return {
     lazy = false,
     opts = {
       input = {
-        border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" }, -- [ top top top - right - bottom bottom bottom - left ]
+        border = Util.generate_borderchars("thick", "tl-t-tr-r-bl-b-br-l"),
         win_options = { winblend = 0 },
       },
-      select = { telescope = require("tvl.util").telescope_theme() },
+      select = { telescope = Util.telescope_theme("cursor") },
     },
     init = function()
       ---@diagnostic disable-next-line: duplicate-set-field

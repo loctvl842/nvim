@@ -43,13 +43,28 @@ return {
     version = false, -- telescope did only one release, so use HEAD for now
     opts = {
       defaults = {
-        prompt_prefix = "  ",
-        selection_caret = "❯ ",
+        prompt_prefix = "   ",
+        selection_caret = "  ",
+        entry_prefix = "   ",
         borderchars = {
-          prompt = { "█", " ", "▀", "█", "█", " ", "", "▀" },
-          results = { "█", " ", "▀", "█", "█", " ", " ", "▀" },
-          preview = { "█", "█", "▀", "█", "█", "█", "▀", "▀" },
+          prompt = require("tvl.util").generate_borderchars(
+            "thick",
+            nil,
+            { top = "█", top_left = "█", right = " ", top_right = " ", bottom_right = " " }
+          ),
+          results = require("tvl.util").generate_borderchars(
+            "thick",
+            nil,
+            { top = "█", top_left = "█", right = " ", top_right = " ", bottom_right = " " }
+          ),
+          preview = require("tvl.util").generate_borderchars(
+            "thick",
+            nil,
+            { top = "█", top_left = "█", top_right = "█" }
+          ),
         },
+        dynamic_preview_title = true,
+        hl_result_eol = true,
         sorting_strategy = "ascending",
         file_ignore_patterns = {
           ".git/",

@@ -1,9 +1,10 @@
 local neotree = require("neo-tree")
 local icons = require("tvl.core.icons")
+local Util = require("tvl.util")
 
 neotree.setup({
   close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
-  popup_border_style = { "█", "█", "█", "█", "▀", "▀", "▀", "█" },
+  popup_border_style = Util.generate_borderchars("thick", "tl-t-tr-r-bl-b-br-l"),
   -- popup_border_style = "rounded",
   enable_git_status = true,
   enable_diagnostics = true,

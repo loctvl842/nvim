@@ -38,10 +38,6 @@ local servers = {
         },
         workspace = {
           checkThirdParty = false,
-          library = {
-            [vim.fn.expand("$VIMRUNTIME/lua")] = false,
-            [vim.fn.stdpath("config") .. "/lua"] = false,
-          },
         },
         completion = {
           callSnippet = "Replace",
