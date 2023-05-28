@@ -1,14 +1,20 @@
 return {
   diagnostics = {
-    Error = "",
-    Warn = "",
-    Hint = "",
-    Info = "",
+    error = "",
+    warn = "",
+    hint = "",
+    info = "",
   },
   git = {
     added = "",
     modified = "",
     removed = "",
+    renamed = "",
+    untracked = "",
+    ignored = "",
+    unstaged = "U",
+    staged = "",
+    conflict = "",
   },
   kinds = {
     Array = " ",

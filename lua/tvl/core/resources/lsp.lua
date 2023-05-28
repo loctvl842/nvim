@@ -45,7 +45,10 @@ return {
 
       -- diagnostics
       for name, icon in pairs(require("tvl.core.icons").diagnostics) do
-        name = "DiagnosticSign" .. name
+        local function firstUpper(s)
+          return s:sub(1, 1):upper() .. s:sub(2)
+        end
+        name = "DiagnosticSign" .. firstUpper(name)
         vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
       end
       vim.diagnostic.config(require("tvl.config.lsp.diagnostics")["on"])

@@ -160,7 +160,6 @@ M.notify = function(msg, level, opts)
   end)
 end
 
-
 --- @param type "thin" | "thick" | "empty" | nil
 --- @param order "t-r-b-l-tl-tr-br-bl" | "tl-t-tr-r-bl-b-br-l" | nil
 --- @param opts BorderIcons | nil
