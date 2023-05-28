@@ -160,15 +160,6 @@ M.notify = function(msg, level, opts)
   end)
 end
 
----@class BorderIcons
----@field top string
----@field right string
----@field bottom string
----@field left string
----@field top_left string
----@field top_right string
----@field bottom_right string
----@field bottom_left string
 
 --- @param type "thin" | "thick" | "empty" | nil
 --- @param order "t-r-b-l-tl-tr-br-bl" | "tl-t-tr-r-bl-b-br-l" | nil

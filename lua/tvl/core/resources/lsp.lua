@@ -88,19 +88,6 @@ return {
     config = function()
       require("mason").setup()
     end,
-    -- opts = {
-    --   ui = {
-    --     -- border = "rounded",
-    --     border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" },
-    --     icons = {
-    --       package_installed = "◍",
-    --       package_pending = "◍",
-    --       package_uninstalled = "◍",
-    --     },
-    --   },
-    --   log_level = vim.log.levels.INFO,
-    --   max_concurrent_installers = 4,
-    -- },
   },
 
   -- formatters
@@ -111,14 +98,18 @@ return {
     config = function()
       local null_ls = require("null-ls")
       local formatting = null_ls.builtins.formatting
+      local diagnostics = null_ls.builtins.diagnostics
       null_ls.setup({
         debug = false,
+        -- You can then register sources by passing a sources list into your setup function:
+        -- using `with()`, which modifies a subset of the source's default options
         sources = {
           formatting.prettier,
           formatting.stylua,
-          formatting.black.with({ extra_args = { "--fast" } }),
+          formatting.black,
           formatting.markdownlint,
           formatting.beautysh.with({ extra_args = { "--indent-size", "2" } }),
+          diagnostics.flake8.with({ extra_args = { "--ignore=E203,E501" }, filetypes = { "python" } }),
         },
       })
     end,
@@ -133,6 +124,7 @@ return {
         "stylua",
         "google_java_format",
         "black",
+        "flake8",
         "markdownlint",
         "beautysh",
       },

@@ -52,16 +52,7 @@ return {
     Bug = "",
   },
   borders = {
-    empty = {
-      top = " ",
-      right = " ",
-      bottom = " ",
-      left = " ",
-      top_left = " ",
-      top_right = " ",
-      bottom_right = " ",
-      bottom_left = " ",
-    },
+    --- @class BorderIcons
     thin = {
       top = "▔",
       right = "▕",
@@ -72,6 +63,18 @@ return {
       bottom_right = "🭿",
       bottom_left = "🭼",
     },
+    ---@type BorderIcons
+    empty = {
+      top = " ",
+      right = " ",
+      bottom = " ",
+      left = " ",
+      top_left = " ",
+      top_right = " ",
+      bottom_right = " ",
+      bottom_left = " ",
+    },
+    ---@type BorderIcons
     thick = {
       top = "▄",
       right = "█",

@@ -18,21 +18,6 @@ local servers = {
   lua_ls = {
     settings = {
       Lua = {
-        hint = {
-          enable = true,
-          arrayIndex = "Disable", -- "Enable", "Auto", "Disable"
-          await = true,
-          paramName = "Disable", -- "All", "Literal", "Disable"
-          paramType = false,
-          semicolon = "Disable", -- "All", "SameLine", "Disable"
-          setType = true,
-        },
-        runtime = {
-          version = "LuaJIT",
-          special = {
-            reload = "require",
-          },
-        },
         diagnostics = {
           globals = { "vim" },
         },
@@ -41,10 +26,19 @@ local servers = {
         },
         completion = {
           callSnippet = "Replace",
-          autoRequire = true,
         },
-        telemetry = {
+        misc = {
+          parameters = {
+            "--log-level=trace",
+          },
+        },
+        format = {
           enable = false,
+          defaultConfig = {
+            indent_style = "space",
+            indent_size = "2",
+            continuation_indent_size = "2",
+          },
         },
       },
     },

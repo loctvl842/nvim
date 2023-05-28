@@ -1,3 +1,5 @@
+local Util = require("tvl.util")
+
 return {
   {
     "loctvl842/neo-tree.nvim",
@@ -47,21 +49,17 @@ return {
         selection_caret = "  ",
         entry_prefix = "   ",
         borderchars = {
-          prompt = require("tvl.util").generate_borderchars(
+          prompt = Util.generate_borderchars(
             "thick",
             nil,
             { top = "█", top_left = "█", right = " ", top_right = " ", bottom_right = " " }
           ),
-          results = require("tvl.util").generate_borderchars(
+          results = Util.generate_borderchars(
             "thick",
             nil,
             { top = "█", top_left = "█", right = " ", top_right = " ", bottom_right = " " }
           ),
-          preview = require("tvl.util").generate_borderchars(
-            "thick",
-            nil,
-            { top = "█", top_left = "█", top_right = "█" }
-          ),
+          preview = Util.generate_borderchars("thick", nil, { top = "█", top_left = "█", top_right = "█" }),
         },
         dynamic_preview_title = true,
         hl_result_eol = true,
@@ -218,7 +216,7 @@ return {
       },
       current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
       preview_config = {
-        border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" }, -- [ top top top - right - bottom bottom bottom - left ]
+        border = Util.generate_borderchars("thick", "tl-t-tr-r-bl-b-br-l"), -- [ top top top - right - bottom bottom bottom - left ]
       },
     },
     keys = {
