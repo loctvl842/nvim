@@ -122,7 +122,7 @@ return {
           prompt = Util.generate_borderchars(
             "thick",
             nil,
-            { top = "█", top_left = "█", right = " ", top_right = " ", bottom_right = " " }
+            { top = "█", top_left = "█", left = "█", right = " ", top_right = " ", bottom_right = " " }
           ),
           results = Util.generate_borderchars(
             "thick",
