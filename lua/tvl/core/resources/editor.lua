@@ -45,10 +45,10 @@ return {
         tabs_layout = "equal",
         show_separator_on_edge = true,
         tab_labels = {
-          filesystem = "  ",
-          buffers = "  ",
-          git_status = "  ",
-          diagnostics = " 裂",
+          filesystem = "󰉓",
+          buffers = "󰈙",
+          git_status = "",
+          diagnostics = "󰒡",
         },
       },
 
@@ -67,7 +67,7 @@ return {
           expander_highlight = "NeoTreeExpander",
         },
         icon = {
-          folder_closed = "",
+          folder_closed = "",
           folder_open = "",
           folder_empty = "",
           folder_empty_open = "",
@@ -274,12 +274,12 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     opts = {
       signs = {
-        add = { text = "┃" },
-        change = { text = "┋" },
-        delete = { text = "契" },
-        topdelhfe = { text = "契" },
-        changedelete = { text = "┃" },
-        untracked = { text = "┃" },
+        add = { text = Icons.gitsigns.add },
+        change = { text = Icons.gitsigns.change },
+        delete = { text = Icons.gitsigns.delete },
+        topdelhfe = { text = Icons.gitsigns.topdelhfe },
+        changedelete = { text = Icons.gitsigns.changedelete },
+        untracked = { text = Icons.gitsigns.untracked },
       },
       current_line_blame = true,
       current_line_blame_opts = {

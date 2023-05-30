@@ -148,7 +148,7 @@ vim.api.nvim_create_autocmd("User", {
         -- ), --your header
         center = {
           {
-            icon = "   ",
+            icon = "   ",
             icon_hl = "DashboardRecent",
             desc = "Recent Files                                    ",
             -- desc_hi = "String",
@@ -157,7 +157,7 @@ vim.api.nvim_create_autocmd("User", {
             action = "Telescope oldfiles",
           },
           {
-            icon = "   ",
+            icon = "   ",
             icon_hl = "DashboardSession",
             desc = "Last Session",
             -- desc_hi = "String",
@@ -202,7 +202,7 @@ vim.api.nvim_create_autocmd("User", {
             action = "Mason",
           },
           {
-            icon = "   ",
+            icon = "   ",
             icon_hl = "DashboardQuit",
             desc = "Quit Neovim",
             -- desc_hi = "String",

@@ -2,19 +2,27 @@ return {
   diagnostics = {
     error = "",
     warn = "",
-    hint = "",
+    hint = "",
     info = "",
   },
   git = {
     added = "",
     modified = "",
     removed = "",
-    renamed = "",
+    renamed = "➜",
     untracked = "",
     ignored = "",
     unstaged = "U",
     staged = "",
     conflict = "",
+  },
+  gitsigns = {
+    add = "┃",
+    change = "┋",
+    delete = "",
+    topdelhfe = "",
+    changedelete = "┃",
+    untracked = "┃",
   },
   kinds = {
     Array = " ",
@@ -29,7 +37,7 @@ return {
     Event = " ",
     Field = " ",
     File = " ",
-    Folder = " ",
+    Folder = " ",
     Function = " ",
     Interface = " ",
     Key = " ",
@@ -37,7 +45,7 @@ return {
     Method = " ",
     Module = " ",
     Namespace = " ",
-    Null = "ﳠ ",
+    Null = " ",
     Number = " ",
     Object = " ",
     Operator = " ",
@@ -52,10 +60,7 @@ return {
     Unit = " ",
     Value = " ",
     Variable = " ",
-  },
-  ui = {
-    Pencil = "",
-    Bug = "",
+    Macro = "", -- Macro
   },
   borders = {
     --- @class BorderIcons
