@@ -1,10 +1,8 @@
-local function augroup(name)
-  return vim.api.nvim_create_augroup("tvl_" .. name, { clear = true })
-end
+local Util = require("tvl.util")
 
 -- Highlight on yank
 vim.api.nvim_create_autocmd({ "TextYankPost" }, {
-  group = augroup("highlight_yank"),
+  group = Util.augroup("highlight_yank"),
   callback = function()
     vim.highlight.on_yank({ higroup = "Visual" })
   end,
@@ -12,7 +10,7 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
 
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd({ "VimResized" }, {
-  group = augroup("resize_splits"),
+  group = Util.augroup("resize_splits"),
   callback = function()
     vim.cmd("tabdo wincmd =")
   end,
@@ -20,7 +18,7 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
 
 -- close some filetypes with <q>
 vim.api.nvim_create_autocmd("FileType", {
-  group = augroup("close_with_q"),
+  group = Util.augroup("close_with_q"),
   pattern = {
     "qf",
     "help",
@@ -40,7 +38,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- Set wrap and spell in markdown and gitcommit
 vim.api.nvim_create_autocmd({ "FileType" }, {
-  group = augroup("wrap_spell"),
+  group = Util.augroup("wrap_spell"),
   pattern = { "gitcommit", "markdown" },
   callback = function()
     vim.opt_local.wrap = true
@@ -50,14 +48,14 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 
 vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
   pattern = "?*",
-  group = augroup("remember_folds"),
+  group = Util.augroup("remember_folds"),
   callback = function()
     vim.cmd([[silent! mkview 1]])
   end,
 })
 vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
   pattern = "?*",
-  group = augroup("remember_folds"),
+  group = Util.augroup("remember_folds"),
   callback = function()
     vim.cmd([[silent! loadview 1]])
   end,
@@ -65,7 +63,7 @@ vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
 
 -- fix comment
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
-  group = augroup("comment_newline"),
+  group = Util.augroup("comment_newline"),
   pattern = { "*" },
   callback = function()
     vim.cmd([[set formatoptions-=cro]])
@@ -88,7 +86,7 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
 
 -- clear cmd output
 vim.api.nvim_create_autocmd({ "CursorHold" }, {
-  group = augroup("clear_term"),
+  group = Util.augroup("clear_term"),
   callback = function()
     vim.cmd([[echon '']])
   end,
@@ -120,7 +118,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
 
 -- Auto create dir when saving a file, in case some intermediate directory does not exist
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  group = augroup("auto_create_dir"),
+  group = Util.augroup("auto_create_dir"),
   callback = function(event)
     if event.match:match("^%w%w+://") then
       return
