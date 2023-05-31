@@ -51,7 +51,6 @@ return {
           diagnostics = "󰒡",
         },
       },
-
       default_component_configs = {
         indent = {
           indent_size = 2,
@@ -440,7 +439,7 @@ return {
             click = "v:lua.ScLa",
           },
           { text = { "%s" }, click = "v:lua.ScSa" }, -- Sign
-          { text = { "%C", " " }, click = "v:lua.ScFa" }, -- Fold
+          { text = { builtin.foldfunc, " " }, click = "v:lua.ScFa" }, -- Fold
         },
       })
       vim.api.nvim_create_autocmd({ "BufEnter" }, {

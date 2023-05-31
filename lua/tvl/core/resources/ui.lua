@@ -209,15 +209,6 @@ return {
     end,
   },
 
-  -- {
-  --   "goolord/alpha-nvim",
-  --   event = "VimEnter",
-  --   keys = { { "<leader>a", "<cmd>Alpha<cr>", "Alpha" } },
-  --   config = function()
-  --     require("tvl.config.alpha")
-  --   end,
-  -- },
-
   {
     "nvim-tree/nvim-web-devicons",
     lazy = true,

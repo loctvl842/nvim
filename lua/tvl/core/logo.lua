@@ -118,7 +118,7 @@ end
 
 --- @param type "night_fury" | "western_dragon"
 M.dragon.generate = function(type)
-  return vim.split(dragon[type], "\n")
+  return vim.split("\n" .. dragon[type], "\n")
 end
 
 M.dragon.random = function()
