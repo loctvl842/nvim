@@ -42,7 +42,7 @@ return {
 
   {
     "mattn/emmet-vim",
-    event = { "BufRead" },
+    event = { "BufRead", "BufNewFile" },
     init = function()
       vim.g.user_emmet_leader_key = "f"
       vim.g.user_emmet_mode = "n"
@@ -193,9 +193,9 @@ return {
   {
     "glepnir/lspsaga.nvim",
     lazy = true,
-    config = function ()
+    config = function()
       require("lspsaga").setup({})
-    end
+    end,
   },
 
   {
@@ -203,7 +203,7 @@ return {
     lazy = require("tvl.util").apikey == nil,
     config = function()
       require("chatgpt").setup({
-        api_key_cmd = require("tvl.util").apikey
+        api_key_cmd = require("tvl.util").apikey,
       })
     end,
   },

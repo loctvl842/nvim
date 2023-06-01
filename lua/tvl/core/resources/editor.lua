@@ -2,6 +2,8 @@ local Util = require("tvl.util")
 local Icons = require("tvl.core.icons")
 
 return {
+  { "nvim-tree/nvim-tree.lua", lazy = true, opts = {} },
+
   {
     "nvim-neo-tree/neo-tree.nvim",
     cmd = "Neotree",
@@ -27,7 +29,7 @@ return {
         desc = "Explorer Float (root dir)",
       },
     },
-    opts = require("tvl.config.neotree"),
+    opts = require("tvl.config.neo-tree"),
     init = function()
       vim.g.neo_tree_remove_legacy_commands = 1
       if vim.fn.argc() == 1 then

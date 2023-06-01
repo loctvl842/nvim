@@ -26,7 +26,7 @@ return {
           night_filter = "octagon",
         },
         inc_search = "background", -- underline | background
-        background_clear = {},
+        background_clear = { "nvim-tree" },
         plugins = {
           bufferline = {
             underline_selected = true,

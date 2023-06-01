@@ -64,6 +64,12 @@ return {
             text_align = "center",
             -- separator = true,
           },
+          {
+            filetype = "NvimTree",
+            text = "EXPLORER",
+            text_align = "center",
+            -- separator = true,
+          },
         },
         hover = {
           enabled = true,
