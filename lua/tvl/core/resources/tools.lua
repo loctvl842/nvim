@@ -1,7 +1,7 @@
 return {
   {
     "kevinhwang91/rnvimr",
-    event = { "BufReadPost" },
+    event = { "BufReadPost", "BufNewFile" },
     keys = { { "<leader>r", "<cmd>RnvimrToggle<cr>", desc = "Open file manager" } },
     init = function()
       -- Make Ranger to be hidden after picking a file

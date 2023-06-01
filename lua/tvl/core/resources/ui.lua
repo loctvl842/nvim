@@ -38,7 +38,7 @@ return {
 
   {
     "akinsho/bufferline.nvim",
-    event = { "BufReadPost" },
+    event = { "BufReadPost", "BufNewFile" },
     opts = {
       options = {
         diagnostics = "nvim_lsp", -- | "nvim_lsp" | "coc",
@@ -159,7 +159,7 @@ return {
 
   {
     "utilyre/barbecue.nvim",
-    event = { "BufReadPost" },
+    event = { "BufReadPost", "BufNewFile" },
     dependencies = {
       "SmiteshP/nvim-navic",
       "nvim-tree/nvim-web-devicons",
@@ -175,7 +175,7 @@ return {
 
   {
     "akinsho/toggleterm.nvim",
-    event = { "BufReadPost" },
+    event = { "BufReadPost", "BufNewFile" },
     opts = {
       open_mapping = [[<C-\>]],
       start_in_insert = true,
@@ -216,7 +216,7 @@ return {
 
   {
     "petertriho/nvim-scrollbar",
-    event = "BufReadPost",
+    event = { "BufReadPost", "BufNewFile" },
     opts = {
       set_highlights = false,
       excluded_filetypes = {

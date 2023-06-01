@@ -27,6 +27,7 @@ return {
         desc = "Explorer Float (root dir)",
       },
     },
+    opts = require("tvl.config.neotree"),
     init = function()
       vim.g.neo_tree_remove_legacy_commands = 1
       if vim.fn.argc() == 1 then
@@ -36,7 +37,6 @@ return {
         end
       end
     end,
-    opts = require("tvl.config.neotree"),
   },
 
   {
@@ -284,7 +284,7 @@ return {
 
   {
     "kevinhwang91/nvim-ufo",
-    event = "BufReadPost",
+    event = { "BufReadPost", "BufNewFile" },
     dependencies = { "kevinhwang91/promise-async", event = "BufReadPost" },
     opts = {
       fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
@@ -356,7 +356,7 @@ return {
 
   {
     "luukvbaal/statuscol.nvim",
-    event = "BufReadPost",
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
       local builtin = require("statuscol.builtin")
       require("statuscol").setup({
