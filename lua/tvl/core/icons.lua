@@ -15,7 +15,7 @@ return {
     unstaged = "U",
     staged = "",
     conflict = "",
-    deleted = " ",
+    deleted = "",
   },
   gitsigns = {
     add = "┃",

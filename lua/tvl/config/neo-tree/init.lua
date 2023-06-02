@@ -4,7 +4,6 @@ local Icons = require("tvl.core.icons")
 local config = {
   close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
   popup_border_style = Util.generate_borderchars("thick", "tl-t-tr-r-bl-b-br-l"),
-  -- source_selector provides clickable tabs to switch between sources.
   sources = {
     "filesystem",
     "buffers",

@@ -21,7 +21,7 @@ return {
 
   {
     "mg979/vim-visual-multi",
-    event = "BufAdd",
+    event = { "BufReadPost", "BufNewFile" },
   },
 
   {
