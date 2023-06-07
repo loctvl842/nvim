@@ -95,7 +95,7 @@ end
 M.custom = function(config)
   local statusline_hl = util.get_highlight_value("StatusLine")
   local palette = {
-    float_background = util.get_highlight_value("CursorLine").background,
+    float_background = util.get_highlight_value("Pmenu").background,
     editor_bg = util.get_highlight_value("Normal").background or "NONE",
     statusbar_bg = statusline_hl.background or "#000000",
     statusbar_fg = statusline_hl.foreground or "#505050",

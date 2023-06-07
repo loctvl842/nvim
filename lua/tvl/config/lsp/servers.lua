@@ -69,21 +69,72 @@ local servers = {
       },
     },
   },
+
+  -- python language server
   pyright = {
     settings = {
       python = {
         analysis = {
+          indexing = true,
           typeCheckingMode = "basic",
-          diagnosticMode = "workspace",
+          diagnosticMode = "openFilesOnly",
+          autoImportCompletions = false,
+          -- autoSearchPaths = false,
           inlayHints = {
             variableTypes = true,
             functionReturnTypes = true,
+          },
+          useLibraryCodeForTypes = true,
+          diagnosticSeverityOverrides = {
+            reportGeneralTypeIssues = "none",
+            reportOptionalMemberAccess = "none",
+            reportOptionalSubscript = "none",
+            reportPrivateImportUsage = "none",
           },
         },
       },
     },
   },
-  bashls = {},
+  pylsp = {
+    capabilities = {
+      documentFormattingProvider = false,
+      documentRangeFormattingProvider = false,
+    },
+    settings = {
+      pylsp = {
+        plugins = {
+          jedi_definition = {
+            enabled = true,
+            follow_imports = true,
+            follow_builtin_imports = true,
+            follow_builtin_definitions = true,
+          },
+          jedi_rename = { enabled = true },
+          jedi_completion = { enabled = false },
+          jedi_hover = { enabled = true },
+          pylsp_mypy = {
+            enabled = true,
+            live_mode = false,
+            dmypy = false,
+            report_progress = false,
+          },
+          -- Disabled ones:
+          flake8 = { enabled = false },
+          mccabe = { enabled = false },
+          preload = { enabled = false },
+          pycodestyle = { enabled = false },
+          pyflakes = { enabled = false },
+          pylint = { enabled = false },
+          rope = { enabled = true },
+          rope_completion = { enabled = true },
+          rope_rename = { enabled = false },
+          yapf = { enabled = false },
+          pylsp_black = { enabled = false },
+          pyls_isort = { enabled = false },
+          autopep8 = { enabled = false },
+        },
+      },
+    },
+  },
 }
-
 return servers

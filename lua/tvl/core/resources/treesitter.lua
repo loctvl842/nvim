@@ -24,6 +24,7 @@ return {
         "scss",
         "cpp",
         "java",
+        "graphql",
       },
       highlight = { enable = true },
       indent = { enable = true, disable = { "yaml", "python", "html" } },

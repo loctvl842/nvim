@@ -2,12 +2,10 @@ local Util = require("tvl.util")
 local Icons = require("tvl.core.icons")
 
 return {
-  { "nvim-tree/nvim-tree.lua", lazy = true, opts = {} },
-
   {
     "nvim-neo-tree/neo-tree.nvim",
     cmd = "Neotree",
-    dependencies = { "mrbjarksen/neo-tree-diagnostics.nvim" },
+    dependencies = "mrbjarksen/neo-tree-diagnostics.nvim",
     keys = {
       {
         "<leader>e",

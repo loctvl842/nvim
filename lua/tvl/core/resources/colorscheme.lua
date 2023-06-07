@@ -19,18 +19,19 @@ return {
       monokai.setup({
         transparent_background = false,
         devicons = true,
-        filter = "spectrum", -- classic | octagon | pro | machine | ristretto | spectrum
+        filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
         day_night = {
           enable = false,
           day_filter = "classic",
           night_filter = "octagon",
         },
         inc_search = "background", -- underline | background
-        background_clear = { "nvim-tree" },
+        background_clear = { "nvim-tree", "neo-tree", "bufferline" },
         plugins = {
           bufferline = {
             underline_selected = true,
             underline_visible = false,
+            underline_fill = true,
             bold = false,
           },
           indent_blankline = {

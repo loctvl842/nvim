@@ -62,7 +62,7 @@ return {
             filetype = "neo-tree",
             text = "EXPLORER",
             text_align = "center",
-            -- separator = true,
+            separator = true, -- set to `true` if clear background of neo-tree
           },
           {
             filetype = "NvimTree",
@@ -83,15 +83,15 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
-    opts = {},
-    config = function()
+    opts = {
+      float = true,
+      separator = "bubble", -- bubble | triangle
+      ---@type any
+      colorful = true,
+    },
+    config = function(_, opts)
       local lualine_config = require("tvl.config.lualine")
-      lualine_config.setup({
-        float = false,
-        separator = "bubble", -- bubble | triangle
-        ---@type any
-        colorful = true,
-      })
+      lualine_config.setup(opts)
       lualine_config.load()
     end,
   },
@@ -171,6 +171,7 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     opts = {
+      attach_navic = false,
       theme = "auto",
       include_buftypes = { "" },
       exclude_filetypes = { "gitcommit", "Trouble", "toggleterm" },
@@ -199,7 +200,7 @@ return {
       winbar = {
         enabled = true,
         name_formatter = function(term)
-          return string.format("%d:%s", term.id, term:_display_name())
+          return term.name
         end,
       },
     },
@@ -347,7 +348,7 @@ return {
           cmdline = { icon = "  " },
           search_down = { icon = "  󰄼" },
           search_up = { icon = "  " },
-          lua = { icon = " " },
+          lua = { icon = "  " },
         },
       },
       lsp = {

@@ -38,9 +38,11 @@ return {
     config = function()
       -- special attach lsp
       require("tvl.util").on_attach(function(client, buffer)
+        require("tvl.config.lsp.navic").attach(client, buffer)
         require("tvl.config.lsp.keymaps").attach(client, buffer)
         require("tvl.config.lsp.inlayhints").attach(client, buffer)
         require("tvl.config.lsp.gitsigns").attach(client, buffer)
+        require("tvl.config.lsp.python").attach(client, buffer)
       end)
 
       -- diagnostics
@@ -112,7 +114,7 @@ return {
           formatting.black,
           formatting.markdownlint,
           formatting.beautysh.with({ extra_args = { "--indent-size", "2" } }),
-          diagnostics.flake8.with({ extra_args = { "--ignore=E203,E501" }, filetypes = { "python" } }),
+          diagnostics.flake8.with({ extra_args = { "--ignore=E203,E501,E402,F401" }, filetypes = { "python" } }),
         },
       })
     end,

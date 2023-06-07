@@ -20,6 +20,7 @@ local config = {
       { source = "filesystem", display_name = "󰉓" },
       { source = "buffers", display_name = "󰈙" },
       { source = "git_status", display_name = "" },
+      -- { source = "document_symbols", display_name = "o" },
       { source = "diagnostics", display_name = "󰒡" },
     },
   },
@@ -46,7 +47,7 @@ local config = {
       -- then these will never be used.
       default = " ",
     },
-    modified = { symbol = "[+]" },
+    modified = { symbol = "" },
     git_status = { symbols = Icons.git },
     diagnostics = { symbols = Icons.diagnostics },
   },
