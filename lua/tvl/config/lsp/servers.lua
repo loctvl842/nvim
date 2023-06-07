@@ -96,10 +96,6 @@ local servers = {
     },
   },
   pylsp = {
-    capabilities = {
-      documentFormattingProvider = false,
-      documentRangeFormattingProvider = false,
-    },
     settings = {
       pylsp = {
         plugins = {
@@ -125,8 +121,8 @@ local servers = {
           pycodestyle = { enabled = false },
           pyflakes = { enabled = false },
           pylint = { enabled = false },
-          rope = { enabled = true },
-          rope_completion = { enabled = true },
+          rope = { enabled = false },
+          rope_completion = { enabled = false },
           rope_rename = { enabled = false },
           yapf = { enabled = false },
           pylsp_black = { enabled = false },
