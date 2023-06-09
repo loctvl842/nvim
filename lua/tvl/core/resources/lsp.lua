@@ -111,10 +111,10 @@ return {
         sources = {
           formatting.prettier,
           formatting.stylua,
-          formatting.black,
           formatting.markdownlint,
           formatting.beautysh.with({ extra_args = { "--indent-size", "2" } }),
-          diagnostics.flake8.with({ extra_args = { "--ignore=E203,E501,E402,F401,F821" }, filetypes = { "python" } }),
+          formatting.black,
+          diagnostics.flake8.with({ extra_args = { "--ignore=E203,E501,E402,F401,F821,W503" }, filetypes = { "python" } }),
         },
       })
     end,

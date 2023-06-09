@@ -14,6 +14,13 @@ local function hide_in_width()
   return vim.fn.winwidth(0) > 85
 end
 
+local function truncate(text, min_width)
+  if string.len(text) > min_width then
+    return string.sub(text, 1, min_width) .. "…"
+  end
+  return text
+end
+
 local prev_branch = ""
 M.branch = {
   "branch",
@@ -30,7 +37,7 @@ M.branch = {
     local icon = hl_str("  ", "SLGitIcon", "SLBranchName")
     return hl_str(config.separator_icon.left, "SLSeparator")
       .. hl_str(icon, "SLGitIcon")
-      .. hl_str(str, "SLBranchName")
+      .. hl_str(truncate(str, 10), "SLBranchName")
       .. hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
   end,
 }
