@@ -114,7 +114,7 @@ return {
           formatting.markdownlint,
           formatting.beautysh.with({ extra_args = { "--indent-size", "2" } }),
           formatting.black,
-          diagnostics.flake8.with({ extra_args = { "--ignore=E203,E501,E402,F401,F821,W503" }, filetypes = { "python" } }),
+          diagnostics.flake8.with({ extra_args = { "--ignore=E203,E501,E402,F401,F821,W503,W292" }, filetypes = { "python" } }),
         },
       })
     end,

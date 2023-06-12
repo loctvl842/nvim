@@ -22,11 +22,11 @@ return {
         filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
         day_night = {
           enable = false,
-          day_filter = "classic",
-          night_filter = "octagon",
+          day_filter = "pro",
+          night_filter = "spectrum",
         },
         inc_search = "background", -- underline | background
-        background_clear = { "nvim-tree", "neo-tree", "bufferline" },
+        background_clear = { "nvim-tree" },
         plugins = {
           bufferline = {
             underline_selected = true,
@@ -41,7 +41,7 @@ return {
         },
         override = function(c)
           return {
-            ColorColumn = { bg = c.base.dimmed3 },
+            ColorColumn = { bg = c.editor.background },
             -- Mine
             DashboardRecent = { fg = c.base.magenta },
             DashboardProject = { fg = c.base.blue },

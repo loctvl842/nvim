@@ -78,6 +78,7 @@ local config = {
     -- time the current file is changed while the tree is open.
     group_empty_dirs = true, -- when true, empty folders will be grouped together
   },
+  async_directory_scan = "always",
 }
 
 config.filesystem.components = require("tvl.config.neo-tree.sources.filesystem.components")
