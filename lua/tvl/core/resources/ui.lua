@@ -62,13 +62,13 @@ return {
             filetype = "neo-tree",
             text = "EXPLORER",
             text_align = "center",
-            -- separator = true, -- set to `true` if clear background of neo-tree
+            separator = true, -- set to `true` if clear background of neo-tree
           },
           {
             filetype = "NvimTree",
             text = "EXPLORER",
             text_align = "center",
-            -- separator = true,
+            separator = true,
           },
         },
         hover = {
@@ -84,7 +84,7 @@ return {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     opts = {
-      float = false,
+      float = true,
       separator = "bubble", -- bubble | triangle
       ---@type any
       colorful = true,

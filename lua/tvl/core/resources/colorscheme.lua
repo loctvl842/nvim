@@ -26,7 +26,7 @@ return {
           night_filter = "spectrum",
         },
         inc_search = "background", -- underline | background
-        background_clear = { "nvim-tree" },
+        background_clear = { "nvim-tree", "neo-tree", "bufferline" },
         plugins = {
           bufferline = {
             underline_selected = true,

@@ -30,7 +30,7 @@ return {
       indent = { enable = true, disable = { "yaml", "python", "html" } },
       context_commentstring = { enable = true },
       rainbow = {
-        enable = false,
+        enable = true,
         query = "rainbow-parens",
         disable = { "jsx", "html" },
       },
