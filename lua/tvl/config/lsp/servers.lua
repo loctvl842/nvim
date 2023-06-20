@@ -72,14 +72,20 @@ local servers = {
 
   -- python language server
   pyright = {
+    -- disable hint of pyright
+    capabilities = (function()
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
+      return capabilities
+    end)(),
     settings = {
       python = {
         analysis = {
           indexing = true,
           typeCheckingMode = "basic",
-          diagnosticMode = "openFilesOnly",
-          autoImportCompletions = false,
-          -- autoSearchPaths = false,
+          diagnosticMode = "workspace",
+          autoImportCompletions = true,
+          autoSearchPaths = true,
           inlayHints = {
             variableTypes = true,
             functionReturnTypes = true,
