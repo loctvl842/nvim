@@ -98,7 +98,7 @@ return {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     opts = {
-      float = false,
+      float = true,
       separator = "bubble", -- bubble | triangle
       ---@type any
       colorful = true,
