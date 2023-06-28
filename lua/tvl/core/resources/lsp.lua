@@ -10,42 +10,37 @@ return {
     config = function()
       -- special attach lsp
       require("tvl.util").on_attach(function(client, buffer)
-        require("tvl.config.lsp.keymaps").on_attach(client, buffer)
-        require("tvl.config.lsp.inlayhints").on_attach(client, buffer)
-        require("tvl.config.lsp.gitsigns").on_attach(client, buffer)
-        -- Gopls Semantic Token Hack
-        -- https://github.com/golang/go/issues/54531
-        if client.name == 'gopls' and not client.server_capabilities.semanticTokensProvider then
-          local semantic = client.config.capabilities.textDocument.semanticTokens
-          client.server_capabilities.semanticTokensProvider = {
-            full = true,
-            legend = {tokenModifiers = semantic.tokenModifiers, tokenTypes = semantic.tokenTypes},
-            range = true,
-          }
-        end
+        require("tvl.config.lsp.navic").attach(client, buffer)
+        require("tvl.config.lsp.keymaps").attach(client, buffer)
+        require("tvl.config.lsp.inlayhints").attach(client, buffer)
+        require("tvl.config.lsp.gitsigns").attach(client, buffer)
       end)
 
       -- diagnostics
       for name, icon in pairs(require("tvl.core.icons").diagnostics) do
-        name = "DiagnosticSign" .. name
+        local function firstUpper(s)
+          return s:sub(1, 1):upper() .. s:sub(2)
+        end
+        name = "DiagnosticSign" .. firstUpper(name)
         vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
       end
       vim.diagnostic.config(require("tvl.config.lsp.diagnostics")["on"])
 
       local servers = require("tvl.config.lsp.servers")
-      local capabilities = require("cmp_nvim_lsp").default_capabilities(
-        vim.lsp.protocol.make_client_capabilities()
-      )
+      local ext_capabilites = vim.lsp.protocol.make_client_capabilities()
+      local capabilities = require("tvl.util").capabilities(ext_capabilites)
 
       local function setup(server)
+        if servers[server] and servers[server].disabled then
+          return
+        end
         local server_opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
         }, servers[server] or {})
         require("lspconfig")[server].setup(server_opts)
       end
 
-      local mason_lspconfig = require("mason-lspconfig")
-      local available = mason_lspconfig.get_available_servers()
+      local available = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
 
       local ensure_installed = {}
       for server, server_opts in pairs(servers) do
@@ -96,6 +91,14 @@ return {
             telemetry = {
               enable = false,
             },
+            format = {
+              enable = true,
+              defaultConfig = {
+                indent_style = "space",
+                indent_size = "2",
+                continuation_indent_size = "2",
+              },
+            },
           },
         },
       })
@@ -136,6 +139,8 @@ return {
           formatting.prettier,
           formatting.stylua,
           formatting.google_java_format,
+          formatting.markdownlint,
+          formatting.beautysh.with({ extra_args = { "--indent-size", "2" } }),
           formatting.black.with({ extra_args = { "--fast" } }),
           formatting.sql_formatter.with({ extra_args = { "--config" } }),
         },
@@ -151,6 +156,8 @@ return {
         "stylua",
         "google_java_format",
         "black",
+        "markdownlint",
+        "beautysh",
         "sql_formatter",
       },
       automatic_setup = true,

@@ -77,6 +77,7 @@ local servers = {
     },
   },
   bashls = {},
+  terraformls = {},
 }
 
 return servers

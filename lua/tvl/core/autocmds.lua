@@ -1,47 +1,44 @@
-local remember_folds_id =
-vim.api.nvim_create_augroup("remember_folds", { clear = false })
-vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
-  pattern = "?*",
-  group = remember_folds_id,
-  callback = function() vim.cmd([[silent! mkview 1]]) end,
-})
-vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
-  pattern = "?*",
-  group = remember_folds_id,
-  callback = function() vim.cmd([[silent! loadview 1]]) end,
-})
+local util = require("tvl.util")
 
--- fix tab in python
-vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
-  pattern = { "*.cpp" },
-  callback = function() vim.cmd("setlocal noexpandtab") end,
-})
-
--- vim.api.nvim_create_autocmd({ "VimResized" }, {
--- 	callback = function()
---     vim.cmd([[echon '']])
--- 	end,
--- })
-
-vim.api.nvim_create_autocmd({ "FileType" }, {
-  pattern = { "qf", "help", "man", "lspinfo", "spectre_panel", "lir" },
+-- Highlight on yank
+vim.api.nvim_create_autocmd({ "TextYankPost" }, {
+  group = util.augroup("highlight_yank"),
   callback = function()
-    vim.api.nvim_buf_set_keymap(
-      0,
-      "n",
-      "q",
-      "<cmd>q!<CR>",
-      { noremap = true, silent = true }
-    )
-    vim.cmd([[
-      " nnoremap <silent> <buffer> q! :close<CR> 
-      set nobuflisted 
-    ]])
+    vim.highlight.on_yank({ higroup = "Visual" })
+  end,
+})
+
+-- resize splits if window got resized
+vim.api.nvim_create_autocmd({ "VimResized" }, {
+  group = util.augroup("resize_splits"),
+  callback = function()
+    vim.cmd("tabdo wincmd =")
+  end,
+})
+
+-- close some filetypes with <q>
+vim.api.nvim_create_autocmd("FileType", {
+  group = util.augroup("close_with_q"),
+  pattern = {
+    "qf",
+    "help",
+    "man",
+    "notify",
+    "lspinfo",
+    "spectre_panel",
+    "startuptime",
+    "tsplayground",
+    "PlenaryTestPopup",
+  },
+  callback = function(event)
+    vim.bo[event.buf].buflisted = false
+    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
   end,
 })
 
 -- Set wrap and spell in markdown and gitcommit
 vim.api.nvim_create_autocmd({ "FileType" }, {
+  group = util.augroup("wrap_spell"),
   pattern = { "gitcommit", "markdown" },
   callback = function()
     vim.opt_local.wrap = true
@@ -49,10 +46,28 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
+vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
+  pattern = "?*",
+  group = util.augroup("remember_folds"),
+  callback = function()
+    vim.cmd([[silent! mkview 1]])
+  end,
+})
+vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
+  pattern = "?*",
+  group = util.augroup("remember_folds"),
+  callback = function()
+    vim.cmd([[silent! loadview 1]])
+  end,
+})
+
 -- fix comment
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+  group = util.augroup("comment_newline"),
   pattern = { "*" },
-  callback = function() vim.cmd([[set formatoptions-=cro]]) end,
+  callback = function()
+    vim.cmd([[set formatoptions-=cro]])
+  end,
 })
 
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
@@ -69,36 +84,19 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
   end,
 })
 
-vim.api.nvim_create_autocmd({ "TextYankPost" }, {
-  callback = function()
-    vim.highlight.on_yank({ higroup = "Visual", timeout = 200 })
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "CursorHold" }, {
-  callback = function()
-    local status_ok, luasnip = pcall(require, "luasnip")
-    if not status_ok then return end
-    if luasnip.expand_or_jumpable() then
-      -- ask maintainer for option to make this silent
-      -- luasnip.unlink_current()
-      vim.cmd([[silent! lua require("luasnip").unlink_current()]])
-    end
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "VimLeave" }, {
-  callback = function() vim.cmd([[silent! NeoTreeClose]]) end,
-})
-
 -- clear cmd output
 vim.api.nvim_create_autocmd({ "CursorHold" }, {
-  callback = function() vim.cmd([[echon '']]) end,
+  group = util.augroup("clear_term"),
+  callback = function()
+    vim.cmd([[echon '']])
+  end,
 })
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
   pattern = { "help" },
-  callback = function() vim.cmd([[wincmd L]]) end,
+  callback = function()
+    vim.cmd([[wincmd L]])
+  end,
 })
 
 vim.api.nvim_create_autocmd({ "TermOpen" }, {
@@ -108,6 +106,18 @@ vim.api.nvim_create_autocmd({ "TermOpen" }, {
     vim.opt_local["signcolumn"] = "no"
     vim.opt_local["foldcolumn"] = "0"
   end,
+})
+
+-- fix comment on new line
+vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
+  pattern = { "*" },
+  callback = function()
+    vim.cmd([[set formatoptions-=cro]])
+  end,
+})
+
+vim.api.nvim_create_autocmd({ "VimLeave" }, {
+  callback = function() vim.cmd([[silent! NeoTreeClose]]) end,
 })
 
 -- NeoGit
@@ -124,7 +134,8 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end
 })
 
--- Markdown
+----------------------------- Markdown -----------------------------
+
 vim.api.nvim_create_autocmd({ "FileType" }, {
   pattern = { "markdown" },
   callback = function()
@@ -138,6 +149,8 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     )
   end
 })
+
+----------------------------- Golang -----------------------------
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
   pattern = { "go" },
@@ -159,26 +172,24 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 vim.api.nvim_create_autocmd("BufWritePre", {
-	pattern = { "*.go" },
-	callback = function()
-		local params = vim.lsp.util.make_range_params(nil, vim.lsp.util._get_offset_encoding())
-		params.context = {only = {"source.organizeImports"}}
+  pattern = { "*.go" },
+  callback = function()
+    local params = vim.lsp.util.make_range_params(nil, vim.lsp.util._get_offset_encoding())
+    params.context = { only = { "source.organizeImports" } }
 
-		local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
-		for _, res in pairs(result or {}) do
-			for _, r in pairs(res.result or {}) do
-				if r.edit then
-					vim.lsp.util.apply_workspace_edit(r.edit, vim.lsp.util._get_offset_encoding())
-				else
-					vim.lsp.buf.execute_command(r.command)
-				end
-			end
-		end
-	end,
+    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
+    for _, res in pairs(result or {}) do
+      for _, r in pairs(res.result or {}) do
+        if r.edit then
+          vim.lsp.util.apply_workspace_edit(r.edit, vim.lsp.util._get_offset_encoding())
+        else
+          vim.lsp.buf.execute_command(r.command)
+        end
+      end
+    end
+  end,
   group = go_format_sync_group
 })
-
------------------------------ Golang Highlighting -----------------------------
 
 vim.api.nvim_create_autocmd("LspTokenUpdate", {
   pattern = "*.go",
@@ -193,20 +204,20 @@ vim.api.nvim_create_autocmd("LspTokenUpdate", {
 
     -- if token.type == "variable"
     --   or token.type == "constant" then
-      -- print("{token: " .. token.type
-      --   .. " pos: {line: " .. token.line .. " col:(" .. token.start_col .. " " .. token.end_col .. ")}"
-      --   .. " captures: [" .. captures_human .. "]}")
-      -- print("modifiers: " .. vim.inspect(token.modifiers))
+    -- print("{token: " .. token.type
+    --   .. " pos: {line: " .. token.line .. " col:(" .. token.start_col .. " " .. token.end_col .. ")}"
+    --   .. " captures: [" .. captures_human .. "]}")
+    -- print("modifiers: " .. vim.inspect(token.modifiers))
     -- end
 
     if token.type ~= "variable" then return end
 
     if token.type == "variable"
-      -- and not vim.tbl_contains(token.modifiers, "readonly")
-      and not token.modifiers.readonly
-      and vim.tbl_contains(captures, "@variable")
-      and not vim.tbl_contains(captures, "@field")
-      and not vim.tbl_contains(captures, "@constant") then
+        -- and not vim.tbl_contains(token.modifiers, "readonly")
+        and not token.modifiers.readonly
+        and vim.tbl_contains(captures, "@variable")
+        and not vim.tbl_contains(captures, "@field")
+        and not vim.tbl_contains(captures, "@constant") then
       vim.lsp.semantic_tokens.highlight_token(
         token, args.buf, args.data.client_id, "@variable"
       )
@@ -222,8 +233,14 @@ vim.api.nvim_create_autocmd("LspTokenUpdate", {
   end
 })
 
-vim.api.nvim_create_autocmd("UIEnter", {
-  callback = function(args)
-    print("ui enter happened")
-  end
+----------------------------- Terraform -----------------------------
+
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  pattern = { "*.tf", "*.tfvars" },
+  callback = function()
+    vim.lsp.buf.format()
+  end,
 })
+
+-- vim.api.nvim_create_user_command('PeekOpen', require('peek').open, {})
+-- vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})

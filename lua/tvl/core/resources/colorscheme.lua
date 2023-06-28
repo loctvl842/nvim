@@ -372,6 +372,22 @@ return {
               fg = colors.mantle,
             },
 
+            -- Noice
+            NoicePopupBorder = {
+              bg = colors.mantle,
+              fg = colors.mantle,
+            },
+            NoicePopupmenuBorder = {
+              bg = colors.mantle,
+              fg = colors.mantle,
+            },
+
+            -- LSP
+            LspInfoBorder = {
+              bg = colors.mantle,
+              fg = colors.mantle,
+            },
+
             -- Telescope
             TelescopeBorder = { bg = colors.mantle, fg = colors.mantle },
             TelescopeTitle = { bg = colors.peach, fg = colors.crust },

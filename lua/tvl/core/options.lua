@@ -2,13 +2,15 @@ local options = {
   backup = false, -- creates a backup file
   clipboard = "unnamedplus", -- allows neovim to access the system clipboard
   cmdheight = 0, -- more space in the neovim command line for displaying messages
-  completeopt = { "menuone", "noselect" }, -- mostly just for cmp
+  completeopt = { "menu", "menuone", "noselect" }, -- mostly just for cmp
   conceallevel = 0, -- so that `` is visible in markdown files
   fileencoding = "utf-8", -- the encoding written to a file
   incsearch = true,
   hlsearch = true, -- highlight all matches on previous search pattern
   inccommand = "nosplit",
   ignorecase = true, -- ignore case in search patterns
+  grepformat = "%f:%l:%c:%m",
+  grepprg = "rg --vimgrep",
   mouse = "a", -- allow the mouse to be used in neovim
   pumheight = 10, -- pop up menu height
   showmode = false, -- we don't need to see things like -- INSERT -- anymore
@@ -45,11 +47,21 @@ local options = {
   titlestring = "%<%F%=%l/%L - nvim",
   linespace = 8,
   mousemoveevent = true,
-  syntax = "on",
+  syntax = "off",
+  spelllang = { "en" },
+  -- use fold
   foldlevelstart = 99,
   foldlevel = 99,
   foldenable = true,
   foldcolumn = "1",
+  fillchars = {
+    foldopen = "",
+    foldclose = "",
+    fold = " ",
+    foldsep = " ",
+    diff = "╱",
+    eob = " ",
+  },
 }
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1

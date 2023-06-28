@@ -14,91 +14,48 @@ neotree.setup({
     -- "diagnostics"
   },
   source_selector = {
-    winbar = true,
-    statusline = false, -- toggle to show selector on statusline
+    winbar = true, -- toggle to show selector on winbar
     content_layout = "center",
     tabs_layout = "equal",
-    tab_labels = {
-      filesystem = " File",
-      buffers = " Bufs",
-      git_status = " Git",
-      diagnostics = "裂",
+    show_separator_on_edge = true,
+    sources = {
+      { source = "filesystem", display_name = "󰉓" },
+      { source = "buffers", display_name = "󰈙" },
+      { source = "git_status", display_name = "" },
+      -- { source = "document_symbols", display_name = "o" },
+      { source = "diagnostics", display_name = "󰒡" },
     },
-    -- padding = { left = 2, right = 0 },
   },
   default_component_configs = {
-    container = {
-      enable_character_fade = true,
-    },
     indent = {
       indent_size = 2,
       padding = 1, -- extra padding on left hand side
       -- indent guides
       with_markers = true,
-      -- indent_marker = "│",
-      -- last_indent_marker = "└",-- └
-      indent_marker = "▏",
-      last_indent_marker = "▏",
-      highlight = "NeoTreeIndentMarker",
+      indent_marker = "│",
+      last_indent_marker = "└",
       -- expander config, needed for nesting files
-      with_expanders = false, -- if nil and file nesting is enabled, will enable expanders
-      -- expander_collapsed = "",
-      -- expander_expanded = "",
-
-      expander_collapsed = "",
-      expander_expanded = "",
+      with_expanders = true, -- if nil and file nesting is enabled, will enable expanders
+      expander_collapsed = "",
+      expander_expanded = "",
       expander_highlight = "NeoTreeExpander",
     },
     icon = {
       folder_closed = "",
       folder_open = "",
       folder_empty = "",
+      folder_empty_open = "",
+      -- The next two settings are only a fallback, if you use nvim-web-devicons and configure default icons there
+      -- then these will never be used.
       default = " ",
-      highlight = "NeoTreeFileIcon",
     },
-    modified = {
-      symbol = "[+]",
-      highlight = "NeoTreeModified",
-    },
-    name = {
-      trailing_slash = false,
-      use_git_status_colors = true,
-      highlight = "NeoTreeFileName",
-    },
-    git_status = {
-      symbols = {
-        -- Change type
-        added = icons.git.added, -- or "✚", but this is redundant info if you use git_status_colors on the name
-        modified = icons.git.modified, -- or "", but this is redundant info if you use git_status_colors on the name
-        deleted = icons.git.removed, -- this can only be used in the git_status source
-        renamed = "", -- this can only be used in the git_status source
-        -- Status type
-        untracked = "",
-        ignored = "",
-        -- unstaged = "",
-        unstaged = "U",
-        staged = "",
-        conflict = "",
-      },
-    },
-    diagnostics = {
-      symbols = {
-        hint = icons.diagnostics.Hint,
-        info = icons.diagnostics.Info,
-        warn = icons.diagnostics.Warn,
-        error = icons.diagnostics.Error,
-      },
-      highlights = {
-        hint = "DiagnosticSignHint",
-        info = "DiagnosticSignInfo",
-        warn = "DiagnosticSignWarn",
-        error = "DiagnosticSignError",
-      },
-    },
+    modified = { symbol = "" },
+    git_status = { symbols = icons.git },
+    diagnostics = { symbols = icons.diagnostics },
   },
   window = {
     position = "left",
-    width = 30,
+    width = 40,
     mapping_options = {
       noremap = true,
       nowait = true,

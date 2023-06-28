@@ -2,22 +2,22 @@ local which_key = require("which-key")
 
 which_key.setup({
   plugins = {
-    marks = true, -- shows a list of your marks on ' and `
-    registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
+    marks = true,       -- shows a list of your marks on ' and `
+    registers = true,   -- shows your registers on " in NORMAL or <C-r> in INSERT mode
     spelling = {
-      enabled = true, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
+      enabled = true,   -- enabling this will show WhichKey when pressing z= to select spelling suggestions
       suggestions = 20, -- how many suggestions should be shown in the list?
     },
     -- the presets plugin, adds help for a bunch of default keybindings in Neovim
     -- No actual key bindings are created
     presets = {
-      operators = true, -- adds help for operators like d, y, ... and registers them for motion / text object completion
-      motions = false, -- adds help for motions
+      operators = true,    -- adds help for operators like d, y, ... and registers them for motion / text object completion
+      motions = false,     -- adds help for motions
       text_objects = true, -- help for text objects triggered after entering an operator
-      windows = false, -- default bindings on <c-w>
-      nav = false, -- misc bindings to work with windows
-      z = false, -- bindings for folds, spelling and others prefixed with z
-      g = true, -- bindings for prefixed with g
+      windows = false,     -- default bindings on <c-w>
+      nav = false,         -- misc bindings to work with windows
+      z = false,           -- bindings for folds, spelling and others prefixed with z
+      g = true,            -- bindings for prefixed with g
     },
   },
   -- add operators that will trigger motion and text object completion
@@ -33,26 +33,26 @@ which_key.setup({
   icons = {
     breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
     separator = "➜", -- symbol used between a key and it's label
-    group = "+", -- symbol prepended to a group
+    group = "+",      -- symbol prepended to a group
   },
   popup_mappings = {
     scroll_down = "<c-d>", -- binding to scroll down inside the popup
-    scroll_up = "<c-u>", -- binding to scroll up inside the popup
+    scroll_up = "<c-u>",   -- binding to scroll up inside the popup
   },
   window = {
-    border = "single", -- none, single, double, shadow
-    position = "bottom", -- bottom, top
-    margin = { 1, 0, 2, 0 }, -- extra window margin [top, right, bottom, left]
+    border = "single",        -- none, single, double, shadow
+    position = "bottom",      -- bottom, top
+    margin = { 1, 0, 2, 0 },  -- extra window margin [top, right, bottom, left]
     padding = { 1, 2, 1, 2 }, -- extra window padding [top, right, bottom, left]
     winblend = 0,
   },
   layout = {
     height = { min = 3, max = 25 }, -- min and max height of the columns
     width = { min = 20, max = 50 }, -- min and max width of the columns
-    spacing = 5, -- spacing between columns
-    align = "center", -- align columns left, center or right
+    spacing = 5,                    -- spacing between columns
+    align = "center",               -- align columns left, center or right
   },
-  ignore_missing = true, -- enable this to hide mappings for which you didn't specify a label
+  ignore_missing = true,            -- enable this to hide mappings for which you didn't specify a label
   hidden = {
     "<silent>",
     "<cmd>",
@@ -62,8 +62,8 @@ which_key.setup({
     "lua",
     "^:",
     "^ ",
-  }, -- hide mapping boilerplate
-  show_help = true, -- show help message on the command line when the popup is visible
+  },                 -- hide mapping boilerplate
+  show_help = true,  -- show help message on the command line when the popup is visible
   triggers = "auto", -- automatically setup triggers
   -- triggers = {"<leader>"} -- or specify a list manually
   triggers_blacklist = {
@@ -128,7 +128,7 @@ local mappings = {
         "<cmd>Neotree toggle position=float<cr>",
         "Explorer Float",
       },
-      t = { "<cmd>ToggleTerm<cr>", "Terminal"},
+      t = { "<cmd>ToggleTerm<cr>", "Terminal" },
     },
 
     ["h"] = {
@@ -139,23 +139,23 @@ local mappings = {
       c = { "<cmd>lua require('telescope.builtin').commands()<CR>", "Display Commands" },
       C = { "<cmd>lua require('telescope.builtin').colorscheme()<CR>", "Display Colorschemes" },
       f = { "<cmd>lua require('telescope.builtin').filetypes()<CR>", "Display Filetypes" },
-      k = { "<cmd>lua require('telescope.builtin').keymaps()<CR>", "Display Keymaps"},
-      n = { "<cmd>Notifications<CR>", "Display Notifications"},
-      v = { "<cmd>lua require('telescope.builtin').treesitter()<CR>", "Display Buffer Variables"},
+      k = { "<cmd>lua require('telescope.builtin').keymaps()<CR>", "Display Keymaps" },
+      n = { "<cmd>Notifications<CR>", "Display Notifications" },
+      v = { "<cmd>lua require('telescope.builtin').treesitter()<CR>", "Display Buffer Variables" },
     },
 
     -- Window Management
     ["w"] = {
       name = "window",
       -- Window Movement
-      h = { "<C-w>h<cr>", "Move left a window"},
-      l = { "<C-w>l<cr>", "Move right a window"},
-      k = { "<C-w>k<cr>", "Move up a window"},
-      j = { "<C-w>j<cr>", "Move down a window"},
+      h = { "<C-w>h<cr>", "Move left a window" },
+      l = { "<C-w>l<cr>", "Move right a window" },
+      k = { "<C-w>k<cr>", "Move up a window" },
+      j = { "<C-w>j<cr>", "Move down a window" },
 
       -- Window Creation
-      s = { "<C-w>s<cr>", "Create split horizontally"},
-      v = { "<C-w>v<cr>", "Create split vertically"},
+      s = { "<C-w>s<cr>", "Create split horizontally" },
+      v = { "<C-w>v<cr>", "Create split vertically" },
 
       -- Window clean up
       d = { "<C-w>c<CR>", "Delete Window" },
@@ -194,7 +194,7 @@ local mappings = {
         "<cmd>Telescope diagnostics<cr>",
         "Workspace Diagnostics",
       },
-      f = { "<cmd>lua vim.lsp.buf.formatting()<cr>", "Format" },
+      f = { "<cmd>lua vim.lsp.buf.format()<cr>", "Format" },
       i = { "<cmd>LspInfo<cr>", "Info" },
       I = { "<cmd>LspInstallInfo<cr>", "Installer Info" },
       j = {
@@ -307,16 +307,16 @@ local mappings = {
     ["k"] = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
     ["C"] = { "<cmd>Telescope commands<cr>", "Commands" },
   },
---  ["g"] = {
---    ["d"] = { "<cmd>Telescope lsp_definitions<cr>", "Go to definition" },
---    -- ["d"] = { "<cmd>lua vim.lsp.buf.definition()<cr>", "Go to definition" },
---    ["r"] = { "<cmd>Telescope lsp_references<cr>", "Go to references" },
---    ["i"] = {
---      "<cmd>Telescope lsp_implementations<cr>",
---      "Go to implementations",
---    },
---    ["b"] = { "<cmd>BufferLinePick<CR>", "Bufferline: pick buffer" },
---  },
+  --  ["g"] = {
+  --    ["d"] = { "<cmd>Telescope lsp_definitions<cr>", "Go to definition" },
+  --    -- ["d"] = { "<cmd>lua vim.lsp.buf.definition()<cr>", "Go to definition" },
+  --    ["r"] = { "<cmd>Telescope lsp_references<cr>", "Go to references" },
+  --    ["i"] = {
+  --      "<cmd>Telescope lsp_implementations<cr>",
+  --      "Go to implementations",
+  --    },
+  --    ["b"] = { "<cmd>BufferLinePick<CR>", "Bufferline: pick buffer" },
+  --  },
 }
 
 which_key.register(mappings, { mode = "n", prefix = "" })

@@ -1,14 +1,29 @@
 return {
   diagnostics = {
-    Error = "",
-    Warn = "",
-    Hint = "",
-    Info = "",
+    error = "",
+    warn = "",
+    hint = "",
+    info = "",
   },
   git = {
     added = "",
     modified = "",
     removed = "",
+    renamed = "➜",
+    untracked = "",
+    ignored = "",
+    unstaged = "U",
+    staged = "",
+    conflict = "",
+    deleted = "",
+  },
+  gitsigns = {
+    add = "┃",
+    change = "┋",
+    delete = "",
+    topdelhfe = "",
+    changedelete = "┃",
+    untracked = "┃",
   },
   kinds = {
     Array = "",
@@ -23,7 +38,7 @@ return {
     Event = "",
     Field = "",
     File = "",
-    Folder = "",
+    Folder = "",
     Function = "",
     Interface = "",
     Key = "",
@@ -31,7 +46,7 @@ return {
     Method = "",
     Module = "",
     Namespace = "",
-    Null = "ﳠ",
+    Null = "",
     Number = "",
     Object = "",
     Operator = "",
@@ -46,9 +61,41 @@ return {
     Unit = "",
     Value = "",
     Variable = "",
+    Macro = "", -- Macro
   },
-  ui = {
-    Pencil = "",
-    Bug = "",
-  }
+  borders = {
+    --- @class BorderIcons
+    thin = {
+      top = "▔",
+      right = "▕",
+      bottom = "▁",
+      left = "▏",
+      top_left = "🭽",
+      top_right = "🭾",
+      bottom_right = "🭿",
+      bottom_left = "🭼",
+    },
+    ---@type BorderIcons
+    empty = {
+      top = " ",
+      right = " ",
+      bottom = " ",
+      left = " ",
+      top_left = " ",
+      top_right = " ",
+      bottom_right = " ",
+      bottom_left = " ",
+    },
+    ---@type BorderIcons
+    thick = {
+      top = "▄",
+      right = "█",
+      bottom = "▀",
+      left = "█",
+      top_left = "▄",
+      top_right = "▄",
+      bottom_right = "▀",
+      bottom_left = "▀",
+    },
+  },
 }

@@ -1,3 +1,4 @@
+local util = require("tvl.util")
 vim.g.diagnostics_enabled = true
 
 local diagnostics = {
@@ -8,7 +9,11 @@ local diagnostics = {
     update_in_insert = false,
   },
   on = {
-    virtual_text = true, -- disable virtual text
+    virtual_text = {
+      spacing = 4,
+      source = "if_many",
+      prefix = "●",
+    }, -- disable virtual text
     virtual_lines = false,
     update_in_insert = true,
     underline = true,
@@ -17,7 +22,7 @@ local diagnostics = {
       focusable = false,
       style = "minimal",
       -- border = "rounded",
-      border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" }, -- [ top top top - right - bottom bottom bottom - left ]
+      border = util.generate_borderchars("thick", "tl-t-tr-r-bl-b-br-l"),
       source = "always",
       header = "",
       prefix = "",
@@ -34,6 +39,5 @@ vim.api.nvim_create_user_command("ToggleDiagnostic", function()
     vim.g.diagnostics_enabled = true
   end
 end, { nargs = 0 })
-
 
 return diagnostics

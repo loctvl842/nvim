@@ -1,3 +1,6 @@
+local util = require("tvl.util")
+local icons = require("tvl.core.icons")
+
 return {
   {
     -- "loctvl842/neo-tree.nvim",
@@ -12,181 +15,170 @@ return {
   {
     "nvim-telescope/telescope.nvim",
     cmd = "Telescope",
-    version = "false",
+    version = false,
     dependencies = {
       "coffebar/project.nvim",
     },
-    config = function() require("tvl.config.telescope") end,
-  },
-
-  {
-    "stevearc/dressing.nvim",
-    config = function()
-      require("dressing").setup({
-      input = {
-          -- Set to false to disable the vim.ui.input implementation
-          enabled = true,
-
-          -- Default prompt string
-          default_prompt = "Input:",
-
-          -- Can be 'left', 'right', or 'center'
-          title_pos = "left",
-
-          -- When true, <Esc> will close the modal
-          insert_only = true,
-
-          -- When true, input will start in insert mode.
-          start_in_insert = true,
-
-          -- These are passed to nvim_open_win
-          anchor = "SW",
-          border = "rounded",
-          -- 'editor' and 'win' will default to being centered
-          relative = "cursor",
-
-          -- These can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
-          prefer_width = 40,
-          width = nil,
-          -- min_width and max_width can be a list of mixed types.
-          -- min_width = {20, 0.2} means "the greater of 20 columns or 20% of total"
-          max_width = { 140, 0.9 },
-          min_width = { 20, 0.2 },
-
-          buf_options = {},
-          win_options = {
-            -- Window transparency (0-100)
-            winblend = 10,
-            -- Disable line wrapping
-            wrap = false,
-            -- Indicator for when text exceeds window
-            list = true,
-            listchars = "precedes:…,extends:…",
-            -- Increase this for more context when text scrolls off the window
-            sidescrolloff = 0,
-          },
-
-          -- Set to `false` to disable
-          mappings = {
-            n = {
-              ["<Esc>"] = "Close",
-              ["<CR>"] = "Confirm",
-            },
-            i = {
-              ["<C-c>"] = "Close",
-              ["<CR>"] = "Confirm",
-              ["<Up>"] = "HistoryPrev",
-              ["<Down>"] = "HistoryNext",
-            },
-          },
-
-          override = function(conf)
-            -- This is the config that will be passed to nvim_open_win.
-            -- Change values here to customize the layout
-            return conf
-          end,
-
-          -- see :help dressing_get_config
-          get_config = nil,
+    opts = {
+      defaults = {
+        prompt_prefix = "   ",
+        selection_caret = "  ",
+        entry_prefix = "   ",
+        borderchars = {
+          prompt = util.generate_borderchars(
+            "thick",
+            nil,
+            { top = "█", top_left = "█", left = "█", right = " ", top_right = " ", bottom_right = " " }
+          ),
+          results = util.generate_borderchars(
+            "thick",
+            nil,
+            { top = "█", top_left = "█", right = " ", top_right = " ", bottom_right = " " }
+          ),
+          preview = util.generate_borderchars("thick", nil, { top = "█", top_left = "█", top_right = "█" }),
         },
-        select = {
-          -- Set to false to disable the vim.ui.select implementation
-          enabled = true,
-
-          -- Priority list of preferred vim.select implementations
-          backend = { "telescope", "fzf_lua", "fzf", "builtin", "nui" },
-
-          -- Trim trailing `:` from prompt
-          trim_prompt = true,
-
-          -- Options for telescope selector
-          -- These are passed into the telescope picker directly. Can be used like:
-          -- telescope = require('telescope.themes').get_ivy({...})
-          telescope = nil,
-
-          -- Options for fzf selector
-          fzf = {
-            window = {
-              width = 0.5,
-              height = 0.4,
-            },
-          },
-
-          -- Options for nui Menu
-          nui = {
-            position = "50%",
-            size = nil,
-            relative = "editor",
-            border = {
-              style = "rounded",
-            },
-            buf_options = {
-              swapfile = false,
-              filetype = "DressingSelect",
-            },
-            win_options = {
-              winblend = 10,
-            },
-            max_width = 80,
-            max_height = 40,
-            min_width = 40,
-            min_height = 10,
-          },
-
-          -- Options for built-in selector
-          builtin = {
-            -- These are passed to nvim_open_win
-            anchor = "NW",
-            border = "rounded",
-            -- 'editor' and 'win' will default to being centered
-            relative = "editor",
-
-            buf_options = {},
-            win_options = {
-              -- Window transparency (0-100)
-              winblend = 10,
-            },
-
-            -- These can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
-            -- the min_ and max_ options can be a list of mixed types.
-            -- max_width = {140, 0.8} means "the lesser of 140 columns or 80% of total"
-            width = nil,
-            max_width = { 140, 0.8 },
-            min_width = { 40, 0.2 },
-            height = nil,
-            max_height = 0.9,
-            min_height = { 10, 0.2 },
-
-            -- Set to `false` to disable
-            mappings = {
-              ["<Esc>"] = "Close",
-              ["<C-c>"] = "Close",
-              ["<CR>"] = "Confirm",
-            },
-
-            override = function(conf)
-              -- This is the config that will be passed to nvim_open_win.
-              -- Change values here to customize the layout
-              return conf
-            end,
-          },
-
-          -- Used to override format_item. See :help dressing-format
-          format_item_override = {},
-
-          -- see :help dressing_get_config
-          get_config = nil,
+        dynamic_preview_title = true,
+        hl_result_eol = true,
+        sorting_strategy = "ascending",
+        file_ignore_patterns = {
+          ".git/",
+          "target/",
+          "docs/",
+          "vendor/*",
+          "%.lock",
+          "__pycache__/*",
+          "%.sqlite3",
+          "%.ipynb",
+          "node_modules/*",
+          -- "%.jpg",
+          -- "%.jpeg",
+          -- "%.png",
+          "%.svg",
+          "%.otf",
+          "%.ttf",
+          "%.webp",
+          ".dart_tool/",
+          ".github/",
+          ".gradle/",
+          ".idea/",
+          ".settings/",
+          ".vscode/",
+          "__pycache__/",
+          "build/",
+          "gradle/",
+          "node_modules/",
+          "%.pdb",
+          "%.dll",
+          "%.class",
+          "%.exe",
+          "%.cache",
+          "%.ico",
+          "%.pdf",
+          "%.dylib",
+          "%.jar",
+          "%.docx",
+          "%.met",
+          "smalljre_*/*",
+          ".vale/",
+          "%.burp",
+          "%.mp4",
+          "%.mkv",
+          "%.rar",
+          "%.zip",
+          "%.7z",
+          "%.tar",
+          "%.bz2",
+          "%.epub",
+          "%.flac",
+          "%.tar.gz",
         },
-      })
+        results_title = "",
+        layout_config = {
+          horizontal = {
+            prompt_position = "top",
+            preview_width = 0.55,
+            results_width = 0.8,
+          },
+          vertical = {
+            mirror = false,
+          },
+          width = 0.87,
+          height = 0.80,
+          preview_cutoff = 120,
+        },
+
+      },
+    },
+    config = function(_, opts)
+      local actions = require("telescope.actions")
+      opts.defaults.mappings = {
+        i = {
+          ["<C-g>"] = actions.close,
+          ["<C-n>"] = actions.cycle_history_next,
+          ["<C-p>"] = actions.cycle_history_prev,
+
+          ["<C-j>"] = actions.move_selection_next,
+          ["<C-k>"] = actions.move_selection_previous,
+
+          ["<Down>"] = actions.move_selection_next,
+          ["<Up>"] = actions.move_selection_previous,
+
+          ["<CR>"] = actions.select_default,
+          ["<C-x>"] = actions.select_horizontal,
+          ["<C-v>"] = actions.select_vertical,
+          ["<C-t>"] = actions.select_tab,
+
+          ["<C-u>"] = actions.preview_scrolling_up,
+          ["<C-d>"] = actions.preview_scrolling_down,
+
+          ["<PageUp>"] = actions.results_scrolling_up,
+          ["<PageDown>"] = actions.results_scrolling_down,
+
+          ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
+          ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
+          ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
+          ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+          ["<C-l>"] = actions.complete_tag,
+          ["<C-_>"] = actions.which_key, -- keys from pressing <C-/>
+        },
+
+        n = {
+          ["<esc>"] = actions.close,
+          ["<C-g>"] = actions.close,
+          ["<CR>"] = actions.select_default,
+          ["<C-x>"] = actions.select_horizontal,
+          ["<C-v>"] = actions.select_vertical,
+          ["<C-t>"] = actions.select_tab,
+
+          ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
+          ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
+          ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
+          ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+
+          ["j"] = actions.move_selection_next,
+          ["k"] = actions.move_selection_previous,
+          ["H"] = actions.move_to_top,
+          ["M"] = actions.move_to_middle,
+          ["L"] = actions.move_to_bottom,
+
+          ["<Down>"] = actions.move_selection_next,
+          ["<Up>"] = actions.move_selection_previous,
+          ["gg"] = actions.move_to_top,
+          ["G"] = actions.move_to_bottom,
+
+          ["<C-u>"] = actions.preview_scrolling_up,
+          ["<C-d>"] = actions.preview_scrolling_down,
+
+          ["<PageUp>"] = actions.results_scrolling_up,
+          ["<PageDown>"] = actions.results_scrolling_down,
+
+          ["?"] = actions.which_key,
+        },
+      }
+      require("telescope").setup(opts)
     end,
+    -- config = function() require("tvl.config.telescope") end,
   },
-
-  -- {
-  --   "nvim-telescope/telescope-media-files.nvim",
-  --   config = function()
-  --     require("telescope").load_extension("media_files")
-  --   end,
-  -- },
 
   {
     "folke/which-key.nvim",
@@ -198,12 +190,12 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     opts = {
       signs = {
-        add = { text = "┃" },
-        change = { text = "┋", },
-        delete = { text = "契" },
-        topdelhfe = { text = "契" },
-        changedelete = { text = "┃" },
-        untracked = { text = "┃" },
+        add = { text = icons.gitsigns.add },
+        change = { text = icons.gitsigns.change },
+        delete = { text = icons.gitsigns.delete },
+        topdelhfe = { text = icons.gitsigns.topdelhfe },
+        changedelete = { text = icons.gitsigns.changedelete },
+        untracked = { text = icons.gitsigns.untracked },
       },
       current_line_blame = true,
       current_line_blame_opts = {
@@ -254,7 +246,36 @@ return {
     "coffebar/project.nvim",
     -- branch = "session-manager",
     branch = "main",
-    config = function() require("tvl.config.project") end,
+    opts = {
+      on_config_done = nil,
+      manual_mode = false,
+
+      detection_methods = { "pattern" },
+
+      ---@usage patterns used to detect root dir, when **"pattern"** is in detection_methods
+      patterns = {
+        ".git",
+        "_darcs",
+        ".hg",
+        ".bzr",
+        ".svn",
+      },
+
+      show_hidden = false,
+      silent_chdir = true,
+      ignore_lsp = {},
+
+      session_autoload = true,
+      datapath = vim.fn.stdpath("data"),
+    },
+    config = function(_, opts)
+      require("project_nvim").setup(opts)
+
+      local tele_status_ok, telescope = pcall(require, "telescope")
+      if not tele_status_ok then return end
+
+      telescope.load_extension("projects")
+    end,
   },
 
   {
@@ -281,46 +302,102 @@ return {
 
   {
     "kevinhwang91/nvim-ufo",
-    dependencies = "kevinhwang91/promise-async",
-    config = function() require("tvl.config.ufo") end,
-  },
-
-  {
-    "j-hui/fidget.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    dependencies = { "kevinhwang91/promise-async", event = "BufReadPost" },
     opts = {
-      window = {
-        relative = "win", -- where to anchor, either "win" or "editor"
-        blend = 0, -- &winblend for the window
-        zindex = nil, -- the zindex value for the window
-        border = "none", -- style of border for the fidget window
+      fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
+        local newVirtText = {}
+        local suffix = ("  … %d "):format(endLnum - lnum)
+        local sufWidth = vim.fn.strdisplaywidth(suffix)
+        local targetWidth = width - sufWidth
+        local curWidth = 0
+        for _, chunk in ipairs(virtText) do
+          local chunkText = chunk[1]
+          local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+          if targetWidth > curWidth + chunkWidth then
+            table.insert(newVirtText, chunk)
+          else
+            chunkText = truncate(chunkText, targetWidth - curWidth)
+            local hlGroup = chunk[2]
+            table.insert(newVirtText, { chunkText, hlGroup })
+            chunkWidth = vim.fn.strdisplaywidth(chunkText)
+            -- str width returned from truncate() may less than 2nd argument, need padding
+            if curWidth + chunkWidth < targetWidth then
+              suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
+            end
+            break
+          end
+          curWidth = curWidth + chunkWidth
+        end
+        table.insert(newVirtText, { suffix, "MoreMsg" })
+        return newVirtText
+      end,
+      open_fold_hl_timeout = 0,
+    },
+    keys = {
+      { "fd", "zd", desc = "Delete fold under cursor" },
+      { "fo", "zo", desc = "Open fold under cursor" },
+      { "fO", "zO", desc = "Open all folds under cursor" },
+      { "fc", "zC", desc = "Close all folds under cursor" },
+      { "fa", "za", desc = "Toggle fold under cursor" },
+      { "fA", "zA", desc = "Toggle all folds under cursor" },
+      { "fv", "zv", desc = "Show cursor line" },
+      {
+        "fM",
+        function()
+          require("ufo").closeAllFolds()
+        end,
+        desc = "Close all folds",
       },
+      {
+        "fR",
+        function()
+          require("ufo").openAllFolds()
+        end,
+        desc = "Open all folds",
+      },
+      { "fm", "zm", desc = "Fold more" },
+      { "fr", "zr", desc = "Fold less" },
+      { "fx", "zx", desc = "Update folds" },
+      { "fz", "zz", desc = "Center this line" },
+      { "ft", "zt", desc = "Top this line" },
+      { "fb", "zb", desc = "Bottom this line" },
+      { "fg", "zg", desc = "Add word to spell list" },
+      { "fw", "zw", desc = "Mark word as bad/misspelling" },
+      { "fe", "ze", desc = "Right this line" },
+      { "fE", "zE", desc = "Delete all folds in current buffer" },
+      { "fs", "zs", desc = "Left this line" },
+      { "fH", "zH", desc = "Half screen to the left" },
+      { "fL", "zL", desc = "Half screen to the right" },
     },
   },
 
   {
     "luukvbaal/statuscol.nvim",
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
       local builtin = require("statuscol.builtin")
       require("statuscol").setup({
         relculright = false,
         ft_ignore = { "neo-tree" },
         segments = {
-          { -- line number
-            text = { builtin.lnumfunc },
+          {
+            -- line number
+            text = { " ", builtin.lnumfunc },
             condition = { true, builtin.not_empty },
             click = "v:lua.ScLa",
           },
-          { text = { "%s" },      click = "v:lua.ScSa" }, -- Sign
-          { text = { "%C", " " }, click = "v:lua.ScFa" }, -- Fold
-        }
+          { text = { "%s" }, click = "v:lua.ScSa" }, -- Sign
+          { text = { builtin.foldfunc, " " }, click = "v:lua.ScFa" }, -- Fold
+        },
       })
       vim.api.nvim_create_autocmd({ "BufEnter" }, {
         callback = function()
           if vim.bo.filetype == "neo-tree" then
             vim.opt_local.statuscolumn = ""
           end
-        end
+        end,
       })
-    end
+    end,
   },
 }
