@@ -58,7 +58,7 @@ return {
 
       -- Manually setting up lua-lsp-server because of NixOS
       -- Manson does not install the lua-lsp-server with the RUNTIME of the executable set. Using the
-      -- package from nixos appropriately builds the LSP server. It is discoverable on the PATH for 
+      -- package from nixos appropriately builds the LSP server. It is discoverable on the PATH for
       -- Neovim so the following settings can be applied without any additional steps
       require("lspconfig").lua_ls.setup({
         settings = {
@@ -67,9 +67,9 @@ return {
               enable = true,
               arrayIndex = "Disable", -- "Enable", "Auto", "Disable"
               await = true,
-              paramName = "Disable", -- "All", "Literal", "Disable"
+              paramName = "Disable",  -- "All", "Literal", "Disable"
               paramType = false,
-              semicolon = "Disable", -- "All", "SameLine", "Disable"
+              semicolon = "Disable",  -- "All", "SameLine", "Disable"
               setType = true,
             },
             runtime = {

@@ -102,4 +102,3 @@ end, { desc = "[/] Fuzzily search in current buffer]" })
 
 -------------------- Doom Emacs Compatability --------------------
 keymap("n", "<C-g>", "<C-c>", opts)
-

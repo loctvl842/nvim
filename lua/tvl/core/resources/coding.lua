@@ -19,10 +19,12 @@ return {
         function()
           return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
         end,
-        expr = true, silent = true, mode = "i",
+        expr = true,
+        silent = true,
+        mode = "i",
       },
       { "<tab>",   function() require("luasnip").jump(1) end,   mode = "s" },
-      { "<s-tab>", function() require("luasnip").jump( -1) end, mode = { "i", "s" } },
+      { "<s-tab>", function() require("luasnip").jump(-1) end,  mode = { "i", "s" } },
     },
   },
 
@@ -72,7 +74,7 @@ return {
         mapping = cmp.mapping.preset.insert({
           ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
           ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-          ["<C-b>"] = cmp.mapping.scroll_docs( -4),
+          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-Space>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
@@ -166,9 +168,9 @@ return {
   {
     "ray-x/lsp_signature.nvim",
     opts = {
-      floating_window = false, -- show hint in a floating window, set to false for virtual text only mode
+      floating_window = false,               -- show hint in a floating window, set to false for virtual text only mode
       floating_window_above_cur_line = true, -- try to place the floating above the current line when possible Note:
-      hint_scheme = "Comment", -- highlight group for the virtual text
+      hint_scheme = "Comment",               -- highlight group for the virtual text
     },
   },
 
@@ -177,18 +179,18 @@ return {
   --   lazy = true,
   -- },
 
-    -- {
-    --   "ray-x/go.nvim",
-    --   dependencies = {  -- optional packages
-    --     "ray-x/guihua.lua",
-    --     "neovim/nvim-lspconfig",
-    --     "nvim-treesitter/nvim-treesitter",
-    --   },
-    --   config = function()
-    --     require("go").setup()
-    --   end,
-    --   event = {"CmdlineEnter"},
-    --   ft = {"go", 'gomod'},
-    --   -- build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
-    -- }
+  -- {
+  --   "ray-x/go.nvim",
+  --   dependencies = {  -- optional packages
+  --     "ray-x/guihua.lua",
+  --     "neovim/nvim-lspconfig",
+  --     "nvim-treesitter/nvim-treesitter",
+  --   },
+  --   config = function()
+  --     require("go").setup()
+  --   end,
+  --   event = {"CmdlineEnter"},
+  --   ft = {"go", 'gomod'},
+  --   -- build = ':lua require("go.install").update_all_sync()' -- if you need to install/update all binaries
+  -- }
 }
