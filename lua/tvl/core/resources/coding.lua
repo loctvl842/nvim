@@ -119,7 +119,7 @@ return {
 
   -- Git Workflow
   {
-    "TimUntersberger/neogit",
+    "NeogitOrg/neogit",
     event = "VeryLazy",
     dependencies = {
       "nvim-lua/plenary.nvim",
@@ -129,8 +129,10 @@ return {
         disable_commit_confirmation = true,
         mappings = {
           status = {
-            ["P"] = require("neogit").popups.pull.create,
-            ["p"] = require("neogit").popups.push.create
+            -- ["P"] = require("neogit").popups.pull.create,
+            -- ["p"] = require("neogit").popups.push.create
+            ["P"] = "PullPopup",
+            ["p"] = "PushPopup"
           }
         }
       }

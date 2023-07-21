@@ -17,7 +17,7 @@ return {
     cmd = "Telescope",
     version = false,
     dependencies = {
-      "coffebar/project.nvim",
+      "JordanFaust/project.nvim",
     },
     opts = {
       defaults = {
@@ -242,9 +242,7 @@ return {
 
   -- This branch is required to get the neovim-session-manager integration working
   {
-    -- "ahmedkhalf/project.nvim",
-    "coffebar/project.nvim",
-    -- branch = "session-manager",
+    "JordanFaust/project.nvim",
     branch = "main",
     opts = {
       on_config_done = nil,
@@ -259,6 +257,7 @@ return {
         ".hg",
         ".bzr",
         ".svn",
+        -- "package.json"
       },
 
       show_hidden = false,
