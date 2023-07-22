@@ -174,7 +174,7 @@ local mappings = {
         "Projects",
       },
       f = {
-        "<cmd>lua require('telescope.builtin').find_files()<cr>",
+        "<cmd>lua require('telescope.builtin').find_files({hidden = true})<cr>",
         "Find files",
       },
     },

@@ -70,6 +70,7 @@
         "/home/jordan/.local/share/nvim/lazy/catppuccin/after",
         "/home/jordan/.local/share/nvim/lazy/playground/after",
         "${3rd}/luassert/library",
+        "${3rd}/luv/library",
         "${3rd}/luv/library"
     ]
 }

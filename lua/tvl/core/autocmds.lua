@@ -244,13 +244,27 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 
 ----------------------------- Neogit -----------------------------
 
-local group = vim.api.nvim_create_augroup('MyCustomNeogitEvents', { clear = true })
+local neogit_group = vim.api.nvim_create_augroup('MyCustomNeogitEvents', { clear = true })
 vim.api.nvim_create_autocmd('User', {
   pattern = 'NeogitPushComplete',
-  group = group,
+  group = neogit_group,
   callback = function()
     require('neogit').close()
   end,
+})
+
+----------------------------- Session Manager -----------------------------
+local session_manager_group = vim.api.nvim_create_augroup('MyCustomSessionManagerGroup', {}) -- A global group for all your config autocommands
+vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+  group = session_manager_group,
+  callback = function()
+    if vim.bo.filetype ~= 'git'
+        and not vim.bo.filetype ~= 'gitcommit'
+        and not vim.bo.filetype ~= 'gitrebase' then
+      print("updating session")
+      require("session_manager").autosave_session()
+    end
+  end
 })
 
 -- vim.api.nvim_create_user_command('PeekOpen', require('peek').open, {})
