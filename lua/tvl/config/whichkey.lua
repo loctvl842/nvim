@@ -95,10 +95,9 @@ local mappings = {
 
     ["b"] = {
       d = { "<cmd>Bdelete!<CR>", "Close Buffer" },
-      l = {
-        "<cmd>lua require('telescope.builtin').buffers()<cr>",
-        "Buffer list"
-      },
+      l = { "<cmd>lua require('telescope.builtin').buffers()<cr>", "Buffer list" },
+      s = { "<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<cr>", "Buffer Search" },
+      S = { "<cmd>lua require('telescope.builtin').treesitter()<cr>", "Buffer Symbols" },
       -- Close all other buffers, performing the following operations:
       -- * :w - Save the current file
       -- * %bdelete - Close all buffers
@@ -141,6 +140,8 @@ local mappings = {
       f = { "<cmd>lua require('telescope.builtin').filetypes()<CR>", "Display Filetypes" },
       k = { "<cmd>lua require('telescope.builtin').keymaps()<CR>", "Display Keymaps" },
       n = { "<cmd>Notifications<CR>", "Display Notifications" },
+      m = { "<cmd>messages<CR>", "Display Messages" },
+      o = { "<cmd>lua require('telescope.builtin').vim_options()<CR>", "Display Options" },
       v = { "<cmd>lua require('telescope.builtin').treesitter()<CR>", "Display Buffer Variables" },
     },
 
@@ -173,6 +174,10 @@ local mappings = {
         "<cmd>lua require('telescope').extensions.projects.projects()<cr>",
         "Projects",
       },
+      -- p = {
+      --   "<cmd>lua require('auto-session.session-lens').search_session()<cr>",
+      --   "Projects",
+      -- },
       f = {
         "<cmd>lua require('telescope.builtin').find_files({hidden = true})<cr>",
         "Find files",
@@ -182,6 +187,7 @@ local mappings = {
     -- Buffer Movement
     ["<Tab>"] = { "<c-6>", "Move back and forth" },
     ["<space>"] = { "<c-6>", "Move back and forth" },
+    -- ["<space>"] = { "<cmd>bprevious<cr>", "Move back and forth" },
 
     ["l"] = {
       name = "LSP",

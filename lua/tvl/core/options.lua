@@ -62,7 +62,10 @@ local options = {
     diff = "╱",
     eob = " ",
   },
-  sessionoptions = "blank,buffers,curdir,folds,help,globals,tabpages,winsize,terminal"
+  -- sessionoptions = "blank,buffers,curdir,folds,help,localoptions,options,globals,tabpages,winsize,terminal"
+  -- sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,terminal"
+  sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,globals,options,localoptions",
+  -- sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal",
 }
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1

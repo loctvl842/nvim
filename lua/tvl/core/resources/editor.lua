@@ -258,11 +258,15 @@ return {
         -- "package.json"
       },
 
+      exclude_dirs = {
+        "~/.local/share/nvim/*"
+      },
+
       show_hidden = false,
       silent_chdir = true,
       ignore_lsp = {},
 
-      scope_chdir = 'tab',
+      -- scope_chdir = 'tab',
 
       session_autoload = true,
       datapath = vim.fn.stdpath("data"),
@@ -293,11 +297,43 @@ return {
           "dashboard"
         },
         autosave_ignore_buftypes = {},    -- All buffers of these bufer types will be closed before the session is saved.
-        autosave_only_in_session = true, -- Always autosaves session. If true, only autosaves after a session is active.
+        autosave_only_in_session = false, -- Always autosaves session. If true, only autosaves after a session is active.
         max_path_length = 80,             -- Shorten the display path if length exceeds this threshold. Use 0 if don't want to shorten the path at all.
       })
     end,
   },
+
+  -- {
+  --   "rmagatti/auto-session",
+  --   opts = {
+  --     log_level = "debug",
+  --
+  --     auto_save_enabled = true,
+  --     auto_session_enable = true,
+  --
+  --     auto_session_suppress_dirs = { "~/", "~/Projects", "~/Downloads", "/", "~/.local/share/nvim" },
+  --     auto_session_use_git_branch = false,
+  --     auto_session_enable_last_session = false,
+  --
+  --     cwd_change_handling = {
+  --       restore_upcoming_session = true, -- already the default, no need to specify like this, only here as an example
+  --       pre_cwd_changed_hook = nil, -- already the default, no need to specify like this, only here as an example
+  --       -- post_cwd_changed_hook = function() -- example refreshing the lualine status line _after_ the cwd changes
+  --       --   require("lualine").refresh() -- refresh lualine so the new session name is displayed in the status bar
+  --       -- end,
+  --     },
+  --
+  --     -- ⚠️ This will only work if Telescope.nvim is installed
+  --     -- The following are already the default values, no need to provide them if these are already the settings you want.
+  --     session_lens = {
+  --       -- If load_on_setup is set to false, one needs to eventually call `require("auto-session").setup_session_lens()` if they want to use session-lens.
+  --       load_on_setup = true,
+  --       prompt_title = "Projects",
+  --       theme_conf = { border = true },
+  --       previewer = false,
+  --     },
+  --   },
+  -- },
 
   {
     "kevinhwang91/nvim-ufo",

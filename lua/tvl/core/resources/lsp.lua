@@ -87,6 +87,15 @@ return {
               --   [vim.fn.expand("$VIMRUNTIME/lua")] = false,
               --   [vim.fn.stdpath("config") .. "/lua"] = false,
               -- },
+              checkThirdParty = false,
+            },
+            completion = {
+              callSnippet = "Replace",
+            },
+            misc = {
+              parameters = {
+                "--log-level=trace",
+              },
             },
             telemetry = {
               enable = false,
