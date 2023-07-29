@@ -18,10 +18,10 @@ return {
 
       -- diagnostics
       for name, icon in pairs(require("tvl.core.icons").diagnostics) do
-        local function firstUpper(s)
+        local function first_upper(s)
           return s:sub(1, 1):upper() .. s:sub(2)
         end
-        name = "DiagnosticSign" .. firstUpper(name)
+        name = "DiagnosticSign" .. first_upper(name)
         vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
       end
       vim.diagnostic.config(require("tvl.config.lsp.diagnostics")["on"])
@@ -43,9 +43,15 @@ return {
       local available = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
 
       local ensure_installed = {}
+      -- Manually setting up lua-lsp-server because of NixOS
+      -- Manson does not install the lua-lsp-server with the RUNTIME of the executable set. Using the
+      -- package from nixos appropriately builds the LSP server. It is discoverable on the PATH for
+      -- Neovim so the following settings can be applied without any additional steps
+      local nixos_servers = { "lua_ls" }
       for server, server_opts in pairs(servers) do
         if server_opts then
-          if not vim.tbl_contains(available, server) then
+          if not vim.tbl_contains(available, server) or vim.tbl_contains(nixos_servers, server) then
+            print("manually setting up server and not using mason: " .. server)
             setup(server)
           else
             ensure_installed[#ensure_installed + 1] = server
@@ -55,62 +61,6 @@ return {
 
       require("mason-lspconfig").setup({ ensure_installed = ensure_installed })
       require("mason-lspconfig").setup_handlers({ setup })
-
-      -- Manually setting up lua-lsp-server because of NixOS
-      -- Manson does not install the lua-lsp-server with the RUNTIME of the executable set. Using the
-      -- package from nixos appropriately builds the LSP server. It is discoverable on the PATH for
-      -- Neovim so the following settings can be applied without any additional steps
-      require("lspconfig").lua_ls.setup({
-        settings = {
-          Lua = {
-            hint = {
-              enable = true,
-              arrayIndex = "Disable", -- "Enable", "Auto", "Disable"
-              await = true,
-              paramName = "Disable",  -- "All", "Literal", "Disable"
-              paramType = false,
-              semicolon = "Disable",  -- "All", "SameLine", "Disable"
-              setType = true,
-            },
-            runtime = {
-              version = "LuaJIT",
-              special = {
-                reload = "require",
-              },
-            },
-            diagnostics = {
-              globals = { "vim" },
-            },
-            workspace = {
-              library = vim.api.nvim_get_runtime_file("", true),
-              -- library = {
-              --   [vim.fn.expand("$VIMRUNTIME/lua")] = false,
-              --   [vim.fn.stdpath("config") .. "/lua"] = false,
-              -- },
-              checkThirdParty = false,
-            },
-            completion = {
-              callSnippet = "Replace",
-            },
-            misc = {
-              parameters = {
-                "--log-level=trace",
-              },
-            },
-            telemetry = {
-              enable = false,
-            },
-            format = {
-              enable = true,
-              defaultConfig = {
-                indent_style = "space",
-                indent_size = "2",
-                continuation_indent_size = "2",
-              },
-            },
-          },
-        },
-      })
     end,
   },
 
@@ -119,19 +69,6 @@ return {
     config = function()
       require("mason").setup()
     end
-    -- opts = {
-    --   ui = {
-    --     -- border = "rounded",
-    --     border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" },
-    --     icons = {
-    --       package_installed = "◍",
-    --       package_pending = "◍",
-    --       package_uninstalled = "◍",
-    --     },
-    --   },
-    --   log_level = vim.log.levels.INFO,
-    --   max_concurrent_installers = 4,
-    -- },
   },
 
   -- formatters
@@ -140,12 +77,11 @@ return {
     config = function()
       local null_ls = require("null-ls")
       local formatting = null_ls.builtins.formatting
-      -- print(vim.inspect(formatting.sql_formatter))
-      -- print(vim.inspect(formatting.black))
       null_ls.setup({
         debug = false,
         sources = {
           formatting.prettier,
+          formatting.buf,
           formatting.stylua,
           formatting.google_java_format,
           formatting.markdownlint,
@@ -162,7 +98,8 @@ return {
     opts = {
       ensure_installed = {
         "prettier",
-        "stylua",
+        -- This must be installed via NixOS and will be picked up from the user profile
+        -- "stylua",
         "google_java_format",
         "black",
         "markdownlint",

@@ -64,7 +64,7 @@ local options = {
   },
   -- sessionoptions = "blank,buffers,curdir,folds,help,localoptions,options,globals,tabpages,winsize,terminal"
   -- sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,terminal"
-  sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,globals,options,localoptions",
+  sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,globals",
   -- sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal",
 }
 vim.g.loaded_netrw = 1

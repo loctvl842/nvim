@@ -266,28 +266,28 @@ local session_manager_group = vim.api.nvim_create_augroup('MyCustomSessionManage
 --     end
 --   end
 -- })
-vim.api.nvim_create_autocmd({ 'User' }, {
-  group = session_manager_group,
-  pattern = "SessionLoadPre",
-  callback = function()
-    print("SessionLoadPre executing...")
-  end
-})
-vim.api.nvim_create_autocmd({ 'User' }, {
-  group = session_manager_group,
-  pattern = "SessionLoadPost",
-  callback = function()
-    print("SessionLoadPost executing...")
-    vim.cmd([[ silent! normal! g`]])
-  end
-})
+-- vim.api.nvim_create_autocmd({ 'User' }, {
+--   group = session_manager_group,
+--   pattern = "SessionLoadPre",
+--   callback = function()
+--     print("SessionLoadPre executing...")
+--   end
+-- })
+-- vim.api.nvim_create_autocmd({ 'User' }, {
+--   group = session_manager_group,
+--   pattern = "SessionLoadPost",
+--   callback = function()
+--     print("SessionLoadPost executing...")
+--     vim.cmd([[ silent! normal! g`]])
+--   end
+-- })
 
-vim.api.nvim_create_autocmd({ "BufEnter" }, {
-  pattern = "*",
-  callback = function()
-    vim.cmd([[ silent! normal! g`]])
-  end,
-})
+-- vim.api.nvim_create_autocmd({ "BufEnter" }, {
+--   pattern = "*",
+--   callback = function()
+--     vim.cmd([[ silent! normal! g`]])
+--   end,
+-- })
 
 -- vim.api.nvim_create_user_command('PeekOpen', require('peek').open, {})
 -- vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})

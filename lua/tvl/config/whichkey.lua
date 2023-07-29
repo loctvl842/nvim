@@ -108,13 +108,17 @@ local mappings = {
 
     ["f"] = {
       name = "file",
+      -- f = {
+      --   "<cmd>lua require('telescope.builtin').find_files()<cr>",
+      --   "Find files",
+      -- },
       f = {
-        "<cmd>lua require('telescope.builtin').find_files()<cr>",
+        "<cmd>lua require('telescope.builtin').find_files({ hidden = true, search_dirs = { '/media/procore', '~/github.com', '~/.config/nvim', '/etc/dotfiles' }})<cr>",
         "Find files",
       },
-      s = { "<cmd>w!<CR>", "Save" },
+      s = { "<cmd>silent w!<CR>", "Save" },
       S = {
-        "<cmd>lua vim.lsp.buf.format()<CR><cmd>w!<CR>",
+        "<cmd>lua vim.lsp.buf.format()<CR><cmd>silent w!<CR>",
         "Format and Save",
       },
     },
@@ -140,7 +144,8 @@ local mappings = {
       f = { "<cmd>lua require('telescope.builtin').filetypes()<CR>", "Display Filetypes" },
       k = { "<cmd>lua require('telescope.builtin').keymaps()<CR>", "Display Keymaps" },
       n = { "<cmd>Notifications<CR>", "Display Notifications" },
-      m = { "<cmd>messages<CR>", "Display Messages" },
+      -- m = { "<cmd>messages<CR>", "Display Messages" },
+      m = { "<cmd>Noice telescope<CR>", "Display Messages" },
       o = { "<cmd>lua require('telescope.builtin').vim_options()<CR>", "Display Options" },
       v = { "<cmd>lua require('telescope.builtin').treesitter()<CR>", "Display Buffer Variables" },
     },
@@ -272,6 +277,7 @@ local mappings = {
     -- 	v = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", "Vertical" },
     -- },
   },
+
   ["f"] = {
     ["d"] = { "zd", "Delete fold under cursor" },
     ["o"] = {

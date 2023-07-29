@@ -403,10 +403,14 @@ return {
             yamlBlockMappingKey = { fg = colors.red },
             yamlPlainScalar = { fg = colors.yellow },
 
+            -- Treesitter --
+
             -- Base Overrides
             -- Type = { fg = colors.sky, italic = true },
             -- ["@property"] = { fg = colors.green },
             ["@constant"] = { fg = colors.peach, italic = true },
+
+            -- Golang
             ["@lsp.type.namespace.go"] = { fg = colors.peach },
             ["@lsp.type.function.go"] = { fg = colors.blue, italic = true },
 
@@ -422,6 +426,9 @@ return {
             -- ["@lsp.typemod.parameter.definition.go"] = { fg = colors.lavender, italic = true },
             -- ["@lsp.type.parameter.go"] = { fg = colors.lavender, italic = true },
             -- ["@lsp.type.operator.go"] = { fg = colors.red },
+
+            -- Terraform
+            -- ["@field.terraform"] = { fg = colors.peach },
           },
         },
       })
