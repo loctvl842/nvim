@@ -98,4 +98,7 @@ return {
       bottom_left = "▀",
     },
   },
+  misc = {
+    codeium = "󰘦 ",
+  },
 }
