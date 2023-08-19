@@ -83,7 +83,7 @@ local servers = {
         analysis = {
           indexing = true,
           typeCheckingMode = "basic",
-          diagnosticMode = "workspace",
+          diagnosticMode = "openFilesOnly",
           autoImportCompletions = true,
           autoSearchPaths = true,
           inlayHints = {
@@ -102,20 +102,22 @@ local servers = {
     },
   },
   pylsp = {
+    -- reference: https://github.com/python-lsp/python-lsp-server/blob/develop/CONFIGURATION.md
     settings = {
       pylsp = {
         plugins = {
           jedi_definition = {
-            enabled = true,
-            follow_imports = true,
-            follow_builtin_imports = true,
-            follow_builtin_definitions = true,
+            enabled = false,
+            follow_imports = false,
+            follow_builtin_imports = false,
+            follow_builtin_definitions = false,
           },
           jedi_rename = { enabled = true },
           jedi_completion = { enabled = false },
           jedi_hover = { enabled = true },
+          -- type checker
           pylsp_mypy = {
-            enabled = true,
+            enabled = false,
             live_mode = false,
             dmypy = false,
             report_progress = false,
