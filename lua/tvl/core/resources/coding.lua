@@ -82,6 +82,7 @@ return {
     "hrsh7th/nvim-cmp",
     version = false,
     event = { "InsertEnter", "CmdlineEnter" },
+    commit = "b8c2a62b3bd3827aa059b43be3dd4b5c45037d65",
     dependencies = {
       "mfussenegger/nvim-jdtls",
       "hrsh7th/cmp-nvim-lsp",
@@ -130,19 +131,24 @@ return {
           end),
         }),
         sources = cmp.config.sources({
-          { name = "nvim_lsp" },
+          { name = "codeium" },
+          { name = "nvim_lsp", keyword_length = 2 },
           { name = "luasnip" },
-          { name = "buffer" },
+          { name = "buffer", keyword_length = 3 },
           { name = "path" },
         }),
         formatting = {
           fields = { "kind", "abbr", "menu" },
           format = function(entry, item)
-            local icons = require("tvl.core.icons").kinds
-            item.kind = icons[item.kind]
+            local icons = require("tvl.core.icons")
+            item.kind = icons.kinds[item.kind]
+            if entry.source.name == "codeium" then
+              item.kind = icons.misc.codeium
+              item.kind_hl_group = "CmpItemKindVariable"
+            end
             item.menu = ({
+              codeium = "Codeium",
               nvim_lsp = "Lsp",
-              nvim_lua = "Lua",
               luasnip = "Snippet",
               buffer = "Buffer",
               path = "Path",
@@ -169,15 +175,12 @@ return {
     "echasnovski/mini.comment",
     event = "VeryLazy",
     opts = {
-      hooks = {
-        pre = function()
-          require("ts_context_commentstring.internal").update_commentstring({})
+      options = {
+        custom_commentstring = function()
+          return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
         end,
       },
     },
-    config = function(_, opts)
-      require("mini.comment").setup(opts)
-    end,
   },
 
   {
@@ -199,12 +202,10 @@ return {
   },
 
   {
-    "jackMort/ChatGPT.nvim",
-    lazy = require("tvl.util").apikey == nil,
+    "jcdickinson/codeium.nvim",
+    event = { "InsertEnter", "CmdlineEnter" },
     config = function()
-      require("chatgpt").setup({
-        api_key_cmd = require("tvl.util").apikey,
-      })
+      require("codeium").setup({})
     end,
   },
 }
