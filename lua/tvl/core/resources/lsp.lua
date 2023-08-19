@@ -26,7 +26,7 @@ return {
           vim.lsp.buf.format({
             filter = function(client)
               -- do not use default `lua_ls` to format
-              local exclude_servers = { "lua_ls" }
+              local exclude_servers = { "lua_ls", "pyright", "pylsp" }
               return not vim.tbl_contains(exclude_servers, client.name)
             end,
           })
@@ -104,17 +104,24 @@ return {
       local null_ls = require("null-ls")
       local formatting = null_ls.builtins.formatting
       local diagnostics = null_ls.builtins.diagnostics
+      local code_actions = null_ls.builtins.code_actions
       null_ls.setup({
         debug = false,
         -- You can then register sources by passing a sources list into your setup function:
         -- using `with()`, which modifies a subset of the source's default options
         sources = {
-          formatting.prettier,
+          -- formatting.prettier,
+          formatting.eslint_d,
+          diagnostics.eslint_d,
+          code_actions.eslint_d,
           formatting.stylua,
           formatting.markdownlint,
           formatting.beautysh.with({ extra_args = { "--indent-size", "2" } }),
-          formatting.black,
-          diagnostics.flake8.with({ extra_args = { "--ignore=E203,E501,E402,F401,F821,W503,W292" }, filetypes = { "python" } }),
+          formatting.black.with({ extra_args = { "--line-length", "120" } }),
+          diagnostics.flake8.with({
+            extra_args = { "--ignore=E501,E402,E722,F821,W503,W292,E203" },
+            filetypes = { "python" },
+          }),
         },
       })
     end,
@@ -125,6 +132,7 @@ return {
     event = { "BufReadPre", "BufNewFile" },
     opts = {
       ensure_installed = {
+        "eslint_d",
         "prettier",
         "stylua",
         "google_java_format",
