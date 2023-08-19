@@ -25,6 +25,7 @@ return {
         "cpp",
         "java",
         "graphql",
+        "dockerfile",
       },
       highlight = { enable = true },
       indent = { enable = true, disable = { "yaml", "python", "html" } },
