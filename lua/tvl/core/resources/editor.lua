@@ -157,6 +157,7 @@ return {
       { "<leader>f", Util.telescope("find_files"), desc = "Find files" },
       -- { "<leader>F",  "<cmd>Telescope live_grep<cr>",                           desc = "Find Text" },
       { "<leader>F", Util.telescope("live_grep"), desc = "Find Text" },
+      { "<leader>b", Util.telescope("buffers"), desc = "Find buffer" },
     },
     -- config = function() require("tvl.config.telescope") end,
   },
