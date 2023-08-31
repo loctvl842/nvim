@@ -21,7 +21,7 @@ vim.api.nvim_create_autocmd("User", {
         { desc = "󰚰 Update", group = "@property", action = "Lazy update", key = "u" },
       },
       config = {
-        header = Logo.dragon.generate("night_fury"),
+        header = Logo.dragon.random(),
         center = {
           {
             icon = "   ",

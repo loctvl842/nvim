@@ -340,8 +340,20 @@ return {
         end,
         desc = "Open all folds",
       },
-      { "fm", "zm", desc = "Fold more" },
-      { "fr", "zr", desc = "Fold less" },
+      {
+        "fm",
+        function()
+          require("ufo").closeFoldsWith()
+        end,
+        desc = "Fold more",
+      },
+      {
+        "fr",
+        function()
+          require("ufo").openFoldsExceptKinds()
+        end,
+        desc = "Fold less",
+      },
       { "fx", "zx", desc = "Update folds" },
       { "fz", "zz", desc = "Center this line" },
       { "ft", "zt", desc = "Top this line" },
