@@ -33,6 +33,23 @@ M.get_highlight_value = function(group)
   return hl_config
 end
 
+-- return plugin opts
+---@param name string
+function M.opts(name)
+  local plugin = require("lazy.core.config").plugins[name]
+  if not plugin then
+    return {}
+  end
+  local Plugin = require("lazy.core.plugin")
+  return Plugin.values(plugin, "opts", false)
+end
+
+-- returns the root directory based on:
+-- * lsp workspace folders
+-- * lsp root_dir
+-- * root pattern of filename of the current buffer
+-- * root pattern of cwd
+---@return string
 M.get_root = function()
   ---@type string?
   local path = vim.api.nvim_buf_get_name(0)

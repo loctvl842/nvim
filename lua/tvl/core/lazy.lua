@@ -13,7 +13,15 @@ vim.opt.rtp:prepend(lazypath)
 
 -- load lazy
 require("lazy").setup({
-  spec = "tvl.core.resources",
+  spec = {
+    { import = "tvl.core.resources" },
+    { import = "tvl.core.resources.lang.python", enabled = false },
+    { import = "tvl.core.resources.lang.typescript", enabled = false },
+    { import = "tvl.core.resources.lang.java", enabled = false },
+    { import = "tvl.core.resources.lang.docker", enabled = false },
+    { import = "tvl.core.resources.lang.docker", enabled = false },
+    { import = "tvl.core.resources.lang.clangd", enabled = false },
+  },
   defaults = {
     lazy = false,
     -- version = false, -- always use the latest git commit

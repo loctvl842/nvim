@@ -76,6 +76,7 @@ return {
     },
     opts = function()
       local cmp = require("cmp")
+      local defaults = require("cmp.config.default")()
       cmp.setup.cmdline({ "/", "?" }, {
         mapping = cmp.mapping.preset.cmdline(),
         sources = { { name = "buffer" } },
@@ -140,6 +141,7 @@ return {
           end,
         },
         experimental = { ghost_text = true },
+        sorting = defaults.sorting,
       }
     end,
   },
