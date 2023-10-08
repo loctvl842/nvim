@@ -1,6 +1,7 @@
 return {
   {
     "huggingface/llm.nvim",
+    lazy = true,
     opts = {
       model = "bigcode/starcoder", -- can be a model ID or an http(s) endpoint
       accept_keymap = "<Tab>",
