@@ -15,7 +15,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   spec = {
     { import = "tvl.core.resources" },
-    { import = "tvl.core.resources.lang.python", enabled = false },
+    { import = "tvl.core.resources.lang.python", enabled = true },
     { import = "tvl.core.resources.lang.typescript", enabled = false },
     { import = "tvl.core.resources.lang.java", enabled = false },
     { import = "tvl.core.resources.lang.docker", enabled = false },

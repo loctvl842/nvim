@@ -45,45 +45,7 @@ return {
             },
           },
         },
-        pylsp = {
-          -- reference: https://github.com/python-lsp/python-lsp-server/blob/develop/CONFIGURATION.md
-          settings = {
-            pylsp = {
-              plugins = {
-                jedi_definition = {
-                  enabled = false,
-                  follow_imports = false,
-                  follow_builtin_imports = false,
-                  follow_builtin_definitions = false,
-                },
-                jedi_rename = { enabled = true },
-                jedi_completion = { enabled = false },
-                jedi_hover = { enabled = true },
-                -- type checker
-                pylsp_mypy = {
-                  enabled = false,
-                  live_mode = false,
-                  dmypy = false,
-                  report_progress = false,
-                },
-                -- Disabled ones:
-                flake8 = { enabled = false },
-                mccabe = { enabled = false },
-                preload = { enabled = false },
-                pycodestyle = { enabled = false },
-                pyflakes = { enabled = false },
-                pylint = { enabled = false },
-                rope = { enabled = false },
-                rope_completion = { enabled = false },
-                rope_rename = { enabled = false },
-                yapf = { enabled = false },
-                pylsp_black = { enabled = false },
-                pyls_isort = { enabled = false },
-                autopep8 = { enabled = false },
-              },
-            },
-          },
-        },
+        ruff_lsp = {}
       },
       attach_handlers = {
         pyright = function(client, _)
@@ -98,12 +60,6 @@ return {
             triggerCharacters = { "." },
           }
         end,
-        pylsp = function(client, _)
-          local sc = client.server_capabilities
-          sc.documentFormattingProvider = false
-          sc.documentRangeFormattingProvider = false
-          sc.definitionProvider = false -- pyright does not follow imports correctly
-        end,
       },
     },
   },
@@ -111,15 +67,7 @@ return {
   {
     "jose-elias-alvarez/null-ls.nvim",
     opts = function(_, opts)
-      local null_ls = require("null-ls")
-      local formatting = null_ls.builtins.formatting
-      local diagnostics = null_ls.builtins.diagnostics
       opts.sources = vim.list_extend(opts.sources, {
-        formatting.black.with({ extra_args = { "--line-length", "120" } }),
-        diagnostics.flake8.with({
-          extra_args = { "--ignore=E501,E402,E722,F821,W503,W292,E203" },
-          filetypes = { "python" },
-        }),
       })
     end,
   },
@@ -128,8 +76,6 @@ return {
     "jay-babu/mason-null-ls.nvim",
     opts = function(_, opts)
       opts.ensure_installed = vim.list_extend(opts.ensure_installed, {
-        "black",
-        "flake8",
       })
     end,
   },
