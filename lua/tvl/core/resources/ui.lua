@@ -89,7 +89,7 @@ return {
     opts = function()
       local monokai_opts = require("tvl.util").opts("monokai-pro.nvim")
       return {
-        float = vim.tbl_contains(monokai_opts.background_clear or {}, "neo-tree"),
+        float = not vim.tbl_contains(monokai_opts.background_clear or {}, "neo-tree"),
         separator = "bubble", -- bubble | triangle
         ---@type any
         colorful = true,

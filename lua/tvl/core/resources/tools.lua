@@ -34,7 +34,7 @@ return {
 
   {
     "toppair/peek.nvim",
-    priority = 10,
+    event = { "VeryLazy" },
     build = "deno task --quiet build:fast",
     keys = {
       {
@@ -50,7 +50,7 @@ return {
         desc = "Peek (Markdown Preview)",
       },
     },
-    opts = { theme = "dark" },
+    opts = { theme = "dark", app = "webview" },
   },
 
   {

@@ -148,7 +148,7 @@ M.filetype = {
       end
       filetype_str = prev_filetype
     elseif str == "help" then
-      filetype_str = ""
+      filetype_str = "󰋖"
     elseif vim.tbl_contains(ui_filetypes, str) then
       return
     else

@@ -14,6 +14,21 @@ return {
       servers = {
         tsserver = {
           settings = {
+            keys = {
+              {
+                "<leader>lo",
+                function()
+                  vim.lsp.buf.code_action({
+                    apply = true,
+                    context = {
+                      only = { "source.organizeImports.ts" },
+                      diagnostics = {},
+                    },
+                  })
+                end,
+                desc = "Organize Imports",
+              },
+            },
             typescript = {
               inlayHints = {
                 includeInlayParameterNameHints = "all",
