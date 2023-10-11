@@ -45,8 +45,8 @@ return {
         options = {
           diagnostics = "nvim_lsp", -- | "nvim_lsp" | "coc",
           -- separator_style = "", -- | "thick" | "thin" | "slope" | { 'any', 'any' },
-          -- separator_style = { "", "" }, -- | "thick" | "thin" | { 'any', 'any' },
-          separator_style = "slant", -- | "thick" | "thin" | { 'any', 'any' },
+          separator_style = { "", "" }, -- | "thick" | "thin" | { 'any', 'any' },
+          -- separator_style = "slant", -- | "thick" | "thin" | { 'any', 'any' },
           indicator = {
             -- icon = " ",
             -- style = 'icon',
@@ -64,13 +64,13 @@ return {
               filetype = "neo-tree",
               text = "EXPLORER",
               text_align = "center",
-              separator = vim.tbl_contains(monokai_opts.background_clear or {}, "neo-tree"), -- set to `true` if clear background of neo-tree
+              separator = not vim.tbl_contains(monokai_opts.background_clear or {}, "neo-tree"), -- set to `true` if clear background of neo-tree
             },
             {
               filetype = "NvimTree",
               text = "EXPLORER",
               text_align = "center",
-              separator = vim.tbl_contains(monokai_opts.background_clear or {}, "nvim-tree"), -- set to `true` if clear background of neo-tree
+              separator = not vim.tbl_contains(monokai_opts.background_clear or {}, "nvim-tree"), -- set to `true` if clear background of neo-tree
             },
           },
           hover = {
