@@ -53,8 +53,26 @@ return {
             },
           },
         },
+        eslint = {
+          settings = {
+            -- helps eslint find the eslintrc when it's placed in a subfolder instead of the cwd root
+            workingDirectory = { mode = "auto" },
+          },
+        },
       },
-      on_attach = {},
+      attach_handlers = {
+        eslint = function()
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            callback = function(event)
+              local client = require("tvl.util").get_clients({ bufnr = event.buf, name = "eslint" })[1]
+              local diag = vim.diagnostic.get(event.buf, { namespace = vim.lsp.diagnostic.get_namespace(client.id) })
+              if #diag > 0 then
+                vim.cmd("EslintFixAll")
+              end
+            end,
+          })
+        end,
+      },
     },
   },
 
@@ -77,18 +95,17 @@ return {
           condition = root_has_file(eslint_root_files),
         },
         prettier_formatting = {
-          condition = root_has_file(prettier_root_files),
+          condition = function(utils)
+            local has_eslint = root_has_file(eslint_root_files)(utils)
+            local has_prettier = root_has_file(prettier_root_files)(utils)
+            return has_prettier or ((not has_prettier) and not has_eslint)
+          end,
         },
       }
       local null_ls = require("null-ls")
       local formatting = null_ls.builtins.formatting
-      local diagnostics = null_ls.builtins.diagnostics
-      local code_actions = null_ls.builtins.code_actions
       opts.sources = vim.list_extend(opts.sources, {
         formatting.prettierd.with(modifier.prettier_formatting),
-        formatting.eslint_d.with(modifier.eslint_formatting),
-        diagnostics.eslint_d.with(modifier.eslint_diagnostics),
-        code_actions.eslint_d.with(modifier.eslint_diagnostics),
       })
     end,
   },
@@ -97,7 +114,6 @@ return {
     "jay-babu/mason-null-ls.nvim",
     opts = function(_, opts)
       opts.ensure_installed = vim.list_extend(opts.ensure_installed, {
-        "eslint_d",
         "prettierd",
       })
     end,

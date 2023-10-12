@@ -10,6 +10,11 @@ M.has = function(plugin)
   return require("lazy.core.config").plugins[plugin] ~= nil
 end
 
+function M.get_clients(...)
+  local fn = vim.lsp.get_clients or vim.lsp.get_active_clients
+  return fn(...)
+end
+
 --- @param on_attach fun(client, buffer)
 M.on_attach = function(on_attach)
   vim.api.nvim_create_autocmd("LspAttach", {

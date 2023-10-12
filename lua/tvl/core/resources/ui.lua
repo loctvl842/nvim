@@ -104,39 +104,64 @@ return {
 
   {
     "lukas-reineke/indent-blankline.nvim",
-    -- event = { "BufReadPost", "BufNewFile" },
-    lazy = true,
-    opts = {
-      char = "▏",
-      context_char = "▏",
-      show_end_of_line = false,
-      space_char_blankline = " ",
-      show_current_context = true,
-      show_current_context_start = true,
-      filetype_exclude = {
-        "help",
-        "startify",
-        "dashboard",
-        "packer",
-        "neogitstatus",
-        "NvimTree",
-        "Trouble",
-        "alpha",
-        "neo-tree",
-      },
-      buftype_exclude = {
-        "terminal",
-        "nofile",
-      },
-      -- char_highlight_list = {
-      --   "IndentBlanklineIndent1",
-      --   "IndentBlanklineIndent2",
-      --   "IndentBlanklineIndent3",
-      --   "IndentBlanklineIndent4",
-      --   "IndentBlanklineIndent5",
-      --   "IndentBlanklineIndent6",
-      -- },
+    event = {
+      "BufReadPost",
+      "BufNewFile",
     },
+    opts = function()
+      local highlight = {
+        "RainbowDelimiterRed",
+        "RainbowDelimiterYellow",
+        "RainbowDelimiterBlue",
+        "RainbowDelimiterOrange",
+        "RainbowDelimiterGreen",
+        "RainbowDelimiterViolet",
+        "RainbowDelimiterCyan",
+      }
+      return {
+        -- char = "▏",
+        -- context_char = "▏",
+        -- show_end_of_line = false,
+        -- space_char_blankline = " ",
+        -- show_current_context = true,
+        -- show_current_context_start = true,
+        debounce = 0,
+        indent = {
+          char = "▏",
+          tab_char = "▏",
+        },
+        scope = {
+          highlight = highlight,
+          show_start = true,
+          show_end = false,
+          char = "▏",
+          include = {
+            node_type = { ["*"] = { "*" } },
+          },
+          exclude = {
+            node_type = { ["*"] = { "source_file", "program" }, python = { "module" }, lua = { "chunk" } },
+          },
+        },
+        exclude = {
+          filetypes = {
+            "help",
+            "startify",
+            "dashboard",
+            "packer",
+            "neogitstatus",
+            "NvimTree",
+            "Trouble",
+            "alpha",
+            "neo-tree",
+          },
+          buftypes = {
+            "terminal",
+            "nofile",
+          },
+        },
+      }
+    end,
+    main = "ibl",
   },
 
   {
