@@ -13,22 +13,22 @@ return {
     opts = {
       servers = {
         tsserver = {
-          settings = {
-            keys = {
-              {
-                "<leader>lo",
-                function()
-                  vim.lsp.buf.code_action({
-                    apply = true,
-                    context = {
-                      only = { "source.organizeImports.ts" },
-                      diagnostics = {},
-                    },
-                  })
-                end,
-                desc = "Organize Imports",
-              },
+          keys = {
+            {
+              "<leader>lo",
+              function()
+                vim.lsp.buf.code_action({
+                  apply = true,
+                  context = {
+                    only = { "source.organizeImports.ts" },
+                    diagnostics = {},
+                  },
+                })
+              end,
+              desc = "Organize Imports",
             },
+          },
+          settings = {
             typescript = {
               inlayHints = {
                 includeInlayParameterNameHints = "all",
