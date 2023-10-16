@@ -47,7 +47,7 @@ return {
       -- special attach lsp
       Util.on_attach(function(client, buffer)
         require("tvl.config.lsp.navic").attach(client, buffer)
-        -- require("tvl.config.lsp.keymaps").attach(client, buffer)
+        require("tvl.config.lsp.keymaps").attach(client, buffer)
         require("tvl.config.lsp.inlayhints").attach(client, buffer)
         require("tvl.config.lsp.gitsigns").attach(client, buffer)
       end)

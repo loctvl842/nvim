@@ -104,10 +104,7 @@ return {
 
   {
     "lukas-reineke/indent-blankline.nvim",
-    event = {
-      "BufReadPost",
-      "BufNewFile",
-    },
+    event = { "BufReadPost", "BufNewFile" },
     opts = function()
       local highlight = {
         "RainbowDelimiterRed",
@@ -125,7 +122,7 @@ return {
         -- space_char_blankline = " ",
         -- show_current_context = true,
         -- show_current_context_start = true,
-        debounce = 0,
+        debounce = 200,
         indent = {
           char = "▏",
           tab_char = "▏",
