@@ -169,7 +169,11 @@ local mappings = {
 
     ["s"] = {
       name = "search",
-      p = { "<cmd>Telescope live_grep<cr>", "Find Text" },
+      p = {
+        -- "<cmd>Telescope live_grep<cr>",
+        "<cmd>lua require('tvl.config.telescope.custom_pickers').live_grep()<cr>",
+        "Find Text"
+      },
       i = { "<cmd>IconPickerInsert<cr>", "Find Icon" },
     },
 
@@ -185,6 +189,10 @@ local mappings = {
       -- },
       f = {
         "<cmd>lua require('telescope.builtin').find_files({hidden = true})<cr>",
+
+
+        -- "<cmd>lua require('tvl.config.telescope.custom_pickers').live_grep('')<cr>",
+        -- "<cmd>lua require('tvl.config.telescope.pretty_pickers').pretty_files_picker({ picker = 'find_files', prompt_title = '' })<cr>",
         "Find files",
       },
     },

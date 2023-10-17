@@ -21,9 +21,21 @@ return {
     },
     opts = {
       defaults = {
+        prompt_title = false,
         prompt_prefix = "   ",
-        selection_caret = "  ",
-        entry_prefix = "   ",
+        -- selection_caret = "  ",
+        selection_caret = "  ",
+        -- entry_prefix = "   ",
+        path_display = function(_, path)
+          local filename = path:gsub(vim.pesc(vim.loop.cwd()) .. '/', ''):gsub(vim.pesc(vim.fn.expand '$HOME'), '~')
+          local tail = require('telescope.utils').path_tail(filename)
+          local folder = vim.fn.fnamemodify(filename, ':h')
+          if folder == '.' then
+            return tail
+          end
+
+          return string.format('%s  —  %s', tail, folder)
+        end,
         borderchars = {
           prompt = util.generate_borderchars(
             "thick",
@@ -37,7 +49,7 @@ return {
           ),
           preview = util.generate_borderchars("thick", nil, { top = "█", top_left = "█", top_right = "█" }),
         },
-        dynamic_preview_title = true,
+        -- dynamic_preview_title = true,
         hl_result_eol = true,
         sorting_strategy = "ascending",
         file_ignore_patterns = {
@@ -92,24 +104,66 @@ return {
           "%.flac",
           "%.tar.gz",
         },
-        results_title = "",
+        results_title = false,
         layout_config = {
           horizontal = {
-            prompt_position = "top",
-            preview_width = 0.55,
-            results_width = 0.8,
+            prompt_position = "bottom",
+            -- preview_width = 0.55,
+            -- results_width = 0.8,
           },
           vertical = {
             mirror = false,
           },
-          width = 0.87,
-          height = 0.80,
-          preview_cutoff = 120,
+          -- width = 0.87,
+          -- height = 0.80,
+          -- preview_cutoff = 120,
+        },
+        pickers = {
+          oldfiles = {
+            prompt_title = false,
+            sort_lastused = true,
+            cwd_only = true,
+          },
+          find_files = {
+            prompt_title = false,
+            results_title = false,
+            hidden = true,
+            cwd_only = true,
+          },
         },
       },
     },
     config = function(_, opts)
       local actions = require("telescope.actions")
+      local layout_strategies = require('telescope.pickers.layout_strategies')
+      -- Add an extra line between the prompt and results so that the theme looks OK
+      local original_center = layout_strategies.center
+      layout_strategies.center = function(picker, columns, lines, layout_config)
+        local res = original_center(picker, columns, lines, layout_config)
+
+        -- Move results down one line so that the prompt bottom border is visible
+        res.results.line = res.results.line + 1
+
+        return res
+      end
+
+      local original_horizontal = layout_strategies.horizontal
+      layout_strategies.horizontal = function(picker, columns, lines, layout_config)
+        local layout = original_horizontal(picker, columns, lines, layout_config)
+
+        if layout and layout.prompt ~= nil then
+          layout.prompt.title = ''
+        end
+        if layout and layout.results ~= nil then
+          layout.results.title = ''
+        end
+        if layout and layout.preview ~= nil then
+          layout.preview.title = ''
+        end
+
+        return layout
+      end
+
       opts.defaults.mappings = {
         i = {
           ["<C-g>"] = actions.close,
@@ -175,6 +229,8 @@ return {
         },
       }
       require("telescope").setup(opts)
+      require("telescope").load_extension("noice")
+      require('telescope').load_extension 'notify'
     end,
   },
 

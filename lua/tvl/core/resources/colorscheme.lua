@@ -391,7 +391,11 @@ return {
             -- Telescope
             TelescopeBorder = { bg = colors.mantle, fg = colors.mantle },
             TelescopeTitle = { bg = colors.peach, fg = colors.crust },
-            TelescopeSelection = { fg = colors.peach },
+            TelescopeNormal = { bg = colors.mantle },
+            TelescopeSelection = { bg = "#2c3047", fg = colors.text },
+            TelescopePromptNormal = { bg = "#2c3047", fg = colors.text },
+            TelescopePromptBorder = { bg = "#2c3047", fg = "#2c3047" },
+            TelescopeResultsNormal = { bg = colors.mantle, fg = colors.text },
 
             -- WhichKey
             WhichKeyBorder = { fg = colors.mantle, bg = colors.mantle },
