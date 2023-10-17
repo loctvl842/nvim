@@ -129,6 +129,13 @@ local servers = {
   },
   bashls = {},
   terraformls = {},
+  ruby_ls = {
+    cmd = { "ruby-lsp" },
+    init_options = {
+      formatter = "auto",
+    },
+  },
+  solargraph = {},
 }
 
 return servers

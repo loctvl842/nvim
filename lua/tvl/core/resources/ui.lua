@@ -94,26 +94,35 @@ return {
   {
     "lukas-reineke/indent-blankline.nvim",
     event = { "BufReadPost", "BufNewFile" },
+    main = "ibl",
     opts = {
-      char = "▏",
-      context_char = "▏",
-      show_end_of_line = false,
-      space_char_blankline = " ",
-      show_current_context = true,
-      show_current_context_start = true,
-      filetype_exclude = {
-        "help",
-        "startify",
-        "dashboard",
-        "packer",
-        "neogitstatus",
-        "NvimTree",
-        "Trouble",
-        "alpha",
+      indent = {
+        char = "▏",
       },
-      buftype_exclude = {
-        "terminal",
-        "nofile",
+      scope = {
+        enabled = true,
+        show_end = false
+      },
+      -- context_char = "▏",
+      -- show_end_of_line = false,
+      -- space_char_blankline = " ",
+      -- show_current_context = true,
+      -- show_current_context_start = true,
+      exclude = {
+        filetypes = {
+          "help",
+          "startify",
+          "dashboard",
+          "packer",
+          "neogitstatus",
+          "NvimTree",
+          "Trouble",
+          "alpha",
+        },
+        buftypes = {
+          "terminal",
+          "nofile",
+        },
       },
     },
   },

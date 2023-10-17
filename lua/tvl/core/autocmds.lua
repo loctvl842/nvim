@@ -134,6 +134,13 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end
 })
 
+----------------------------- Formatting -----------------------------
+
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  pattern = { "*" },
+  command = [[%s/\s\+$//e]],
+})
+
 ----------------------------- Markdown -----------------------------
 
 vim.api.nvim_create_autocmd({ "FileType" }, {

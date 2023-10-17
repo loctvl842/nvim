@@ -14,6 +14,9 @@ return {
         require("tvl.config.lsp.keymaps").attach(client, buffer)
         require("tvl.config.lsp.inlayhints").attach(client, buffer)
         require("tvl.config.lsp.gitsigns").attach(client, buffer)
+        if client == 'ruby_ls' then
+          require("tvl.config.lsp.ruby_ls").attach(client, buffer)
+        end
       end)
 
       -- diagnostics
@@ -47,11 +50,10 @@ return {
       -- Manson does not install the lua-lsp-server with the RUNTIME of the executable set. Using the
       -- package from nixos appropriately builds the LSP server. It is discoverable on the PATH for
       -- Neovim so the following settings can be applied without any additional steps
-      local nixos_servers = { "lua_ls" }
+      local nixos_servers = { "lua_ls", "solargraph", "ruby-lsp", "ruby_ls" }
       for server, server_opts in pairs(servers) do
         if server_opts then
           if not vim.tbl_contains(available, server) or vim.tbl_contains(nixos_servers, server) then
-            print("manually setting up server and not using mason: " .. server)
             setup(server)
           else
             ensure_installed[#ensure_installed + 1] = server
