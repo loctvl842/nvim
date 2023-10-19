@@ -25,6 +25,7 @@ local options = {
   timeoutlen = 100, -- time to wait for a mapped sequence to complete (in milliseconds)
   -- undofile = true,                         -- enable persistent undo
   updatetime = 500, -- faster completion (4000ms default)
+  wildmode = "longest:full,full", -- Command-line completion mode
   writebackup = false, -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
   expandtab = true, -- convert tabs to spaces
   shiftwidth = 2, -- the number of spaces inserted for each indentation
@@ -38,6 +39,7 @@ local options = {
   -- scrolloff = 6, -- is one of my fav
   -- sidescrolloff = 8,
   laststatus = 3,
+  list = true, -- Show some invisible characters (tabs...
   guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20",
   -- guicursor = "a:xxx",
   background = "dark",
@@ -49,7 +51,7 @@ local options = {
   linespace = 8,
   mousemoveevent = true,
   syntax = "off",
-  spelllang = { "en" },
+  spelllang = { "en", "vi" },
   -- use fold
   foldlevelstart = 99,
   foldlevel = 99,
@@ -72,7 +74,7 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 vim.opt.shortmess:append("c")
-vim.opt.viewoptions:remove "curdir" -- disable saving current directory with views
+vim.opt.viewoptions:remove("curdir") -- disable saving current directory with views
 
 vim.opt.list = true
 -- vim.opt.listchars:append "space:⋅"

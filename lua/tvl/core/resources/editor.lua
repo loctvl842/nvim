@@ -253,6 +253,7 @@ return {
         "TelescopeResult",
         "DressingInput",
         "neo-tree-popup",
+        "markdown",
         "",
       },
       delay = 200,
