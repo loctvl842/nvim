@@ -45,7 +45,7 @@ return {
             },
           },
         },
-        ruff_lsp = {}
+        ruff_lsp = {},
       },
       attach_handlers = {
         pyright = function(client, _)
@@ -67,7 +67,10 @@ return {
   {
     "jose-elias-alvarez/null-ls.nvim",
     opts = function(_, opts)
+      local null_ls = require("null-ls")
+      local formatting = null_ls.builtins.formatting
       opts.sources = vim.list_extend(opts.sources, {
+        formatting.black,
       })
     end,
   },
@@ -76,6 +79,7 @@ return {
     "jay-babu/mason-null-ls.nvim",
     opts = function(_, opts)
       opts.ensure_installed = vim.list_extend(opts.ensure_installed, {
+        "black",
       })
     end,
   },
