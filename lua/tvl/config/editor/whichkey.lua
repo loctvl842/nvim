@@ -171,7 +171,7 @@ local mappings = {
       name = "search",
       p = {
         -- "<cmd>Telescope live_grep<cr>",
-        "<cmd>lua require('tvl.config.telescope.custom_pickers').live_grep()<cr>",
+        "<cmd>lua require('tvl.config.editor.telescope.custom_pickers').live_grep()<cr>",
         "Find Text"
       },
       i = { "<cmd>IconPickerInsert<cr>", "Find Icon" },
@@ -183,22 +183,14 @@ local mappings = {
         "<cmd>lua require('telescope').extensions.projects.projects()<cr>",
         "Projects",
       },
-      -- p = {
-      --   "<cmd>lua require('auto-session.session-lens').search_session()<cr>",
-      --   "Projects",
-      -- },
       f = {
         "<cmd>lua require('telescope.builtin').find_files({hidden = true})<cr>",
-
-
-        -- "<cmd>lua require('tvl.config.telescope.custom_pickers').live_grep('')<cr>",
-        -- "<cmd>lua require('tvl.config.telescope.pretty_pickers').pretty_files_picker({ picker = 'find_files', prompt_title = '' })<cr>",
         "Find files",
       },
     },
 
     -- Buffer Movement
-    ["<Tab>"] = { "<c-6>", "Move back and forth" },
+    ["<Tab>"] = { "<cmd>:b#<cr>", "Move back and forth" },
     ["<space>"] = { "<c-6>", "Move back and forth" },
     -- ["<space>"] = { "<cmd>bprevious<cr>", "Move back and forth" },
 

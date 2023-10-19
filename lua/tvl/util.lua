@@ -1,18 +1,18 @@
 local M = {}
 
-M.root_patterns = { ".git", "lua", "package.json", "mvnw", "gradlew", "pom.xml", "build.gradle", "release", ".project" }
+M.root_patterns = { '.git', 'lua', 'package.json', 'mvnw', 'gradlew', 'pom.xml', 'build.gradle', 'release', '.project' }
 
 M.augroup = function(name)
-  return vim.api.nvim_create_augroup("tvl_" .. name, { clear = true })
+  return vim.api.nvim_create_augroup('tvl_' .. name, { clear = true })
 end
 
 M.has = function(plugin)
-  return require("lazy.core.config").plugins[plugin] ~= nil
+  return require('lazy.core.config').plugins[plugin] ~= nil
 end
 
 --- @param on_attach fun(client, buffer)
 M.on_attach = function(on_attach)
-  vim.api.nvim_create_autocmd("LspAttach", {
+  vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
       local buffer = args.buf
       local client = vim.lsp.get_client_by_id(args.data.client_id)
@@ -25,7 +25,7 @@ M.get_highlight_value = function(group)
   local hl = vim.api.nvim_get_hl_by_name(group, true)
   local hl_config = {}
   for key, value in pairs(hl) do
-    hl_config[key] = string.format("#%02x", value)
+    hl_config[key] = string.format('#%02x', value)
   end
   return hl_config
 end
@@ -33,7 +33,7 @@ end
 M.get_root = function()
   ---@type string?
   local path = vim.api.nvim_buf_get_name(0)
-  path = path ~= "" and vim.loop.fs_realpath(path) or nil
+  path = path ~= '' and vim.loop.fs_realpath(path) or nil
   ---@type string[]
   local roots = {}
   if path then
@@ -72,52 +72,52 @@ M.set_root = function(dir)
   vim.api.nvim_set_current_dir(dir)
 end
 
----@param type "ivy" | "dropdown" | "cursor" | nil
+---@param type 'ivy' | 'dropdown' | 'cursor' | nil
 M.telescope_theme = function(type)
   if type == nil then
     return {
-      borderchars = M.generate_borderchars("thick"),
+      borderchars = M.generate_borderchars('thick'),
       layout_config = {
         width = 80,
         height = 0.5,
       },
     }
   end
-  return require("telescope.themes")["get_" .. type]({
+  return require('telescope.themes')['get_' .. type]({
     cwd = M.get_root(),
-    borderchars = M.generate_borderchars("thick", nil, { top = "█", top_left = "█", top_right = "█" }),
+    borderchars = M.generate_borderchars('thick', nil, { top = '█', top_left = '█', top_right = '█' }),
   })
 end
 
----@param type "ivy" | "dropdown" | "cursor" | nil
+---@param type 'ivy' | 'dropdown' | 'cursor' | nil
 M.telescope = function(builtin, type, opts)
   local params = { builtin = builtin, type = type, opts = opts }
   return function()
     builtin = params.builtin
     type = params.type
     opts = params.opts
-    opts = vim.tbl_deep_extend("force", { cwd = M.get_root() }, opts or {})
+    opts = vim.tbl_deep_extend('force', { cwd = M.get_root() }, opts or {})
     local theme
-    if vim.tbl_contains({ "ivy", "dropdown", "cursor" }, type) then
+    if vim.tbl_contains({ 'ivy', 'dropdown', 'cursor' }, type) then
       theme = M.telescope_theme(type)
     else
       theme = opts
     end
-    require("telescope.builtin")[builtin](theme)
+    require('telescope.builtin')[builtin](theme)
   end
 end
 
----@param name "autocmds" | "options" | "keymaps"
+---@param name 'autocmds' | 'options' | 'keymaps'
 M.load = function(name)
-  local Util = require("lazy.core.util")
+  local Util = require('lazy.core.util')
   -- always load lazyvim, then user file
-  local mod = "tvl.core." .. name
+  local mod = 'tvl.core.' .. name
   Util.try(function()
     require(mod)
   end, {
-    msg = "Failed loading " .. mod,
+    msg = 'Failed loading ' .. mod,
     on_error = function(msg)
-      local modpath = require("lazy.core.cache").find(mod)
+      local modpath = require('lazy.core.cache').find(mod)
       if modpath then
         Util.error(msg)
       end
@@ -126,8 +126,8 @@ M.load = function(name)
 end
 
 M.on_very_lazy = function(fn)
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "VeryLazy",
+  vim.api.nvim_create_autocmd('User', {
+    pattern = 'VeryLazy',
     callback = function()
       fn()
     end,
@@ -136,10 +136,10 @@ end
 
 M.capabilities = function(ext)
   return vim.tbl_deep_extend(
-    "force",
+    'force',
     {},
     ext or {},
-    require("cmp_nvim_lsp").default_capabilities(),
+    require('cmp_nvim_lsp').default_capabilities(),
     { textDocument = { foldingRange = { dynamicRegistration = false, lineFoldingOnly = true } } }
   )
 end
@@ -147,10 +147,10 @@ end
 M.notify = function(msg, level, opts)
   opts = opts or {}
   level = vim.log.levels[level:upper()]
-  if type(msg) == "table" then
-    msg = table.concat(msg, "\n")
+  if type(msg) == 'table' then
+    msg = table.concat(msg, '\n')
   end
-  local nopts = { title = "Nvim" }
+  local nopts = { title = 'Nvim' }
   if opts.once then
     return vim.schedule(function()
       vim.notify_once(msg, level, nopts)
@@ -161,16 +161,16 @@ M.notify = function(msg, level, opts)
   end)
 end
 
---- @param type "thin" | "thick" | "empty" | nil
---- @param order "t-r-b-l-tl-tr-br-bl" | "tl-t-tr-r-bl-b-br-l" | nil
+--- @param type 'thin' | 'thick' | 'empty' | nil
+--- @param order 't-r-b-l-tl-tr-br-bl' | 'tl-t-tr-r-bl-b-br-l' | nil
 --- @param opts BorderIcons | nil
 M.generate_borderchars = function(type, order, opts)
   if order == nil then
-    order = "t-r-b-l-tl-tr-br-bl"
+    order = 't-r-b-l-tl-tr-br-bl'
   end
-  local border_icons = require("tvl.core.icons").borders
+  local border_icons = require('tvl.core.icons').borders
   --- @type BorderIcons
-  local border = vim.tbl_deep_extend("force", border_icons[type or "empty"], opts or {})
+  local border = vim.tbl_deep_extend('force', border_icons[type or 'empty'], opts or {})
 
   local borderchars = {}
 
@@ -181,7 +181,7 @@ M.generate_borderchars = function(type, order, opts)
         return nil
       end
       -- Find the next occurence of `char`
-      local nextIndex = string.find(order, "-", index)
+      local nextIndex = string.find(order, '-', index)
       -- Extract the first direction
       local direction = string.sub(order, index, nextIndex and nextIndex - 1)
       -- Update the index to nextIndex
@@ -191,26 +191,26 @@ M.generate_borderchars = function(type, order, opts)
   end)()
 
   local mappings = {
-    t = "top",
-    r = "right",
-    b = "bottom",
-    l = "left",
-    tl = "top_left",
-    tr = "top_right",
-    br = "bottom_right",
-    bl = "bottom_left",
+    t = 'top',
+    r = 'right',
+    b = 'bottom',
+    l = 'left',
+    tl = 'top_left',
+    tr = 'top_right',
+    br = 'bottom_right',
+    bl = 'bottom_left',
   }
   local direction = extractDirections()
   while direction do
     if mappings[direction] == nil then
-      M.notify(string.format("Invalid direction '%s'", direction), "error")
+      M.notify(string.format('Invalid direction \'%s\'', direction), 'error')
     end
     borderchars[#borderchars + 1] = border[mappings[direction]]
     direction = extractDirections()
   end
 
   if #borderchars ~= 8 then
-    M.notify(string.format("Invalid order '%s'", order), "error")
+    M.notify(string.format('Invalid order \'%s\'', order), 'error')
   end
 
   return borderchars

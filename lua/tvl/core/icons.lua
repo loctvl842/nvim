@@ -7,8 +7,8 @@ return {
   },
   git = {
     added = "",
-    modified = "",
-    removed = "",
+    modified = "",
+    removed = "",
     renamed = "➜",
     untracked = "",
     ignored = "",

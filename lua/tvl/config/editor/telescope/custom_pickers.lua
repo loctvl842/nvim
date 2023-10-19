@@ -25,7 +25,7 @@ local live_grep_filters = {
 ---@param current_input ?string
 local function run_live_grep(current_input)
   -- TODO: Resume old one with same options somehow
-  require('tvl.config.telescope.pretty_pickers').pretty_grep_picker {
+  require('tvl.config.editor.telescope.pretty_pickers').pretty_grep_picker {
     picker = 'live_grep',
     options = {
       additional_args = live_grep_filters.extension and function()
@@ -109,7 +109,7 @@ M.live_grep = function()
 end
 
 M.find_files = function(current_input)
-  require('tvl.config.telescope.pretty_pickers').pretty_grep_picker {
+  require('tvl.config.editor.telescope.pretty_pickers').pretty_grep_picker {
     picker = 'find_files',
     options = {
       -- cwd_only = true,
