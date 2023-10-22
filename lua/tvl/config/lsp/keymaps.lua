@@ -14,20 +14,20 @@ function M.get()
     { "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<cr>", desc = "Rename" },
     { "<leader>ls", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Document Symbols" },
     { "<leader>lS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc = "Workspace Symbols" },
-    {
-      "<leader>W",
-      function()
-        vim.lsp.buf.format({
-          filter = function(client)
-            -- do not use default `lua_ls` to format
-            local exclude_servers = { "lua_ls", "pyright", "pylsp" }
-            return not vim.tbl_contains(exclude_servers, client.name)
-          end,
-        })
-        vim.cmd([[w!]])
-      end,
-      desc = "Format and Save",
-    },
+    -- {
+    --   "<leader>W",
+    --   function()
+    --     vim.lsp.buf.format({
+    --       filter = function(client)
+    --         -- do not use default `lua_ls` to format
+    --         local exclude_servers = { "lua_ls", "pyright", "pylsp" }
+    --         return not vim.tbl_contains(exclude_servers, client.name)
+    --       end,
+    --     })
+    --     vim.cmd([[w!]])
+    --   end,
+    --   desc = "Format and Save",
+    -- },
     -- Goto
     { "gd", "<cmd>Telescope lsp_definitions<cr>", desc = "Go to definition" },
     { "gr", "<cmd>Telescope lsp_references<cr>", desc = "Go to references" },

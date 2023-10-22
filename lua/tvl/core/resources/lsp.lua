@@ -2,7 +2,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     branch = "master",
-    event = { "BufReadPre", "BufNewFile" },
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     dependencies = {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
@@ -41,6 +41,11 @@ return {
         },
       },
       attach_handlers = {},
+      capabilities = {
+        textDocument = {
+          foldingRange = { dynamicRegistration = false, lineFoldingOnly = true },
+        },
+      },
     },
     config = function(_, opts)
       local Util = require("tvl.util")
@@ -57,12 +62,20 @@ return {
 
       local servers = opts.servers
       local ext_capabilites = vim.lsp.protocol.make_client_capabilities()
-      local capabilities = require("tvl.util").capabilities(ext_capabilites)
+
+      local capabilities = vim.tbl_deep_extend(
+        "force",
+        {},
+        ext_capabilites,
+        require("cmp_nvim_lsp").default_capabilities(),
+        opts.capabilities
+      )
 
       local function setup(server)
         local server_opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
         }, servers[server] or {})
+
         if opts.attach_handlers[server] then
           local callback = function(client, buffer)
             if client.name == server then
@@ -95,15 +108,35 @@ return {
   {
     "williamboman/mason.nvim",
     cmd = "Mason",
-    config = function()
-      require("mason").setup()
+    opts = {
+      ensure_installed = {
+        "stylua",
+      },
+    },
+    config = function(_, opts)
+      require("mason").setup(opts)
+      local mr = require("mason-registry")
+      local function ensure_installed()
+        for _, tool in ipairs(opts.ensure_installed) do
+          local p = mr.get_package(tool)
+          if not p:is_installed() then
+            p:install()
+          end
+        end
+      end
+      if mr.refresh then
+        mr.refresh(ensure_installed)
+      else
+        ensure_installed()
+      end
     end,
   },
 
   -- formatters
   {
     "jose-elias-alvarez/null-ls.nvim",
-    event = { "BufReadPre", "BufNewFile" },
+    -- event = { "BufReadPre", "BufNewFile" },
+    lazy = true,
     dependencies = { "mason.nvim" },
     root_has_file = function(files)
       return function(utils)
@@ -135,18 +168,5 @@ return {
       local null_ls = require("null-ls")
       null_ls.setup(opts)
     end,
-  },
-
-  {
-    "jay-babu/mason-null-ls.nvim",
-    event = { "BufReadPre", "BufNewFile" },
-    opts = {
-      ensure_installed = {
-        "stylua",
-        "markdownlint",
-        "beautysh",
-      },
-      automatic_setup = true,
-    },
   },
 }
