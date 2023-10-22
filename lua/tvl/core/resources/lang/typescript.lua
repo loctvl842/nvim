@@ -90,40 +90,6 @@ return {
     },
   },
 
-  -- {
-  --   "jose-elias-alvarez/null-ls.nvim",
-  --   opts = function(plugin, opts)
-  --     local root_has_file = plugin.root_has_file
-  --     local eslint_root_files = { ".eslintrc", ".eslintrc.js", ".eslintrc.json" }
-  --     local prettier_root_files = { ".prettierrc", ".prettierrc.js", ".prettierrc.json" }
-  --
-  --     local modifier = {
-  --       eslint_formatting = {
-  --         condition = function(utils)
-  --           local has_eslint = root_has_file(eslint_root_files)(utils)
-  --           local has_prettier = root_has_file(prettier_root_files)(utils)
-  --           return has_eslint and not has_prettier
-  --         end,
-  --       },
-  --       eslint_diagnostics = {
-  --         condition = root_has_file(eslint_root_files),
-  --       },
-  --       prettier_formatting = {
-  --         condition = function(utils)
-  --           local has_eslint = root_has_file(eslint_root_files)(utils)
-  --           local has_prettier = root_has_file(prettier_root_files)(utils)
-  --           return has_prettier or ((not has_prettier) and not has_eslint)
-  --         end,
-  --       },
-  --     }
-  --     local null_ls = require("null-ls")
-  --     local formatting = null_ls.builtins.formatting
-  --     opts.sources = vim.list_extend(opts.sources, {
-  --       formatting.prettierd.with(modifier.prettier_formatting),
-  --     })
-  --   end,
-  -- },
-
   -- formatter
   {
     "stevearc/conform.nvim",

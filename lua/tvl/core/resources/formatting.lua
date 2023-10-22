@@ -1,5 +1,7 @@
 return {
   "stevearc/conform.nvim",
+  event = { "BufWritePre" },
+  cmd = { "ConformInfo" },
   opts = {
     formatters_by_ft = {
       lua = { "stylua" },
@@ -14,15 +16,14 @@ return {
       "<leader>W",
       function()
         local cf = require("conform")
-        local configured_ft = vim.tbl_keys(cf.formatters_by_ft)
-        if vim.tbl_contains(configured_ft, vim.bo.filetype) then
-          cf.format({ async = true })
-        else
-          vim.lsp.buf.format({ async = true })
-        end
+        cf.format({ async = false, lsp_fallback = true })
         vim.cmd([[w!]])
       end,
       desc = "Format and save",
     },
   },
+  init = function()
+    -- If you want the formatexpr, here is the place to set it
+    vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+  end,
 }

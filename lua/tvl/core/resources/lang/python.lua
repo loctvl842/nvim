@@ -1,5 +1,12 @@
 return {
   {
+    "williamboman/mason.nvim",
+    opts = function(_, opts)
+      table.insert(opts.ensure_installed, "black")
+    end,
+  },
+
+  {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
       if type(opts.ensure_installed) == "table" then
@@ -65,13 +72,11 @@ return {
   },
 
   {
-    "jose-elias-alvarez/null-ls.nvim",
-    opts = function(_, opts)
-      local null_ls = require("null-ls")
-      local formatting = null_ls.builtins.formatting
-      opts.sources = vim.list_extend(opts.sources, {
-        formatting.black,
-      })
-    end,
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        ["python"] = { "black" },
+      },
+    },
   },
 }

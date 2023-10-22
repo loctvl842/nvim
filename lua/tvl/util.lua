@@ -114,6 +114,7 @@ M.telescope_theme = function(type)
   })
 end
 
+---@param builtin "find_files" | "live_grep" | "buffers"
 ---@param type "ivy" | "dropdown" | "cursor" | nil
 M.telescope = function(builtin, type, opts)
   local params = { builtin = builtin, type = type, opts = opts }

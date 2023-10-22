@@ -40,6 +40,7 @@ return {
           },
         },
       },
+      ---@type table<string, fun(client, buffer)>
       attach_handlers = {},
       capabilities = {
         textDocument = {
