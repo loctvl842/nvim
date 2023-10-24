@@ -36,6 +36,7 @@ return {
             },
           },
           settings = {
+            diagnostics = { ignoredCodes = { 6133 } },
             typescript = {
               inlayHints = {
                 includeInlayParameterNameHints = "all",
