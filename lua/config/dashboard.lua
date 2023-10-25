@@ -1,5 +1,5 @@
 local dashboard = require("dashboard")
-local logo = require("tvl.core.logo")
+local logo = require("core.logo")
 
 if vim.o.filetype == "lazy" then
   vim.cmd.close()

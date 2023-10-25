@@ -1,4 +1,4 @@
-local util = require("tvl.util")
+local util = require("util")
 
 -- Highlight on yank
 vim.api.nvim_create_autocmd({ "TextYankPost" }, {
@@ -260,41 +260,3 @@ vim.api.nvim_create_autocmd('User', {
   end,
 })
 
------------------------------ Session Manager -----------------------------
-local session_manager_group = vim.api.nvim_create_augroup('MyCustomSessionManagerGroup', {}) -- A global group for all your config autocommands
--- vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
---   group = session_manager_group,
---   callback = function()
---     if vim.bo.filetype ~= 'git'
---         and not vim.bo.filetype ~= 'gitcommit'
---         and not vim.bo.filetype ~= 'gitrebase' then
---       print("Saving session...")
---       require("session_manager").autosave_session()
---     end
---   end
--- })
--- vim.api.nvim_create_autocmd({ 'User' }, {
---   group = session_manager_group,
---   pattern = "SessionLoadPre",
---   callback = function()
---     print("SessionLoadPre executing...")
---   end
--- })
--- vim.api.nvim_create_autocmd({ 'User' }, {
---   group = session_manager_group,
---   pattern = "SessionLoadPost",
---   callback = function()
---     print("SessionLoadPost executing...")
---     vim.cmd([[ silent! normal! g`]])
---   end
--- })
-
--- vim.api.nvim_create_autocmd({ "BufEnter" }, {
---   pattern = "*",
---   callback = function()
---     vim.cmd([[ silent! normal! g`]])
---   end,
--- })
-
--- vim.api.nvim_create_user_command('PeekOpen', require('peek').open, {})
--- vim.api.nvim_create_user_command('PeekClose', require('peek').close, {})

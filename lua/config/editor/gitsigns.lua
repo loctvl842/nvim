@@ -1,4 +1,4 @@
-local icons = require('tvl.core.icons')
+local icons = require('core.icons')
 
 require('gitsigns').setup({
   signs = {

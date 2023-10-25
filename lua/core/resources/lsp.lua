@@ -8,7 +8,7 @@ return {
       'williamboman/mason-lspconfig.nvim',
     },
     config = function()
-      require('tvl.config.lsp.lspconfig')
+      require('config.lsp.lspconfig')
     end,
   },
 

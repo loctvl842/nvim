@@ -7,7 +7,7 @@ vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
 -- load lazy
 require('lazy').setup({
-  spec = 'tvl.core.resources',
+  spec = 'core.resources',
   defaults = {
     lazy = false,
     -- version = false, -- always use the latest git commit

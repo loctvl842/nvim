@@ -1,5 +1,5 @@
 local neotree = require("neo-tree")
-local icons = require("tvl.core.icons")
+local icons = require("core.icons")
 
 neotree.setup({
   close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab

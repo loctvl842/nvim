@@ -1,4 +1,4 @@
-local util = require("tvl.util")
+local util = require("util")
 vim.g.diagnostics_enabled = true
 
 local diagnostics = {

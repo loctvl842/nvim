@@ -1,5 +1,5 @@
-local config = require("tvl.config.lualine.config").options
-local icons = require("tvl.core.icons")
+local config = require("config.lualine.config").options
+local icons = require("core.icons")
 local project = require("project_nvim.project")
 
 local M = {}
@@ -44,9 +44,11 @@ M.position = function()
   -- print(vim.inspect(config.separator_icon))
   local current_line = vim.fn.line(".")
   local current_column = vim.fn.col(".")
+  -- print("current_line: " .. current_line .. " current_column: " .. current_column)
   local left_sep = hl_str(config.separator_icon.left, "SLSeparator")
   local right_sep = hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
   local str = "Ln " .. current_line .. ", Col " .. current_column
+  -- print(str)
   return left_sep .. hl_str(str, "SLPosition", "SLPosition") .. right_sep
 end
 

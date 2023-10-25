@@ -1,10 +1,10 @@
-local config = require("tvl.config.lualine.config")
+local config = require("config.lualine.config")
 
 local M = {}
 
 local function setup(custom_theme)
-  local cpn = require("tvl.config.lualine.components")
-  local bg = require("tvl.util").get_highlight_value("Normal").background
+  local cpn = require("config.lualine.components")
+  local bg = require("util").get_highlight_value("Normal").background
   local theme = custom_theme or (config.options.float and { normal = { c = { bg = bg } } } or config.options.theme)
   require("lualine").setup({
     options = {
@@ -33,7 +33,8 @@ local function setup(custom_theme)
       lualine_c = {},
       lualine_x = { cpn.diff },
       lualine_y = { cpn.position, cpn.filetype },
-      lualine_z = { cpn.spaces, cpn.mode },
+      -- lualine_z = { cpn.spaces, cpn.mode },
+      lualine_z = { cpn.mode },
     },
     inactive_sections = {
       lualine_a = {},

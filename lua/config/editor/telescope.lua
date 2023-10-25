@@ -1,4 +1,4 @@
-local util = require('tvl.util')
+local util = require('util')
 local actions = require('telescope.actions')
 local layout_strategies = require('telescope.pickers.layout_strategies')
 

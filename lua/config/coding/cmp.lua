@@ -49,7 +49,7 @@ cmp.setup({
   formatting = {
     fields = { 'kind', 'abbr', 'menu' },
     format = function(entry, item)
-      local icons = require('tvl.core.icons').kinds
+      local icons = require('core.icons').kinds
       item.kind = icons[item.kind]
       item.menu = ({
         nvim_lsp = 'Lsp',

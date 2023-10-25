@@ -1,5 +1,5 @@
-local util = require('tvl.util')
-local icons = require('tvl.core.icons')
+local util = require('util')
+local icons = require('core.icons')
 
 return {
   -- Notifications
@@ -45,7 +45,7 @@ return {
       'nvim-tree/nvim-web-devicons',
     },
     -- version = 'v3.5.0',
-    config = function() require('tvl.config.ui.bufferline') end,
+    config = function() require('config.ui.bufferline') end,
   },
 
   -- Status Line
@@ -54,7 +54,7 @@ return {
     'nvim-lualine/lualine.nvim',
     event = 'VeryLazy',
     config = function()
-      require('tvl.config.lualine').load('auto')
+      require('config.lualine').load('auto')
     end
   },
 
@@ -171,13 +171,13 @@ return {
     'nvimdev/dashboard-nvim',
     event = 'VimEnter',
     dependencies = { { 'nvim-tree/nvim-web-devicons' } },
-    config = function() require('tvl.config.dashboard') end,
+    config = function() require('config.dashboard') end,
   },
 
   {
     'nvim-tree/nvim-web-devicons',
     lazy = true,
-    config = function() require('tvl.config.webdevicons') end,
+    config = function() require('config.webdevicons') end,
   },
 
   {
@@ -271,6 +271,6 @@ return {
   {
     'folke/noice.nvim',
     event = 'VeryLazy',
-    config = function() require('tvl.config.ui.noice') end
+    config = function() require('config.ui.noice') end
   },
 }

@@ -89,7 +89,7 @@ local mappings = {
       ["r"] = { "<cmd>:source $MYVIMRC<CR>", "Reload" },
     },
     -- ["r"] = {
-    --   "<cmd>source ~/.config/nvim/lua/tvl/core/resources/colorscheme.lua<CR>",
+    --   "<cmd>source ~/.config/nvim/lua/core/resources/colorscheme.lua<CR>",
     --   "Reload monokai-pro",
     -- },
 
@@ -171,7 +171,7 @@ local mappings = {
       name = "search",
       p = {
         -- "<cmd>Telescope live_grep<cr>",
-        "<cmd>lua require('tvl.config.editor.telescope.custom_pickers').live_grep()<cr>",
+        "<cmd>lua require('config.editor.telescope.custom_pickers').live_grep()<cr>",
         "Find Text"
       },
       i = { "<cmd>IconPickerInsert<cr>", "Find Icon" },

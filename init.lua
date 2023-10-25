@@ -1,1 +1,1 @@
-require("tvl.core.lazy")
+require("core.lazy")

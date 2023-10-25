@@ -1,5 +1,5 @@
-local util = require('tvl.util')
-local icons = require('tvl.core.icons')
+local util = require('util')
+local icons = require('core.icons')
 
 return {
   -- File Navigation
@@ -9,7 +9,7 @@ return {
       'nvim-tree/nvim-web-devicons',
     },
     cmd = 'Neotree',
-    config = function() require('tvl.config.editor.neo-tree') end,
+    config = function() require('config.editor.neo-tree') end,
   },
 
   -- Fuzzy Search
@@ -20,25 +20,25 @@ return {
     dependencies = {
       'JordanFaust/project.nvim',
     },
-    config = function() require('tvl.config.editor.telescope') end,
+    config = function() require('config.editor.telescope') end,
   },
 
   -- Core Utils
   {
     'folke/which-key.nvim',
-    config = function() require('tvl.config.editor.whichkey') end,
+    config = function() require('config.editor.whichkey') end,
   },
 
   {
     'lewis6991/gitsigns.nvim',
     event = { 'BufReadPre', 'BufNewFile' },
-    config = function() require('tvl.config.editor.gitsigns') end
+    config = function() require('config.editor.gitsigns') end
   },
 
   {
     'RRethy/vim-illuminate',
     event = { 'BufReadPost', 'BufNewFile' },
-    config = function() require('tvl.config.editor.vim-illuminate') end
+    config = function() require('config.editor.vim-illuminate') end
   },
 
   -- Project Management
@@ -47,12 +47,12 @@ return {
   {
     'JordanFaust/project.nvim',
     branch = 'main',
-    config = function() require('tvl.config.editor.project') end,
+    config = function() require('config.editor.project') end,
   },
 
   {
     'Shatur/neovim-session-manager',
-    config = function() require('tvl.config.editor.neovim-session-manager') end,
+    config = function() require('config.editor.neovim-session-manager') end,
   },
 
   -- Buffer Folding
@@ -132,6 +132,12 @@ return {
   {
     'luukvbaal/statuscol.nvim',
     event = { 'BufReadPost', 'BufNewFile' },
-    config = function() require('tvl.config.editor.statuscol') end,
+    config = function() require('config.editor.statuscol') end,
   },
+
+  -- Fix Last Place Jump
+  {
+    'ethanholz/nvim-lastplace',
+    config = function() require('nvim-lastplace').setup({}) end
+  }
 }

@@ -42,7 +42,7 @@ return {
       'hrsh7th/cmp-cmdline',
       'saadparwaiz1/cmp_luasnip',
     },
-    config = function() require('tvl.config.coding.cmp') end
+    config = function() require('config.coding.cmp') end
   },
 
   {

@@ -6,7 +6,7 @@ return {
   {
     'loctvl842/compile-nvim',
     lazy = true,
-    config = function() require('tvl.config.compile') end,
+    config = function() require('config.compile') end,
   },
 
   {

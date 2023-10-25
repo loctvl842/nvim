@@ -1,26 +1,26 @@
-require('tvl.util').on_attach(function(client, buffer)
-  require('tvl.config.lsp.navic').attach(client, buffer)
-  require('tvl.config.lsp.keymaps').attach(client, buffer)
-  require('tvl.config.lsp.inlayhints').attach(client, buffer)
-  require('tvl.config.lsp.gitsigns').attach(client, buffer)
+require('util').on_attach(function(client, buffer)
+  require('config.lsp.navic').attach(client, buffer)
+  require('config.lsp.keymaps').attach(client, buffer)
+  require('config.lsp.inlayhints').attach(client, buffer)
+  require('config.lsp.gitsigns').attach(client, buffer)
   if client == 'ruby_ls' then
-    require('tvl.config.lsp.ruby_ls').attach(client, buffer)
+    require('config.lsp.ruby_ls').attach(client, buffer)
   end
 end)
 
 -- diagnostics
-for name, icon in pairs(require('tvl.core.icons').diagnostics) do
+for name, icon in pairs(require('core.icons').diagnostics) do
   local function first_upper(s)
     return s:sub(1, 1):upper() .. s:sub(2)
   end
   name = 'DiagnosticSign' .. first_upper(name)
   vim.fn.sign_define(name, { text = icon, texthl = name, numhl = '' })
 end
-vim.diagnostic.config(require('tvl.config.lsp.diagnostics')['on'])
+vim.diagnostic.config(require('config.lsp.diagnostics')['on'])
 
-local servers = require('tvl.config.lsp.servers')
+local servers = require('config.lsp.servers')
 local ext_capabilites = vim.lsp.protocol.make_client_capabilities()
-local capabilities = require('tvl.util').capabilities(ext_capabilites)
+local capabilities = require('util').capabilities(ext_capabilites)
 
 local function setup(server)
   if servers[server] and servers[server].disabled then
