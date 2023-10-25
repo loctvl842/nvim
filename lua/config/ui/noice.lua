@@ -29,28 +29,28 @@ require('noice').setup({
       filter = {
         any = {
           {
-            event = 'msg_show',
-            kind = '',
-            find = '%d+ change;',
+            event = "msg_show",
+            kind = "",
+            find = "%d+ change;",
           },
           {
-            event = 'msg_show',
-            kind = '',
-            find = '%d+ line less;',
+            event = "msg_show",
+            kind = "",
+            find = "%d+ line less;",
           },
           {
-            event = 'msg_show',
-            kind = '',
-            find = '%d+ fewer lines;?',
+            event = "msg_show",
+            kind = "",
+            find = "%d+ fewer lines;?",
           },
           {
-            event = 'msg_show',
-            kind = '',
-            find = '%d+ more lines?;',
+            event = "msg_show",
+            kind = "",
+            find = "%d+ more lines?;",
           },
           {
-            event = 'msg_show',
-            kind = '',
+            event = "msg_show",
+            kind = "",
             find = '".+" %d+L, %d+B',
           },
         },

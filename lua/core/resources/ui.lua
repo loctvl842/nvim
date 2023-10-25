@@ -1,24 +1,24 @@
-local util = require('util')
-local icons = require('core.icons')
+local util = require("util")
+local icons = require("core.icons")
 
 return {
   -- Notifications
   {
-    'rcarriga/nvim-notify',
+    "rcarriga/nvim-notify",
     keys = {
       {
-        '<leader>n',
+        "<leader>n",
         function()
-          require('notify').dismiss({ silent = true, pending = true })
+          require("notify").dismiss({ silent = true, pending = true })
         end,
-        desc = 'Delete all Notifications',
+        desc = "Delete all Notifications",
       },
     },
     opts = {
       icons = {
-        ERROR = icons.diagnostics.error .. ' ',
-        INFO = icons.diagnostics.info .. ' ',
-        WARN = icons.diagnostics.warn .. ' ',
+        ERROR = icons.diagnostics.error .. " ",
+        INFO = icons.diagnostics.info .. " ",
+        WARN = icons.diagnostics.warn .. " ",
       },
       timeout = 3000,
       max_height = function()
@@ -29,9 +29,9 @@ return {
       end,
     },
     init = function()
-      if not util.has('noice.nvim') then
+      if not util.has("noice.nvim") then
         util.on_very_lazy(function()
-          vim.notify = require('notify')
+          vim.notify = require("notify")
         end)
       end
     end,
@@ -40,123 +40,123 @@ return {
   -- Buffer Management
 
   {
-    'akinsho/bufferline.nvim',
+    "akinsho/bufferline.nvim",
     dependencies = {
-      'nvim-tree/nvim-web-devicons',
+      "nvim-tree/nvim-web-devicons",
     },
-    -- version = 'v3.5.0',
-    config = function() require('config.ui.bufferline') end,
+    -- version = "v3.5.0",
+    config = function() require("config.ui.bufferline") end,
   },
 
   -- Status Line
 
   {
-    'nvim-lualine/lualine.nvim',
-    event = 'VeryLazy',
+    "nvim-lualine/lualine.nvim",
+    event = "VeryLazy",
     config = function()
-      require('config.lualine').load('auto')
+      require("config.lualine").load("auto")
     end
   },
 
   {
-    'lukas-reineke/indent-blankline.nvim',
-    event = { 'BufReadPost', 'BufNewFile' },
-    main = 'ibl',
+    "lukas-reineke/indent-blankline.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    main = "ibl",
     opts = {
       indent = {
-        char = '▏',
+        char = "▏",
       },
       scope = {
         enabled = true,
         show_end = false
       },
-      -- context_char = '▏',
+      -- context_char = "▏",
       -- show_end_of_line = false,
-      -- space_char_blankline = ' ',
+      -- space_char_blankline = " ",
       -- show_current_context = true,
       -- show_current_context_start = true,
       exclude = {
         filetypes = {
-          'help',
-          'startify',
-          'dashboard',
-          'packer',
-          'neogitstatus',
-          'NvimTree',
-          'Trouble',
-          'alpha',
+          "help",
+          "startify",
+          "dashboard",
+          "packer",
+          "neogitstatus",
+          "NvimTree",
+          "Trouble",
+          "alpha",
         },
         buftypes = {
-          'terminal',
-          'nofile',
+          "terminal",
+          "nofile",
         },
       },
     },
   },
 
   {
-    'echasnovski/mini.indentscope',
+    "echasnovski/mini.indentscope",
     lazy = true,
     enabled = true,
     -- lazy = true,
     version = false, -- wait till new 0.7.0 release to put it back on semver
-    -- event = 'BufReadPre',
+    -- event = "BufReadPre",
     opts = {
-      symbol = '▏',
-      -- symbol = '│',
+      symbol = "▏",
+      -- symbol = "│",
       options = { try_as_border = false },
     },
     config = function(_, opts)
-      vim.api.nvim_create_autocmd('FileType', {
+      vim.api.nvim_create_autocmd("FileType", {
         pattern = {
-          'help',
-          'alpha',
-          'dashboard',
-          'neo-tree',
-          'Trouble',
-          'lazy',
-          'mason',
+          "help",
+          "alpha",
+          "dashboard",
+          "neo-tree",
+          "Trouble",
+          "lazy",
+          "mason",
         },
         callback = function() vim.b.miniindentscope_disable = true end,
       })
-      require('mini.indentscope').setup(opts)
+      require("mini.indentscope").setup(opts)
     end,
   },
 
   {
-    'utilyre/barbecue.nvim',
+    "utilyre/barbecue.nvim",
     lazy = false,
-    events = { 'BufReadPost', 'BufNewFile' },
+    events = { "BufReadPost", "BufNewFile" },
     dependencies = {
-      'SmiteshP/nvim-navic',
-      'nvim-tree/nvim-web-devicons',
+      "SmiteshP/nvim-navic",
+      "nvim-tree/nvim-web-devicons",
     },
     opts = {
       attach_navic = false,
-      theme = 'auto',
-      include_buftypes = { '' },
-      exclude_filetypes = { 'gitcommit', 'Trouble', 'toggleterm' },
+      theme = "auto",
+      include_buftypes = { "" },
+      exclude_filetypes = { "gitcommit", "Trouble", "toggleterm" },
       show_modified = false,
       kinds = icons.kinds,
     },
   },
 
   {
-    'akinsho/toggleterm.nvim',
-    event = { 'BufReadPost', 'BufNewFile' },
+    "akinsho/toggleterm.nvim",
+    event = { "BufReadPost", "BufNewFile" },
     opts = {
       open_mapping = [[<C-\>]],
       start_in_insert = true,
-      -- direction = 'float',
+      -- direction = "float",
       autochdir = false,
       -- float_opts = {
-      --   border = util.generate_borderchars('thick', 'tl-t-tr-r-bl-b-br-l'),
+      --   border = util.generate_borderchars("thick", "tl-t-tr-r-bl-b-br-l"),
       --   winblend = 0,
       -- },
       highlights = {
-        FloatBorder = { link = 'ToggleTermBorder' },
-        Normal = { link = 'ToggleTerm' },
-        NormalFloat = { link = 'ToggleTerm' },
+        FloatBorder = { link = "ToggleTermBorder" },
+        Normal = { link = "ToggleTerm" },
+        NormalFloat = { link = "ToggleTerm" },
       },
       winbar = {
         enabled = true,
@@ -168,32 +168,32 @@ return {
   },
 
   {
-    'nvimdev/dashboard-nvim',
-    event = 'VimEnter',
-    dependencies = { { 'nvim-tree/nvim-web-devicons' } },
-    config = function() require('config.dashboard') end,
+    "nvimdev/dashboard-nvim",
+    event = "VimEnter",
+    dependencies = { { "nvim-tree/nvim-web-devicons" } },
+    config = function() require("config.dashboard") end,
   },
 
   {
-    'nvim-tree/nvim-web-devicons',
+    "nvim-tree/nvim-web-devicons",
     lazy = true,
-    config = function() require('config.webdevicons') end,
+    config = function() require("config.webdevicons") end,
   },
 
   {
-    'petertriho/nvim-scrollbar',
+    "petertriho/nvim-scrollbar",
     opts = {
       set_highlights = false,
       excluded_filetypes = {
-        'prompt',
-        'TelescopePrompt',
-        'noice',
-        'neo-tree',
-        'dashboard',
-        'alpha',
-        'lazy',
-        'mason',
-        '',
+        "prompt",
+        "TelescopePrompt",
+        "noice",
+        "neo-tree",
+        "dashboard",
+        "alpha",
+        "lazy",
+        "mason",
+        "",
       },
       handlers = {
         gitsigns = true,
@@ -202,11 +202,11 @@ return {
   },
 
   {
-    'anuvyklack/windows.nvim',
-    event = 'WinNew',
+    "anuvyklack/windows.nvim",
+    event = "WinNew",
     dependencies = {
-      { 'anuvyklack/middleclass' },
-      { 'anuvyklack/animation.nvim', enabled = true },
+      { "anuvyklack/middleclass" },
+      { "anuvyklack/animation.nvim", enabled = true },
     },
     opts = {
       animation = { enable = true, duration = 150, fps = 60 },
@@ -220,15 +220,15 @@ return {
   },
 
   {
-    'NvChad/nvim-colorizer.lua',
-    event = 'BufReadPre',
+    "NvChad/nvim-colorizer.lua",
+    event = "BufReadPre",
     opts = {
-      filetypes = { '*', '!lazy' },
-      buftype = { '*', '!prompt', '!nofile' },
+      filetypes = { "*", "!lazy" },
+      buftype = { "*", "!prompt", "!nofile" },
       user_default_options = {
         RGB = true,       -- #RGB hex codes
         RRGGBB = true,    -- #RRGGBB hex codes
-        names = false,    -- 'Name' codes like Blue
+        names = false,    -- "Name" codes like Blue
         RRGGBBAA = true,  -- #RRGGBBAA hex codes
         AARRGGBB = false, -- 0xAARRGGBB hex codes
         rgb_fn = true,    -- CSS rgb() and rgba() functions
@@ -237,31 +237,31 @@ return {
         css_fn = true,    -- Enable all CSS *functions*: rgb_fn, hsl_fn
         -- Available modes: foreground, background
         -- Available modes for `mode`: foreground, background,  virtualtext
-        mode = 'background', -- Set the display mode.
-        virtualtext = '■',
+        mode = "background", -- Set the display mode.
+        virtualtext = "■",
       },
     },
   },
 
   {
-    'stevearc/dressing.nvim',
+    "stevearc/dressing.nvim",
     lazy = false,
     opts = {
       input = {
-        border = util.generate_borderchars('thick', 'tl-t-tr-r-bl-b-br-l'),
+        border = util.generate_borderchars("thick", "tl-t-tr-r-bl-b-br-l"),
         win_options = { winblend = 0 },
       },
-      select = { telescope = util.telescope_theme('cursor') },
+      select = { telescope = util.telescope_theme("cursor") },
     },
     init = function()
       ---@diagnostic disable-next-line: duplicate-set-field
       vim.ui.select = function(...)
-        require('lazy').load({ plugins = { 'dressing.nvim' } })
+        require("lazy").load({ plugins = { "dressing.nvim" } })
         return vim.ui.select(...)
       end
       ---@diagnostic disable-next-line: duplicate-set-field
       vim.ui.input = function(...)
-        require('lazy').load({ plugins = { 'dressing.nvim' } })
+        require("lazy").load({ plugins = { "dressing.nvim" } })
         return vim.ui.input(...)
       end
     end,
@@ -269,8 +269,8 @@ return {
 
   -- noicer ui
   {
-    'folke/noice.nvim',
-    event = 'VeryLazy',
-    config = function() require('config.ui.noice') end
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    config = function() require("config.ui.noice") end
   },
 }

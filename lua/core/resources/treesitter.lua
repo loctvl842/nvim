@@ -1,11 +1,11 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    version = false, -- last release is way too old and doesn't work on Windows
+    version = false, -- last release is way too old and doesn"t work on Windows
     build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
     dependencies = {
-      { 'JoosepAlviste/nvim-ts-context-commentstring', dev = false },
+      { "JoosepAlviste/nvim-ts-context-commentstring", dev = false },
     },
     opts = {
       ensure_installed = {

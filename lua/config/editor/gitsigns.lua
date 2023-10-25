@@ -1,6 +1,6 @@
-local icons = require('core.icons')
+local icons = require("core.icons")
 
-require('gitsigns').setup({
+require("gitsigns").setup({
   signs = {
     add = { text = icons.gitsigns.add },
     change = { text = icons.gitsigns.change },
@@ -13,8 +13,8 @@ require('gitsigns').setup({
   current_line_blame_opts = {
     delay = 300
   },
-  current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
+  current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
   preview_config = {
-    border = { '▄', '▄', '▄', '█', '▀', '▀', '▀', '█' }, -- [ top top top - right - bottom bottom bottom - left ]
+    border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" }, -- [ top top top - right - bottom bottom bottom - left ]
   }
 })
