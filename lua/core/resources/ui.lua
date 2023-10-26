@@ -54,7 +54,7 @@ return {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     config = function()
-      require("config.lualine").load("auto")
+      require("config.ui.lualine").load("auto")
     end
   },
 

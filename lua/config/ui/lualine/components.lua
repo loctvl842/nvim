@@ -1,4 +1,4 @@
-local config = require("config.lualine.config").options
+local config = require("config.ui.lualine.config").options
 local icons = require("core.icons")
 local project = require("project_nvim.project")
 

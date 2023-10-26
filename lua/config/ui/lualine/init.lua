@@ -1,9 +1,9 @@
-local config = require("config.lualine.config")
+local config = require("config.ui.lualine.config")
 
 local M = {}
 
 local function setup(custom_theme)
-  local cpn = require("config.lualine.components")
+  local cpn = require("config.ui.lualine.components")
   local bg = require("util").get_highlight_value("Normal").background
   local theme = custom_theme or (config.options.float and { normal = { c = { bg = bg } } } or config.options.theme)
   require("lualine").setup({
