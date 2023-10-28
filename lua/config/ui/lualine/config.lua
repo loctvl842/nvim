@@ -9,6 +9,7 @@ local default = {
   colorful = true,
   separator_icon = { left = "", right = " " },
   thin_separator_icon = { left = "", right = " " },
+  separators_enabled = false
   -- separator_icon = { left = "█", right = "█" },
   -- thin_separator_icon = { left = " ", right = " " },
 }

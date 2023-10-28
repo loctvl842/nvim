@@ -32,31 +32,46 @@ M.branch = {
     local root = string.match(project_dir or "", "[%a%-%_]+$") or ""
 
     local icon = hl_str(" ", "SLGitIcon", "SLBranchName")
-    return hl_str(config.separator_icon.left, "SLSeparator")
-        .. hl_str(icon, "SLGitIcon")
+    local branch = hl_str(icon, "SLGitIcon")
         .. hl_str(root, "SLFiletype")
         .. hl_str("/" .. str, "SLBranchName")
+
+    if config.separators_enabled then
+      return hl_str(config.separator_icon.left, "SLSeparator")
+        .. branch
         .. hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
+    end
+
+    return branch
   end,
 }
 
 M.position = function()
-  -- print(vim.inspect(config.separator_icon))
   local current_line = vim.fn.line(".")
   local current_column = vim.fn.col(".")
-  -- print("current_line: " .. current_line .. " current_column: " .. current_column)
   local left_sep = hl_str(config.separator_icon.left, "SLSeparator")
   local right_sep = hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
   local str = "Ln " .. current_line .. ", Col " .. current_column
-  -- print(str)
-  return left_sep .. hl_str(str, "SLPosition", "SLPosition") .. right_sep
+  local position = hl_str(str, "SLPosition", "SLPosition")
+
+  if config.separators_enabled then
+    return left_sep .. position .. right_sep
+  end
+
+  return position
 end
 
 M.spaces = function()
   local left_sep = hl_str(config.separator_icon.left, "SLSeparator")
   local right_sep = hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
   local str = "Spaces: " .. vim.api.nvim_buf_get_option(0, "shiftwidth")
-  return left_sep .. hl_str(str, "SLShiftWidth", "SLShiftWidth") .. right_sep
+  local spaces = hl_str(str, "SLShiftWidth", "SLShiftWidth")
+
+  if config.separators_enabled then
+    return left_sep .. spaces .. right_sep
+  end
+
+  return spaces
 end
 
 M.diagnostics = function()
@@ -79,7 +94,13 @@ M.diagnostics = function()
   local hint_hl = hl_str(icons.diagnostics.hint .. " " .. hint_count, "SLInfo", "SLInfo")
   local left_sep = hl_str(config.thin_separator_icon.left, "SLSeparator")
   local right_sep = hl_str(config.thin_separator_icon.right, "SLSeparator", "SLSeparator")
-  return left_sep .. error_hl .. " " .. warn_hl .. " " .. hint_hl .. right_sep
+  local diagnostics =  error_hl .. " " .. warn_hl .. " " .. hint_hl
+
+  if config.separators_enabled then
+    return left_sep .. diagnostics .. right_sep
+  end
+
+  return diagnostics
 end
 
 M.diff = {
@@ -100,7 +121,12 @@ M.diff = {
     local left_sep = hl_str(config.thin_separator_icon.left, "SLSeparator")
     local right_sep =
         hl_str(config.thin_separator_icon.right, "SLSeparator", "SLSeparator")
-    return left_sep .. str .. right_sep
+
+    if config.separators_enabled then
+      return left_sep .. str .. right_sep
+    end
+
+    return str
   end,
   cond = hide_in_width,
 }
@@ -110,7 +136,13 @@ M.mode = {
   fmt = function(str)
     local left_sep = hl_str(config.separator_icon.left, "SLSeparator", "SLPadding")
     local right_sep = hl_str(config.separator_icon.right, "SLSeparator", "SLPadding")
-    return left_sep .. hl_str(str, "SLMode") .. right_sep
+    local mode = hl_str(str, "SLMode")
+
+    if config.separators_enabled then
+      return left_sep .. mode .. right_sep
+    end
+
+    return mode
   end,
 }
 
@@ -138,7 +170,7 @@ M.filetype = {
 
     if str == "toggleterm" then
       -- 
-      filetype_str = " " .. vim.api.nvim_buf_get_var(0, "toggle_number")
+      filetype_str = " " .. vim.api.nvim_buf_get_var(0, "toggle_number")
     elseif str == "TelescopePrompt" then
       filetype_str = ""
     elseif str == "neo-tree" or str == "neo-tree-popup" then
@@ -156,8 +188,13 @@ M.filetype = {
     local right_sep = hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
     -- Upper case first character
     filetype_str = filetype_str:gsub("%a", string.upper, 1)
-    local filetype_hl = hl_str(filetype_str, "SLFiletype", "SLFiletype")
-    return left_sep .. filetype_hl .. right_sep
+    local filetype = hl_str(filetype_str, "SLFiletype", "SLFiletype")
+
+    if config.separators_enabled then
+      return left_sep .. filetype .. right_sep
+    end
+
+    return filetype
   end,
 }
 
