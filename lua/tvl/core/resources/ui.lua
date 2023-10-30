@@ -121,6 +121,11 @@ return {
     "lukas-reineke/indent-blankline.nvim",
     event = { "BufReadPost", "BufNewFile" },
     opts = function()
+      local hooks = require("ibl.hooks")
+      hooks.register(hooks.type.SCOPE_ACTIVE, function(bufnr)
+        return vim.api.nvim_buf_line_count(bufnr) < 2000
+      end)
+
       local highlight = {
         "RainbowDelimiterRed",
         "RainbowDelimiterYellow",
@@ -131,18 +136,13 @@ return {
         "RainbowDelimiterCyan",
       }
       return {
-        -- char = "▏",
-        -- context_char = "▏",
-        -- show_end_of_line = false,
-        -- space_char_blankline = " ",
-        -- show_current_context = true,
-        -- show_current_context_start = true,
         debounce = 200,
         indent = {
           char = "▏",
           tab_char = "▏",
         },
         scope = {
+          injected_languages = true,
           highlight = highlight,
           show_start = true,
           show_end = false,
