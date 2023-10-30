@@ -65,7 +65,7 @@ return {
     "hrsh7th/nvim-cmp",
     version = false,
     event = { "InsertEnter", "CmdlineEnter" },
-    commit = "b8c2a62b3bd3827aa059b43be3dd4b5c45037d65",
+    -- commit = "b8c2a62b3bd3827aa059b43be3dd4b5c45037d65",
     dependencies = {
       "mfussenegger/nvim-jdtls",
       "hrsh7th/cmp-nvim-lsp",

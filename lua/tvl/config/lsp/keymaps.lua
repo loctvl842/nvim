@@ -5,6 +5,13 @@ function M.get()
     { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code Action" },
     { "<leader>ld", "<cmd>Telescope lsp_document_diagnostics<cr>", desc = "Document Diagnostics" },
     { "<leader>lw", "<cmd>Telescope lsp_workspace_diagnostics<cr>", desc = "Workspace Diagnostics" },
+    {
+      "<leader>lh",
+      function()
+        vim.lsp.inlay_hint(0, nil)
+      end,
+      desc = "Toggle inlay hints",
+    },
     { "<leader>li", "<cmd>LspInfo<cr>", desc = "Info" },
     { "<leader>lI", "<cmd>LspInstallInfo<cr>", desc = "Installer Info" },
     { "<leader>lj", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", desc = "Next Diagnostic" },

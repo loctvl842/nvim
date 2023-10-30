@@ -9,7 +9,6 @@ return {
     },
     opts = {
       servers = {
-        cssls = {},
         html = {},
         lua_ls = {
           settings = {
@@ -54,7 +53,6 @@ return {
       Util.on_attach(function(client, buffer)
         require("tvl.config.lsp.navic").attach(client, buffer)
         require("tvl.config.lsp.keymaps").attach(client, buffer)
-        require("tvl.config.lsp.inlayhints").attach(client, buffer)
         require("tvl.config.lsp.gitsigns").attach(client, buffer)
       end)
 
@@ -63,6 +61,16 @@ return {
 
       local servers = opts.servers
       local ext_capabilites = vim.lsp.protocol.make_client_capabilities()
+
+      -- inlay hints
+      local inlay_hint = vim.lsp.buf.inlayhints or vim.lsp.inlayhints
+      if vim.fn.has("nvim-0.10.0") and inlay_hint then
+        Util.on_attach(function(client, buffer)
+          if client.supports_method("textDocument/inlayHint") then
+            inlay_hint(buffer, true)
+          end
+        end)
+      end
 
       local capabilities = vim.tbl_deep_extend(
         "force",
