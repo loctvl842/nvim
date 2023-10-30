@@ -23,7 +23,6 @@ font_family      CaskaydiaCove NF SemiLight
 bold_font        CaskaydiaCove NF Bold
 italic_font      CaskaydiaCove NF Italic
 bold_italic_font CaskaydiaCove NF Bold Italic
-
 modify_font                     strikethrough_position 130%
 modify_font                     strikethrough_thickness 0.1px
 modify_font                     underline_position 150%
