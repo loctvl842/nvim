@@ -21,14 +21,6 @@ map("n", "<c-l>", "<c-w>l", opts)
 map("n", "<c-j>", "<c-w>j", opts)
 map("n", "<c-k>", "<c-w>k", opts)
 
--------------------- Navigate buffers --------------------------
--- keymap("n", "<S-l>", ":bnext<CR>", opts)
--- keymap("n", "<S-h>", ":bprevious<CR>", opts)
-map("n", "<S-l>", ":BufferLineCycleNext<CR>", opts)
-map("n", "<S-h>", ":BufferLineCyclePrev<CR>", opts)
-map("n", "<A-S-l>", ":BufferLineMoveNext<CR>", opts)
-map("n", "<A-S-h>", ":BufferLineMovePrev<CR>", opts)
-
 -------------------- Press jk fast to enter --------------------
 map("i", "jk", "<ESC>", opts)
 map("i", "Jk", "<ESC>", opts)
@@ -64,17 +56,6 @@ map("i", "<A-S-k>", "<ESC>:m .-2<CR>==gi", opts)
 
 -------------------- No highlight ------------------------------
 map("n", ";", ":noh<CR>", opts)
-
--------------------- Go to buffer quickly ----------------------
-map("n", "<leader>1", "<Cmd>BufferLineGoToBuffer 1<CR>", opts)
-map("n", "<leader>2", "<Cmd>BufferLineGoToBuffer 2<CR>", opts)
-map("n", "<leader>3", "<Cmd>BufferLineGoToBuffer 3<CR>", opts)
-map("n", "<leader>4", "<Cmd>BufferLineGoToBuffer 4<CR>", opts)
-map("n", "<leader>5", "<Cmd>BufferLineGoToBuffer 5<CR>", opts)
-map("n", "<leader>6", "<Cmd>BufferLineGoToBuffer 6<CR>", opts)
-map("n", "<leader>7", "<Cmd>BufferLineGoToBuffer 7<CR>", opts)
-map("n", "<leader>8", "<Cmd>BufferLineGoToBuffer 8<CR>", opts)
-map("n", "<leader>9", "<Cmd>BufferLineGoToBuffer 9<CR>", opts)
 
 -------------------- split window ------------------------------
 map("n", "<leader>\\", ":vsplit<CR>", opts)
