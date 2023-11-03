@@ -102,3 +102,5 @@ end, { desc = "[/] Fuzzily search in current buffer]" })
 
 -------------------- Doom Emacs Compatability --------------------
 keymap("n", "<C-g>", "<C-c>", opts)
+
+-- vim.keymap.set("v", "<leader>ce", require("util").runlua, { desc = "Run Lua" })

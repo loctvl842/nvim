@@ -73,7 +73,7 @@ which_key.setup({
     i = { "j", "k" },
     v = { "j", "k" },
   },
-}, {})
+})
 
 local mappings = {
   ["<leader>"] = {
@@ -257,27 +257,54 @@ local mappings = {
 
     ["c"] = {
       name = "code",
-      d = { "<cmd>Telescope lsp_definitions<cr>", "Go to definition" },
-      -- ["d"] = { "<cmd>lua vim.lsp.buf.definition()<cr>", "Go to definition" },
-      r = { "<cmd>Telescope lsp_references<cr>", "Go to references" },
+
+      b = { "<cmd>BufferLinePick<CR>", "Bufferline: pick buffer" },
+      d = {
+        "<cmd>Telescope lsp_definitions<cr>",
+        "Go to definition"
+      },
+      e = {
+        "<cmd>require('util').runlua()<cr>",
+        "Run Lua"
+      },
       i = {
         "<cmd>Telescope lsp_implementations<cr>",
         "Go to implementations",
       },
-      b = { "<cmd>BufferLinePick<CR>", "Bufferline: pick buffer" },
+      r = { "<cmd>Telescope lsp_references<cr>", "Go to references" },
     },
-    -- t = {
-    -- 	name = "Terminal",
-    -- 	n = { "<cmd>lua _NODE_TOGGLE()<cr>", "Node" },
-    -- 	u = { "<cmd>lua _NCDU_TOGGLE()<cr>", "NCDU" },
-    -- 	t = { "<cmd>lua _HTOP_TOGGLE()<cr>", "Htop" },
-    -- 	p = { "<cmd>lua _PYTHON_TOGGLE()<cr>", "Python" },
-    -- 	f = { "<cmd>ToggleTerm direction=float<cr>", "Float" },
-    -- 	h = { "<cmd>ToggleTerm size=10 direction=horizontal<cr>", "Horizontal" },
-    -- 	v = { "<cmd>ToggleTerm size=80 direction=vertical<cr>", "Vertical" },
-    -- },
-  },
 
+    ["m"] = {
+      name = "local",
+      ["t"] = {
+        name = "testing",
+        ["a"] = {
+          '<cmd>lua require("neotest").run.attach()<cr>',
+          'Attach and Debug Test'
+        },
+        ["t"] = {
+          '<cmd>lua require("neotest").run.run()<cr>',
+          'Run Current Test'
+        },
+        ["f"] = {
+          '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<cr>',
+          'Run Current Test File'
+        },
+        ["T"] = {
+          '<cmd>lua require("neotest").run.run(vim.fn.getcwd())<cr>',
+          'Run All Tests'
+        },
+        ["o"] = {
+          '<cmd>lua require("neotest").output_panel.toggle()<cr>',
+          'Open Test Results'
+        },
+        ["s"] = {
+          '<cmd>lua require("neotest").summary.toggle()<cr>',
+          'Open Test Summary'
+        }
+      },
+    }
+  },
   ["f"] = {
     ["d"] = { "zd", "Delete fold under cursor" },
     ["o"] = {
@@ -332,6 +359,14 @@ local mappings = {
 }
 
 which_key.register(mappings, { mode = "n", prefix = "" })
+which_key.register({
+  ["c"] = {
+    ["e"] = {
+      require('util').runlua,
+      'Run Lua'
+    }
+  }
+}, { mode = "v", prefix = "<leader>" })
 which_key.register(
   { ["f"] = { "zf", "Create fold" } },
   { mode = "v", prefix = "f" }

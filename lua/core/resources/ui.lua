@@ -58,41 +58,41 @@ return {
     end
   },
 
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    event = { "BufReadPost", "BufNewFile" },
-    main = "ibl",
-    opts = {
-      indent = {
-        char = "▏",
-      },
-      scope = {
-        enabled = true,
-        show_end = false
-      },
-      -- context_char = "▏",
-      -- show_end_of_line = false,
-      -- space_char_blankline = " ",
-      -- show_current_context = true,
-      -- show_current_context_start = true,
-      exclude = {
-        filetypes = {
-          "help",
-          "startify",
-          "dashboard",
-          "packer",
-          "neogitstatus",
-          "NvimTree",
-          "Trouble",
-          "alpha",
-        },
-        buftypes = {
-          "terminal",
-          "nofile",
-        },
-      },
-    },
-  },
+  -- {
+  --   "lukas-reineke/indent-blankline.nvim",
+  --   event = { "BufReadPost", "BufNewFile" },
+  --   main = "ibl",
+  --   opts = {
+  --     indent = {
+  --       char = "▏",
+  --     },
+  --     scope = {
+  --       enabled = true,
+  --       show_end = false
+  --     },
+  --     -- context_char = "▏",
+  --     -- show_end_of_line = false,
+  --     -- space_char_blankline = " ",
+  --     -- show_current_context = true,
+  --     -- show_current_context_start = true,
+  --     exclude = {
+  --       filetypes = {
+  --         "help",
+  --         "startify",
+  --         "dashboard",
+  --         "packer",
+  --         "neogitstatus",
+  --         "NvimTree",
+  --         "Trouble",
+  --         "alpha",
+  --       },
+  --       buftypes = {
+  --         "terminal",
+  --         "nofile",
+  --       },
+  --     },
+  --   },
+  -- },
 
   {
     "echasnovski/mini.indentscope",
@@ -138,32 +138,6 @@ return {
       exclude_filetypes = { "gitcommit", "Trouble", "toggleterm" },
       show_modified = false,
       kinds = icons.kinds,
-    },
-  },
-
-  {
-    "akinsho/toggleterm.nvim",
-    event = { "BufReadPost", "BufNewFile" },
-    opts = {
-      open_mapping = [[<C-\>]],
-      start_in_insert = true,
-      -- direction = "float",
-      autochdir = false,
-      -- float_opts = {
-      --   border = util.generate_borderchars("thick", "tl-t-tr-r-bl-b-br-l"),
-      --   winblend = 0,
-      -- },
-      highlights = {
-        FloatBorder = { link = "ToggleTermBorder" },
-        Normal = { link = "ToggleTerm" },
-        NormalFloat = { link = "ToggleTerm" },
-      },
-      winbar = {
-        enabled = true,
-        name_formatter = function(term)
-          return term.name
-        end,
-      },
     },
   },
 

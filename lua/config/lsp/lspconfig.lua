@@ -1,3 +1,5 @@
+require("neodev").setup({ debug = true })
+
 require("util").on_attach(function(client, buffer)
   require("config.lsp.navic").attach(client, buffer)
   require("config.lsp.keymaps").attach(client, buffer)

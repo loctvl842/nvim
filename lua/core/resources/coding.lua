@@ -94,4 +94,19 @@ return {
       hint_scheme = "Comment",               -- highlight group for the virtual text
     },
   },
+
+  -- Testing
+  {
+    "nvim-neotest/neotest",
+    lazy = true,
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "haydenmeade/neotest-jest",
+      "olimorris/neotest-rspec",
+    },
+    config = function()
+      require("config.coding.neotest").setup()
+    end
+  }
 }

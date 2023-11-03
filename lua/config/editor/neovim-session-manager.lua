@@ -14,3 +14,12 @@ require("session_manager").setup({
   autosave_only_in_session = false, -- Always autosaves session. If true, only autosaves after a session is active.
   max_path_length = 80,             -- Shorten the display path if length exceeds this threshold. Use 0 if don"t want to shorten the path at all.
 })
+
+local session_manager_group = vim.api.nvim_create_augroup('UserSessionManagerGroup', {})
+vim.api.nvim_create_autocmd({ 'User' }, {
+  pattern = "SessionSavePre",
+  group = session_manager_group,
+  callback = function()
+    require("neo-tree.command").execute({ action = "close" })
+  end
+})

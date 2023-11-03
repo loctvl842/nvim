@@ -1,5 +1,21 @@
 return {
   {
+    "folke/neodev.nvim",
+    opts = {
+      debug = true
+    }
+  },
+
+  -- LSP Configuration
+
+  {
+    "williamboman/mason.nvim",
+    config = function()
+      require("mason").setup()
+    end
+  },
+
+  {
     "neovim/nvim-lspconfig",
     branch = "master",
     event = { "BufReadPre", "BufNewFile" },
@@ -13,9 +29,57 @@ return {
   },
 
   {
-    "williamboman/mason.nvim",
+    "jay-babu/mason-nvim-dap.nvim",
     config = function()
-      require("mason").setup()
+      require("mason-nvim-dap").setup({
+        -- Get the list of installed servers from mason-lspconfig
+        ensure_installed = require("mason-lspconfig").get_installed_servers()
+      })
+    end
+  },
+
+  -- DAP Configuration
+
+  {
+    "mfussenegger/nvim-dap",
+    dependencies = {
+      "jay-babu/mason-nvim-dap.nvim"
+    },
+    config = function()
+      local dap = require("dap")
+      dap.adapters.ruby = function(callback, config)
+        print("strating ruby adapter")
+        callback({
+          type = "server",
+          host = "127.0.0.1",
+          port = 38698,
+          executable = {
+            command = "bundle",
+            args = { "exec", "rdbg", "-n", "--open", "--port", "${port}",
+              "-c", "--", "bundle", "exec", config.command, config.script,
+            },
+          },
+        })
+      end
+
+      dap.configurations.ruby = {
+        {
+          type = "ruby",
+          name = "debug current file",
+          request = "attach",
+          localfs = true,
+          command = "ruby",
+          script = "${file}",
+        },
+        {
+          type = "ruby",
+          name = "run current spec file",
+          request = "attach",
+          localfs = true,
+          command = "rspec",
+          script = "${file}",
+        },
+      }
     end
   },
 
