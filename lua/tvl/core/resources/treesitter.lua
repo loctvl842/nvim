@@ -46,6 +46,8 @@ return {
         query = {
           [""] = "rainbow-delimiters",
           lua = "rainbow-blocks",
+          tsx = "rainbow-parens",
+          javascript = "rainbow-delimiters-react"
         },
         highlight = {
           "RainbowDelimiterRed",

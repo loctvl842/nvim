@@ -147,12 +147,12 @@ return {
           show_start = true,
           show_end = false,
           char = "▏",
-          include = {
-            node_type = { ["*"] = { "*" } },
-          },
-          exclude = {
-            node_type = { ["*"] = { "source_file", "program" }, python = { "module" }, lua = { "chunk" } },
-          },
+          -- include = {
+          --   node_type = { ["*"] = { "*" } },
+          -- },
+          -- exclude = {
+          --   node_type = { ["*"] = { "source_file", "program" }, python = { "module" }, lua = { "chunk" } },
+          -- },
         },
         exclude = {
           filetypes = {
