@@ -21,7 +21,7 @@ require("lazy").setup({
     { import = "tvl.core.resources.lang.java", enabled = false },
     { import = "tvl.core.resources.lang.docker", enabled = false },
     { import = "tvl.core.resources.lang.docker", enabled = false },
-    { import = "tvl.core.resources.lang.clangd", enabled = false },
+    { import = "tvl.core.resources.lang.clangd", enabled = true },
   },
   defaults = {
     lazy = false,

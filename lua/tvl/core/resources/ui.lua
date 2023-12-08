@@ -79,13 +79,13 @@ return {
               filetype = "neo-tree",
               text = "EXPLORER",
               text_align = "center",
-              separator = not vim.tbl_contains(monokai_opts.background_clear or {}, "neo-tree"), -- set to `true` if clear background of neo-tree
+              separator = vim.tbl_contains(monokai_opts.background_clear or {}, "neo-tree"), -- set to `true` if clear background of neo-tree
             },
             {
               filetype = "NvimTree",
               text = "EXPLORER",
               text_align = "center",
-              separator = not vim.tbl_contains(monokai_opts.background_clear or {}, "nvim-tree"), -- set to `true` if clear background of neo-tree
+              separator = vim.tbl_contains(monokai_opts.background_clear or {}, "nvim-tree"), -- set to `true` if clear background of neo-tree
             },
           },
           hover = {
@@ -100,11 +100,12 @@ return {
 
   {
     "nvim-lualine/lualine.nvim",
-    event = "VeryLazy",
+    -- event = "VeryLazy",
+    event = { "BufReadPost", "BufNewFile" },
     opts = function()
       local monokai_opts = require("tvl.util").opts("monokai-pro.nvim")
       return {
-        float = not vim.tbl_contains(monokai_opts.background_clear or {}, "neo-tree"),
+        float = vim.tbl_contains(monokai_opts.background_clear or {}, "neo-tree"),
         separator = "bubble", -- bubble | triangle
         ---@type any
         colorful = true,
@@ -140,6 +141,7 @@ return {
         indent = {
           char = "▏",
           tab_char = "▏",
+          highlight = "IndentBlanklineChar",
         },
         scope = {
           injected_languages = true,
@@ -177,37 +179,6 @@ return {
   },
 
   {
-    "echasnovski/mini.indentscope",
-    lazy = true,
-    enabled = true,
-    -- lazy = true,
-    version = false, -- wait till new 0.7.0 release to put it back on semver
-    -- event = "BufReadPre",
-    opts = {
-      symbol = "▏",
-      -- symbol = "│",
-      options = { try_as_border = false },
-    },
-    config = function(_, opts)
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = {
-          "help",
-          "alpha",
-          "dashboard",
-          "neo-tree",
-          "Trouble",
-          "lazy",
-          "mason",
-        },
-        callback = function()
-          vim.b.miniindentscope_disable = true
-        end,
-      })
-      require("mini.indentscope").setup(opts)
-    end,
-  },
-
-  {
     "utilyre/barbecue.nvim",
     event = { "BufReadPost", "BufNewFile" },
     dependencies = {
@@ -227,27 +198,31 @@ return {
   {
     "akinsho/toggleterm.nvim",
     event = { "BufReadPost", "BufNewFile" },
-    opts = {
-      open_mapping = [[<C-\>]],
-      start_in_insert = true,
-      direction = "float",
-      autochdir = false,
-      float_opts = {
-        border = Util.generate_borderchars("thick", "tl-t-tr-r-bl-b-br-l"),
-        winblend = 0,
-      },
-      highlights = {
-        FloatBorder = { link = "ToggleTermBorder" },
-        Normal = { link = "ToggleTerm" },
-        NormalFloat = { link = "ToggleTerm" },
-      },
-      winbar = {
-        enabled = true,
-        name_formatter = function(term)
-          return term.name
-        end,
-      },
-    },
+    opts = function()
+      local monokai_opts = require("tvl.util").opts("monokai-pro.nvim")
+      return {
+        open_mapping = [[<C-\>]],
+        start_in_insert = true,
+        direction = "float",
+        autochdir = false,
+        float_opts = {
+          border = vim.tbl_contains(monokai_opts.background_clear or {}, "toggleterm") and "rounded"
+            or Util.generate_borderchars("thick", "tl-t-tr-r-bl-b-br-l"),
+          winblend = 0,
+        },
+        highlights = {
+          FloatBorder = { link = "ToggleTermBorder" },
+          Normal = { link = "ToggleTerm" },
+          NormalFloat = { link = "ToggleTerm" },
+        },
+        winbar = {
+          enabled = true,
+          name_formatter = function(term)
+            return term.name
+          end,
+        },
+      }
+    end,
   },
 
   {

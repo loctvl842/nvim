@@ -21,7 +21,16 @@ return {
       servers = {
         pyright = {
           keys = {
-            { "<leader>lo", "<cmd>PyrightOrganizeImports<CR>", desc = "Organize Imports" },
+            {
+              "<leader>lo",
+              function()
+                vim.lsp.buf.code_action({
+                  apply = true,
+                  context = { only = { "source.organizeImports" } },
+                })
+              end,
+              desc = "Organize Imports",
+            },
           },
           -- disable hint of pyright
           capabilities = (function()
@@ -54,20 +63,20 @@ return {
         },
         ruff_lsp = {},
       },
-      attach_handlers = {
-        pyright = function(client, _)
-          local sc = client.server_capabilities
-          sc.renameProvider = false -- rope is ok
-          sc.hoverProvider = false -- pylsp includes also docstrings
-          sc.signatureHelpProvider = false -- pyright typing of signature is weird
-          sc.definitionProvider = true -- pyright does not follow imports correctly
-          sc.referencesProvider = true -- pylsp does it
-          sc.completionProvider = {
-            resolveProvider = true,
-            triggerCharacters = { "." },
-          }
-        end,
-      },
+      -- attach_handlers = {
+      --   pyright = function(client, _)
+      --     local sc = client.server_capabilities
+      --     sc.renameProvider = true -- rope is ok
+      --     sc.hoverProvider = true -- pylsp includes also docstrings
+      --     sc.signatureHelpProvider = false -- pyright typing of signature is weird
+      --     sc.definitionProvider = true -- pyright does not follow imports correctly
+      --     sc.referencesProvider = true -- pylsp does it
+      --     sc.completionProvider = {
+      --       resolveProvider = true,
+      --       triggerCharacters = { "." },
+      --     }
+      --   end,
+      -- },
     },
   },
 

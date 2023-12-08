@@ -33,12 +33,11 @@ M.get_highlight_value = function(group)
   end
   local hl_config = {}
   for key, value in pairs(hl) do
-    _, hl_config[key] = pcall(string.format, "#%02x", value)
+    _, hl_config[key] = pcall(string.format, "#%06x", value)
   end
   return hl_config
 end
 
--- return plugin opts
 ---@param name string
 function M.opts(name)
   local plugin = require("lazy.core.config").plugins[name]
