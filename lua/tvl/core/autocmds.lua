@@ -1,5 +1,11 @@
 local Util = require("tvl.util")
 
+-- Turn off paste mode when leaving insert
+vim.api.nvim_create_autocmd("InsertLeave", {
+  command = "set nopaste",
+  pattern = "*",
+})
+
 -- Highlight on yank
 vim.api.nvim_create_autocmd({ "TextYankPost" }, {
   group = Util.augroup("highlight_yank"),

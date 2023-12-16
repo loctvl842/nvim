@@ -65,6 +65,27 @@ return {
   },
   borders = {
     --- @class BorderIcons
+    single = {
+      top = "─",
+      right = "│",
+      bottom = "─",
+      left = "│",
+      top_left = "╭",
+      top_right = "╮",
+      bottom_right = "╯",
+      bottom_left = "╰",
+    },
+    double = {
+      top = '═',
+      right = "║",
+      bottom = '═',
+      left = "║",
+      top_left = "╔",
+      top_right = "╗",
+      bottom_right = "╝",
+      bottom_left = "╚",
+    },
+    --- @class BorderIcons
     thin = {
       top = "▔",
       right = "▕",

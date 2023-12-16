@@ -1,7 +1,8 @@
 local opts = { noremap = true, silent = true }
 
 -- Shorten function name
-local map = vim.api.nvim_set_keymap
+-- local map = vim.api.nvim_set_keymap
+local map = vim.keymap.set
 
 --Remap space as leader key
 -- keymap("", "<Space>", "<Nop>", opts)
@@ -69,6 +70,9 @@ map("n", "<c-m-n>", "<cmd>only | Compile<CR>", opts)
 
 -------------------- Inspect --------------------------------
 map("n", "<F2>", "<cmd>Inspect<CR>", opts)
+
+------------------- Select all -----------------------------
+map("n", "<C-a>", "gg<S-v>G", opts)
 
 -------------------- Fuzzy Search --------------------------------
 vim.keymap.set("n", "<C-f>", function()

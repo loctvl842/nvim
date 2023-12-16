@@ -197,7 +197,8 @@ return {
 
   {
     "akinsho/toggleterm.nvim",
-    event = { "BufReadPost", "BufNewFile" },
+    lazy = true,
+    -- event = { "BufReadPost", "BufNewFile" },
     opts = function()
       local monokai_opts = require("tvl.util").opts("monokai-pro.nvim")
       return {
@@ -309,14 +310,21 @@ return {
   -- better vim.ui
   {
     "stevearc/dressing.nvim",
-    lazy = false,
-    opts = {
-      input = {
-        border = Util.generate_borderchars("thick", "tl-t-tr-r-bl-b-br-l"),
-        win_options = { winblend = 0 },
-      },
-      select = { telescope = Util.telescope_theme("cursor") },
-    },
+    event = { "BufReadPost", "BufNewFile" },
+    opts = function()
+      local monokai_opts = require("tvl.util").opts("monokai-pro.nvim")
+      local floatWinBorderType = vim.tbl_contains(monokai_opts.background_clear or {}, "float_win") and "single"
+        or "thick"
+      return {
+        input = {
+          border = Util.generate_borderchars(floatWinBorderType, "tl-t-tr-r-br-b-bl-l"),
+          win_options = { winblend = 0 },
+        },
+        select = vim.tbl_contains(monokai_opts.background_clear or {}, "telescope") and {} or {
+          telescope = Util.telescope_theme("cursor", "thick"),
+        },
+      }
+    end,
     init = function()
       vim.ui.select = function(...)
         require("lazy").load({ plugins = { "dressing.nvim" } })

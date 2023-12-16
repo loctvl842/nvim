@@ -97,10 +97,11 @@ M.set_root = function(dir)
 end
 
 ---@param type "ivy" | "dropdown" | "cursor" | nil
-M.telescope_theme = function(type)
+--- @param borderType "thin" | "thick" | "double" | "single" | "empty" | nil
+M.telescope_theme = function(type, borderType)
   if type == nil then
     return {
-      borderchars = M.generate_borderchars("thick"),
+      borderchars = M.generate_borderchars(borderType),
       layout_config = {
         width = 80,
         height = 0.5,
@@ -109,7 +110,7 @@ M.telescope_theme = function(type)
   end
   return require("telescope.themes")["get_" .. type]({
     cwd = M.get_root(),
-    borderchars = M.generate_borderchars("thick", nil, { top = "█", top_left = "█", top_right = "█" }),
+    borderchars = M.generate_borderchars(borderType, nil, { top = "█", top_left = "█", top_right = "█" }),
   })
 end
 
@@ -186,8 +187,8 @@ M.notify = function(msg, level, opts)
   end)
 end
 
---- @param type "thin" | "thick" | "empty" | nil
---- @param order "t-r-b-l-tl-tr-br-bl" | "tl-t-tr-r-bl-b-br-l" | nil
+--- @param type "thin" | "thick" | "double" | "single" | "empty" | nil
+--- @param order "t-r-b-l-tl-tr-br-bl" | "tl-t-tr-r-br-b-bl-l" | nil
 --- @param opts BorderIcons | nil
 M.generate_borderchars = function(type, order, opts)
   if order == nil then

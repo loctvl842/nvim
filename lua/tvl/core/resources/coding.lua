@@ -78,6 +78,8 @@ return {
     opts = function()
       local cmp = require("cmp")
       local defaults = require("cmp.config.default")()
+      local monokai_opts = require("tvl.util").opts("monokai-pro.nvim")
+
       cmp.setup.cmdline({ "/", "?" }, {
         mapping = cmp.mapping.preset.cmdline(),
         sources = { { name = "buffer" } },
@@ -92,6 +94,14 @@ return {
         },
       })
       return {
+        window = vim.tbl_contains(monokai_opts.background_clear or {}, "float_win") and {
+          completion = cmp.config.window.bordered({
+            border = "rounded",
+          }),
+          documentation = cmp.config.window.bordered({
+            border = "rounded",
+          }),
+        } or nil,
         completion = {
           completeopt = "menu,menuone,noinsert",
         },
@@ -190,7 +200,7 @@ return {
   },
 
   {
-    "jcdickinson/codeium.nvim",
+    "Exafunction/codeium.nvim",
     event = { "InsertEnter", "CmdlineEnter" },
     config = function()
       require("codeium").setup({})
