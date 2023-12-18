@@ -206,4 +206,10 @@ return {
       require("codeium").setup({})
     end,
   },
+
+  {
+    "jackMort/ChatGPT.nvim",
+    cmd = { "ChatGPTActAs", "ChatGPT" },
+    opts = {},
+  },
 }
