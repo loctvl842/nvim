@@ -198,6 +198,7 @@ return {
         ["<leader>g"] = { name = "+Git" },
         ["<leader>l"] = { name = "+LSP" },
         ["<leader>s"] = { name = "+Session" },
+        ["<leader>c"] = { name = "+ChatGPT" },
         ["f"] = { name = "+Fold" },
         ["g"] = { name = "+Goto" },
         ["s"] = { name = "+Search" },

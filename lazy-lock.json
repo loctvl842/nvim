@@ -13,6 +13,7 @@
   "codeium.nvim": { "branch": "main", "commit": "a0d43300f9a17a6ac775947ae4fb6b99ac5a92d0" },
   "compile-nvim": { "branch": "main", "commit": "f7ad312ec5d0ae4a0554a7e52349ee371b868a5d" },
   "conform.nvim": { "branch": "master", "commit": "ce95e6b2a072d81fd312ff213f241cacab1eccef" },
+  "cyberdream.nvim": { "branch": "main", "commit": "265ed77f93d3378d33c80d9c22b96488f58ab147" },
   "dashboard-nvim": { "branch": "master", "commit": "63df28409d940f9cac0a925df09d3dc369db9841" },
   "dressing.nvim": { "branch": "master", "commit": "8b7ae53d7f04f33be3439a441db8071c96092d19" },
   "emmet-vim": { "branch": "master", "commit": "def5d57a1ae5afb1b96ebe83c4652d1c03640f4d" },
