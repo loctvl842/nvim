@@ -25,14 +25,6 @@ return {
   },
 
   {
-    "loctvl842/compile-nvim",
-    lazy = true,
-    config = function()
-      require("tvl.config.compile")
-    end,
-  },
-
-  {
     "iamcco/markdown-preview.nvim",
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     build = "cd app && yarn install",
@@ -89,17 +81,5 @@ return {
         desc = "Don't Save Current Session",
       },
     },
-  },
-
-  -- Easily switch virtual environment in python
-  {
-    "AckslD/swenv.nvim",
-    config = function()
-      require("swenv").setup({
-        post_set_venv = function()
-          vim.cmd([[LspRestart]])
-        end,
-      })
-    end,
   },
 }

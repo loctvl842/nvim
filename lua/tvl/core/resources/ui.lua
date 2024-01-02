@@ -196,37 +196,6 @@ return {
   },
 
   {
-    "akinsho/toggleterm.nvim",
-    lazy = true,
-    -- event = { "BufReadPost", "BufNewFile" },
-    opts = function()
-      local monokai_opts = require("tvl.util").opts("monokai-pro.nvim")
-      return {
-        open_mapping = [[<C-\>]],
-        start_in_insert = true,
-        direction = "float",
-        autochdir = false,
-        float_opts = {
-          border = vim.tbl_contains(monokai_opts.background_clear or {}, "toggleterm") and "rounded"
-            or Util.generate_borderchars("thick", "tl-t-tr-r-bl-b-br-l"),
-          winblend = 0,
-        },
-        highlights = {
-          FloatBorder = { link = "ToggleTermBorder" },
-          Normal = { link = "ToggleTerm" },
-          NormalFloat = { link = "ToggleTerm" },
-        },
-        winbar = {
-          enabled = true,
-          name_formatter = function(term)
-            return term.name
-          end,
-        },
-      }
-    end,
-  },
-
-  {
     "glepnir/dashboard-nvim",
     event = "VimEnter",
     dependencies = { { "nvim-tree/nvim-web-devicons" } },
@@ -234,11 +203,6 @@ return {
     config = function()
       require("tvl.config.dashboard")
     end,
-  },
-
-  {
-    "nvim-tree/nvim-web-devicons",
-    lazy = true,
   },
 
   {

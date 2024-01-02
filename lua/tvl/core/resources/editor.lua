@@ -196,9 +196,9 @@ return {
         ["<leader>h"] = { "<cmd>nohlsearch<CR>", "No Highlight" },
         ["<leader><Tab>"] = { "<c-6>", "Navigate previous buffer" },
         ["<leader>g"] = { name = "+Git" },
-        ["<leader>l"] = { name = "+LSP" },
         ["<leader>s"] = { name = "+Session" },
         ["<leader>c"] = { name = "+ChatGPT" },
+        ["<leader>l"] = { name = "+LSP" },
         ["f"] = { name = "+Fold" },
         ["g"] = { name = "+Goto" },
         ["s"] = { name = "+Search" },
@@ -225,7 +225,7 @@ return {
       },
       current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
       preview_config = {
-        border = Util.generate_borderchars("thick", "tl-t-tr-r-bl-b-br-l"), -- [ top top top - right - bottom bottom bottom - left ]
+        border = Util.generate_borderchars("thick", "tl-t-tr-r-br-b-bl-l"), -- [ top top top - right - bottom bottom bottom - left ]
       },
     },
     keys = {
