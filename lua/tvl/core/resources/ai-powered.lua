@@ -1,7 +1,8 @@
 return {
   {
     "huggingface/llm.nvim",
-    event = { "InsertEnter", "CmdlineEnter" },
+    -- event = { "InsertEnter", "CmdlineEnter" },
+    lazy = true,
     opts = function()
       local job = require("plenary.job")
       local logger = require("plenary.log").new({
