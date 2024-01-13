@@ -30,7 +30,7 @@ return {
     build = "cd app && yarn install",
     keys = {
       {
-        "<leader>p",
+        "<leader>P",
         function()
           vim.cmd([[MarkdownPreviewToggle]])
         end,
@@ -48,7 +48,7 @@ return {
     event = { "BufRead" },
     keys = {
       { "<leader>d", "<cmd>Bdelete!<cr>", desc = "Close Buffer" },
-      { "<C-w>", "<cmd>Bdelete!<cr>", desc = "Close Buffer" }
+      { "<C-w>", "<cmd>Bdelete!<cr>", desc = "Close Buffer" },
     },
   },
 
@@ -80,6 +80,19 @@ return {
         end,
         desc = "Don't Save Current Session",
       },
+    },
+  },
+
+  {
+    "HakonHarnes/img-clip.nvim",
+    event = "BufEnter",
+    opts = {
+      -- add options here
+      -- or leave it empty to use the default settings
+    },
+    keys = {
+      -- suggested keymap
+      { "<leader>p", "<cmd>PasteImage<cr>", desc = "Paste clipboard image" },
     },
   },
 }

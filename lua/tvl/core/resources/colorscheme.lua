@@ -22,9 +22,9 @@ return {
     opts = {
       transparent_background = false,
       devicons = true,
-      filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
+      filter = "spectrum", -- classic | octagon | pro | machine | ristretto | spectrum
       day_night = {
-        enable = false,
+        enable = true,
         day_filter = "pro",
         night_filter = "spectrum",
       },

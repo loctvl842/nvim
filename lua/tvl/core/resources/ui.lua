@@ -331,6 +331,10 @@ return {
     "folke/noice.nvim",
     event = "VeryLazy",
     opts = {
+      filter = {
+        event = "notify",
+        find = "No active Snippet",
+      },
       cmdline = {
         enabled = true,
         view = "cmdline",

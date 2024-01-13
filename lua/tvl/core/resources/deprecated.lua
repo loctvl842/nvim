@@ -90,4 +90,24 @@ return {
       null_ls.setup(opts)
     end,
   },
+
+  {
+    "glepnir/lspsaga.nvim",
+    lazy = true,
+    config = function()
+      require("lspsaga").setup({})
+    end,
+  },
+
+  {
+    "HampusHauffman/block.nvim",
+    config = function()
+      require("block").setup({})
+    end,
+  },
+
+  {
+    "nvim-treesitter/playground",
+    lazy = true,
+  },
 }
