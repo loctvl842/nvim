@@ -9,6 +9,8 @@ Table of Contents                                 *BeastVim-table-of-contents*
 ==============================================================================
 1. Neovim Configuration                        *BeastVim-neovim-configuration*
 
+**My old friend**
+
 
 PREREQUISITES                    *BeastVim-neovim-configuration-prerequisites*
 
