@@ -1,0 +1,1 @@
+---@alias GitInfo {branch?:string, commit?:string, tag?:string, version?:Semver}
