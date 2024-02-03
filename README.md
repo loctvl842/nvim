@@ -1,8 +1,8 @@
-# 🚀 Neovim Configuration
+# 🦁 BeastVim
 
-**My old friend**
+*My Beast*
 
-![Neovim](https://user-images.githubusercontent.com/80513079/216895409-4d7b246c-d7da-4f9e-8680-8f6b60ffa201.png)
+![image](https://github.com/loctvl842/tvl-library/assets/80513079/3771ae81-50bf-4b6a-8b5c-a9ec44bc6e6f)
 
 ## 🛠️ Prerequisites
 
@@ -31,5 +31,3 @@ modify_font                     underline_position 150%
 modify_font                     underline_thickness 0.1px
 modify_font                     cell_height 305%
 ```
-
-Feel free to adjust above settings to suit your preferences. With these configurations, you'll have an enhanced Neovim experience in the Kitty terminal with improved font rendering.

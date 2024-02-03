@@ -1,1 +1,2 @@
-require("tvl.core.lazy")
+local beast = require("beastvim")
+beast.bootstrap()
