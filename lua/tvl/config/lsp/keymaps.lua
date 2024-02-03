@@ -33,7 +33,7 @@ function M.get()
   }
 end
 
-function M.resolve(buffer)
+function M.resolve(bufnr)
   local Keys = require("lazy.core.handler.keys")
   local keymaps = {}
 
@@ -50,7 +50,7 @@ function M.resolve(buffer)
   end
 
   local opts = require("tvl.util").opts("nvim-lspconfig")
-  local clients = vim.lsp.get_active_clients({ bufnr = buffer })
+  local clients = vim.lsp.get_active_clients({ bufnr = bufnr })
   for _, client in ipairs(clients) do
     local maps = opts.servers[client.name] and opts.servers[client.name].keys or {}
     for _, keymap in ipairs(maps) do
@@ -60,14 +60,14 @@ function M.resolve(buffer)
   return keymaps
 end
 
-M.attach = function(_, buffer)
+M.attach = function(_, bufnr)
   local Keys = require("lazy.core.handler.keys")
-  local keymaps = M.resolve(buffer)
+  local keymaps = M.resolve(bufnr)
 
   for _, keys in pairs(keymaps) do
     local opts = Keys.opts(keys)
     opts.silent = opts.silent ~= false
-    opts.buffer = buffer
+    opts.buffer = bufnr
     vim.keymap.set(keys.mode or "n", keys.lhs, keys.rhs, opts)
   end
 end

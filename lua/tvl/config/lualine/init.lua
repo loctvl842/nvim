@@ -2,7 +2,7 @@ local config = require("tvl.config.lualine.config")
 
 local M = {}
 
-local function setup()
+local function setup_lualine()
   local cpn = require("tvl.config.lualine.components")
   local theme = require("tvl.config.lualine.highlights").custom(config.options)
 
@@ -27,7 +27,7 @@ local function setup()
     sections = {
       lualine_a = { cpn.branch },
       lualine_b = { cpn.diagnostics },
-      lualine_c = {},
+      lualine_c = { cpn.cmp_source("codeium") },
       lualine_x = { cpn.diff },
       lualine_y = { cpn.position, cpn.filetype },
       lualine_z = { cpn.spaces, cpn.mode },
@@ -45,13 +45,13 @@ local function setup()
   })
 end
 
-M.setup = config.setup
+M.setup_config = config.setup
 
 M.load = function()
-  setup()
+  setup_lualine()
   vim.api.nvim_create_autocmd("ColorScheme", {
     callback = function()
-      setup()
+      setup_lualine()
     end,
   })
 end

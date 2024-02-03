@@ -26,6 +26,12 @@ M.on_attach = function(on_attach)
   })
 end
 
+---@class HighlightGroup
+---@field foreground? string
+---@field background? string
+
+---@param group string Highlight group name
+---@return HighlightGroup
 M.get_highlight_value = function(group)
   local found, hl = pcall(vim.api.nvim_get_hl_by_name, group, true)
   if not found then
@@ -170,6 +176,11 @@ M.capabilities = function(ext)
   )
 end
 
+
+---A Notifier
+--- @param msg string
+--- @param level "debug"|"info"|"warn"|"error"
+--- @param opts table|nil
 M.notify = function(msg, level, opts)
   opts = opts or {}
   level = vim.log.levels[level:upper()]
@@ -201,6 +212,7 @@ M.generate_borderchars = function(type, order, opts)
   local borderchars = {}
 
   local extractDirections = (function()
+    ---@type number?
     local index = 1
     return function()
       if index == nil then

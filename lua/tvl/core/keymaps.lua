@@ -65,9 +65,11 @@ map("n", "<leader>/", ":split<CR>", opts)
 -------------------- Switch two windows ------------------------
 map("n", "<A-o>", "<C-w>r", opts)
 
+-- TODO: move this to compile.nvim
 -------------------- Compile --------------------------------
 map("n", "<c-m-n>", "<cmd>only | Compile<CR>", opts)
 
+-- TODO: move this to treesitter
 -------------------- Inspect --------------------------------
 map("n", "<F2>", "<cmd>Inspect<CR>", opts)
 

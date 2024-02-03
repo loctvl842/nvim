@@ -14,6 +14,7 @@ return {
     },
   },
 
+  -- TODO: move to `lsp - typescript`
   {
     "mattn/emmet-vim",
     event = { "BufRead", "BufNewFile" },

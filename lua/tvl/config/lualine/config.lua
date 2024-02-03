@@ -12,9 +12,6 @@ local default = {
   -- thin_separator_icon = { left = " ", right = " " },
 }
 
----@type LualineConfig
-M.options = {}
-
 ---@param type "bubble" | "triangle"
 local function make_separator(type)
   if type == "bubble" then
@@ -34,7 +31,5 @@ M.setup = function(opts)
     make_separator(M.options.separator)
   end
 end
-
-M.setup()
 
 return M

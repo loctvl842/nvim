@@ -113,7 +113,7 @@ return {
     end,
     config = function(_, opts)
       local lualine_config = require("tvl.config.lualine")
-      lualine_config.setup(opts)
+      lualine_config.setup_config(opts)
       lualine_config.load()
     end,
   },
@@ -346,7 +346,12 @@ return {
         },
       },
       lsp = {
-        progress = { enabled = true },
+        progress = {
+          enabled = true,
+          format = "lsp_progress",
+          format_done = "lsp_progress_done",
+          view = "mini",
+        },
         hover = { enabled = false },
         signature = { enabled = false },
         -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
