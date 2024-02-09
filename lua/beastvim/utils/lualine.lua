@@ -37,7 +37,7 @@ function M.truncate(text, min_width)
   return text
 end
 
----@param type LualineSeparator
+---@param type LualineSeparatorType
 ---@return HexColor
 function M.get_component_bg(type)
   local bg = "#555555"
@@ -51,7 +51,7 @@ end
 
 ---@param config LualineOptions
 ---@param texts {text: string, color: HexColor}[] Texts to display
----@param type LualineSeparator Type of the component (fill, thin)
+---@param type LualineSeparatorType Type of the component (fill, thin)
 ---@param bg? HexColor Background of a component
 ---@param text_sep? string Separator between texts
 function M.build_component(config, texts, type, bg, text_sep)

@@ -11,7 +11,7 @@ return {
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
-    event = { "InsertEnter", "LspAttach" },
+    event = { "InsertEnter" },
     build = ":Copilot auth",
     dependencies = { "zbirenbaum/copilot-cmp" },
     opts = {
@@ -24,7 +24,7 @@ return {
   },
   {
     "zbirenbaum/copilot-cmp",
-    event = { "InsertEnter", "LspAttach" },
+    event = { "InsertEnter" },
     dependencies = { "copilot.lua" },
     opts = {},
     config = function(_, opts)
@@ -41,7 +41,7 @@ return {
   -- Codeium
   {
     "Exafunction/codeium.nvim",
-    event = { "InsertEnter", "CmdlineEnter", "LspAttach" },
+    event = { "InsertEnter" },
     build = ":Codeium Auth",
     opts = {},
   },

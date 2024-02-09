@@ -2,6 +2,14 @@
 
 *My Beast*
 
+## Installation
+
+Running the following script if you want to install Neovim at a specific version:
+
+```sh
+~/.config/nvim/install-nvim.sh
+```
+
 ![image](https://github.com/loctvl842/tvl-library/assets/80513079/3771ae81-50bf-4b6a-8b5c-a9ec44bc6e6f)
 
 ## 🛠️ Prerequisites

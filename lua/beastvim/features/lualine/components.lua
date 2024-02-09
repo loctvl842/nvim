@@ -20,7 +20,7 @@ local M = setmetatable({}, {
   end,
 })
 
----@param sep_type? LualineSeparator
+---@param sep_type? LualineSeparatorType
 function cpn.branch(sep_type)
   return {
     "branch",
@@ -39,7 +39,7 @@ function cpn.branch(sep_type)
   }
 end
 
----@param sep_type? LualineSeparator
+---@param sep_type? LualineSeparatorType
 function cpn.diagnostics(sep_type)
   local function nvim_diagnostic()
     local diagnostics = vim.diagnostic.get(0)
@@ -64,7 +64,7 @@ function cpn.diagnostics(sep_type)
   end
 end
 
----@param sep_type? LualineSeparator
+---@param sep_type? LualineSeparatorType
 function cpn.diff(sep_type)
   sep_type = sep_type or "thin"
   local added_hl_gr = Utils.lualine.get_hl_gr("Added")
@@ -101,7 +101,7 @@ function cpn.diff(sep_type)
   }
 end
 
----@param sep_type? LualineSeparator
+---@param sep_type? LualineSeparatorType
 function cpn.position(sep_type)
   return function()
     local current_line = vim.fn.line(".")
@@ -114,7 +114,7 @@ function cpn.position(sep_type)
 end
 
 local prev_ft = ""
----@param sep_type? LualineSeparator
+---@param sep_type? LualineSeparatorType
 function cpn.filetype(sep_type)
   return {
     "filetype",
@@ -163,7 +163,7 @@ function cpn.filetype(sep_type)
   }
 end
 
----@param sep_type? LualineSeparator
+---@param sep_type? LualineSeparatorType
 function cpn.spaces(sep_type)
   return function()
     local text = "Spaces: " .. vim.api.nvim_buf_get_option(0, "shiftwidth")
@@ -173,7 +173,7 @@ function cpn.spaces(sep_type)
   end
 end
 
----@param sep_type? LualineSeparator
+---@param sep_type? LualineSeparatorType
 function cpn.mode(sep_type)
   return {
     "mode",
@@ -185,7 +185,7 @@ function cpn.mode(sep_type)
   }
 end
 
----@param sep_type? LualineSeparator
+---@param sep_type? LualineSeparatorType
 function cpn.ai_source(sources, sep_type)
   local cmp_source = false
   ---Status of the source

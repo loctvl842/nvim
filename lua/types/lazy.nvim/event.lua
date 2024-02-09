@@ -1,2 +1,0 @@
----@alias LazyEvent {id:string, event:string[]|string, pattern?:string[]|string}
----@alias LazyEventSpec string|{event?:string|string[], pattern?:string|string[]}|string[]

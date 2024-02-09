@@ -6,9 +6,7 @@ return {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {
-      plugins = {
-        presets = { motions = false, g = false }, -- This fix mapping for fold when press f and nothing show up
-      },
+      plugins = { spelling = true },
       window = {
         margin = { 1, 0, 2, 0 }, -- extra window margin [top, right, bottom, left]
         padding = { 1, 0, 1, 2 }, -- extra window padding [top, right, bottom, left]
@@ -22,10 +20,6 @@ return {
       },
       defaults = {
         mode = { "n", "v" },
-        ["<leader>w"] = { "<cmd>w!<CR>", "Save" },
-        ["<leader>q"] = { "<cmd>q<CR>", "Quit" },
-        ["<leader>Q"] = { "<cmd>qa<CR>", "Quit All" },
-        ["<leader><Tab>"] = { "<c-6>", "Navigate previous buffer" },
         ["<leader>g"] = { name = "+Git" },
         ["<leader>s"] = { name = "+Session" },
         ["<leader>c"] = { name = "+ChatGPT" },

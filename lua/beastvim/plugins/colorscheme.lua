@@ -1,5 +1,3 @@
-local Icons = require("beastvim.tweaks").icons
-
 return {
   {
     "folke/tokyonight.nvim",

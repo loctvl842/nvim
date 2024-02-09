@@ -2,6 +2,12 @@ local Utils = require("beastvim.utils")
 
 local map = Utils.safe_keymap_set
 
+-------------------- General Mappings --------------------------
+map("n", "<leader>w", "<cmd>w!<CR>", { desc = "Save" })
+map("n", "<leader>q", "<cmd>q!<CR>", { desc = "Quit" })
+map("n", "<leader>Q", "<cmd>qa!<CR>", { desc = "Quit all" })
+map("n", "<leader><Tab>", "<c-6>", { desc = "Switch buffer" })
+
 -------------------- Better window navigation ------------------
 map("n", "<C-h>", "<C-w>h", { desc = "Go to left window", remap = true })
 map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = true })

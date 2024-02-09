@@ -17,6 +17,7 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   spec = {
     { import = "beastvim.plugins" },
+    { import = "beastvim.features.lsp.lang.markup", enabled = true },
     { import = "beastvim.features.lsp.lang.python", enabled = true },
     { import = "beastvim.features.lsp.lang.markdown", enabled = true },
     { import = "beastvim.features.lsp.lang.typescript", enabled = true },
@@ -50,7 +51,6 @@ require("lazy").setup({
         "netrwPlugin",
         "netrwSettings",
         "netrwFileHandlers",
-        "matchit",
         "tar",
         "tarPlugin",
         "rrhelper",

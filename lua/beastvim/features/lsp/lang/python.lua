@@ -35,6 +35,7 @@ return {
                 -- These diagnostics are useless, therefore disable them.
                 diagnosticSeverityOverrides = {
                   reportArgumentType = "none",
+                  reportAttributeAccessIssue = "none",
                   reportCallIssue = "none",
                   reportFunctionMemberAccess = "none",
                   reportGeneralTypeIssues = "none",

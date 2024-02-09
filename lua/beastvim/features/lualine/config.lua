@@ -2,7 +2,7 @@
 local options = {
   float = true,
   colorful = true,
-  ---@enum (key) LualineSeparator
+  ---@enum (key) LualineSeparatorType
   separator = {
     fill = { left = "", right = "" },
     thin = { left = "", right = "" },
