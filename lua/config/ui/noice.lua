@@ -31,22 +31,32 @@ require('noice').setup({
           {
             event = "msg_show",
             kind = "",
-            find = "%d+ change;",
+            find = "%d+ lines yanked",
           },
           {
             event = "msg_show",
             kind = "",
-            find = "%d+ line less;",
+            find = "%d+ fewer lines",
           },
           {
             event = "msg_show",
             kind = "",
-            find = "%d+ fewer lines;?",
+            find = "%d+ change",
           },
           {
             event = "msg_show",
             kind = "",
-            find = "%d+ more lines?;",
+            find = "%d+ line less",
+          },
+          {
+            event = "msg_show",
+            kind = "",
+            find = "%d+ fewer lines",
+          },
+          {
+            event = "msg_show",
+            kind = "",
+            find = "%d+ more lines",
           },
           {
             event = "msg_show",

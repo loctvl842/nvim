@@ -34,6 +34,7 @@ keymap("i", "jk", "<ESC>", opts)
 keymap("i", "Jk", "<ESC>", opts)
 keymap("i", "jK", "<ESC>", opts)
 keymap("i", "JK", "<ESC>", opts)
+keymap("i", "<C-g>", "<ESC>", opts)
 
 -------------------- Stay in indent mode ------------------------
 keymap("v", "<", "<gv", opts)

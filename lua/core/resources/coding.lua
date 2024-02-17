@@ -64,7 +64,7 @@ return {
       local config = {
         disable_commit_confirmation = true,
         mappings = {
-          status = {
+          popup = {
             ["P"] = "PullPopup",
             ["p"] = "PushPopup"
           }
@@ -98,12 +98,13 @@ return {
   -- Testing
   {
     "nvim-neotest/neotest",
-    lazy = true,
     dependencies = {
+      "nvim-treesitter/nvim-treesitter",
       "nvim-lua/plenary.nvim",
       "antoinemadec/FixCursorHold.nvim",
-      "haydenmeade/neotest-jest",
+      "nvim-neotest/neotest-jest",
       "olimorris/neotest-rspec",
+      "nvim-neotest/neotest-go",
     },
     config = function()
       require("config.coding.neotest").setup()

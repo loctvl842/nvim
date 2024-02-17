@@ -3,7 +3,12 @@ return {
     "folke/neodev.nvim",
     opts = {
       debug = true
-    }
+    },
+    config = function(_, opts)
+      require("neodev").setup({
+        library = { plugins = { "neotest" }, types = true }
+      })
+    end
   },
 
   -- LSP Configuration
@@ -33,7 +38,8 @@ return {
     config = function()
       require("mason-nvim-dap").setup({
         -- Get the list of installed servers from mason-lspconfig
-        ensure_installed = require("mason-lspconfig").get_installed_servers()
+        ensure_installed = require("mason-lspconfig").get_installed_servers(),
+        automatic_installation = false,
       })
     end
   },

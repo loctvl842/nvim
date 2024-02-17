@@ -198,22 +198,22 @@ local mappings = {
       name = "LSP",
       a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },
       d = {
-        "<cmd>Telescope diagnostics bufnr=0<cr>",
+        function() require("trouble").toggle("document_diagnostics") end,
         "Document Diagnostics",
       },
       w = {
-        "<cmd>Telescope diagnostics<cr>",
+        function() require("trouble").toggle("workspace_diagnostics") end,
         "Workspace Diagnostics",
       },
       f = { "<cmd>lua vim.lsp.buf.format()<cr>", "Format" },
       i = { "<cmd>LspInfo<cr>", "Info" },
       I = { "<cmd>LspInstallInfo<cr>", "Installer Info" },
       j = {
-        "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>",
+        function() require("trouble").next({skip_groups = true, jump = true}) end,
         "Next Diagnostic",
       },
       k = {
-        "<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>",
+        function() require("trouble").previous({skip_groups = true, jump = true}) end,
         "Prev Diagnostic",
       },
       l = { "<cmd>lua vim.lsp.codelens.run()<cr>", "CodeLens Action" },
@@ -303,6 +303,36 @@ local mappings = {
           'Open Test Summary'
         }
       },
+    },
+    ["z"] = {
+      ["z"] = {
+        function()
+          local bufnr = vim.api.nvim_get_current_buf()
+          local language_tree = vim.treesitter.get_parser(bufnr, 'typescript')
+          local syntax_tree = language_tree:parse()
+          local root = syntax_tree[1]:root()
+          local query = [[
+            ; -- Namespaces --
+            ; Matches: `describe('context', () => {})`
+            ((call_expression
+              function: (identifier) @func_name (#eq? @func_name "describe")
+              arguments: (arguments (string (string_fragment) @namespace.name) (arrow_function))
+            )) @namespace.definition
+            ; Matches: `describe('context', function() {})`
+            ((call_expression
+              function: (identifier) @func_name (#eq? @func_name "describe")
+              arguments: (arguments (string (string_fragment) @namespace.name) (function_expression))
+            )) @namespace.definition
+            ]]
+
+          local result = vim.treesitter.query.parse('typescript', query)
+
+          for id, match, metadata in result:iter_matches(root, bufnr, root:start(), root:end_()) do
+            print(vim.inspect(getmetatable(match[1])))
+          end
+        end,
+        "test treesitter"
+      }
     }
   },
   ["f"] = {

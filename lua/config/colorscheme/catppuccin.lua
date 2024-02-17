@@ -199,7 +199,35 @@ require("catppuccin").setup({
       -- Golang
       ["@lsp.type.namespace.go"] = { fg = colors.peach },
       ["@lsp.type.function.go"] = { fg = colors.blue, italic = true },
-    },
+
+      -- Markdown
+      ["@markup"] = { fg = colors.text }, -- For strings considerated text in a markup language.
+      ["@markup.strong"] = { fg = colors.maroon, style = { "bold" } }, -- bold
+      ["@markup.italic"] = { fg = colors.maroon, style = { "italic" } }, -- italic
+      ["@markup.strikethrough"] = { fg = colors.text, style = { "strikethrough" } }, -- strikethrough text
+      ["@markup.underline"] = { link = "Underline" }, -- underlined text
+
+      ["@markup.heading"] = { fg = colors.blue, style = { "bold" } }, -- titles like: # Example
+
+      ["@markup.math"] = { fg = colors.blue }, -- math environments (e.g. `$ ... $` in LaTeX)
+      ["@markup.environment"] = { fg = colors.pink }, -- text environments of markup languages
+      ["@markup.environment.name"] = { fg = colors.blue }, -- text indicating the type of an environment
+
+      ["@markup.link"] = { link = "Tag" }, -- text references, footnotes, citations, etcolors.
+      ["@markup.link.url"] = { fg = colors.rosewater, style = { "italic", "underline" } }, -- urls, links and emails
+
+      ["@markup.raw"] = { fg = colors.teal }, -- used for inline code in markdown and for doc in python (""")
+
+      ["@markup.list"] = { link = "Special" },
+      ["@markup.list.checked"] = { fg = colors.green }, -- todo notes
+      ["@markup.list.unchecked"] = { fg = colors.overlay1 }, -- todo notes
+      ["@markup.heading.1.markdown"] = { link = "rainbow1" },
+      ["@markup.heading.2.markdown"] = { link = "rainbow2" },
+      ["@markup.heading.3.markdown"] = { link = "rainbow3" },
+      ["@markup.heading.4.markdown"] = { link = "rainbow4" },
+      ["@markup.heading.5.markdown"] = { link = "rainbow5" },
+      ["@markup.heading.6.markdown"] = { link = "rainbow6" },
+    }
   },
 })
 vim.cmd([[colorscheme catppuccin]])

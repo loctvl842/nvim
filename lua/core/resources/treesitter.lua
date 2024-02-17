@@ -36,7 +36,6 @@ return {
       },
       highlight = { enable = true },
       indent = { enable = true, disable = { "yaml", "python", "html", "ruby" } },
-      context_commentstring = { enable = true },
       rainbow = {
         enable = false,
         query = "rainbow-parens",
