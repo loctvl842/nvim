@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.0.0](https://github.com/loctvl842/nvim/compare/v1.0.0...v2.0.0) (2024-02-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* BeastVim
+
+### Features
+
+* BeastVim ([798dfac](https://github.com/loctvl842/nvim/commit/798dfac3578086bd135e6dc6e041d89714016fde))
+
 ## 1.0.0 (2024-02-03)
 
 
