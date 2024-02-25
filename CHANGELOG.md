@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/loctvl842/nvim/compare/v2.0.0...v2.1.0) (2024-02-25)
+
+
+### Features
+
+* vue development ([7810203](https://github.com/loctvl842/nvim/commit/7810203e677eda33205ac33c2764eb28d466857b))
+
 ## [2.0.0](https://github.com/loctvl842/nvim/compare/v1.0.0...v2.0.0) (2024-02-03)
 
 
