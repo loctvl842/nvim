@@ -115,8 +115,8 @@ return {
     opts = {
       api_key_cmd = "pass show OpenAI/Rockship",
       openai_edit_params = {
-        -- model = "gpt-4-1106-preview",
-        model = "gpt-4",
+        model = "gpt-4-1106-preview",
+        -- model = "gpt-4",
         frequency_penalty = 0,
         presence_penalty = 0,
         temperature = 0.9,

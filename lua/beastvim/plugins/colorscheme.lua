@@ -56,6 +56,11 @@ return {
           DashboardServer = { fg = c.base.yellow },
           DashboardQuit = { fg = c.base.red },
           IndentBlanklineChar = { fg = c.base.dimmed4 },
+          -- mini.hipatterns
+          MiniHipatternsFixme = { fg = c.base.black, bg = c.base.red, bold = true }, -- FIXME
+          MiniHipatternsTodo = { fg = c.base.black, bg = c.base.blue, bold = true }, -- TODO
+          MiniHipatternsHack = { fg = c.base.black, bg = c.base.yellow, bold = true }, -- HACK
+          MiniHipatternsNote = { fg = c.base.black, bg = c.base.green, bold = true }, -- NOTE
         }
       end,
       overridePalette = function(filter)
