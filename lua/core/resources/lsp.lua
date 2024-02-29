@@ -27,6 +27,8 @@ return {
     dependencies = {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
+      "someone-stole-my-name/yaml-companion.nvim",
+      "b0o/schemastore.nvim",
     },
     config = function()
       require("config.lsp.lspconfig")

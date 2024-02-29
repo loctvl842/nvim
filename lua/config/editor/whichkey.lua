@@ -304,36 +304,36 @@ local mappings = {
         }
       },
     },
-    ["z"] = {
-      ["z"] = {
-        function()
-          local bufnr = vim.api.nvim_get_current_buf()
-          local language_tree = vim.treesitter.get_parser(bufnr, 'typescript')
-          local syntax_tree = language_tree:parse()
-          local root = syntax_tree[1]:root()
-          local query = [[
-            ; -- Namespaces --
-            ; Matches: `describe('context', () => {})`
-            ((call_expression
-              function: (identifier) @func_name (#eq? @func_name "describe")
-              arguments: (arguments (string (string_fragment) @namespace.name) (arrow_function))
-            )) @namespace.definition
-            ; Matches: `describe('context', function() {})`
-            ((call_expression
-              function: (identifier) @func_name (#eq? @func_name "describe")
-              arguments: (arguments (string (string_fragment) @namespace.name) (function_expression))
-            )) @namespace.definition
-            ]]
-
-          local result = vim.treesitter.query.parse('typescript', query)
-
-          for id, match, metadata in result:iter_matches(root, bufnr, root:start(), root:end_()) do
-            print(vim.inspect(getmetatable(match[1])))
-          end
-        end,
-        "test treesitter"
-      }
-    }
+    -- ["z"] = {
+    --   ["z"] = {
+    --     function()
+    --       local bufnr = vim.api.nvim_get_current_buf()
+    --       local language_tree = vim.treesitter.get_parser(bufnr, 'typescript')
+    --       local syntax_tree = language_tree:parse()
+    --       local root = syntax_tree[1]:root()
+    --       local query = [[
+    --         ; -- Namespaces --
+    --         ; Matches: `describe('context', () => {})`
+    --         ((call_expression
+    --           function: (identifier) @func_name (#eq? @func_name "describe")
+    --           arguments: (arguments (string (string_fragment) @namespace.name) (arrow_function))
+    --         )) @namespace.definition
+    --         ; Matches: `describe('context', function() {})`
+    --         ((call_expression
+    --           function: (identifier) @func_name (#eq? @func_name "describe")
+    --           arguments: (arguments (string (string_fragment) @namespace.name) (function_expression))
+    --         )) @namespace.definition
+    --         ]]
+    --
+    --       local result = vim.treesitter.query.parse('typescript', query)
+    --
+    --       for id, match, metadata in result:iter_matches(root, bufnr, root:start(), root:end_()) do
+    --         print(vim.inspect(getmetatable(match[1])))
+    --       end
+    --     end,
+    --     "test treesitter"
+    --   }
+    -- }
   },
   ["f"] = {
     ["d"] = { "zd", "Delete fold under cursor" },
