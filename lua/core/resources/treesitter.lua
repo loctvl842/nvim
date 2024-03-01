@@ -12,7 +12,7 @@ return {
         "bash",
         "cmake",
         "dockerfile",
-        "help",
+        -- "help",
         "html",
         "javascript",
         "json",
