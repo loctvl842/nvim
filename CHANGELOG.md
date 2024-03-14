@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.0](https://github.com/loctvl842/nvim/compare/v2.1.0...v2.2.0) (2024-03-14)
+
+
+### Features
+
+* **Lsp:** Add Go language server support ([cff1e5c](https://github.com/loctvl842/nvim/commit/cff1e5cf1720ae5677c3e0791b4887f4471e1994))
+* **lsp:** Add support for Dockerfile language server ([457ca88](https://github.com/loctvl842/nvim/commit/457ca881fe540ba6845cb54de68bd82af8515829))
+
 ## [2.1.0](https://github.com/loctvl842/nvim/compare/v2.0.0...v2.1.0) (2024-02-25)
 
 
