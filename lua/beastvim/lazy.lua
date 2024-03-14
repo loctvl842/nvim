@@ -23,6 +23,8 @@ require("lazy").setup({
     { import = "beastvim.features.lsp.lang.typescript", enabled = true },
     { import = "beastvim.features.lsp.lang.flutter", enabled = true },
     { import = "beastvim.features.lsp.lang.vue", enabled = true },
+    { import = "beastvim.features.lsp.lang.go", enabled = true },
+    { import = "beastvim.features.lsp.lang.docker", enabled = true },
   },
   defaults = {
     lazy = true,
