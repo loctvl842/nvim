@@ -113,6 +113,7 @@ return {
       "nvim-neotest/neotest-jest",
       "olimorris/neotest-rspec",
       "nvim-neotest/neotest-go",
+      "marilari88/neotest-vitest",
     },
     config = function()
       require("config.coding.neotest").setup()

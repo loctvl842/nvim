@@ -126,7 +126,12 @@ local mappings = {
     ["o"] = {
       name = "open",
 
-      p = { "<cmd>Neotree toggle position=left<cr>", "Explorer" },
+      p = {
+        function()
+          require('neo-tree.command').execute({ toggle = true, dir = vim.loop.cwd(), position = "left" })
+        end,
+        "Explorer"
+      },
       P = {
         "<cmd>Neotree toggle position=float<cr>",
         "Explorer Float",
@@ -170,8 +175,7 @@ local mappings = {
     ["s"] = {
       name = "search",
       p = {
-        -- "<cmd>Telescope live_grep<cr>",
-        "<cmd>lua require('config.editor.telescope.custom_pickers').live_grep()<cr>",
+        function() require("config.editor.telescope.custom_pickers").live_grep() end,
         "Find Text"
       },
       i = { "<cmd>IconPickerInsert<cr>", "Find Icon" },
@@ -180,8 +184,12 @@ local mappings = {
     ["p"] = {
       name = "project",
       p = {
-        "<cmd>lua require('telescope').extensions.projects.projects()<cr>",
+        "<cmd>Telescope neovim-project history<cr>",
         "Projects",
+      },
+      d = {
+        "<cmd>Telescope neovim-project discover<cr>",
+        "Discover Projects",
       },
       f = {
         "<cmd>lua require('telescope.builtin').find_files({hidden = true})<cr>",

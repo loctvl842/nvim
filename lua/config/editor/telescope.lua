@@ -1,6 +1,7 @@
 local util = require("util")
 local actions = require("telescope.actions")
 local layout_strategies = require("telescope.pickers.layout_strategies")
+local custom_pickers = require('config.editor.telescope.custom_pickers')
 
 -- Add an extra line between the prompt and results so that the theme looks OK
 local original_center = layout_strategies.center
@@ -124,67 +125,71 @@ require("telescope").setup({
         hidden = true,
         cwd_only = true,
       },
+      live_grep = {
+        path_display = { 'shorten' },
+      },
     },
     mappings = {
       i = {
         ["<C-g>"] = actions.close,
-        ["<C-n>"] = actions.cycle_history_next,
-        ["<C-p>"] = actions.cycle_history_prev,
-
-        ["<C-j>"] = actions.move_selection_next,
-        ["<C-k>"] = actions.move_selection_previous,
-
-        ["<Down>"] = actions.move_selection_next,
-        ["<Up>"] = actions.move_selection_previous,
-
-        ["<CR>"] = actions.select_default,
-        ["<C-x>"] = actions.select_horizontal,
-        ["<C-v>"] = actions.select_vertical,
-        ["<C-t>"] = actions.select_tab,
-
-        ["<C-u>"] = actions.preview_scrolling_up,
-        ["<C-d>"] = actions.preview_scrolling_down,
-
-        ["<PageUp>"] = actions.results_scrolling_up,
-        ["<PageDown>"] = actions.results_scrolling_down,
-
-        ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
-        ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
-        ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
-        ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
-        ["<C-l>"] = actions.complete_tag,
-        ["<C-_>"] = actions.which_key, -- keys from pressing <C-/>
+        ['<c-f>'] = custom_pickers.actions.set_extension,
+        ['<c-l>'] = custom_pickers.actions.set_folders,
+        -- ["<C-n>"] = actions.cycle_history_next,
+        -- ["<C-p>"] = actions.cycle_history_prev,
+        --
+        -- ["<C-j>"] = actions.move_selection_next,
+        -- ["<C-k>"] = actions.move_selection_previous,
+        --
+        -- ["<Down>"] = actions.move_selection_next,
+        -- ["<Up>"] = actions.move_selection_previous,
+        --
+        -- ["<CR>"] = actions.select_default,
+        -- ["<C-x>"] = actions.select_horizontal,
+        -- ["<C-v>"] = actions.select_vertical,
+        -- ["<C-t>"] = actions.select_tab,
+        --
+        -- ["<C-u>"] = actions.preview_scrolling_up,
+        -- ["<C-d>"] = actions.preview_scrolling_down,
+        --
+        -- ["<PageUp>"] = actions.results_scrolling_up,
+        -- ["<PageDown>"] = actions.results_scrolling_down,
+        --
+        -- ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
+        -- ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
+        -- ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
+        -- ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+        -- ["<C-_>"] = actions.which_key, -- keys from pressing <C-/>
       },
 
       n = {
         ["<esc>"] = actions.close,
         ["<C-g>"] = actions.close,
-        ["<CR>"] = actions.select_default,
-        ["<C-x>"] = actions.select_horizontal,
-        ["<C-v>"] = actions.select_vertical,
-        ["<C-t>"] = actions.select_tab,
-
-        ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
-        ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
-        ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
-        ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
-
-        ["j"] = actions.move_selection_next,
-        ["k"] = actions.move_selection_previous,
-        ["H"] = actions.move_to_top,
-        ["M"] = actions.move_to_middle,
-        ["L"] = actions.move_to_bottom,
-
-        ["<Down>"] = actions.move_selection_next,
-        ["<Up>"] = actions.move_selection_previous,
-        ["gg"] = actions.move_to_top,
-        ["G"] = actions.move_to_bottom,
-
-        ["<C-u>"] = actions.preview_scrolling_up,
-        ["<C-d>"] = actions.preview_scrolling_down,
-
-        ["<PageUp>"] = actions.results_scrolling_up,
-        ["<PageDown>"] = actions.results_scrolling_down,
+        -- ["<CR>"] = actions.select_default,
+        -- ["<C-x>"] = actions.select_horizontal,
+        -- ["<C-v>"] = actions.select_vertical,
+        -- ["<C-t>"] = actions.select_tab,
+        --
+        -- ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
+        -- ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
+        -- ["<C-q>"] = actions.send_to_qflist + actions.open_qflist,
+        -- ["<M-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
+        --
+        -- ["j"] = actions.move_selection_next,
+        -- ["k"] = actions.move_selection_previous,
+        -- ["H"] = actions.move_to_top,
+        -- ["M"] = actions.move_to_middle,
+        -- ["L"] = actions.move_to_bottom,
+        --
+        -- ["<Down>"] = actions.move_selection_next,
+        -- ["<Up>"] = actions.move_selection_previous,
+        -- ["gg"] = actions.move_to_top,
+        -- ["G"] = actions.move_to_bottom,
+        --
+        -- ["<C-u>"] = actions.preview_scrolling_up,
+        -- ["<C-d>"] = actions.preview_scrolling_down,
+        --
+        -- ["<PageUp>"] = actions.results_scrolling_up,
+        -- ["<PageDown>"] = actions.results_scrolling_down,
 
         ["?"] = actions.which_key,
       },

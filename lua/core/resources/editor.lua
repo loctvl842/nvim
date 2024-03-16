@@ -39,17 +39,27 @@ return {
   },
 
   -- Project Management
-
-  -- This branch is required to get the neovim-session-manager integration working
-  {
-    "JordanFaust/project.nvim",
-    branch = "main",
-    config = function() require("config.editor.project") end,
-  },
-
   {
     "Shatur/neovim-session-manager",
     config = function() require("config.editor.neovim-session-manager") end,
+  },
+
+  {
+    "coffebar/neovim-project",
+    dependencies = {
+      { "nvim-lua/plenary.nvim" },
+      { "nvim-telescope/telescope.nvim" },
+      { "Shatur/neovim-session-manager" },
+    },
+    lazy = false,
+    priority = 100,
+    init = function()
+      -- enable saving the state of plugins in the session
+      vim.opt.sessionoptions:append("globals") -- save global variables that start with an uppercase letter and contain at least one lowercase letter.
+    end,
+    config = function()
+      require("config.editor.neovim-project")
+    end
   },
 
   -- Buffer Folding

@@ -1,6 +1,6 @@
 local config = require("config.ui.lualine.config").options
 local icons = require("core.icons")
-local project = require("project_nvim.project")
+local path = require("neovim-project.utils.path")
 
 local M = {}
 
@@ -27,7 +27,9 @@ M.branch = {
     prev_branch = str
 
     -- Get the project directory from project.nvim
-    local project_dir, method = project.get_project_root()
+    -- local project_dir, method = project.get_project_root()
+    -- local project_dir = "/etc/dotifles/foobar"
+    local project_dir = path.cwd()
     -- Get the "root" project name
     local root = string.match(project_dir or "", "[%a%-%_]+$") or ""
 

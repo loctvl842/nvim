@@ -22,7 +22,7 @@ require("project_nvim").setup({
   silent_chdir = true,
   ignore_lsp = {},
 
-  -- scope_chdir = "tab",
+  scope_chdir = "tab",
 
   session_autoload = true,
   datapath = vim.fn.stdpath("data"),

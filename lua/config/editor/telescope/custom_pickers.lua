@@ -1,3 +1,4 @@
+-- See https://github.com/JoosepAlviste/dotfiles/blob/master/config/nvim/lua/j/telescope_custom_pickers.lua
 local Path = require "plenary.path"
 local action_set = require "telescope.actions.set"
 local action_state = require "telescope.actions.state"
@@ -9,7 +10,6 @@ local make_entry = require "telescope.make_entry"
 local os_sep = Path.path.sep
 local pickers = require "telescope.pickers"
 local scan = require "plenary.scandir"
-local entry_display = require "telescope.pickers.entry_display"
 
 local M = {}
 
@@ -40,6 +40,7 @@ end
 M.actions = transform_mod {
   ---Ask for a file extension and open a new `live_grep` filtering by it
   set_extension = function(prompt_bufnr)
+    vim.print("attempting to set extension")
     local current_input = action_state.get_current_line()
 
     vim.ui.input({ prompt = "*." }, function(input)
@@ -55,6 +56,7 @@ M.actions = transform_mod {
   end,
   ---Ask the user for a folder and olen a new `live_grep` filtering by it
   set_folders = function(prompt_bufnr)
+    vim.print("attempting to set folders")
     local current_input = action_state.get_current_line()
 
     local data = {}

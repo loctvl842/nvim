@@ -97,7 +97,7 @@ local servers = {
           castNumberToInteger = true,
         },
         diagnostics = {
-          disable = { "incomplete-signature-doc", "trailing-space" },
+          disable = { "incomplete-signature-doc", "trailing-space", "missing-fields" },
           -- enable = false,
           groupSeverity = {
             strong = "Warning",

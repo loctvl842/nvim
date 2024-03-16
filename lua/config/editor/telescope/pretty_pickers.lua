@@ -1,3 +1,4 @@
+-- See https://github.com/JoosepAlviste/dotfiles/blob/master/config/nvim/lua/j/pretty_pickers.lua
 local M = {}
 
 local telescope_utils = require("telescope.utils")
