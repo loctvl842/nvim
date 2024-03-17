@@ -102,6 +102,8 @@
       # and neovim path when using nix develop
       propagatedBuildInputs = {
         generalBuildInputs = with pkgs; [
+          deno
+          yarn
         ];
       };
 
@@ -111,22 +113,124 @@
       # this includes LSPs
       lspsAndRuntimeDeps = {
         general = with pkgs; [
+          deno
         ];
       };
 
       # This is for plugins that will load at startup without using packadd:
       startupPlugins = {
-        customPlugins = with pkgs.nixCatsBuilds; [ ];
-        gitPlugins = with pkgs.neovimPlugins; [ ];
-        general = with pkgs.vimPlugins; [ ];
+        general = with pkgs.nixCatsBuilds; [
+          pkgs.vimPlugins.plenary-nvim
+          pkgs.vimPlugins.nui-nvim
+          pkgs.vimPlugins.vim-startuptime
+        ];
+        coding = with pkgs.nixCatsBuilds; [
+          # Snippets
+          pkgs.vimPlugins.luasnip
+          pkgs.vimPlugins.friendly-snippets
+          # Vim Motion
+          pkgs.vimPlugins.vim-surround
+          # Completion
+          pkgs.vimPlugins.nvim-cmp
+          pkgs.vimPlugins.nvim-jdtls
+          pkgs.vimPlugins.cmp-nvim-lsp
+          pkgs.vimPlugins.cmp-buffer
+          pkgs.vimPlugins.cmp-path
+          pkgs.vimPlugins.cmp-cmdline
+          pkgs.vimPlugins.cmp_luasnip
+          # Mini
+          # pkgs.vimPlugins.mini-pairs
+          # Comments
+          pkgs.vimPlugins.nvim-ts-context-commentstring
+          pkgs.vimPlugins.comment-nvim
+          # Inlay Hints
+          pkgs.vimPlugins.lsp-inlayhints-nvim
+          pkgs.vimPlugins.lsp_signature-nvim
+          # Testing
+          pkgs.vimPlugins.neotest
+          pkgs.vimPlugins.neotest-go
+          pkgs.vimPlugins.neotest-rspec
+          pkgs.vimPlugins.neotest-vitest
+        ];
+        colorscheme = with pkgs.nixCatsBuilds; [
+          pkgs.vimPlugins.catppuccin-nvim
+        ];
+        editor = with pkgs.nixCatsBuilds; [
+          # File Navigation
+          pkgs.vimPlugins.neo-tree-nvim
+          # Fuzzy Search
+          pkgs.vimPlugins.telescope-nvim
+          # Core Utils
+          pkgs.vimPlugins.which-key-nvim
+          pkgs.vimPlugins.gitsigns-nvim
+          pkgs.vimPlugins.vim-illuminate
+          pkgs.vimPlugins.statuscol-nvim
+          pkgs.vimPlugins.FixCursorHold-nvim
+          pkgs.vimPlugins.trouble-nvim
+          # Project Management
+          neovim-session-manager
+          neovim-project
+          # Buffer Folding
+          pkgs.vimPlugins.nvim-ufo
+        ];
+        lsp = with pkgs.nixCatsBuilds; [
+          pkgs.vimPlugins.neodev-nvim
+          pkgs.vimPlugins.nvim-lspconfig
+          pkgs.vimPlugins.nvim-dap
+          pkgs.vimPlugins.null-ls-nvim
+        ];
+        settings = with pkgs.nixCatsBuilds; [ ];
+        tools = with pkgs.nixCatsBuilds; [
+          pkgs.vimPlugins.vim-visual-multi
+          pkgs.vimPlugins.markdown-preview-nvim
+          pkgs.vimPlugins.vim-bbye
+          pkgs.vimPlugins.toggleterm-nvim
+          icon-picker-nvim
+        ];
+        treesitter = with pkgs.nixCatsBuilds; [
+          pkgs.vimPlugins.nvim-treesitter
+          pkgs.vimPlugins.rainbow-delimiters-nvim
+          pkgs.vimPlugins.nvim-ts-autotag
+          pkgs.vimPlugins.vim-helm
+        ];
+        ui = with pkgs.nixCatsBuilds; [
+          # Notifications
+          pkgs.vimPlugins.nvim-notify
+          # Buffer Management
+          pkgs.vimPlugins.bufferline-nvim
+          pkgs.vimPlugins.nvim-web-devicons
+          # Status Line
+          pkgs.vimPlugins.lualine-nvim
+          # Util/Rice
+          mini-indentscope
+          pkgs.vimPlugins.barbecue-nvim
+          pkgs.vimPlugins.dashboard-nvim
+          pkgs.vimPlugins.nvim-scrollbar
+          pkgs.vimPlugins.windows-nvim
+          pkgs.vimPlugins.nvim-colorizer-lua
+          pkgs.vimPlugins.dressing-nvim
+          pkgs.vimPlugins.noice-nvim
+        ];
+        util = with pkgs.nixCatsBuilds; [ ];
       };
 
       # not loaded automatically at startup.
       # use with packadd and an autocommand in config to achieve lazy loading
       optionalPlugins = {
-        customPlugins = with pkgs.nixCatsBuilds; [ ];
-        gitPlugins = with pkgs.neovimPlugins; [ ];
-        general = with pkgs.vimPlugins; [ ];
+        general = with pkgs.nixCatsBuilds; [ ];
+        coding = with pkgs.nixCatsBuilds; [
+          # Git Workflow
+          pkgs.vimPlugins.neogit
+        ];
+        colorscheme = with pkgs.nixCatsBuilds; [ ];
+        editor = with pkgs.nixCatsBuilds; [ ];
+        lsp = with pkgs.nixCatsBuilds; [
+        ];
+        settings = with pkgs.nixCatsBuilds; [ ];
+        tools = with pkgs.nixCatsBuilds; [ ];
+        treesitter = with pkgs.nixCatsBuilds; [ ];
+        ui = with pkgs.nixCatsBuilds; [ ];
+        util = with pkgs.nixCatsBuilds; [ ];
       };
 
       # environmentVariables:
@@ -181,30 +285,33 @@
         # they contain a settings set defined above
         # see :help nixCats.flake.outputs.settings
         settings = {
-          wrapRc = true;
+          wrapRc = false;
           # IMPORTANT:
           # you may not alias to nvim
           # your alias may not conflict with your other packages.
           aliases = [ "vim" ];
           # nvimSRC = inputs.neovim;
+          withNodeJs = true;
+          withRuby = true;
+          withPython3 = true;
+        };
+
+        options = {
+          colorscheme = "catppuccin";
         };
         # and a set of categories that you want
         # (and other information to pass to lua)
         categories = {
           general = true;
-          gitPlugins = true;
-          customPlugins = true;
-          generalBuildInputs = true;
-          test = true;
-          example = {
-            youCan = "add more than just booleans";
-            toThisSet = [
-              "and the contents of this categories set"
-              "will be accessible to your lua with"
-              "nixCats('path.to.value')"
-              "see :help nixCats"
-            ];
-          };
+          coding = true;
+          colorscheme = true;
+          editor = true;
+          lsp = true;
+          settings = true;
+          tools = true;
+          treesitter = true;
+          ui = true;
+          util = true;
         };
       };
     };

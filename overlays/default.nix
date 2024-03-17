@@ -1,6 +1,6 @@
 # The following is the overlays/default.nix file.
 # you may copy paste it into a file then include it in your flake.nix
-# to add new overlays you should follow 
+# to add new overlays you should follow
 # the directions inside the comment blocks.
 # it is done this way for convenience but you could do it another way.
 
@@ -17,7 +17,7 @@ You may copy paste this example into a new file and then import that file here.
 # Example overlay:
 /*
 importName: inputs: let
-  overlay = self: super: { 
+  overlay = self: super: {
     ${importName} = {
       # define your overlay derivations here
     };
@@ -25,15 +25,14 @@ importName: inputs: let
 in
 overlay
 */
-inputs: let 
+inputs: let
   overlaySet = {
 
     # this is how you would add another overlay file
     # for if your customBuildsOverlay gets too long
     # the name here will be the name used when importing items from it in your flake.
     # i.e. these items will be accessed as pkgs.nixCatsBuilds.thenameofthepackage
-    # nixCatsBuilds = import ./customBuildsOverlay.nix;
-
+    nixCatsBuilds = import ./vim-plugins.nix;
   };
 in
 builtins.attrValues (builtins.mapAttrs (name: value: (value name inputs)) overlaySet)
