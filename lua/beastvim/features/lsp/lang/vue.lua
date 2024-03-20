@@ -32,7 +32,7 @@ return {
           },
         },
         tsserver = {
-          autostart = true,
+          autostart = false,
           root_dir = function()
             return false
           end,

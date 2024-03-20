@@ -46,7 +46,7 @@ map("v", "<A-S-j>", ":m '>+1<cr>gv=gv", { desc = "Move down" })
 map("v", "<A-S-k>", ":m '<-2<cr>gv=gv", { desc = "Move up" })
 
 -------------------- No highlight ------------------------------
-map("n", "<ESC>", ":noh<CR>", { desc = "Clear search" })
+map("n", ";", ":noh<CR>", { desc = "Clear search" })
 
 -------------------- Inspect --------------------------------
 map("n", "<F2>", "<cmd>Inspect<CR>", { desc = "Inspect highlight fallback" })
