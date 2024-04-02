@@ -51,6 +51,8 @@ function M.setup(opts)
     opts.capabilities or {}
   )
 
+  --- Setup a LSP server
+  ---@param server string The name of the server
   local function setup(server)
     -- resolve server capabilities
     if servers[server] and servers[server].capabilities and type(servers[server].capabilities) == "function" then
@@ -61,10 +63,10 @@ function M.setup(opts)
       capabilities = vim.deepcopy(capabilities),
     }, servers[server] or {})
 
-    if server.on_attach then
+    if server_opts.on_attach then
       local function callback(client, bufnr)
         if client.name == server then
-          server.on_attach(client, bufnr)
+          server_opts.on_attach(client, bufnr)
         end
       end
       Utils.lsp.on_attach(callback)

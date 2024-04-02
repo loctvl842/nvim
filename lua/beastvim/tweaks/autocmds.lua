@@ -133,3 +133,16 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     vim.fn.mkdir(vim.fn.fnamemodify(file, ":p:h"), "p")
   end,
 })
+
+-- Fix fold on some filetypes
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = { "neo-tree" },
+  callback = function()
+    local ok, ufo = pcall(require, "ufo")
+    -- stylua: ignore
+    if not ok then return end
+
+    ufo.detach()
+    vim.opt_local.foldenable = false
+  end,
+})

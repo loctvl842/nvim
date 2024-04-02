@@ -36,7 +36,7 @@ end
 
 ---A Notifier
 --- @param msg string
---- @param level "DEBUG" |"INFO" | "WARN" | "ERROR"
+--- @param level "DEBUG" |"INFO" | "WARN" | "ERROR" | number
 --- @param opts? table
 function M.notify(msg, level, opts)
   opts = opts or {}
