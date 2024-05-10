@@ -28,7 +28,7 @@ local function on()
     float = {
       focusable = false,
       style = "minimal",
-      border = Utils.telescope.borderchars("thick", "tl-t-tr-r-br-b-bl-l"),
+      border = Utils.ui.borderchars("thick", "tl-t-tr-r-br-b-bl-l"),
       source = "always",
       header = "",
       prefix = "",

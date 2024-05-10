@@ -1,3 +1,5 @@
 require("beastvim.tweaks").init()
 
-return {}
+return {
+  { "folke/lazy.nvim", version = "*" },
+}

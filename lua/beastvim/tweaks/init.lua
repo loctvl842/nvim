@@ -20,7 +20,7 @@ M.load = function(mod)
   end, { msg = "Error loading '" .. mod .. "'" })
 end
 
-M.setup = function()
+function M.setup()
   local group = vim.api.nvim_create_augroup(Profile.name, { clear = true })
   local no_file = vim.fn.argc(-1) == 0
   -- Lazy load `autocmds` when opening a file
@@ -42,12 +42,13 @@ M.setup = function()
   })
 end
 
-M.init = function()
+M.did_init = false
+function M.init()
+  -- stylua: ignore
+  if M.did_init then return end
+  M.did_init = true
+
   M.load("options")
-  local colorscheme = vim.g.colors_name
-  if colorscheme == nil then
-    vim.cmd.colorscheme("habamax")
-  end
 end
 
 return M

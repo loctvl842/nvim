@@ -97,7 +97,7 @@ return {
               local hl_gr = Utils.string.capitalize("CmpItemKind" .. Utils.string.capitalize(entry.source.name))
               item.kind = brain_kind
               item.kind_hl_group = hl_gr
-              vim.api.nvim_set_hl(0, hl_gr, {fg = Icons.colors.brain[entry.source.name]})
+              vim.api.nvim_set_hl(0, hl_gr, { fg = Icons.colors.brain[entry.source.name] })
             end
             return item
           end,

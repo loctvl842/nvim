@@ -287,7 +287,7 @@ return {
       local border_style = vim.tbl_contains(monokai_opts.background_clear or {}, "float_win") and "rounded" or "thick"
       return {
         input = {
-          border = Utils.telescope.borderchars(border_style, "tl-t-tr-r-br-b-bl-l"),
+          border = Utils.ui.borderchars(border_style, "tl-t-tr-r-br-b-bl-l"),
           win_options = { winblend = 0 },
         },
         select = vim.tbl_contains(monokai_opts.background_clear or {}, "telescope") and {} or {
@@ -321,6 +321,7 @@ return {
           hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
           todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
           note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
+          wip = { pattern = "%f[%w]()WIP()%f[%W]", group = "MiniHipatternsWip" },
           -- Highlight hex color strings (`#rrggbb`) using that color
           hex_color = hi.gen_highlighter.hex_color({ priority = 2000 }),
         },
@@ -384,6 +385,9 @@ return {
           ["vim.lsp.util.stylize_markdown"] = true,
           ["cmp.entry.get_documentation"] = true,
         },
+      },
+      presets = {
+        lsp_doc_border = true, -- add a border to hover docs and signature help
       },
       routes = {
         {

@@ -1,15 +1,9 @@
 local Icons = require("beastvim.tweaks").icons
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable",
-    lazypath,
-  })
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
+  -- stylua: ignore
+  vim.fn.system({ "git", "clone", "--filter=blob:none", "https://github.com/folke/lazy.nvim.git", "--branch=stable", lazypath })
 end
 vim.opt.rtp:prepend(lazypath)
 
@@ -25,6 +19,8 @@ require("lazy").setup({
     { import = "beastvim.features.lsp.lang.vue", enabled = false },
     { import = "beastvim.features.lsp.lang.go", enabled = true },
     { import = "beastvim.features.lsp.lang.docker", enabled = true },
+    { import = "beastvim.features.lsp.lang.dotnet", enabled = false },
+    { import = "beastvim.features.lsp.lang.tailwind", enabled = true },
   },
   defaults = {
     lazy = true,

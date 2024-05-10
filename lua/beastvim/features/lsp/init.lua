@@ -1,9 +1,10 @@
 local Utils = require("beastvim.utils")
 
 ---@class LspServer
----@field keys? string|string[]|LazyKeysSpec[]|fun(self:LazyPlugin, keys:string[]):(string|LazyKeys)[]
+---@field keys? LazyKeysSpec
 ---@field capabilities? table
 ---@field on_attach? fun(client, bufnr)
+---@field root_dir? string|string[]|fun(client, bufnr):string Root pattern or function to get the root directory
 
 ---@class LspOptions
 ---@field servers table<string, LspServer>
@@ -14,6 +15,7 @@ local Utils = require("beastvim.utils")
 ---@field keymaps beastvim.features.lsp.keymaps
 ---@field navic beastvim.features.lsp.navic
 ---@field diagnostics beastvim.features.lsp.diagnostics
+---@field ui beastvim.features.lsp.ui
 local M = {}
 
 setmetatable(M, {
@@ -30,6 +32,10 @@ function M.setup(opts)
     Utils.notify("Plugin `neovim/nvim-lspconfig` not installed", "ERROR")
     return
   end
+
+  -- UI
+  M.ui.setup()
+
   -- Diagnostics
   M.diagnostics.setup(opts.diagnostics)
 
@@ -71,6 +77,23 @@ function M.setup(opts)
       end
       Utils.lsp.on_attach(callback)
     end
+
+    -- TODO Set root_dir pattern
+    local pending = true
+    if not pending and server_opts.root_dir then
+      -- If root_dir is string or list of strings
+      local lsp_utils = require("lspconfig/util")
+      if type(server_opts.root_dir) == "string" then
+        server_opts.root_dir = lsp_utils.root_pattern(server_opts.root_dir)
+      end
+      if type(server_opts.root_dir) == "table" then
+        server_opts.root_dir = lsp_utils.root_pattern(server_opts.root_dir)
+      end
+    end
+    if pending then
+      server_opts.root_dir = nil
+    end
+
     lspconfig[server].setup(server_opts)
   end
 

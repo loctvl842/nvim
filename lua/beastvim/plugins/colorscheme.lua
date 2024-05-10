@@ -27,7 +27,7 @@ return {
       inc_search = "background", -- underline | background
       background_clear = {
         "nvim-tree",
-        "neo-tree",
+        -- "neo-tree",
         "bufferline",
         -- "telescope",
         "toggleterm",
@@ -46,7 +46,7 @@ return {
       },
       override = function(c)
         return {
-          ColorColumn = { bg = c.editor.background },
+          -- ColorColumn = { bg = c.editor.background },
           -- Mine
           DashboardRecent = { fg = c.base.magenta },
           DashboardProject = { fg = c.base.blue },
@@ -61,6 +61,7 @@ return {
           MiniHipatternsTodo = { fg = c.base.black, bg = c.base.blue, bold = true }, -- TODO
           MiniHipatternsHack = { fg = c.base.black, bg = c.base.yellow, bold = true }, -- HACK
           MiniHipatternsNote = { fg = c.base.black, bg = c.base.green, bold = true }, -- NOTE
+          MiniHipatternsWip = { fg = c.base.black, bg = c.base.cyan, bold = true }, -- WIP
         }
       end,
       overridePalette = function(filter)

@@ -95,7 +95,7 @@ return {
       },
       current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
       preview_config = {
-        border = Utils.telescope.borderchars("thick", "tl-t-tr-r-br-b-bl-l"), -- [ top top top - right - bottom bottom bottom - left ]
+        border = Utils.ui.borderchars("thick", "tl-t-tr-r-br-b-bl-l"), -- [ top top top - right - bottom bottom bottom - left ]
       },
       on_attach = function(bufnr)
         local gs = package.loaded.gitsigns
@@ -272,9 +272,9 @@ return {
           prompt_prefix = "   ",
           selection_caret = "  ",
           entry_prefix = "   ",
-          borderchars = is_telescope_bg_clear and Utils.telescope.borderchars("rounded")
+          borderchars = is_telescope_bg_clear and Utils.ui.borderchars("rounded")
             or {
-              prompt = Utils.telescope.borderchars("thick", nil, {
+              prompt = Utils.ui.borderchars("thick", nil, {
                 top = "▄",
                 top_left = "▄",
                 left = "█",
@@ -282,12 +282,12 @@ return {
                 top_right = " ",
                 bottom_right = " ",
               }),
-              results = Utils.telescope.borderchars(
+              results = Utils.ui.borderchars(
                 "thick",
                 nil,
                 { top = "█", top_left = "█", right = " ", top_right = " ", bottom_right = " " }
               ),
-              preview = Utils.telescope.borderchars("thick", nil, { top = "▄", top_left = "▄", top_right = "▄" }),
+              preview = Utils.ui.borderchars("thick", nil, { top = "▄", top_left = "▄", top_right = "▄" }),
             },
           dynamic_preview_title = true,
           hl_result_eol = true,

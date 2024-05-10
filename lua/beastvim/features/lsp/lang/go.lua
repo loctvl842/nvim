@@ -4,7 +4,7 @@ return {
     "williamboman/mason.nvim",
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
-      vim.list_extend(opts.ensure_installed, { "goimports", "gofumpt" })
+      vim.list_extend(opts.ensure_installed, { "goimports", "golangci-lint" })
     end,
   },
   {
@@ -25,7 +25,7 @@ return {
         gopls = {
           settings = {
             gopls = {
-              gofumpt = true,
+              gofumpt = false,
               codelenses = {
                 gc_details = false,
                 generate = true,
@@ -37,7 +37,7 @@ return {
                 vendor = true,
               },
               hints = {
-                assignVariableTypes = true,
+                assignVariableTypes = false,
                 compositeLiteralFields = true,
                 compositeLiteralTypes = true,
                 constantValues = true,
@@ -46,7 +46,7 @@ return {
                 rangeVariableTypes = true,
               },
               analyses = {
-                fieldalignment = true,
+                fieldalignment = false,
                 nilness = true,
                 unusedparams = true,
                 unusedwrite = true,
@@ -72,6 +72,7 @@ return {
               }
             end
           end,
+          root_dir = { "go.mod", ".git" },
         },
       },
     },
@@ -80,7 +81,7 @@ return {
     "stevearc/conform.nvim",
     opts = {
       formatters_by_ft = {
-        go = { "goimports", "gofumpt" },
+        go = { "goimports", "golangci-lint" },
       },
     },
   },

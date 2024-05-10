@@ -3,7 +3,7 @@ local Icons = require("beastvim.tweaks.icons")
 
 local config = {
   close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
-  popup_border_style = Utils.telescope.borderchars("thick", "tl-t-tr-r-br-b-bl-l"),
+  popup_border_style = Utils.ui.borderchars("thick", "tl-t-tr-r-br-b-bl-l"),
   sources = {
     "filesystem",
     "buffers",
@@ -87,6 +87,7 @@ config.filesystem.components = require("beastvim.features.neo-tree.sources.files
 local function hideCursor()
   vim.cmd([[
     setlocal guicursor=n:block-Cursor
+    setlocal foldcolumn=0
     hi Cursor blend=100
   ]])
 end
@@ -98,22 +99,18 @@ local function showCursor()
 end
 
 local neotree_group = Utils.augroup("neo-tree_hide_cursor")
-vim.api.nvim_create_autocmd({ "FileType" }, {
-  pattern = "neo-tree",
+
+vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "InsertEnter" }, {
+  group = neotree_group,
   callback = function()
-    vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter", "InsertEnter" }, {
-      group = neotree_group,
-      callback = function()
-        local fire = vim.bo.filetype == "neo-tree" and hideCursor or showCursor
-        fire()
-      end,
-    })
-    vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave", "InsertEnter" }, {
-      group = neotree_group,
-      callback = function()
-        showCursor()
-      end,
-    })
+    local action = vim.bo.filetype == "neo-tree" and hideCursor or showCursor
+    action()
+  end,
+})
+vim.api.nvim_create_autocmd({ "WinLeave", "BufLeave", "InsertEnter" }, {
+  group = neotree_group,
+  callback = function()
+    showCursor()
   end,
 })
 
