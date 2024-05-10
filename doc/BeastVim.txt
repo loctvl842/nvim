@@ -1,4 +1,4 @@
-*BeastVim.txt*          For Neovim >= 0.8.0         Last change: 2024 March 20
+*BeastVim.txt*          For Neovim >= 0.8.0         Last change: 2024 April 02
 
 ==============================================================================
 Table of Contents                                 *BeastVim-table-of-contents*
@@ -6,6 +6,7 @@ Table of Contents                                 *BeastVim-table-of-contents*
 1. BeastVim                                                |BeastVim-beastvim|
   - Installation                              |BeastVim-beastvim-installation|
   - Prerequisites                            |BeastVim-beastvim-prerequisites|
+2. Links                                                      |BeastVim-links|
 
 ==============================================================================
 1. BeastVim                                                *BeastVim-beastvim*

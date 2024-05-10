@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.1](https://github.com/loctvl842/nvim/compare/v2.2.0...v2.2.1) (2024-04-02)
+
+
+### Bug Fixes
+
+* fold shouldn't appear in neo-tree ([770db30](https://github.com/loctvl842/nvim/commit/770db306d776de41994a0970a458cec45844c03e))
+
 ## [2.2.0](https://github.com/loctvl842/nvim/compare/v2.1.0...v2.2.0) (2024-03-14)
 
 
