@@ -1,7 +1,7 @@
 local Utils = require("beastvim.utils")
 local Icons = require("beastvim.tweaks").icons
 
----@class LspDiagnostics
+---@class LspDiagnosticsOptions
 ---@field enabled boolean
 
 ---@class beastvim.features.lsp.diagnostics
@@ -26,10 +26,8 @@ local function on()
     underline = true,
     severity_sort = true,
     float = {
-      focusable = false,
       style = "minimal",
-      border = Utils.ui.borderchars("thick", "tl-t-tr-r-br-b-bl-l"),
-      source = "always",
+      source = true,
       header = "",
       prefix = "",
     },
@@ -39,33 +37,38 @@ end
 local function off()
   M.enabled = false
   vim.diagnostic.config({
-    underline = true,
+    underline = false,
     virtual_text = false,
     signs = false,
     update_in_insert = false,
   })
 end
 
----@param enabled boolean
-function M.setup(enabled)
+---@param opts LspDiagnosticsOptions
+function M.setup(opts)
   for name, icon in pairs(Icons.diagnostics) do
     name = "DiagnosticSign" .. Utils.string.capitalize(name)
     vim.fn.sign_define(name, { text = icon, texthl = name, numhl = name })
   end
-  if enabled then
+  M.toggle(opts.enabled)
+
+  local map = Utils.safe_keymap_set
+  map("n", "<leader>td", function()
+    M.toggle()
+  end, { desc = "Toggle LSP inlay hints" })
+end
+
+function M.toggle(value)
+  if value == nil then
+    M.enabled = not M.enabled
+  else
+    M.enabled = value
+  end
+  if M.enabled then
     on()
   else
     off()
   end
-
-  -- Setup command
-  vim.api.nvim_create_user_command("ToggleDiagnostic", function()
-    if M.enabled then
-      off()
-    else
-      on()
-    end
-  end, { nargs = 0 })
 end
 
 return M

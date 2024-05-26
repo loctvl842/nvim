@@ -11,6 +11,7 @@ local Profile = require("beastvim.profile")
 ---@field string beastvim.utils.string
 ---@field table beastvim.utils.table
 ---@field ui beastvim.utils.ui
+---@field cmp beastvim.utils.cmp
 local M = {}
 
 setmetatable(M, {

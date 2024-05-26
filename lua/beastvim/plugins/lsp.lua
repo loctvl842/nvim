@@ -74,7 +74,8 @@ return {
           },
         },
       },
-      diagnostics = true,
+      diagnostics = { enabled = true },
+      inlay_hints = { enabled = true },
     },
     config = function(_, opts)
       require("beastvim.features.lsp").setup(opts)

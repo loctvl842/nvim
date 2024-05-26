@@ -71,10 +71,10 @@ return {
           end),
         }),
         sources = cmp.config.sources({
-          { name = "codeium" },
-          { name = "copilot" },
-          { name = "nvim_lsp", keyword_length = 2 },
-          { name = "luasnip" },
+          { name = "codeium", keyword_length = 2 },
+          { name = "copilot", keyword_length = 2 },
+          { name = "nvim_lsp", keyword_length = 3 },
+          { name = "luasnip", keyword_length = 2 },
           { name = "buffer", keyword_length = 3 },
           { name = "path" },
         }),
@@ -105,6 +105,15 @@ return {
         experimental = { ghost_text = true },
         sorting = defaults.sorting,
       }
+    end,
+    config = function(_, opts)
+      local cmp = require("cmp")
+      cmp.setup(opts)
+      cmp.event:on("confirm_done", function(event)
+        if vim.tbl_contains(opts.auto_brackets or {}, vim.bo.filetype) then
+          Utils.cmp.auto_brackets(event.entry)
+        end
+      end)
     end,
   },
 

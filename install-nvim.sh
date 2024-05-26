@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Define variables
 NEOVIM_REPO="neovim/neovim"
@@ -18,7 +18,7 @@ NEOVIM_COMMIT_HASH=$(curl -s "https://api.github.com/repos/$NEOVIM_REPO/releases
 git clone "https://github.com/$NEOVIM_REPO" "$NEOVIM_INSTALL_DIR"
 
 # Move to Neovim directory
-cd "$NEOVIM_INSTALL_DIR"
+cd "$NEOVIM_INSTALL_DIR" || return
 
 # Reset to the specified commit
 git reset --hard "$NEOVIM_COMMIT_HASH"

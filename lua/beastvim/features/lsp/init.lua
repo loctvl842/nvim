@@ -9,12 +9,14 @@ local Utils = require("beastvim.utils")
 ---@class LspOptions
 ---@field servers table<string, LspServer>
 ---@field capabilities? table
----@field diagnostics? boolean
+---@field diagnostics? LspDiagnosticsOptions
+---@field inlay_hints? LspInlayHintsOptions
 
 ---@class Lsp
 ---@field keymaps beastvim.features.lsp.keymaps
 ---@field navic beastvim.features.lsp.navic
 ---@field diagnostics beastvim.features.lsp.diagnostics
+---@field inlay_hints beastvim.features.lsp.inlay_hints
 ---@field ui beastvim.features.lsp.ui
 local M = {}
 
@@ -38,6 +40,9 @@ function M.setup(opts)
 
   -- Diagnostics
   M.diagnostics.setup(opts.diagnostics)
+
+  -- Inlay Hints
+  M.inlay_hints.setup(opts.inlay_hints)
 
   -- Keymaps
   Utils.lsp.on_attach(function(client, bufnr)
