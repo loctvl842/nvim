@@ -2,6 +2,8 @@
 
 *My Beast*
 
+**nvim v0.9.5**
+
 ## Installation
 
 Running the following script if you want to install Neovim at a specific version:

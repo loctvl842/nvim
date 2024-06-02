@@ -3,15 +3,16 @@ local Utils = require("beastvim.utils")
 ---@class beastvim.utils.lualine
 local M = {}
 
-local context = {}
+local highlight_context = {}
+local component_context = {}
 local counter = 0
 ---@param key string The key of the highlight group
 function M.get_hl_gr(key)
-  if context[key] ~= nil then
-    return context[key]
+  if highlight_context[key] ~= nil then
+    return highlight_context[key]
   end
   local hl_gr = ("SL" .. counter):gsub("%s+", "")
-  context[key] = hl_gr
+  highlight_context[key] = hl_gr
   counter = counter + 1
   return hl_gr
 end
@@ -54,7 +55,12 @@ end
 ---@param type LualineSeparatorType Type of the component (fill, thin)
 ---@param bg? HexColor Background of a component
 ---@param text_sep? string Separator between texts
-function M.build_component(config, texts, type, bg, text_sep)
+---@param cache_key? string Cache key
+function M.build_component(config, texts, type, bg, text_sep, cache_key)
+  if cache_key ~= nil and component_context[cache_key] ~= nil then
+    return component_context[cache_key]
+  end
+
   local BAR_BG = Utils.theme.highlight("lualine_c_normal").bg
   local SEP_GROUP = "SLSeparator"
   bg = bg or M.get_component_bg(type)
@@ -81,13 +87,20 @@ function M.build_component(config, texts, type, bg, text_sep)
     end, texts),
     text_sep or ""
   )
+
+  local final
   if config.float then
-    return M.hl_str(config.separator[type].left, SEP_GROUP)
+    final = M.hl_str(config.separator[type].left, SEP_GROUP)
       .. merged_text
       .. M.hl_str(config.separator[type].right, SEP_GROUP, SEP_GROUP)
   else
-    return merged_text
+    final = merged_text
   end
+
+  if cache_key ~= nil then
+    component_context[cache_key] = final
+  end
+  return final
 end
 
 ---Hide the component if the current window width is less than the specified minimum width

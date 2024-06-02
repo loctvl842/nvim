@@ -34,7 +34,7 @@ function cpn.branch(sep_type)
       return Utils.lualine.build_component(config, {
         { text = "  ", color = palette.white },
         { text = text, color = palette.green },
-      }, sep_type or "fill")
+      }, sep_type or "fill", nil, nil)
     end,
   }
 end
@@ -95,7 +95,7 @@ function cpn.diff(sep_type)
       end)
       return Utils.lualine.build_component(config, {
         { text = text, color = palette.red },
-      }, sep_type)
+      }, sep_type, nil, nil)
     end,
     cond = Utils.lualine.hide_width,
   }
@@ -109,7 +109,7 @@ function cpn.position(sep_type)
     local text = "Ln " .. current_line .. ", Col " .. current_column
     return Utils.lualine.build_component(config, {
       { text = text, color = palette.magenta },
-    }, sep_type or "fill")
+    }, sep_type or "fill", nil, nil)
   end
 end
 
@@ -158,7 +158,7 @@ function cpn.filetype(sep_type)
       ft_text = Utils.string.capitalize(ft_text)
       return Utils.lualine.build_component(config, {
         { text = ft_text, color = palette.blue },
-      }, sep_type or "fill")
+      }, sep_type or "fill", nil, nil)
     end,
   }
 end
@@ -169,7 +169,7 @@ function cpn.spaces(sep_type)
     local text = "Spaces: " .. vim.api.nvim_buf_get_option(0, "shiftwidth")
     return Utils.lualine.build_component(config, {
       { text = text, color = palette.yellow },
-    }, sep_type or "fill")
+    }, sep_type or "fill", nil, nil, "space")
   end
 end
 

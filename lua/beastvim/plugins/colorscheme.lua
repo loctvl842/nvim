@@ -27,7 +27,7 @@ return {
       inc_search = "background", -- underline | background
       background_clear = {
         "nvim-tree",
-        "neo-tree",
+        -- "neo-tree",
         "bufferline",
         -- "telescope",
         "toggleterm",

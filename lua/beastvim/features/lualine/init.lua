@@ -6,6 +6,10 @@ local M = {}
 M.setup = config.setup
 
 function M._load()
+  -- PERF: we don't need this lualine require madness 🤷
+  local lualine_require = require("lualine_require")
+  lualine_require.require = require
+
   local theme = require("beastvim.features.lualine.theme")(config)
   local _ = require("beastvim.features.lualine.palette")(config)
   local cpn = require("beastvim.features.lualine.components")
@@ -26,8 +30,8 @@ function M._load()
       globalstatus = true,
       refresh = {
         statusline = 1000,
-        tabline = 1000,
-        winbar = 100,
+        tabline = 1000000,
+        winbar = 1000000,
       },
     },
     sections = {

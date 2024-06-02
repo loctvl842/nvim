@@ -30,6 +30,11 @@ require("lazy").setup({
   },
   install = { colorscheme = { "monokai-pro", "habamax" } },
   checker = { enabled = false, notify = false },
+  change_detection = {
+    -- automatically check for config file changes and reload the ui
+    enabled = false,
+    notify = false, -- get a notification when changes are found
+  },
   ui = {
     icons = {
       ft = Icons.lazy.ft,
