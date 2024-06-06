@@ -45,7 +45,8 @@ return {
 
   {
     "nvim-lualine/lualine.nvim",
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    -- event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    lazy = true,
     opts = function()
       local lualine_require = require("lualine_require")
       lualine_require.require = require
@@ -59,6 +60,23 @@ return {
       local lualine = require("beastvim.features.lualine")
       lualine.setup(opts)
       lualine.load()
+    end,
+  },
+
+  {
+    "rebelot/heirline.nvim",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    opts = function()
+      local monokai_opts = Utils.plugin.opts("monokai-pro.nvim")
+      return {
+        float = vim.tbl_contains(monokai_opts.background_clear or {}, "neo-tree"),
+        colorful = true,
+      }
+    end,
+    config = function(_, opts)
+      local heirline = require("beastvim.features.heirline")
+      heirline.setup(opts)
+      heirline.load()
     end,
   },
 

@@ -44,7 +44,12 @@ function M.resolve(bufnr)
 
   ---@type LspOptions
   local opts = Utils.plugin.opts("nvim-lspconfig")
-  local clients = vim.lsp.get_active_clients({ bufnr = bufnr })
+  local clients
+  if vim.fn.has("nvim-0.11") == 1 then
+    clients = vim.lsp.get_clients({bufnr = bufnr})
+  else
+    clients = vim.lsp.get_active_clients({ bufnr = bufnr })
+  end
   for _, client in ipairs(clients) do
     local maps = opts.servers[client.name] and opts.servers[client.name].keys or {}
     vim.list_extend(spec, maps)

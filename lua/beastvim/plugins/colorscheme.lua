@@ -56,6 +56,7 @@ return {
           DashboardServer = { fg = c.base.yellow },
           DashboardQuit = { fg = c.base.red },
           IndentBlanklineChar = { fg = c.base.dimmed4 },
+          NeoTreeStatusLine = { link = "StatusLine" },
           -- mini.hipatterns
           MiniHipatternsFixme = { fg = c.base.black, bg = c.base.red, bold = true }, -- FIXME
           MiniHipatternsTodo = { fg = c.base.black, bg = c.base.blue, bold = true }, -- TODO

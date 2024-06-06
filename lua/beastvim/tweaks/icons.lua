@@ -13,6 +13,10 @@
 
 ---@class beastvim.tweaks.icons
 local M = {
+  beast = {
+    vim = "",
+    nvim = ""
+  },
   mason = {
     pending = " ",
     installed = "󰄳 ",

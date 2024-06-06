@@ -66,7 +66,7 @@ return {
     init = function()
       vim.g.neo_tree_remove_legacy_commands = 1
       if vim.fn.argc() == 1 then
-        local stat = vim.loop.fs_stat(vim.fn.argv(0))
+        local stat = vim.uv.fs_stat(vim.fn.argv(0))
         if stat and stat.type == "directory" then
           ---@diagnostic disable-next-line: different-requires
           require("neo-tree")
@@ -234,6 +234,11 @@ return {
   {
     "luukvbaal/statuscol.nvim",
     event = { "VimEnter" }, -- Enter when on Vim startup to setup folding correctly (Avoid number in fold column)
+    commit = (function()
+      if vim.fn.has("nvim-0.9") == 1 then
+        return "483b9a596dfd63d541db1aa51ee6ee9a1441c4cc"
+      end
+    end)(),
     config = function()
       local builtin = require("statuscol.builtin")
       require("statuscol").setup({
@@ -315,9 +320,9 @@ return {
     end,
     keys = {
       -- goto
-      { "gd", "<cmd>Telescope lsp_definitions<cr>", desc = "Go to definition" },
-      { "gr", "<cmd>Telescope lsp_references<cr>", desc = "Go to references" },
-      { "gi", "<cmd>Telescope lsp_implementations<cr>", desc = "Go to implementations" },
+      -- { "gd", "<cmd>Telescope lsp_definitions<cr>", desc = "Go to definition" },
+      -- { "gr", "<cmd>Telescope lsp_references<cr>", desc = "Go to references" },
+      -- { "gi", "<cmd>Telescope lsp_implementations<cr>", desc = "Go to implementations" },
       -- search
       { "sb", "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
       { "sc", "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme" },
@@ -344,7 +349,6 @@ return {
     event = { "BufRead" },
     keys = {
       { "<leader>d", "<cmd>Bdelete!<cr>", desc = "Close Buffer" },
-      { "<C-w>", "<cmd>Bdelete!<cr>", desc = "Close Buffer" },
     },
   },
 
