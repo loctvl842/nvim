@@ -29,6 +29,7 @@ return {
         "tsx",
         "typescript",
         "terraform",
+        "starlark",
         "vim",
         "yaml",
         "graphql",

@@ -1,13 +1,7 @@
-return {
-  {
-    "nvim-treesitter/nvim-treesitter",
-    version = false, -- last release is way too old and doesn"t work on Windows
-    build = ":TSUpdate",
-    event = { "BufReadPost", "BufNewFile" },
-    dependencies = {
-      { "JoosepAlviste/nvim-ts-context-commentstring", dev = false },
-    },
-    opts = {
+
+vim.defer_fn(function()
+  require("nvim-treesitter.configs").setup({
+    {
       ensure_installed = {
         "bash",
         "cmake",
@@ -41,20 +35,57 @@ return {
         query = "rainbow-parens",
         disable = { "jsx", "html" },
       },
-    },
-    config = function(_, opts)
-      require("nvim-treesitter.configs").setup(opts)
-    end,
-  },
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true, -- Automatically jump forward to textobj, similar to targets.vim
+          keymaps = {
+            -- You can use the capture groups defined in textobjects.scm
+            ['aa'] = '@parameter.outer',
+            ['ia'] = '@parameter.inner',
+            ['af'] = '@function.outer',
+            ['if'] = '@function.inner',
+            ['ac'] = '@class.outer',
+            ['ic'] = '@class.inner',
+          },
+        },
+        move = {
+          enable = true,
+          set_jumps = true, -- whether to set jumps in the jumplist
+          goto_next_start = {
+            [']m'] = '@function.outer',
+            [']]'] = '@class.outer',
+          },
+          goto_next_end = {
+            [']M'] = '@function.outer',
+            [']['] = '@class.outer',
+          },
+          goto_previous_start = {
+            ['[m'] = '@function.outer',
+            ['[['] = '@class.outer',
+          },
+          goto_previous_end = {
+            ['[M'] = '@function.outer',
+            ['[]'] = '@class.outer',
+          },
+        },
+        swap = {
+          enable = true,
+          swap_next = {
+            ['<leader>a'] = '@parameter.inner',
+          },
+          swap_previous = {
+            ['<leader>A'] = '@parameter.inner',
+          },
+        },
+      },
+    }
+  })
 
-  {
-    "HiPhish/nvim-ts-rainbow2",
-    event = "BufReadPost",
-  },
-
-  {
-    "windwp/nvim-ts-autotag",
-    ft = {
+  require("rainbow-delimiters.setup").setup({})
+  require("nvim-ts-autotag").setup({
+    enable = true,
+    filetypes = {
       "html",
       "javascript",
       "typescript",
@@ -72,28 +103,5 @@ return {
       "handlebars",
       "hbs",
     },
-    opts = {
-      enable = true,
-      filetypes = {
-        "html",
-        "javascript",
-        "typescript",
-        "javascriptreact",
-        "typescriptreact",
-        "svelte",
-        "vue",
-        "tsx",
-        "jsx",
-        "rescript",
-        "xml",
-        "php",
-        "markdown",
-        "glimmer",
-        "handlebars",
-        "hbs",
-      },
-    },
-  },
-
-  { "towolf/vim-helm" },
-}
+  })
+end, 0)

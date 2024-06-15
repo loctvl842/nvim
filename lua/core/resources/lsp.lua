@@ -1,16 +1,16 @@
 return {
   {
-    "folke/neodev.nvim",
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
     opts = {
-      debug = true
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+      },
     },
-    config = function(_, opts)
-      require("neodev").setup({
-        library = { plugins = { "neotest" }, types = true }
-      })
-    end
   },
-
+  { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
   -- LSP Configuration
 
   {

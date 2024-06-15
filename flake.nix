@@ -138,14 +138,11 @@
           pkgs.vimPlugins.cmp-path
           pkgs.vimPlugins.cmp-cmdline
           pkgs.vimPlugins.cmp_luasnip
-          # Mini
-          # pkgs.vimPlugins.mini-pairs
+          # Git Workflow
+          pkgs.vimPlugins.neogit
           # Comments
           pkgs.vimPlugins.nvim-ts-context-commentstring
           pkgs.vimPlugins.comment-nvim
-          # Inlay Hints
-          pkgs.vimPlugins.lsp-inlayhints-nvim
-          pkgs.vimPlugins.lsp_signature-nvim
           # Testing
           pkgs.vimPlugins.neotest
           pkgs.vimPlugins.neotest-go
@@ -172,12 +169,20 @@
           neovim-project
           # Buffer Folding
           pkgs.vimPlugins.nvim-ufo
+          pkgs.vimPlugins.promise-async
+          pkgs.vimPlugins.nvim-lastplace
         ];
         lsp = with pkgs.nixCatsBuilds; [
+          # LSP
           pkgs.vimPlugins.neodev-nvim
           pkgs.vimPlugins.nvim-lspconfig
+          # Debugging
           pkgs.vimPlugins.nvim-dap
+          # Formatters
           pkgs.vimPlugins.null-ls-nvim
+          # Inlay Hints
+          pkgs.vimPlugins.lsp-inlayhints-nvim
+          pkgs.vimPlugins.lsp_signature-nvim
         ];
         settings = with pkgs.nixCatsBuilds; [ ];
         tools = with pkgs.nixCatsBuilds; [
@@ -219,8 +224,6 @@
       optionalPlugins = {
         general = with pkgs.nixCatsBuilds; [ ];
         coding = with pkgs.nixCatsBuilds; [
-          # Git Workflow
-          pkgs.vimPlugins.neogit
         ];
         colorscheme = with pkgs.nixCatsBuilds; [ ];
         editor = with pkgs.nixCatsBuilds; [ ];

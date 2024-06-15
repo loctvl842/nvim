@@ -77,7 +77,6 @@ which_key.setup({
 
 local mappings = {
   ["<leader>"] = {
-    ["a"] = { "<cmd>Alpha<cr>", "Alpha" },
     ["0"] = { "<cmd>Dashboard<CR>", "Dashboard" },
     -- ["b"] = {
     -- 	"<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>",
@@ -206,24 +205,25 @@ local mappings = {
       name = "LSP",
       a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },
       d = {
-        function() require("trouble").toggle("document_diagnostics") end,
+        -- function() require("trouble").toggle("document_diagnostics") end,
+        function() require("trouble").toggle({ mode = "diagnostics", filter = { buf = 0 }}) end,
         "Document Diagnostics",
       },
       w = {
-        function() require("trouble").toggle("workspace_diagnostics") end,
+        function() require("trouble").toggle("diagnostics") end,
         "Workspace Diagnostics",
       },
       f = { "<cmd>lua vim.lsp.buf.format()<cr>", "Format" },
       i = { "<cmd>LspInfo<cr>", "Info" },
       I = { "<cmd>LspInstallInfo<cr>", "Installer Info" },
-      j = {
-        function() require("trouble").next({skip_groups = true, jump = true}) end,
-        "Next Diagnostic",
-      },
-      k = {
-        function() require("trouble").previous({skip_groups = true, jump = true}) end,
-        "Prev Diagnostic",
-      },
+      -- j = {
+      --   function() require("trouble").next({skip_groups = true, jump = true}) end,
+      --   "Next Diagnostic",
+      -- },
+      -- k = {
+      --   function() require("trouble").previous({skip_groups = true, jump = true}) end,
+      --   "Prev Diagnostic",
+      -- },
       l = { "<cmd>lua vim.lsp.codelens.run()<cr>", "CodeLens Action" },
       q = {
         "<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>",
@@ -394,6 +394,14 @@ local mappings = {
   --    },
   --    ["b"] = { "<cmd>BufferLinePick<CR>", "Bufferline: pick buffer" },
   --  },
+  ["<C-=>"] = {
+    function() vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * 1.05 end,
+    "Increase Font"
+  },
+  ["<C-->"] = {
+    function() vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * (1/1.05) end,
+    "Decrease Font"
+  },
 }
 
 which_key.register(mappings, { mode = "n", prefix = "" })

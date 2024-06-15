@@ -37,7 +37,7 @@ function M.setup()
       require("neotest-vitest")({
         -- Filter directories when searching for test files. Useful in large projects (see Filter directories notes).
         vitestCommand = function(_args)
-          return "npx vitest"
+          return "steam-run npx vitest"
         end,
         vitestConfigFile = function()
           local file = vim.fn.expand('%:p')
