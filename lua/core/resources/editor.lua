@@ -39,10 +39,10 @@ return {
   },
 
   -- Project Management
-  {
-    "Shatur/neovim-session-manager",
-    config = function() require("config.editor.neovim-session-manager") end,
-  },
+  -- {
+  --   "Shatur/neovim-session-manager",
+  --   config = function() require("config.editor.neovim-session-manager") end,
+  -- },
 
   {
     "coffebar/neovim-project",

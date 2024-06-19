@@ -251,12 +251,12 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 
 ----------------------------- Neogit -----------------------------
 
-local neogit_group = vim.api.nvim_create_augroup('MyCustomNeogitEvents', { clear = true })
-vim.api.nvim_create_autocmd('User', {
-  pattern = 'NeogitPushComplete',
-  group = neogit_group,
-  callback = function()
-    require('neogit').close()
-  end,
-})
+-- local neogit_group = vim.api.nvim_create_augroup('MyCustomNeogitEvents', { clear = true })
+-- vim.api.nvim_create_autocmd('User', {
+--   pattern = 'NeogitPushComplete',
+--   group = neogit_group,
+--   callback = function()
+--     require('neogit').close()
+--   end,
+-- })
 
