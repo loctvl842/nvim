@@ -14,7 +14,7 @@ local default = {
   -- thin_separator_icon = { left = " ", right = " " },
 }
 
----@type LualineConfig
+---@class LualineConfig
 M.options = {}
 
 ---@param type "bubble" | "triangle"

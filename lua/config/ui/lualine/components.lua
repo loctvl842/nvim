@@ -4,6 +4,11 @@ local path = require("neovim-project.utils.path")
 
 local M = {}
 
+--- Generate a string for the given string and positional elements
+--- @param str string
+--- @param hl_cur string
+--- @param hl_after string
+--- @return string
 local hl_str = function(str, hl_cur, hl_after)
   if hl_after == nil then return "%#" .. hl_cur .. "#" .. str .. "%*" end
   return "%#" .. hl_cur .. "#" .. str .. "%*" .. "%#" .. hl_after .. "#"
@@ -12,6 +17,41 @@ end
 local function hide_in_width() return vim.fn.winwidth(0) > 85 end
 
 local prev_branch = ""
+-- M.branch = {
+--   "branch",
+--   icons_enabled = false,
+--   icon = hl_str("", "SLGitIcon", "SLBranchName"),
+--   colored = false,
+--   fmt = function(str)
+--     -- handle setting the branch
+--     if vim.bo.filetype == "toggleterm" then
+--       str = prev_branch
+--     elseif str == "" or str == nil then
+--       str = "!=vcs"
+--     end
+--     prev_branch = str
+--
+--     -- Get the project directory from project.nvim
+--     -- local project_dir, method = project.get_project_root()
+--     -- local project_dir = "/etc/dotifles/foobar"
+--     local project_dir = path.cwd()
+--     -- Get the "root" project name
+--     local root = string.match(project_dir or "", "[%a%-%_]+$") or ""
+--
+--     local icon = hl_str(" ", "SLGitIcon", "SLBranchName")
+--     local branch = hl_str(icon, "SLGitIcon", "")
+--         .. hl_str(root, "SLFiletype", "")
+--         .. hl_str("/" .. str, "SLBranchName", "")
+--
+--     if config.separators_enabled then
+--       return hl_str(config.separator_icon.left, "SLSeparator", "")
+--         .. branch
+--         .. hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
+--     end
+--
+--     return branch
+--   end,
+-- }
 M.branch = {
   "branch",
   icons_enabled = false,
@@ -34,12 +74,12 @@ M.branch = {
     local root = string.match(project_dir or "", "[%a%-%_]+$") or ""
 
     local icon = hl_str(" ", "SLGitIcon", "SLBranchName")
-    local branch = hl_str(icon, "SLGitIcon")
-        .. hl_str(root, "SLFiletype")
-        .. hl_str("/" .. str, "SLBranchName")
+    local branch = hl_str(icon, "SLGitIcon", "")
+        .. hl_str(root, "SLFiletype", "")
+        .. hl_str("/" .. str, "SLBranchName", "")
 
     if config.separators_enabled then
-      return hl_str(config.separator_icon.left, "SLSeparator")
+      return hl_str(config.separator_icon.left, "SLSeparator", "")
         .. branch
         .. hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
     end
@@ -51,7 +91,7 @@ M.branch = {
 M.position = function()
   local current_line = vim.fn.line(".")
   local current_column = vim.fn.col(".")
-  local left_sep = hl_str(config.separator_icon.left, "SLSeparator")
+  local left_sep = hl_str(config.separator_icon.left, "SLSeparator", "")
   local right_sep = hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
   local str = "Ln " .. current_line .. ", Col " .. current_column
   local position = hl_str(str, "SLPosition", "SLPosition")
@@ -64,9 +104,10 @@ M.position = function()
 end
 
 M.spaces = function()
-  local left_sep = hl_str(config.separator_icon.left, "SLSeparator")
+  local left_sep = hl_str(config.separator_icon.left, "SLSeparator", "")
   local right_sep = hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
-  local str = "Spaces: " .. vim.api.nvim_buf_get_option(0, "shiftwidth")
+  -- local str = "Spaces: " .. vim.api.nvim_buf_get_option(0, "shiftwidth")
+  local str = "Spaces: " .. vim.api.nvim_get_option_value("shiftwidth", {buf=0})
   local spaces = hl_str(str, "SLShiftWidth", "SLShiftWidth")
 
   if config.separators_enabled then
@@ -94,7 +135,7 @@ M.diagnostics = function()
   local warn_hl = hl_str(icons.diagnostics.warn .. " " .. warn_count, "SLWarning", "SLWarning")
   local info_hl = hl_str(icons.diagnostics.info .. " " .. info_count, "SLInfo", "SLInfo")
   local hint_hl = hl_str(icons.diagnostics.hint .. " " .. hint_count, "SLInfo", "SLInfo")
-  local left_sep = hl_str(config.thin_separator_icon.left, "SLSeparator")
+  local left_sep = hl_str(config.thin_separator_icon.left, "SLSeparator", "")
   local right_sep = hl_str(config.thin_separator_icon.right, "SLSeparator", "SLSeparator")
   local diagnostics =  error_hl .. " " .. warn_hl .. " " .. hint_hl
 
@@ -120,7 +161,7 @@ M.diff = {
   }, -- changes diff symbols
   fmt = function(str)
     if str == "" then return "" end
-    local left_sep = hl_str(config.thin_separator_icon.left, "SLSeparator")
+    local left_sep = hl_str(config.thin_separator_icon.left, "SLSeparator", "")
     local right_sep =
         hl_str(config.thin_separator_icon.right, "SLSeparator", "SLSeparator")
 
@@ -138,7 +179,7 @@ M.mode = {
   fmt = function(str)
     local left_sep = hl_str(config.separator_icon.left, "SLSeparator", "SLPadding")
     local right_sep = hl_str(config.separator_icon.right, "SLSeparator", "SLPadding")
-    local mode = hl_str(str, "SLMode")
+    local mode = hl_str(str, "SLMode", "")
 
     if config.separators_enabled then
       return left_sep .. mode .. right_sep
@@ -186,7 +227,7 @@ M.filetype = {
       prev_filetype = str
       filetype_str = str
     end
-    local left_sep = hl_str(config.separator_icon.left, "SLSeparator")
+    local left_sep = hl_str(config.separator_icon.left, "SLSeparator", "")
     local right_sep = hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
     -- Upper case first character
     filetype_str = filetype_str:gsub("%a", string.upper, 1)

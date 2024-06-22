@@ -53,6 +53,21 @@ return {
     },
     lazy = false,
     priority = 100,
+    -- opts = {
+    --   projects = { -- define project roots
+    --     "~/github.com/*/*",
+    --     "~/.config/nvim",
+    --     "/media/procore/*",
+    --     "/etc/dotfiles",
+    --   },
+    --   last_session_on_startup = false,
+    --   dashboard_mode = true,
+    --   session_manager_opts = {
+    --     autosave_last_session = true,                                            -- Automatically save last session on exit and on session switch.
+    --     autosave_ignore_not_normal = false,                                       -- Plugin will not save a session when no buffers are opened, or all of them aren"t writable or listed.
+    --     autosave_only_in_session = false, -- Always autosaves session. If true, only autosaves after a session is active.
+    --   },
+    -- },
     init = function()
       -- enable saving the state of plugins in the session
       vim.opt.sessionoptions:append("globals") -- save global variables that start with an uppercase letter and contain at least one lowercase letter.

@@ -62,7 +62,31 @@ local servers = {
   cssls = {},
   html = {},
   jsonls = {},
-  yamlls = yamlls_cfg,
+  ['helm_ls'] = {
+    logLevel = "info",
+    valuesFiles = {
+      mainValuesFile = "values.yaml",
+      lintOverlayValuesFile = "values.lint.yaml",
+      additionalValuesFilesGlobPattern = "values*.yaml"
+    },
+    yamlls = {
+      enabled = true,
+      diagnosticsLimit = 50,
+      showDiagnosticsDirectly = false,
+      path = "yaml-language-server",
+      -- config = {
+      --   schemas = {
+      --     kubernetes = "templates/**",
+      --   },
+      --   completion = true,
+      --   hover = true,
+      --   -- any other config from https://github.com/redhat-developer/yaml-language-server#language-server-settings
+      -- }
+      config = yamlls_cfg,
+    }
+  },
+  -- helm_ls = {},
+  -- yamlls = yamlls_cfg,
   lua_ls = {
     -- enabled = false,
     -- cmd = { "/home/folke/projects/lua-language-server/bin/lua-language-server" },
@@ -205,7 +229,7 @@ local servers = {
   },
   bashls = {},
   terraformls = {},
-  ruby_ls = {
+  ruby_lsp = {
     cmd = { "ruby-lsp" },
     init_options = {
       formatter = "auto",

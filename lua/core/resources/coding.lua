@@ -56,21 +56,14 @@ return {
   -- Git Workflow
   {
     "NeogitOrg/neogit",
-    event = "VeryLazy",
+    branch = "master",
+    -- event = "VeryLazy",
     dependencies = {
       "nvim-lua/plenary.nvim",
+      "sindrets/diffview.nvim",
     },
     config = function()
-      local config = {
-        disable_commit_confirmation = true,
-        mappings = {
-          popup = {
-            ["P"] = "PullPopup",
-            ["p"] = "PushPopup"
-          }
-        }
-      }
-      require("neogit").setup(config)
+      require("config.coding.git")
     end
   },
 

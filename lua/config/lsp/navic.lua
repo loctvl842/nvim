@@ -10,9 +10,9 @@ M.attach = function(client, buffer)
     -- TODO: Remove this once Ruby LSP supports all capabilities and I don"t need
     -- Ruby LSP and Solargraph both installed. This only attaches the navic capabilities
     -- through the ruby lsp server
-    if (client.name == "ruby_ls") then
-      navic.attach(client, buffer)
-    end
+    -- if (client.name == "ruby_ls") then
+    --   navic.attach(client, buffer)
+    -- end
   end
 end
 

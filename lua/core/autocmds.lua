@@ -198,48 +198,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
   group = go_format_sync_group
 })
 
-vim.api.nvim_create_autocmd("LspTokenUpdate", {
-  pattern = "*.go",
-  callback = function(args)
-    local token = args.data.token
-    local captures = {}
-    local captures_human = ""
-    for _, capture in pairs(vim.treesitter.get_captures_at_pos(args.buf, token.line, token.start_col)) do
-      table.insert(captures, "@" .. capture.capture)
-      captures_human = captures_human .. " @" .. capture.capture
-    end
-
-    -- if token.type == "variable"
-    --   or token.type == "constant" then
-    -- print("{token: " .. token.type
-    --   .. " pos: {line: " .. token.line .. " col:(" .. token.start_col .. " " .. token.end_col .. ")}"
-    --   .. " captures: [" .. captures_human .. "]}")
-    -- print("modifiers: " .. vim.inspect(token.modifiers))
-    -- end
-
-    if token.type ~= "variable" then return end
-
-    if token.type == "variable"
-        -- and not vim.tbl_contains(token.modifiers, "readonly")
-        and not token.modifiers.readonly
-        and vim.tbl_contains(captures, "@variable")
-        and not vim.tbl_contains(captures, "@field")
-        and not vim.tbl_contains(captures, "@constant") then
-      vim.lsp.semantic_tokens.highlight_token(
-        token, args.buf, args.data.client_id, "@variable"
-      )
-    end
-
-    if token.type == "variable" and vim.tbl_contains(captures, "@field") then
-      vim.lsp.semantic_tokens.highlight_token(
-        token, args.buf, args.data.client_id, "@field"
-      )
-    end
-
-    -- end
-  end
-})
-
 ----------------------------- Terraform -----------------------------
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
@@ -251,12 +209,85 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 
 ----------------------------- Neogit -----------------------------
 
--- local neogit_group = vim.api.nvim_create_augroup('MyCustomNeogitEvents', { clear = true })
--- vim.api.nvim_create_autocmd('User', {
---   pattern = 'NeogitPushComplete',
---   group = neogit_group,
---   callback = function()
---     require('neogit').close()
---   end,
--- })
+local neogit_group = vim.api.nvim_create_augroup('MyCustomNeogitEvents', { clear = true })
+vim.api.nvim_create_autocmd('User', {
+  pattern = 'NeogitPushComplete',
+  group = neogit_group,
+  callback = function()
+    require('neogit').close()
+  end,
+})
 
+----------------------------- Sessions -----------------------------
+
+--- Attempt to work around issues with neovim-project and session-manager saving sessions.
+vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+  callback = function ()
+    local utils = {}
+    function utils.is_restorable(buffer)
+      local neogit_filetypes = {
+        "NeogitStatus",
+        "NeogitCommitMessage",
+        "NeogitDiffView",
+      }
+
+      if
+        vim.tbl_contains(neogit_filetypes, vim.api.nvim_get_option_value("filetype", {buf=buffer}))
+      then
+        return true
+      end
+
+      if #vim.api.nvim_get_option_value("bufhidden", {buf=buffer}) ~= 0 then
+        return false
+      end
+
+      local buftype = vim.api.nvim_get_option_value("buftype", {buf=buffer})
+      if #buftype == 0 then
+        -- Normal buffer, check if it listed.
+        if not vim.api.nvim_get_option_value("buflisted", {buf=buffer}) then
+          return false
+        end
+        -- Check if it has a filename.
+        if #vim.api.nvim_buf_get_name(buffer) == 0 then
+          return false
+        end
+      elseif buftype ~= "terminal" and buftype ~= "help" then
+        -- Buffers other then normal, terminal and help are impossible to restore.
+        return false
+      end
+
+      local ignore_filetypes = {
+        "ccc-ui",
+        "gitcommit",
+        "gitrebase",
+        "qf",
+        "toggleterm",
+      }
+      if
+        vim.tbl_contains(ignore_filetypes, vim.api.nvim_get_option_value("filetype", {buf=buffer}))
+      then
+        return false
+      end
+
+      return true
+    end
+
+    for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
+      -- vim.print("checking buffer=" .. buffer ..
+      --   " name=" .. vim.api.nvim_buf_get_name(buffer) ..
+      --   " filetype=" .. vim.api.nvim_get_option_value("filetype", {buf=buffer}) ..
+      --   " buftype=" .. vim.api.nvim_get_option_value("buftype", {buf=buffer})
+      -- )
+      if vim.api.nvim_buf_is_valid(buffer) and not utils.is_restorable(buffer) then
+        vim.api.nvim_buf_delete(buffer, { force = true })
+      end
+    end
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      -- Don't save while there's any 'nofile' buffer open.
+      if vim.api.nvim_get_option_value("buftype", { buf = buf }) == "nofile" then
+        return
+      end
+    end
+    require("session_manager").save_current_session()
+  end
+})
