@@ -3,17 +3,13 @@ local util = require("util")
 -- Highlight on yank
 vim.api.nvim_create_autocmd({ "TextYankPost" }, {
   group = util.augroup("highlight_yank"),
-  callback = function()
-    vim.highlight.on_yank({ higroup = "Visual" })
-  end,
+  callback = function() vim.highlight.on_yank({ higroup = "Visual" }) end,
 })
 
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd({ "VimResized" }, {
   group = util.augroup("resize_splits"),
-  callback = function()
-    vim.cmd("tabdo wincmd =")
-  end,
+  callback = function() vim.cmd("tabdo wincmd =") end,
 })
 
 -- close some filetypes with <q>
@@ -49,25 +45,19 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
   pattern = "?*",
   group = util.augroup("remember_folds"),
-  callback = function()
-    vim.cmd([[silent! mkview 1]])
-  end,
+  callback = function() vim.cmd([[silent! mkview 1]]) end,
 })
 vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
   pattern = "?*",
   group = util.augroup("remember_folds"),
-  callback = function()
-    vim.cmd([[silent! loadview 1]])
-  end,
+  callback = function() vim.cmd([[silent! loadview 1]]) end,
 })
 
 -- fix comment
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
   group = util.augroup("comment_newline"),
   pattern = { "*" },
-  callback = function()
-    vim.cmd([[set formatoptions-=cro]])
-  end,
+  callback = function() vim.cmd([[set formatoptions-=cro]]) end,
 })
 
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
@@ -87,16 +77,12 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
 -- clear cmd output
 vim.api.nvim_create_autocmd({ "CursorHold" }, {
   group = util.augroup("clear_term"),
-  callback = function()
-    vim.cmd([[echon '']])
-  end,
+  callback = function() vim.cmd([[echon '']]) end,
 })
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
   pattern = { "help" },
-  callback = function()
-    vim.cmd([[wincmd L]])
-  end,
+  callback = function() vim.cmd([[wincmd L]]) end,
 })
 
 vim.api.nvim_create_autocmd({ "TermOpen" }, {
@@ -111,9 +97,7 @@ vim.api.nvim_create_autocmd({ "TermOpen" }, {
 -- fix comment on new line
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
   pattern = { "*" },
-  callback = function()
-    vim.cmd([[set formatoptions-=cro]])
-  end,
+  callback = function() vim.cmd([[set formatoptions-=cro]]) end,
 })
 
 vim.api.nvim_create_autocmd({ "VimLeave" }, {
@@ -124,14 +108,8 @@ vim.api.nvim_create_autocmd({ "VimLeave" }, {
 vim.api.nvim_create_autocmd({ "FileType" }, {
   pattern = { "NeogitCommitMessage" },
   callback = function()
-    vim.api.nvim_buf_set_keymap(
-      0,
-      "n",
-      "<C-c><C-c>",
-      "<cmd>wq!<CR>",
-      { noremap = true, silent = true }
-    )
-  end
+    vim.api.nvim_buf_set_keymap(0, "n", "<C-c><C-c>", "<cmd>wq!<CR>", { noremap = true, silent = true })
+  end,
 })
 
 ----------------------------- Formatting -----------------------------
@@ -154,7 +132,16 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
       -- "<cmd>lua require('peek').open()<CR>",
       { noremap = true, silent = true }
     )
-  end
+  end,
+})
+
+------------------------------ Lua -------------------------------
+
+local lua_format_sync_group = vim.api.nvim_create_augroup("LuaFormat", {})
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.lua",
+  callback = function() vim.lsp.buf.format() end,
+  group = lua_format_sync_group,
 })
 
 ----------------------------- Golang -----------------------------
@@ -166,15 +153,13 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     vim.bo.tabstop = 4
     vim.bo.softtabstop = 4
     vim.bo.expandtab = false
-  end
+  end,
 })
 
 local go_format_sync_group = vim.api.nvim_create_augroup("GoFormat", {})
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*.go",
-  callback = function()
-    vim.lsp.buf.format()
-  end,
+  callback = function() vim.lsp.buf.format() end,
   group = go_format_sync_group,
 })
 
@@ -195,34 +180,30 @@ vim.api.nvim_create_autocmd("BufWritePre", {
       end
     end
   end,
-  group = go_format_sync_group
+  group = go_format_sync_group,
 })
 
 ----------------------------- Terraform -----------------------------
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   pattern = { "*.tf", "*.tfvars" },
-  callback = function()
-    vim.lsp.buf.format()
-  end,
+  callback = function() vim.lsp.buf.format() end,
 })
 
 ----------------------------- Neogit -----------------------------
 
-local neogit_group = vim.api.nvim_create_augroup('MyCustomNeogitEvents', { clear = true })
-vim.api.nvim_create_autocmd('User', {
-  pattern = 'NeogitPushComplete',
+local neogit_group = vim.api.nvim_create_augroup("MyCustomNeogitEvents", { clear = true })
+vim.api.nvim_create_autocmd("User", {
+  pattern = "NeogitPushComplete",
   group = neogit_group,
-  callback = function()
-    require('neogit').close()
-  end,
+  callback = function() require("neogit").close() end,
 })
 
 ----------------------------- Sessions -----------------------------
 
 --- Attempt to work around issues with neovim-project and session-manager saving sessions.
-vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
-  callback = function ()
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  callback = function()
     local utils = {}
     function utils.is_restorable(buffer)
       local neogit_filetypes = {
@@ -231,26 +212,18 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
         "NeogitDiffView",
       }
 
-      if
-        vim.tbl_contains(neogit_filetypes, vim.api.nvim_get_option_value("filetype", {buf=buffer}))
-      then
+      if vim.tbl_contains(neogit_filetypes, vim.api.nvim_get_option_value("filetype", { buf = buffer })) then
         return true
       end
 
-      if #vim.api.nvim_get_option_value("bufhidden", {buf=buffer}) ~= 0 then
-        return false
-      end
+      if #vim.api.nvim_get_option_value("bufhidden", { buf = buffer }) ~= 0 then return false end
 
-      local buftype = vim.api.nvim_get_option_value("buftype", {buf=buffer})
+      local buftype = vim.api.nvim_get_option_value("buftype", { buf = buffer })
       if #buftype == 0 then
         -- Normal buffer, check if it listed.
-        if not vim.api.nvim_get_option_value("buflisted", {buf=buffer}) then
-          return false
-        end
+        if not vim.api.nvim_get_option_value("buflisted", { buf = buffer }) then return false end
         -- Check if it has a filename.
-        if #vim.api.nvim_buf_get_name(buffer) == 0 then
-          return false
-        end
+        if #vim.api.nvim_buf_get_name(buffer) == 0 then return false end
       elseif buftype ~= "terminal" and buftype ~= "help" then
         -- Buffers other then normal, terminal and help are impossible to restore.
         return false
@@ -263,9 +236,7 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
         "qf",
         "toggleterm",
       }
-      if
-        vim.tbl_contains(ignore_filetypes, vim.api.nvim_get_option_value("filetype", {buf=buffer}))
-      then
+      if vim.tbl_contains(ignore_filetypes, vim.api.nvim_get_option_value("filetype", { buf = buffer })) then
         return false
       end
 
@@ -284,10 +255,8 @@ vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
     end
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
       -- Don't save while there's any 'nofile' buffer open.
-      if vim.api.nvim_get_option_value("buftype", { buf = buf }) == "nofile" then
-        return
-      end
+      if vim.api.nvim_get_option_value("buftype", { buf = buf }) == "nofile" then return end
     end
     require("session_manager").save_current_session()
-  end
+  end,
 })

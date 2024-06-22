@@ -15,7 +15,7 @@ require("project_nvim").setup({
   },
 
   exclude_dirs = {
-    "~/.local/share/nvim/*"
+    "~/.local/share/nvim/*",
   },
 
   show_hidden = false,

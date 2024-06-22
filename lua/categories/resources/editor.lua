@@ -7,9 +7,7 @@ require("config.editor.vim-illuminate")
 require("config.editor.neovim-session-manager")
 require("config.editor.neovim-project")
 require("config.editor.statuscol")
-vim.defer_fn(function()
-  require("nvim-lastplace").setup({})
-end, 0)
+vim.defer_fn(function() require("nvim-lastplace").setup({}) end, 0)
 require("config.editor.folding")
 -- return {
 --   -- File Navigation

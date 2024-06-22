@@ -11,10 +11,10 @@ require("gitsigns").setup({
   },
   current_line_blame = true,
   current_line_blame_opts = {
-    delay = 300
+    delay = 300,
   },
   current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
   preview_config = {
     border = { "▄", "▄", "▄", "█", "▀", "▀", "▀", "█" }, -- [ top top top - right - bottom bottom bottom - left ]
-  }
+  },
 })

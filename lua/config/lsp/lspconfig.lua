@@ -3,18 +3,14 @@ require("util").on_attach(function(client, buffer)
   require("config.lsp.keymaps").attach(client, buffer)
   require("config.lsp.inlayhints").attach(client, buffer)
   require("config.lsp.gitsigns").attach(client, buffer)
-  if client == "ruby_ls" then
-    require("config.lsp.ruby_ls").attach(client, buffer)
-  end
+  if client == "ruby_ls" then require("config.lsp.ruby_ls").attach(client, buffer) end
 end)
 
 -- diagnostics
 for name, icon in pairs(require("core.icons").diagnostics) do
   ---@param s string
   ---@return string
-  local function first_upper(s)
-    return s:sub(1, 1):upper() .. s:sub(2)
-  end
+  local function first_upper(s) return s:sub(1, 1):upper() .. s:sub(2) end
   name = "DiagnosticSign" .. first_upper(name)
   vim.fn.sign_define(name, { text = icon, texthl = name, numhl = "" })
 end
@@ -25,9 +21,7 @@ local ext_capabilites = vim.lsp.protocol.make_client_capabilities()
 local capabilities = require("util").capabilities(ext_capabilites)
 
 local function setup(server)
-  if servers[server] and servers[server].disabled then
-    return
-  end
+  if servers[server] and servers[server].disabled then return end
   local server_opts = vim.tbl_deep_extend("force", {
     capabilities = vim.deepcopy(capabilities),
   }, servers[server] or {})

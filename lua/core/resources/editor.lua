@@ -29,13 +29,13 @@ return {
   {
     "lewis6991/gitsigns.nvim",
     event = { "BufReadPre", "BufNewFile" },
-    config = function() require("config.editor.gitsigns") end
+    config = function() require("config.editor.gitsigns") end,
   },
 
   {
     "RRethy/vim-illuminate",
     event = { "BufReadPost", "BufNewFile" },
-    config = function() require("config.editor.vim-illuminate") end
+    config = function() require("config.editor.vim-illuminate") end,
   },
 
   -- Project Management
@@ -72,9 +72,7 @@ return {
       -- enable saving the state of plugins in the session
       vim.opt.sessionoptions:append("globals") -- save global variables that start with an uppercase letter and contain at least one lowercase letter.
     end,
-    config = function()
-      require("config.editor.neovim-project")
-    end
+    config = function() require("config.editor.neovim-project") end,
   },
 
   -- Buffer Folding
@@ -123,16 +121,12 @@ return {
       { "fv", "zv", desc = "Show cursor line" },
       {
         "fM",
-        function()
-          require("ufo").closeAllFolds()
-        end,
+        function() require("ufo").closeAllFolds() end,
         desc = "Close all folds",
       },
       {
         "fR",
-        function()
-          require("ufo").openAllFolds()
-        end,
+        function() require("ufo").openAllFolds() end,
         desc = "Open all folds",
       },
       { "fm", "zm", desc = "Fold more" },
@@ -160,6 +154,6 @@ return {
   -- Fix Last Place Jump
   {
     "ethanholz/nvim-lastplace",
-    config = function() require("nvim-lastplace").setup({}) end
-  }
+    config = function() require("nvim-lastplace").setup({}) end,
+  },
 }

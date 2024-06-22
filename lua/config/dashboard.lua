@@ -1,9 +1,7 @@
 local dashboard = require("dashboard")
 local logo = require("core.logo")
 
-if vim.o.filetype == "lazy" then
-  vim.cmd.close()
-end
+if vim.o.filetype == "lazy" then vim.cmd.close() end
 
 vim.api.nvim_create_autocmd("User", {
   pattern = "LazyVimStarted",

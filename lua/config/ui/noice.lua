@@ -1,4 +1,4 @@
-require('noice').setup({
+require("noice").setup({
   cmdline = {
     view = "cmdline",
     format = {

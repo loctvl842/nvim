@@ -19,9 +19,9 @@ neotree.setup({
     tabs_layout = "equal",
     show_separator_on_edge = true,
     sources = {
-      { source = "filesystem",  display_name = "󰉓" },
-      { source = "buffers",     display_name = "󰈙" },
-      { source = "git_status",  display_name = "" },
+      { source = "filesystem", display_name = "󰉓" },
+      { source = "buffers", display_name = "󰈙" },
+      { source = "git_status", display_name = "" },
       -- { source = "document_symbols", display_name = "o" },
       { source = "diagnostics", display_name = "󰒡" },
     },
@@ -119,7 +119,7 @@ neotree.setup({
     },
     -- This will find and focus the file in the active buffer every
     -- time the current file is changed while the tree is open.
-    group_empty_dirs = false,               -- when true, empty folders will be grouped together
+    group_empty_dirs = false, -- when true, empty folders will be grouped together
     hijack_netrw_behavior = "open_default", -- netrw disabled, opening a directory opens neo-tree
     -- in whatever position is specified in window.position
     -- "open_current",  -- netrw disabled, opening a directory opens within the
@@ -146,7 +146,7 @@ neotree.setup({
     },
     -- This will find and focus the file in the active buffer every
     -- time the current file is changed while the tree is open.
-    group_empty_dirs = true,    -- when true, empty folders will be grouped together
+    group_empty_dirs = true, -- when true, empty folders will be grouped together
     show_unloaded = true,
     window = {
       mappings = {
@@ -178,7 +178,7 @@ neotree.setup({
       {
         "container",
         content = {
-          { "name",      zindex = 10 },
+          { "name", zindex = 10 },
           -- {
           --   "symlink_target",
           --   zindex = 10,
@@ -216,17 +216,17 @@ neotree.setup({
           --   zindex = 10,
           --   highlight = "NeoTreeSymbolicLinkTarget",
           -- },
-          { "clipboard",   zindex = 10 },
-          { "bufnr",       zindex = 10 },
-          { "modified",    zindex = 20, align = "right" },
+          { "clipboard", zindex = 10 },
+          { "bufnr", zindex = 10 },
+          { "modified", zindex = 20, align = "right" },
           { "diagnostics", zindex = 20, align = "right" },
-          { "git_status",  zindex = 15, align = "right" },
+          { "git_status", zindex = 15, align = "right" },
         },
       },
     },
     message = {
       { "indent", with_markers = false },
-      { "name",   highlight = "NeoTreeMessage" },
+      { "name", highlight = "NeoTreeMessage" },
     },
     terminal = {
       { "indent" },

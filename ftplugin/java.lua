@@ -125,29 +125,24 @@ local jar_patterns = {
   "/dev/testforstephen/vscode-pde/server/*.jar",
 }
 local plugin_path =
-"/dev/microsoft/vscode-java-test/java-extension/com.microsoft.java.test.plugin.site/target/repository/plugins/"
-local bundle_list = vim.tbl_map(
-  function(x) return require("jdtls.path").join(plugin_path, x) end,
-  {
-    "junit-jupiter-*.jar",
-    "junit-platform-*.jar",
-    "junit-vintage-engine_*.jar",
-    "org.opentest4j*.jar",
-    "org.apiguardian.api_*.jar",
-    "org.eclipse.jdt.junit4.runtime_*.jar",
-    "org.eclipse.jdt.junit5.runtime_*.jar",
-    "org.opentest4j_*.jar",
-  }
-)
+  "/dev/microsoft/vscode-java-test/java-extension/com.microsoft.java.test.plugin.site/target/repository/plugins/"
+local bundle_list = vim.tbl_map(function(x) return require("jdtls.path").join(plugin_path, x) end, {
+  "junit-jupiter-*.jar",
+  "junit-platform-*.jar",
+  "junit-vintage-engine_*.jar",
+  "org.opentest4j*.jar",
+  "org.apiguardian.api_*.jar",
+  "org.eclipse.jdt.junit4.runtime_*.jar",
+  "org.eclipse.jdt.junit5.runtime_*.jar",
+  "org.opentest4j_*.jar",
+})
 vim.list_extend(jar_patterns, bundle_list)
 local bundles = {}
 for _, jar_pattern in ipairs(jar_patterns) do
   for _, bundle in ipairs(vim.split(vim.fn.glob(home .. jar_pattern), "\n")) do
-    if not vim.endswith(
-      bundle,
-      "com.microsoft.java.test.runner-jar-with-dependencies.jar"
-    )
-        and not vim.endswith(bundle, "com.microsoft.java.test.runner.jar")
+    if
+      not vim.endswith(bundle, "com.microsoft.java.test.runner-jar-with-dependencies.jar")
+      and not vim.endswith(bundle, "com.microsoft.java.test.runner.jar")
     then
       table.insert(bundles, bundle)
     end

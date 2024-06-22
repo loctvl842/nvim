@@ -2,22 +2,22 @@ local which_key = require("which-key")
 
 which_key.setup({
   plugins = {
-    marks = true,       -- shows a list of your marks on ' and `
-    registers = true,   -- shows your registers on " in NORMAL or <C-r> in INSERT mode
+    marks = true, -- shows a list of your marks on ' and `
+    registers = true, -- shows your registers on " in NORMAL or <C-r> in INSERT mode
     spelling = {
-      enabled = true,   -- enabling this will show WhichKey when pressing z= to select spelling suggestions
+      enabled = true, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
       suggestions = 20, -- how many suggestions should be shown in the list?
     },
     -- the presets plugin, adds help for a bunch of default keybindings in Neovim
     -- No actual key bindings are created
     presets = {
-      operators = true,    -- adds help for operators like d, y, ... and registers them for motion / text object completion
-      motions = false,     -- adds help for motions
+      operators = true, -- adds help for operators like d, y, ... and registers them for motion / text object completion
+      motions = false, -- adds help for motions
       text_objects = true, -- help for text objects triggered after entering an operator
-      windows = false,     -- default bindings on <c-w>
-      nav = false,         -- misc bindings to work with windows
-      z = false,           -- bindings for folds, spelling and others prefixed with z
-      g = true,            -- bindings for prefixed with g
+      windows = false, -- default bindings on <c-w>
+      nav = false, -- misc bindings to work with windows
+      z = false, -- bindings for folds, spelling and others prefixed with z
+      g = true, -- bindings for prefixed with g
     },
   },
   -- add operators that will trigger motion and text object completion
@@ -33,26 +33,26 @@ which_key.setup({
   icons = {
     breadcrumb = "»", -- symbol used in the command line area that shows your active key combo
     separator = "➜", -- symbol used between a key and it's label
-    group = "+",      -- symbol prepended to a group
+    group = "+", -- symbol prepended to a group
   },
   popup_mappings = {
     scroll_down = "<c-d>", -- binding to scroll down inside the popup
-    scroll_up = "<c-u>",   -- binding to scroll up inside the popup
+    scroll_up = "<c-u>", -- binding to scroll up inside the popup
   },
   window = {
-    border = "single",        -- none, single, double, shadow
-    position = "bottom",      -- bottom, top
-    margin = { 1, 0, 2, 0 },  -- extra window margin [top, right, bottom, left]
+    border = "single", -- none, single, double, shadow
+    position = "bottom", -- bottom, top
+    margin = { 1, 0, 2, 0 }, -- extra window margin [top, right, bottom, left]
     padding = { 1, 2, 1, 2 }, -- extra window padding [top, right, bottom, left]
     winblend = 0,
   },
   layout = {
     height = { min = 3, max = 25 }, -- min and max height of the columns
     width = { min = 20, max = 50 }, -- min and max width of the columns
-    spacing = 5,                    -- spacing between columns
-    align = "center",               -- align columns left, center or right
+    spacing = 5, -- spacing between columns
+    align = "center", -- align columns left, center or right
   },
-  ignore_missing = true,            -- enable this to hide mappings for which you didn't specify a label
+  ignore_missing = true, -- enable this to hide mappings for which you didn't specify a label
   hidden = {
     "<silent>",
     "<cmd>",
@@ -62,8 +62,8 @@ which_key.setup({
     "lua",
     "^:",
     "^ ",
-  },                 -- hide mapping boilerplate
-  show_help = true,  -- show help message on the command line when the popup is visible
+  }, -- hide mapping boilerplate
+  show_help = true, -- show help message on the command line when the popup is visible
   triggers = "auto", -- automatically setup triggers
   -- triggers = {"<leader>"} -- or specify a list manually
   triggers_blacklist = {
@@ -102,7 +102,7 @@ local mappings = {
       -- * %bdelete - Close all buffers
       -- * edit# - open the last edited file (the buffer we want to keep)
       -- * bdelete# - Close the unnamed buffer
-      O = { "<cmd>:w <bar> %bdelete <bar> edit# <bar> bdelete# <bar> normal `\"<CR>", "Delete other buffers" },
+      O = { '<cmd>:w <bar> %bdelete <bar> edit# <bar> bdelete# <bar> normal `"<CR>', "Delete other buffers" },
     },
 
     ["f"] = {
@@ -126,10 +126,8 @@ local mappings = {
       name = "open",
 
       p = {
-        function()
-          require('neo-tree.command').execute({ toggle = true, dir = vim.loop.cwd(), position = "left" })
-        end,
-        "Explorer"
+        function() require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd(), position = "left" }) end,
+        "Explorer",
       },
       P = {
         "<cmd>Neotree toggle position=float<cr>",
@@ -175,7 +173,7 @@ local mappings = {
       name = "search",
       p = {
         function() require("config.editor.telescope.custom_pickers").live_grep() end,
-        "Find Text"
+        "Find Text",
       },
       i = { "<cmd>IconPickerInsert<cr>", "Find Icon" },
     },
@@ -206,7 +204,7 @@ local mappings = {
       a = { "<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Action" },
       d = {
         -- function() require("trouble").toggle("document_diagnostics") end,
-        function() require("trouble").toggle({ mode = "diagnostics", filter = { buf = 0 }}) end,
+        function() require("trouble").toggle({ mode = "diagnostics", filter = { buf = 0 } }) end,
         "Document Diagnostics",
       },
       w = {
@@ -269,11 +267,11 @@ local mappings = {
       b = { "<cmd>BufferLinePick<CR>", "Bufferline: pick buffer" },
       d = {
         "<cmd>Telescope lsp_definitions<cr>",
-        "Go to definition"
+        "Go to definition",
       },
       e = {
         "<cmd>require('util').runlua()<cr>",
-        "Run Lua"
+        "Run Lua",
       },
       i = {
         "<cmd>Telescope lsp_implementations<cr>",
@@ -288,28 +286,28 @@ local mappings = {
         name = "testing",
         ["a"] = {
           '<cmd>lua require("neotest").run.attach()<cr>',
-          'Attach and Debug Test'
+          "Attach and Debug Test",
         },
         ["t"] = {
           '<cmd>lua require("neotest").run.run()<cr>',
-          'Run Current Test'
+          "Run Current Test",
         },
         ["f"] = {
           '<cmd>lua require("neotest").run.run(vim.fn.expand("%"))<cr>',
-          'Run Current Test File'
+          "Run Current Test File",
         },
         ["T"] = {
           '<cmd>lua require("neotest").run.run(vim.fn.getcwd())<cr>',
-          'Run All Tests'
+          "Run All Tests",
         },
         ["o"] = {
           '<cmd>lua require("neotest").output_panel.toggle()<cr>',
-          'Open Test Results'
+          "Open Test Results",
         },
         ["s"] = {
           '<cmd>lua require("neotest").summary.toggle()<cr>',
-          'Open Test Summary'
-        }
+          "Open Test Summary",
+        },
       },
     },
     -- ["z"] = {
@@ -396,11 +394,11 @@ local mappings = {
   --  },
   ["<C-=>"] = {
     function() vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * 1.05 end,
-    "Increase Font"
+    "Increase Font",
   },
   ["<C-->"] = {
-    function() vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * (1/1.05) end,
-    "Decrease Font"
+    function() vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * (1 / 1.05) end,
+    "Decrease Font",
   },
 }
 
@@ -408,12 +406,9 @@ which_key.register(mappings, { mode = "n", prefix = "" })
 which_key.register({
   ["c"] = {
     ["e"] = {
-      require('util').runlua,
-      'Run Lua'
-    }
-  }
+      require("util").runlua,
+      "Run Lua",
+    },
+  },
 }, { mode = "v", prefix = "<leader>" })
-which_key.register(
-  { ["f"] = { "zf", "Create fold" } },
-  { mode = "v", prefix = "f" }
-)
+which_key.register({ ["f"] = { "zf", "Create fold" } }, { mode = "v", prefix = "f" })

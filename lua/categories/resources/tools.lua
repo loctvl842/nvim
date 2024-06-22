@@ -91,14 +91,14 @@ return {
   {
     "akinsho/toggleterm.nvim",
     event = { "BufReadPost", "BufNewFile" },
-    config = function() require("config.tools.toggleterm") end
+    config = function() require("config.tools.toggleterm") end,
   },
 
   {
     "ziontee113/icon-picker.nvim",
     config = function()
       require("icon-picker").setup({
-        disable_legacy_commands = true
+        disable_legacy_commands = true,
       })
     end,
   },

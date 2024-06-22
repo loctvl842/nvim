@@ -4,6 +4,6 @@ return {
     name = "catppuccin",
     lazy = false,
     priority = 1000,
-    config = function() require("config.colorscheme.catppuccin") end
+    config = function() require("config.colorscheme.catppuccin") end,
   },
 }

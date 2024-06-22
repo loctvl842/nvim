@@ -4,8 +4,8 @@ require("neogit").setup({
     mappings = {
       popup = {
         ["P"] = "PullPopup",
-        ["p"] = "PushPopup"
-      }
-    }
-  }
+        ["p"] = "PushPopup",
+      },
+    },
+  },
 })

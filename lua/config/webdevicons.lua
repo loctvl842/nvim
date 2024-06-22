@@ -1,6 +1,6 @@
 -- Override some icons to nonicons
 -- (https://github.com/yamatsum/nonicons)
-require("nvim-web-devicons").setup {
+require("nvim-web-devicons").setup({
   -- override = {
   --   default_icon = {
   --     icon = "",
@@ -233,4 +233,4 @@ require("nvim-web-devicons").setup {
   --     name = "Yml",
   --   },
   -- },
-}
+})

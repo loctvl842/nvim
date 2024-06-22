@@ -117,9 +117,7 @@ M.days_of_week.generate = function()
 end
 
 --- @param type "night_fury" | "western_dragon"
-M.dragon.generate = function(type)
-  return vim.split("\n" .. dragon[type], "\n")
-end
+M.dragon.generate = function(type) return vim.split("\n" .. dragon[type], "\n") end
 
 M.dragon.random = function()
   math.randomseed(os.time())

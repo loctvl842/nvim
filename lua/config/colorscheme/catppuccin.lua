@@ -3,11 +3,11 @@ require("config.ui.lualine").setup({
     float = false,
     separator = "bubble", -- bubble | triangle
     ---@type any
-    theme = "auto",       -- nil combine with separator "bubble" and float
+    theme = "auto", -- nil combine with separator "bubble" and float
     colorful = true,
     separator_icon = { left = "", right = " " },
     thin_separator_icon = { left = "", right = " " },
-  }
+  },
 })
 
 vim.g.catppuccin_flavour = "macchiato"
@@ -119,7 +119,6 @@ require("catppuccin").setup({
         SLWarning = {
           bg = colors.mantle,
           fg = colors.yellow,
-
         },
         SLInfo = {
           bg = colors.mantle,
@@ -227,7 +226,7 @@ require("catppuccin").setup({
         -- ["@markup.heading.5.markdown"] = { link = "rainbow5" },
         -- ["@markup.heading.6.markdown"] = { link = "rainbow6" },
       }
-    end
+    end,
   },
 })
 vim.cmd([[colorscheme catppuccin]])

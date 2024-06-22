@@ -8,9 +8,7 @@ return {
     keys = {
       {
         "<leader>n",
-        function()
-          require("notify").dismiss({ silent = true, pending = true })
-        end,
+        function() require("notify").dismiss({ silent = true, pending = true }) end,
         desc = "Delete all Notifications",
       },
     },
@@ -21,19 +19,11 @@ return {
         WARN = icons.diagnostics.warn .. " ",
       },
       timeout = 3000,
-      max_height = function()
-        return math.floor(vim.o.lines * 0.75)
-      end,
-      max_width = function()
-        return math.floor(vim.o.columns * 0.75)
-      end,
+      max_height = function() return math.floor(vim.o.lines * 0.75) end,
+      max_width = function() return math.floor(vim.o.columns * 0.75) end,
     },
     init = function()
-      if not util.has("noice.nvim") then
-        util.on_very_lazy(function()
-          vim.notify = require("notify")
-        end)
-      end
+      if not util.has("noice.nvim") then util.on_very_lazy(function() vim.notify = require("notify") end) end
     end,
   },
 
@@ -53,9 +43,7 @@ return {
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
-    config = function()
-      require("config.ui.lualine").load("auto")
-    end
+    config = function() require("config.ui.lualine").load("auto") end,
   },
 
   -- {
@@ -200,15 +188,15 @@ return {
       filetypes = { "*", "!lazy" },
       buftype = { "*", "!prompt", "!nofile" },
       user_default_options = {
-        RGB = true,       -- #RGB hex codes
-        RRGGBB = true,    -- #RRGGBB hex codes
-        names = false,    -- "Name" codes like Blue
-        RRGGBBAA = true,  -- #RRGGBBAA hex codes
+        RGB = true, -- #RGB hex codes
+        RRGGBB = true, -- #RRGGBB hex codes
+        names = false, -- "Name" codes like Blue
+        RRGGBBAA = true, -- #RRGGBBAA hex codes
         AARRGGBB = false, -- 0xAARRGGBB hex codes
-        rgb_fn = true,    -- CSS rgb() and rgba() functions
-        hsl_fn = true,    -- CSS hsl() and hsla() functions
-        css = false,      -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-        css_fn = true,    -- Enable all CSS *functions*: rgb_fn, hsl_fn
+        rgb_fn = true, -- CSS rgb() and rgba() functions
+        hsl_fn = true, -- CSS hsl() and hsla() functions
+        css = false, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+        css_fn = true, -- Enable all CSS *functions*: rgb_fn, hsl_fn
         -- Available modes: foreground, background
         -- Available modes for `mode`: foreground, background,  virtualtext
         mode = "background", -- Set the display mode.
@@ -245,7 +233,7 @@ return {
   {
     "folke/noice.nvim",
     event = "VeryLazy",
-    config = function() require("config.ui.noice") end
+    config = function() require("config.ui.noice") end,
   },
 
   -- better diagnostics
@@ -257,5 +245,5 @@ return {
       -- or leave it empty to use the default settings
       -- refer to the configuration section below
     },
-  }
+  },
 }

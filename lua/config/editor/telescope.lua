@@ -1,7 +1,7 @@
 local util = require("util")
 local actions = require("telescope.actions")
 local layout_strategies = require("telescope.pickers.layout_strategies")
-local custom_pickers = require('config.editor.telescope.custom_pickers')
+local custom_pickers = require("config.editor.telescope.custom_pickers")
 
 -- Add an extra line between the prompt and results so that the theme looks OK
 local original_center = layout_strategies.center
@@ -22,12 +22,10 @@ require("telescope").setup({
     selection_caret = "  ",
     -- entry_prefix = "   ",
     path_display = function(_, path)
-      local filename = path:gsub(vim.pesc(vim.loop.cwd()) .. "/", ""):gsub(vim.pesc(vim.fn.expand "$HOME"), "~")
+      local filename = path:gsub(vim.pesc(vim.loop.cwd()) .. "/", ""):gsub(vim.pesc(vim.fn.expand("$HOME")), "~")
       local tail = require("telescope.utils").path_tail(filename)
       local folder = vim.fn.fnamemodify(filename, ":h")
-      if folder == "." then
-        return tail
-      end
+      if folder == "." then return tail end
 
       return string.format("%s  —  %s", tail, folder)
     end,
@@ -126,14 +124,14 @@ require("telescope").setup({
         cwd_only = true,
       },
       live_grep = {
-        path_display = { 'shorten' },
+        path_display = { "shorten" },
       },
     },
     mappings = {
       i = {
         ["<C-g>"] = actions.close,
-        ['<c-f>'] = custom_pickers.actions.set_extension,
-        ['<c-l>'] = custom_pickers.actions.set_folders,
+        ["<c-f>"] = custom_pickers.actions.set_extension,
+        ["<c-l>"] = custom_pickers.actions.set_folders,
         -- ["<C-n>"] = actions.cycle_history_next,
         -- ["<C-p>"] = actions.cycle_history_prev,
         --
@@ -193,8 +191,8 @@ require("telescope").setup({
 
         ["?"] = actions.which_key,
       },
-    }
-  }
+    },
+  },
 })
 
 require("telescope").load_extension("noice")

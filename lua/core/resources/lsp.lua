@@ -15,9 +15,7 @@ return {
 
   {
     "williamboman/mason.nvim",
-    config = function()
-      require("mason").setup()
-    end
+    config = function() require("mason").setup() end,
   },
 
   {
@@ -30,9 +28,7 @@ return {
       "someone-stole-my-name/yaml-companion.nvim",
       "b0o/schemastore.nvim",
     },
-    config = function()
-      require("config.lsp.lspconfig")
-    end,
+    config = function() require("config.lsp.lspconfig") end,
   },
 
   {
@@ -43,7 +39,7 @@ return {
         ensure_installed = require("mason-lspconfig").get_installed_servers(),
         automatic_installation = false,
       })
-    end
+    end,
   },
 
   -- DAP Configuration
@@ -51,7 +47,7 @@ return {
   {
     "mfussenegger/nvim-dap",
     dependencies = {
-      "jay-babu/mason-nvim-dap.nvim"
+      "jay-babu/mason-nvim-dap.nvim",
     },
     config = function()
       local dap = require("dap")
@@ -63,8 +59,19 @@ return {
           port = 38698,
           executable = {
             command = "bundle",
-            args = { "exec", "rdbg", "-n", "--open", "--port", "${port}",
-              "-c", "--", "bundle", "exec", config.command, config.script,
+            args = {
+              "exec",
+              "rdbg",
+              "-n",
+              "--open",
+              "--port",
+              "${port}",
+              "-c",
+              "--",
+              "bundle",
+              "exec",
+              config.command,
+              config.script,
             },
           },
         })
@@ -88,7 +95,7 @@ return {
           script = "${file}",
         },
       }
-    end
+    end,
   },
 
   -- formatters

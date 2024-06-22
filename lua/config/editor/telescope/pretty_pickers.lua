@@ -43,7 +43,8 @@ end
 --                                   }
 function M.pretty_files_picker(picker_and_options)
   if type(picker_and_options) ~= "table" or picker_and_options.picker == nil then
-    print "Incorrect argument format. Correct format is: { picker = "desiredPicker", (optional) options = { ... } }"
+    print("Incorrect argument format. Correct format is: { picker = ")
+    desiredPicker(", (optional) options = { ... } }")
     return
   end
 
@@ -70,14 +71,14 @@ function M.pretty_files_picker(picker_and_options)
     -- INSIGHT: An "entry display" is an abstract concept that defines the "container" within which data
     --          will be displayed inside the picker, this means that we must define options that define
     --          its dimensions, like, for example, its width.
-    local displayer = entry_display.create {
+    local displayer = entry_display.create({
       separator = " ", -- Telescope will use this separator between each entry item
       items = {
         { width = file_type_icon_width },
         { width = nil },
         { remaining = true },
       },
-    }
+    })
 
     -- LIFECYCLE: At this point the "displayer" has been created by the create() method, which has in turn
     --            returned a function. This means that we can now call said function by using the
@@ -101,11 +102,11 @@ function M.pretty_files_picker(picker_and_options)
       -- INSIGHT: This return value should be a tuple of 2, where the first value is the actual value
       --          and the second one is the highlight information, this will be done by the displayer
       --          internally and return in the correct format.
-      return displayer {
+      return displayer({
         { icon, icon_highlight },
         tail_for_display,
         { path_to_display, "TelescopeResultsComment" },
-      }
+      })
     end
 
     return original_entry_table
@@ -119,9 +120,9 @@ function M.pretty_files_picker(picker_and_options)
   elseif picker_and_options.picker == "oldfiles" then
     require("telescope.builtin").oldfiles(options)
   elseif picker_and_options.picker == "" then
-    print "Picker was not specified"
+    print("Picker was not specified")
   else
-    print "Picker is not supported by Pretty Find Files"
+    print("Picker is not supported by Pretty Find Files")
   end
 end
 
@@ -138,7 +139,8 @@ end
 --                                   }
 function M.pretty_grep_picker(picker_and_options)
   if type(picker_and_options) ~= "table" or picker_and_options.picker == nil then
-    print "Incorrect argument format. Correct format is: { picker = "desiredPicker", (optional) options = { ... } }"
+    print("Incorrect argument format. Correct format is: { picker = ")
+    desiredPicker(", (optional) options = { ... } }")
     return
   end
 
@@ -164,7 +166,7 @@ function M.pretty_grep_picker(picker_and_options)
     -- INSIGHT: An "entry display" is an abstract concept that defines the "container" within which data
     --          will be displayed inside the picker, this means that we must define options that define
     --          its dimensions, like, for example, its width.
-    local displayer = entry_display.create {
+    local displayer = entry_display.create({
       separator = " ", -- Telescope will use this separator between each entry item
       items = {
         { width = file_type_icon_width },
@@ -172,7 +174,7 @@ function M.pretty_grep_picker(picker_and_options)
         { width = nil }, -- Maximum path size, keep it short
         { remaining = true },
       },
-    }
+    })
 
     -- LIFECYCLE: At this point the "displayer" has been created by the create() method, which has in turn
     --            returned a function. This means that we can now call said function by using the
@@ -216,13 +218,13 @@ function M.pretty_grep_picker(picker_and_options)
       -- INSIGHT: This return value should be a tuple of 2, where the first value is the actual value
       --          and the second one is the highlight information, this will be done by the displayer
       --          internally and return in the correct format.
-      return displayer {
+      return displayer({
         { icon, icon_highlight },
         tail,
         { coordinates, "TelescopeResultsComment" },
         { path_to_display, "TelescopeResultsComment" },
         text,
-      }
+      })
     end
 
     return original_entry_table
@@ -236,9 +238,9 @@ function M.pretty_grep_picker(picker_and_options)
   elseif picker_and_options.picker == "find_files" then
     require("telescope.builtin").find_files(options)
   elseif picker_and_options.picker == "" then
-    print "Picker was not specified"
+    print("Picker was not specified")
   else
-    print "Picker is not supported by Pretty Grep Picker"
+    print("Picker is not supported by Pretty Grep Picker")
   end
 end
 

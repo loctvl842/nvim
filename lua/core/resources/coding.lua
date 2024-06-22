@@ -42,15 +42,13 @@ return {
       "hrsh7th/cmp-cmdline",
       "saadparwaiz1/cmp_luasnip",
     },
-    config = function() require("config.coding.cmp") end
+    config = function() require("config.coding.cmp") end,
   },
 
   {
     "echasnovski/mini.pairs",
     event = "VeryLazy",
-    config = function(_, opts)
-      require("mini.pairs").setup(opts)
-    end,
+    config = function(_, opts) require("mini.pairs").setup(opts) end,
   },
 
   -- Git Workflow
@@ -62,9 +60,7 @@ return {
       "nvim-lua/plenary.nvim",
       "sindrets/diffview.nvim",
     },
-    config = function()
-      require("config.coding.git")
-    end
+    config = function() require("config.coding.git") end,
   },
 
   -- Comments
@@ -80,7 +76,7 @@ return {
     "numToStr/Comment.nvim",
     config = function()
       require("Comment").setup({
-        pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook(),
+        pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
       })
     end,
   },
@@ -90,9 +86,9 @@ return {
   {
     "ray-x/lsp_signature.nvim",
     opts = {
-      floating_window = false,               -- show hint in a floating window, set to false for virtual text only mode
+      floating_window = false, -- show hint in a floating window, set to false for virtual text only mode
       floating_window_above_cur_line = true, -- try to place the floating above the current line when possible Note:
-      hint_scheme = "Comment",               -- highlight group for the virtual text
+      hint_scheme = "Comment", -- highlight group for the virtual text
     },
   },
 
@@ -109,8 +105,6 @@ return {
       "nvim-neotest/neotest-go",
       "marilari88/neotest-vitest",
     },
-    config = function()
-      require("config.coding.neotest").setup()
-    end
-  }
+    config = function() require("config.coding.neotest").setup() end,
+  },
 }

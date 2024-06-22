@@ -75,8 +75,8 @@ M.branch = {
 
     local icon = hl_str(" ", "SLGitIcon", "SLBranchName")
     local branch = hl_str(icon, "SLGitIcon", "")
-        .. hl_str(root, "SLFiletype", "")
-        .. hl_str("/" .. str, "SLBranchName", "")
+      .. hl_str(root, "SLFiletype", "")
+      .. hl_str("/" .. str, "SLBranchName", "")
 
     if config.separators_enabled then
       return hl_str(config.separator_icon.left, "SLSeparator", "")
@@ -96,9 +96,7 @@ M.position = function()
   local str = "Ln " .. current_line .. ", Col " .. current_column
   local position = hl_str(str, "SLPosition", "SLPosition")
 
-  if config.separators_enabled then
-    return left_sep .. position .. right_sep
-  end
+  if config.separators_enabled then return left_sep .. position .. right_sep end
 
   return position
 end
@@ -107,12 +105,10 @@ M.spaces = function()
   local left_sep = hl_str(config.separator_icon.left, "SLSeparator", "")
   local right_sep = hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
   -- local str = "Spaces: " .. vim.api.nvim_buf_get_option(0, "shiftwidth")
-  local str = "Spaces: " .. vim.api.nvim_get_option_value("shiftwidth", {buf=0})
+  local str = "Spaces: " .. vim.api.nvim_get_option_value("shiftwidth", { buf = 0 })
   local spaces = hl_str(str, "SLShiftWidth", "SLShiftWidth")
 
-  if config.separators_enabled then
-    return left_sep .. spaces .. right_sep
-  end
+  if config.separators_enabled then return left_sep .. spaces .. right_sep end
 
   return spaces
 end
@@ -125,9 +121,9 @@ M.diagnostics = function()
       count[diagnostic.severity] = count[diagnostic.severity] + 1
     end
     return count[vim.diagnostic.severity.ERROR],
-        count[vim.diagnostic.severity.WARN],
-        count[vim.diagnostic.severity.INFO],
-        count[vim.diagnostic.severity.HINT]
+      count[vim.diagnostic.severity.WARN],
+      count[vim.diagnostic.severity.INFO],
+      count[vim.diagnostic.severity.HINT]
   end
 
   local error_count, warn_count, info_count, hint_count = nvim_diagnostic()
@@ -137,11 +133,9 @@ M.diagnostics = function()
   local hint_hl = hl_str(icons.diagnostics.hint .. " " .. hint_count, "SLInfo", "SLInfo")
   local left_sep = hl_str(config.thin_separator_icon.left, "SLSeparator", "")
   local right_sep = hl_str(config.thin_separator_icon.right, "SLSeparator", "SLSeparator")
-  local diagnostics =  error_hl .. " " .. warn_hl .. " " .. hint_hl
+  local diagnostics = error_hl .. " " .. warn_hl .. " " .. hint_hl
 
-  if config.separators_enabled then
-    return left_sep .. diagnostics .. right_sep
-  end
+  if config.separators_enabled then return left_sep .. diagnostics .. right_sep end
 
   return diagnostics
 end
@@ -162,12 +156,9 @@ M.diff = {
   fmt = function(str)
     if str == "" then return "" end
     local left_sep = hl_str(config.thin_separator_icon.left, "SLSeparator", "")
-    local right_sep =
-        hl_str(config.thin_separator_icon.right, "SLSeparator", "SLSeparator")
+    local right_sep = hl_str(config.thin_separator_icon.right, "SLSeparator", "SLSeparator")
 
-    if config.separators_enabled then
-      return left_sep .. str .. right_sep
-    end
+    if config.separators_enabled then return left_sep .. str .. right_sep end
 
     return str
   end,
@@ -181,9 +172,7 @@ M.mode = {
     local right_sep = hl_str(config.separator_icon.right, "SLSeparator", "SLPadding")
     local mode = hl_str(str, "SLMode", "")
 
-    if config.separators_enabled then
-      return left_sep .. mode .. right_sep
-    end
+    if config.separators_enabled then return left_sep .. mode .. right_sep end
 
     return mode
   end,
@@ -233,9 +222,7 @@ M.filetype = {
     filetype_str = filetype_str:gsub("%a", string.upper, 1)
     local filetype = hl_str(filetype_str, "SLFiletype", "SLFiletype")
 
-    if config.separators_enabled then
-      return left_sep .. filetype .. right_sep
-    end
+    if config.separators_enabled then return left_sep .. filetype .. right_sep end
 
     return filetype
   end,

@@ -5,11 +5,11 @@ local default = {
   float = true,
   separator = "bubble", -- bubble | triangle
   ---@type any
-  theme = "auto",       -- nil combine with separator "bubble" and float
+  theme = "auto", -- nil combine with separator "bubble" and float
   colorful = true,
   separator_icon = { left = "", right = " " },
   thin_separator_icon = { left = "", right = " " },
-  separators_enabled = false
+  separators_enabled = false,
   -- separator_icon = { left = "█", right = "█" },
   -- thin_separator_icon = { left = " ", right = " " },
 }
@@ -32,9 +32,7 @@ end
 
 M.setup = function(opts)
   M.options = vim.tbl_deep_extend("force", {}, default, opts or {})
-  if M.options.float then
-    make_separator(M.options.separator)
-  end
+  if M.options.float then make_separator(M.options.separator) end
 end
 
 M.setup()

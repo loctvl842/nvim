@@ -16,7 +16,7 @@ local function setup(custom_theme)
         statusline = {},
         winbar = { "neo-tree" },
         "alpha",
-        "dashboard"
+        "dashboard",
       },
       ignore_focus = {},
       always_divide_middle = true,
@@ -55,9 +55,7 @@ M.setup = config.setup
 M.load = function(theme)
   setup(theme)
   vim.api.nvim_create_autocmd("ColorScheme", {
-    callback = function()
-      setup(theme)
-    end
+    callback = function() setup(theme) end,
   })
 end
 

@@ -1,7 +1,5 @@
 local status_ok, compile = pcall(require, "compile-nvim")
-if not status_ok then
-  return
-end
+if not status_ok then return end
 
 compile.setup({
   cmds = {
@@ -14,7 +12,7 @@ compile.setup({
     cpp = "g++ -O2 -Wall % -o $fileBase && ./$fileBase",
     go = "go run %",
     sh = "sh %",
-    lua = "lua %"
+    lua = "lua %",
   },
 
   -- UI settings

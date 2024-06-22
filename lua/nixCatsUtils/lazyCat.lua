@@ -1,8 +1,6 @@
 local M = {}
 
-function M.mergePluginTables(table1, table2)
-  return vim.tbl_extend('keep', table1, table2)
-end
+function M.mergePluginTables(table1, table2) return vim.tbl_extend("keep", table1, table2) end
 
 function M.enableForCategory(v, default)
   if vim.g[ [[nixCats-special-rtp-entry-nixCats]] ] ~= nil or default == nil then
@@ -27,9 +25,7 @@ end
 
 function M.getTableNamesOrListValues(pluginTable)
   for key, _ in pairs(pluginTable) do
-    if type(key) ~= 'string' then
-      return pluginTable
-    end
+    if type(key) ~= "string" then return pluginTable end
     break
   end
   local patterns = {}
@@ -40,18 +36,17 @@ function M.getTableNamesOrListValues(pluginTable)
 end
 
 function M.setup(pluginTable, nixLazyPath, lazySpecs, lazyCFG)
-
   local function regularLazyDownload()
     local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
     if not vim.loop.fs_stat(lazypath) then
-      vim.fn.system {
-        'git',
-        'clone',
-        '--filter=blob:none',
-        'https://github.com/folke/lazy.nvim.git',
-        '--branch=stable', -- latest stable release
+      vim.fn.system({
+        "git",
+        "clone",
+        "--filter=blob:none",
+        "https://github.com/folke/lazy.nvim.git",
+        "--branch=stable", -- latest stable release
         lazypath,
-      }
+      })
     end
     return lazypath
   end
@@ -62,26 +57,17 @@ function M.setup(pluginTable, nixLazyPath, lazySpecs, lazyCFG)
     lazypath = regularLazyDownload()
     vim.opt.rtp:prepend(lazypath)
   else
-
-    local grammarDir = require('nixCats').pawsible.allPlugins.ts_grammar_plugin
+    local grammarDir = require("nixCats").pawsible.allPlugins.ts_grammar_plugin
     local myNeovimPackages = vim.g[ [[nixCats-special-rtp-entry-vimPackDir]] ] .. "/pack/myNeovimPackages"
-    local nixCatsConfigDir = require('nixCats').get([[nixCats_store_config_location]])
+    local nixCatsConfigDir = require("nixCats").get([[nixCats_store_config_location]])
 
     lazypath = nixLazyPath
-    if lazypath == nil then
-      lazypath = regularLazyDownload()
-    end
+    if lazypath == nil then lazypath = regularLazyDownload() end
 
-    if type(lazyCFG) ~= "table" then
-      lazyCFG = {}
-    end
+    if type(lazyCFG) ~= "table" then lazyCFG = {} end
 
-    if lazyCFG.performance == nil then
-      lazyCFG.performance = {}
-    end
-    if lazyCFG.performance.rtp == nil then
-      lazyCFG.performance.rtp = {}
-    end
+    if lazyCFG.performance == nil then lazyCFG.performance = {} end
+    if lazyCFG.performance.rtp == nil then lazyCFG.performance.rtp = {} end
     lazyCFG.performance.rtp.reset = false
     vim.opt.rtp = {
       nixCatsConfigDir,
@@ -94,9 +80,7 @@ function M.setup(pluginTable, nixLazyPath, lazySpecs, lazyCFG)
       nixCatsConfigDir .. "/after",
     }
 
-    if lazyCFG.dev == nil then
-      lazyCFG.dev = {}
-    end
+    if lazyCFG.dev == nil then lazyCFG.dev = {} end
 
     local oldPath = lazyCFG.dev.path
     lazyCFG.dev.path = function(plugin)
@@ -105,9 +89,7 @@ function M.setup(pluginTable, nixLazyPath, lazySpecs, lazyCFG)
         path = oldPath .. "/" .. plugin.name
       elseif type(oldPath) == "function" then
         path = oldPath(plugin)
-        if type(path) ~= "string" then
-          path = nil
-        end
+        if type(path) ~= "string" then path = nil end
       end
       if path == nil then
         if vim.fn.isdirectory(myNeovimPackages .. "/start/" .. plugin.name) == 1 then
@@ -121,7 +103,7 @@ function M.setup(pluginTable, nixLazyPath, lazySpecs, lazyCFG)
       return path
     end
 
-    if lazyCFG.dev.patterns == nil or type(lazyCFG.dev.patterns) ~= 'table' then
+    if lazyCFG.dev.patterns == nil or type(lazyCFG.dev.patterns) ~= "table" then
       lazyCFG.dev.patterns = M.getTableNamesOrListValues(pluginTable)
     else
       local toInclude
@@ -129,10 +111,9 @@ function M.setup(pluginTable, nixLazyPath, lazySpecs, lazyCFG)
       vim.list_extend(toInclude, M.getTableNamesOrListValues(pluginTable))
       lazyCFG.dev.patterns = toInclude
     end
-
   end
 
-  require('lazy').setup(lazySpecs, lazyCFG)
+  require("lazy").setup(lazySpecs, lazyCFG)
 end
 
 return M
