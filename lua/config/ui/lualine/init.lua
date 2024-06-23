@@ -5,10 +5,9 @@ local M = {}
 local function setup(custom_theme)
   local cpn = require("config.ui.lualine.components")
   local bg = require("util").get_highlight_value("Normal").background
-  local theme = custom_theme or (config.options.float and { normal = { c = { bg = bg } } } or config.options.theme)
   require("lualine").setup({
     options = {
-      theme = theme,
+      theme = cpn.theme,
       icons_enabled = true,
       component_separators = { left = "", right = "" },
       section_separators = { left = "", right = "" },
@@ -28,13 +27,29 @@ local function setup(custom_theme)
       },
     },
     sections = {
-      lualine_a = { cpn.branch },
-      lualine_b = { cpn.diagnostics },
-      lualine_c = {},
-      lualine_x = { cpn.diff },
-      lualine_y = { cpn.position, cpn.filetype },
-      -- lualine_z = { cpn.spaces, cpn.mode },
-      lualine_z = { cpn.mode },
+      lualine_a = {
+        cpn.modes,
+      },
+      lualine_b = {
+        cpn.space,
+      },
+      lualine_c = {
+        cpn.project,
+        cpn.filetype,
+        cpn.space,
+        cpn.branch,
+        cpn.diff,
+        cpn.space,
+        cpn.location,
+      },
+      lualine_x = {
+        cpn.space,
+      },
+      lualine_y = { cpn.macro, cpn.space },
+      lualine_z = {
+        cpn.dia,
+        cpn.lsp,
+      },
     },
     inactive_sections = {
       lualine_a = {},

@@ -1,6 +1,5 @@
-local config = require("config.ui.lualine.config").options
-local icons = require("core.icons")
 local path = require("neovim-project.utils.path")
+local colors = require("catppuccin.palettes").get_palette("macchiato")
 
 local M = {}
 
@@ -14,218 +13,178 @@ local hl_str = function(str, hl_cur, hl_after)
   return "%#" .. hl_cur .. "#" .. str .. "%*" .. "%#" .. hl_after .. "#"
 end
 
-local function hide_in_width() return vim.fn.winwidth(0) > 85 end
-
-local prev_branch = ""
--- M.branch = {
---   "branch",
---   icons_enabled = false,
---   icon = hl_str("", "SLGitIcon", "SLBranchName"),
---   colored = false,
---   fmt = function(str)
---     -- handle setting the branch
---     if vim.bo.filetype == "toggleterm" then
---       str = prev_branch
---     elseif str == "" or str == nil then
---       str = "!=vcs"
---     end
---     prev_branch = str
---
---     -- Get the project directory from project.nvim
---     -- local project_dir, method = project.get_project_root()
---     -- local project_dir = "/etc/dotifles/foobar"
---     local project_dir = path.cwd()
---     -- Get the "root" project name
---     local root = string.match(project_dir or "", "[%a%-%_]+$") or ""
---
---     local icon = hl_str(" ", "SLGitIcon", "SLBranchName")
---     local branch = hl_str(icon, "SLGitIcon", "")
---         .. hl_str(root, "SLFiletype", "")
---         .. hl_str("/" .. str, "SLBranchName", "")
---
---     if config.separators_enabled then
---       return hl_str(config.separator_icon.left, "SLSeparator", "")
---         .. branch
---         .. hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
---     end
---
---     return branch
---   end,
--- }
-M.branch = {
-  "branch",
-  icons_enabled = false,
-  icon = hl_str("", "SLGitIcon", "SLBranchName"),
-  colored = false,
-  fmt = function(str)
-    -- handle setting the branch
-    if vim.bo.filetype == "toggleterm" then
-      str = prev_branch
-    elseif str == "" or str == nil then
-      str = "!=vcs"
-    end
-    prev_branch = str
-
-    -- Get the project directory from project.nvim
-    -- local project_dir, method = project.get_project_root()
-    -- local project_dir = "/etc/dotifles/foobar"
-    local project_dir = path.cwd()
-    -- Get the "root" project name
-    local root = string.match(project_dir or "", "[%a%-%_]+$") or ""
-
-    local icon = hl_str(" ", "SLGitIcon", "SLBranchName")
-    local branch = hl_str(icon, "SLGitIcon", "")
-      .. hl_str(root, "SLFiletype", "")
-      .. hl_str("/" .. str, "SLBranchName", "")
-
-    if config.separators_enabled then
-      return hl_str(config.separator_icon.left, "SLSeparator", "")
-        .. branch
-        .. hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
-    end
-
-    return branch
-  end,
+local modecolor = {
+  n = colors.red,
+  i = colors.blue,
+  v = colors.maroon,
+  [""] = colors.maroon,
+  V = colors.red,
+  c = colors.yellow,
+  no = colors.red,
+  s = colors.yellow,
+  S = colors.yellow,
+  [""] = colors.yellow,
+  ic = colors.yellow,
+  R = colors.green,
+  Rv = colors.maroon,
+  cv = colors.red,
+  ce = colors.red,
+  r = colors.sky,
+  rm = colors.sky,
+  ["r?"] = colors.sky,
+  ["!"] = colors.red,
+  t = colors.pink,
 }
 
-M.position = function()
-  local current_line = vim.fn.line(".")
-  local current_column = vim.fn.col(".")
-  local left_sep = hl_str(config.separator_icon.left, "SLSeparator", "")
-  local right_sep = hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
-  local str = "Ln " .. current_line .. ", Col " .. current_column
-  local position = hl_str(str, "SLPosition", "SLPosition")
-
-  if config.separators_enabled then return left_sep .. position .. right_sep end
-
-  return position
-end
-
-M.spaces = function()
-  local left_sep = hl_str(config.separator_icon.left, "SLSeparator", "")
-  local right_sep = hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
-  -- local str = "Spaces: " .. vim.api.nvim_buf_get_option(0, "shiftwidth")
-  local str = "Spaces: " .. vim.api.nvim_get_option_value("shiftwidth", { buf = 0 })
-  local spaces = hl_str(str, "SLShiftWidth", "SLShiftWidth")
-
-  if config.separators_enabled then return left_sep .. spaces .. right_sep end
-
-  return spaces
-end
-
-M.diagnostics = function()
-  local function nvim_diagnostic()
-    local diagnostics = vim.diagnostic.get(0)
-    local count = { 0, 0, 0, 0 }
-    for _, diagnostic in ipairs(diagnostics) do
-      count[diagnostic.severity] = count[diagnostic.severity] + 1
-    end
-    return count[vim.diagnostic.severity.ERROR],
-      count[vim.diagnostic.severity.WARN],
-      count[vim.diagnostic.severity.INFO],
-      count[vim.diagnostic.severity.HINT]
-  end
-
-  local error_count, warn_count, info_count, hint_count = nvim_diagnostic()
-  local error_hl = hl_str(icons.diagnostics.error .. " " .. error_count, "SLError", "SLError")
-  local warn_hl = hl_str(icons.diagnostics.warn .. " " .. warn_count, "SLWarning", "SLWarning")
-  local info_hl = hl_str(icons.diagnostics.info .. " " .. info_count, "SLInfo", "SLInfo")
-  local hint_hl = hl_str(icons.diagnostics.hint .. " " .. hint_count, "SLInfo", "SLInfo")
-  local left_sep = hl_str(config.thin_separator_icon.left, "SLSeparator", "")
-  local right_sep = hl_str(config.thin_separator_icon.right, "SLSeparator", "SLSeparator")
-  local diagnostics = error_hl .. " " .. warn_hl .. " " .. hint_hl
-
-  if config.separators_enabled then return left_sep .. diagnostics .. right_sep end
-
-  return diagnostics
-end
-
-M.diff = {
-  "diff",
-  colored = true,
-  diff_color = {
-    added = "SLDiffAdd",
-    modified = "SLDiffChange",
-    removed = "SLDiffDelete",
+M.theme = {
+  normal = {
+    a = { fg = colors.mantle, bg = colors.blue },
+    b = { fg = colors.blue, bg = colors.text },
+    c = { fg = colors.text, bg = colors.mantle },
+    z = { fg = colors.text, bg = colors.mantle },
   },
-  symbols = {
-    added = icons.git.added .. " ",
-    modified = icons.git.modified .. " ",
-    removed = icons.git.removed .. " ",
-  }, -- changes diff symbols
-  fmt = function(str)
-    if str == "" then return "" end
-    local left_sep = hl_str(config.thin_separator_icon.left, "SLSeparator", "")
-    local right_sep = hl_str(config.thin_separator_icon.right, "SLSeparator", "SLSeparator")
-
-    if config.separators_enabled then return left_sep .. str .. right_sep end
-
-    return str
-  end,
-  cond = hide_in_width,
+  insert = { a = { fg = colors.mantle, bg = colors.peach } },
+  visual = { a = { fg = colors.mantle, bg = colors.green } },
+  replace = { a = { fg = colors.mantle, bg = colors.green } },
 }
 
-M.mode = {
-  "mode",
-  fmt = function(str)
-    local left_sep = hl_str(config.separator_icon.left, "SLSeparator", "SLPadding")
-    local right_sep = hl_str(config.separator_icon.right, "SLSeparator", "SLPadding")
-    local mode = hl_str(str, "SLMode", "")
-
-    if config.separators_enabled then return left_sep .. mode .. right_sep end
-
-    return mode
-  end,
+M.space = {
+  function() return " " end,
+  color = { bg = colors.mantle, fg = colors.blue },
 }
 
-local prev_filetype = ""
+M.filename = {
+  "filename",
+  color = { bg = colors.blue, fg = colors.mantle },
+  -- separator = { left = "", right = "" },
+}
+
+local function getProject()
+  local project_dir = path.cwd()
+  -- Get the "root" project name
+  local root = string.match(project_dir or "", "[%a%-%_]+$") or ""
+  return root
+end
+
+M.project = {
+  function() return getProject() end,
+  color = { bg = colors.blue, fg = colors.mantle, gui = "bold" },
+}
+
 M.filetype = {
   "filetype",
   icons_enabled = false,
-  icons_only = false,
-  fmt = function(str)
-    local ui_filetypes = {
-      "help",
-      "packer",
-      "neogitstatus",
-      "NvimTree",
-      "Trouble",
-      "lir",
-      "Outline",
-      "spectre_panel",
-      "toggleterm",
-      "DressingSelect",
-      "neo-tree",
-      "",
-    }
-    local filetype_str = ""
+  color = { bg = colors.surface0, fg = colors.blue, gui = "bold,italic" },
+  -- separator = { left = "", right = "" },
+}
 
-    if str == "toggleterm" then
-      -- 
-      filetype_str = " " .. vim.api.nvim_buf_get_var(0, "toggle_number")
-    elseif str == "TelescopePrompt" then
-      filetype_str = ""
-    elseif str == "neo-tree" or str == "neo-tree-popup" then
-      if prev_filetype == "" then return end
-      filetype_str = prev_filetype
-    elseif str == "help" then
-      filetype_str = ""
-    elseif vim.tbl_contains(ui_filetypes, str) then
-      return
-    else
-      prev_filetype = str
-      filetype_str = str
-    end
-    local left_sep = hl_str(config.separator_icon.left, "SLSeparator", "")
-    local right_sep = hl_str(config.separator_icon.right, "SLSeparator", "SLSeparator")
-    -- Upper case first character
-    filetype_str = filetype_str:gsub("%a", string.upper, 1)
-    local filetype = hl_str(filetype_str, "SLFiletype", "SLFiletype")
+M.branch = {
+  "branch",
+  icon = "",
+  color = { bg = colors.green, fg = colors.mantle, gui = "bold" },
+  -- separator = { left = "", right = "" },
+}
 
-    if config.separators_enabled then return left_sep .. filetype .. right_sep end
+M.location = {
+  "location",
+  color = { bg = colors.yellow, fg = colors.mantle, gui = "bold" },
+  -- separator = { left = "", right = "" },
+}
 
-    return filetype
+M.diff = {
+  "diff",
+  color = { bg = colors.surface0, fg = colors.mantle, gui = "bold" },
+  -- separator = { left = "", right = "" },
+  symbols = { added = "󰐖 ", modified = " ", removed = " " },
+
+  diff_color = {
+    added = { fg = colors.green },
+    modified = { fg = colors.yellow },
+    removed = { fg = colors.red },
+  },
+}
+
+M.modes = {
+  "mode",
+  color = function()
+    local mode_color = modecolor
+    return { bg = mode_color[vim.fn.mode()], fg = colors.mantle, gui = "bold" }
   end,
+  -- separator = { left = "", right = "" },
+}
+
+local function getLspName()
+  local bufnr = vim.api.nvim_get_current_buf()
+  local buf_clients = vim.lsp.get_clients({ bufnr = bufnr })
+  local buf_ft = vim.bo.filetype
+  if next(buf_clients) == nil then return "  No servers" end
+  ---@type table<string, string>
+  local buf_client_names = {}
+
+  for _, client in pairs(buf_clients) do
+    if client.name ~= "null-ls" then table.insert(buf_client_names, client.name) end
+  end
+
+  local lint_s, lint = pcall(require, "lint")
+  if lint_s then
+    for ft_k, ft_v in pairs(lint.linters_by_ft) do
+      if type(ft_v) == "table" then
+        for _, linter in ipairs(ft_v) do
+          if buf_ft == ft_k then table.insert(buf_client_names, linter) end
+        end
+      elseif type(ft_v) == "string" then
+        if buf_ft == ft_k then table.insert(buf_client_names, ft_v) end
+      end
+    end
+  end
+
+  local ok, conform = pcall(require, "conform")
+  if ok then
+    local formatters = table.concat(conform.list_formatters_for_buffer(), " ")
+    for formatter in formatters:gmatch("%w+") do
+      if formatter then table.insert(buf_client_names, formatter) end
+    end
+  end
+
+  local hash = {}
+  ---@type table<string,string>
+  local unique_client_names = {}
+
+  for _, v in ipairs(buf_client_names) do
+    if not hash[v] then
+      unique_client_names[#unique_client_names + 1] = v
+      hash[v] = true
+    end
+  end
+  local language_servers = table.concat(unique_client_names, ", ")
+
+  return "  " .. language_servers
+end
+
+M.macro = {
+  require("noice").api.status.mode.get,
+  cond = require("noice").api.status.mode.has,
+  color = { fg = colors.red, bg = colors.mantle, gui = "italic,bold" },
+}
+
+M.dia = {
+  "diagnostics",
+  sources = { "nvim_diagnostic" },
+  symbols = { error = " ", warn = " ", info = " ", hint = " " },
+  diagnostics_color = {
+    error = { fg = colors.red },
+    warn = { fg = colors.yellow },
+    info = { fg = colors.teal },
+    hint = { fg = colors.sky },
+  },
+  color = { bg = colors.surface0, fg = colors.mantle, gui = "bold" },
+  -- separator = { left = "" },
+}
+
+M.lsp = {
+  function() return getLspName() end,
+  -- separator = { left = "", right = "" },
+  color = { bg = colors.maroon, fg = colors.mantle, gui = "italic,bold" },
 }
 
 return M

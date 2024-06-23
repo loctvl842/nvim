@@ -3,7 +3,7 @@ require("config.ui.lualine").setup({
     float = false,
     separator = "bubble", -- bubble | triangle
     ---@type any
-    theme = "auto", -- nil combine with separator "bubble" and float
+    theme = "auto",       -- nil combine with separator "bubble" and float
     colorful = true,
     separator_icon = { left = "", right = " " },
     thin_separator_icon = { left = "", right = " " },
@@ -124,6 +124,10 @@ require("catppuccin").setup({
           bg = colors.mantle,
           fg = colors.teal,
         },
+        SLProject = {
+          bg = colors.blue,
+          fg = colors.mantle,
+        },
         SLPosition = {
           bg = colors.mantle,
           fg = colors.lavender,
@@ -199,25 +203,25 @@ require("catppuccin").setup({
         BufferLineIndicatorSelected = { fg = colors.red },
 
         -- -- Markdown
-        -- ["@markup"] = { fg = colors.text }, -- For strings considerated text in a markup language.
-        -- ["@markup.strong"] = { fg = colors.maroon, style = { "bold" } }, -- bold
-        -- ["@markup.italic"] = { fg = colors.maroon, style = { "italic" } }, -- italic
-        -- ["@markup.strikethrough"] = { fg = colors.text, style = { "strikethrough" } }, -- strikethrough text
-        -- ["@markup.underline"] = { link = "Underline" }, -- underlined text
+        -- ["@markup"] = { fg = colors.text },                                                  -- For strings considerated text in a markup language.
+        -- ["@markup.strong"] = { fg = colors.maroon, style = { "bold" } },                     -- bold
+        -- ["@markup.italic"] = { fg = colors.maroon, style = { "italic" } },                   -- italic
+        -- ["@markup.strikethrough"] = { fg = colors.text, style = { "strikethrough" } },       -- strikethrough text
+        -- ["@markup.underline"] = { link = "Underline" },                                      -- underlined text
         --
-        -- ["@markup.heading"] = { fg = colors.blue, style = { "bold" } }, -- titles like: # Example
+        -- ["@markup.heading"] = { fg = colors.blue, style = { "bold" } },                      -- titles like: # Example
         --
-        -- ["@markup.math"] = { fg = colors.blue }, -- math environments (e.g. `$ ... $` in LaTeX)
-        -- ["@markup.environment"] = { fg = colors.pink }, -- text environments of markup languages
-        -- ["@markup.environment.name"] = { fg = colors.blue }, -- text indicating the type of an environment
+        -- ["@markup.math"] = { fg = colors.blue },                                             -- math environments (e.g. `$ ... $` in LaTeX)
+        -- ["@markup.environment"] = { fg = colors.pink },                                      -- text environments of markup languages
+        -- ["@markup.environment.name"] = { fg = colors.blue },                                 -- text indicating the type of an environment
         --
-        -- ["@markup.link"] = { link = "Tag" }, -- text references, footnotes, citations, etcolors.
+        -- ["@markup.link"] = { link = "Tag" },                                                 -- text references, footnotes, citations, etcolors.
         -- ["@markup.link.url"] = { fg = colors.rosewater, style = { "italic", "underline" } }, -- urls, links and emails
         --
-        -- ["@markup.raw"] = { fg = colors.teal }, -- used for inline code in markdown and for doc in python (""")
+        -- ["@markup.raw"] = { fg = colors.teal },                                              -- used for inline code in markdown and for doc in python (""")
         --
         -- ["@markup.list"] = { link = "Special" },
-        -- ["@markup.list.checked"] = { fg = colors.green }, -- todo notes
+        -- ["@markup.list.checked"] = { fg = colors.green },      -- todo notes
         -- ["@markup.list.unchecked"] = { fg = colors.overlay1 }, -- todo notes
         -- ["@markup.heading.1.markdown"] = { link = "rainbow1" },
         -- ["@markup.heading.2.markdown"] = { link = "rainbow2" },
