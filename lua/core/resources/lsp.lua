@@ -100,42 +100,64 @@ return {
 
   -- formatters
   {
-    "jose-elias-alvarez/null-ls.nvim",
-    config = function()
-      local null_ls = require("null-ls")
-      local formatting = null_ls.builtins.formatting
-      null_ls.setup({
-        debug = false,
-        sources = {
-          formatting.prettier,
-          formatting.buf,
-          formatting.stylua,
-          formatting.google_java_format,
-          formatting.markdownlint,
-          formatting.beautysh.with({ extra_args = { "--indent-size", "2" } }),
-          formatting.black.with({ extra_args = { "--fast" } }),
-          formatting.sql_formatter.with({ extra_args = { "--config" } }),
-        },
-      })
-    end,
+    "stevearc/conform.nvim",
+    event = { "BufReadPre" },
+    config = function() require("config.lsp.conform") end,
   },
 
   {
-    "jay-babu/mason-null-ls.nvim",
-    opts = {
-      ensure_installed = {
-        "prettier",
-        -- This must be installed via NixOS and will be picked up from the user profile
-        -- "stylua",
-        "google_java_format",
-        "black",
-        "markdownlint",
-        "beautysh",
-        "sql_formatter",
-      },
-      automatic_setup = true,
-    },
+    "mfussenegger/nvim-lint",
+    event = "BufReadPre",
+    config = function()
+      require("lint").linters_by_ft = {
+        python = { "ruff" },
+        htmldjango = { "djlint" },
+      }
+      vim.api.nvim_create_autocmd({ "InsertLeave", "BufWritePost", "BufReadPost" }, {
+        callback = function()
+          local lint_status, lint = pcall(require, "lint")
+          if lint_status then lint.try_lint() end
+        end,
+      })
+    end,
   },
+  -- {
+  --   "jose-elias-alvarez/null-ls.nvim",
+  --   config = function()
+  --     local null_ls = require("null-ls")
+  --     local formatting = null_ls.builtins.formatting
+  --     null_ls.setup({
+  --       debug = false,
+  --       sources = {
+  --         formatting.prettier,
+  --         formatting.buf,
+  --         formatting.stylua,
+  --         formatting.google_java_format,
+  --         formatting.markdownlint,
+  --         formatting.beautysh.with({ extra_args = { "--indent-size", "2" } }),
+  --         formatting.black.with({ extra_args = { "--fast" } }),
+  --         formatting.sql_formatter.with({ extra_args = { "--config" } }),
+  --       },
+  --     })
+  --   end,
+  -- },
+  --
+  -- {
+  --   "jay-babu/mason-null-ls.nvim",
+  --   opts = {
+  --     ensure_installed = {
+  --       "prettier",
+  --       -- This must be installed via NixOS and will be picked up from the user profile
+  --       -- "stylua",
+  --       "google_java_format",
+  --       "black",
+  --       "markdownlint",
+  --       "beautysh",
+  --       "sql_formatter",
+  --     },
+  --     automatic_setup = true,
+  --   },
+  -- },
 
   "mfussenegger/nvim-jdtls",
 }

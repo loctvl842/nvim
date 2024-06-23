@@ -117,7 +117,7 @@ local function getLspName()
   local bufnr = vim.api.nvim_get_current_buf()
   local buf_clients = vim.lsp.get_clients({ bufnr = bufnr })
   local buf_ft = vim.bo.filetype
-  if next(buf_clients) == nil then return "  No servers" end
+  if next(buf_clients) == nil then return " No servers" end
   ---@type table<string, string>
   local buf_client_names = {}
 
@@ -158,7 +158,7 @@ local function getLspName()
   end
   local language_servers = table.concat(unique_client_names, ", ")
 
-  return "  " .. language_servers
+  return " " .. language_servers
 end
 
 M.macro = {

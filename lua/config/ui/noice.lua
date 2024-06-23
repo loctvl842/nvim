@@ -63,6 +63,11 @@ require("noice").setup({
             kind = "",
             find = '".+" %d+L, %d+B',
           },
+          {
+            event = "msg_show",
+            kind = "",
+            find = '".+" %d Lines --%d--',
+          },
         },
       },
       opts = { skip = true },

@@ -36,7 +36,7 @@ local ensure_installed = {}
 -- Manson does not install the lua-lsp-server with the RUNTIME of the executable set. Using the
 -- package from nixos appropriately builds the LSP server. It is discoverable on the PATH for
 -- Neovim so the following settings can be applied without any additional steps
-local nixos_servers = { "lua_ls", "solargraph", "ruby-lsp", "ruby_ls", "helm-ls", "helm_ls" }
+local nixos_servers = { "lua_ls", "solargraph", "ruby-lsp", "ruby_ls", "helm_ls", "nil_ls", "marksman" }
 for server, server_opts in pairs(servers) do
   if server_opts then
     if not vim.tbl_contains(available, server) or vim.tbl_contains(nixos_servers, server) then

@@ -186,7 +186,9 @@ local servers = {
       },
     },
   },
+  ["nil_ls"] = {},
   sqlls = {},
+  marksman = {},
   tsserver = {
     settings = {
       typescript = {
