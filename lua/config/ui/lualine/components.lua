@@ -88,6 +88,13 @@ M.branch = {
 M.location = {
   "location",
   color = { bg = colors.yellow, fg = colors.mantle, gui = "bold" },
+  fmt = function(_str)
+    local line = vim.fn.line(".")
+    local line_length = string.len(tostring(line))
+    local col = vim.fn.virtcol(".")
+    local col_length = string.len(tostring(col))
+    return string.format(string.format("%%%dd:%%-%dd", line_length, col_length), line, col)
+  end,
   -- separator = { left = "", right = "" },
 }
 
@@ -183,6 +190,7 @@ M.dia = {
 
 M.lsp = {
   function() return getLspName() end,
+  -- separator = { left = "", right = "" },
   -- separator = { left = "", right = "" },
   color = { bg = colors.maroon, fg = colors.mantle, gui = "italic,bold" },
 }
