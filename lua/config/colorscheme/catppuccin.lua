@@ -201,6 +201,10 @@ require("catppuccin").setup({
 
         -- Bufferlin
         BufferLineIndicatorSelected = { fg = colors.red },
+        BufferLineFill = { bg = colors.crust },
+
+        -- Indent Blankline
+        IblScope = { fg = colors.peach },
 
         -- -- Markdown
         -- ["@markup"] = { fg = colors.text },                                                  -- For strings considerated text in a markup language.

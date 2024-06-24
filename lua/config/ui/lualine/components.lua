@@ -56,7 +56,7 @@ M.space = {
 M.filename = {
   "filename",
   color = { bg = colors.blue, fg = colors.mantle },
-  -- separator = { left = "", right = "" },
+  separator = { left = "", right = "" },
 }
 
 local function getProject()
@@ -69,20 +69,21 @@ end
 M.project = {
   function() return getProject() end,
   color = { bg = colors.blue, fg = colors.mantle, gui = "bold" },
+  separator = { left = "", right = "" },
 }
 
 M.filetype = {
   "filetype",
   icons_enabled = false,
   color = { bg = colors.surface0, fg = colors.blue, gui = "bold,italic" },
-  -- separator = { left = "", right = "" },
+  separator = { right = "" },
 }
 
 M.branch = {
   "branch",
   icon = "",
   color = { bg = colors.green, fg = colors.mantle, gui = "bold" },
-  -- separator = { left = "", right = "" },
+  separator = { left = "", right = "" },
 }
 
 M.location = {
@@ -95,14 +96,14 @@ M.location = {
     local col_length = string.len(tostring(col))
     return string.format(string.format("%%%dd:%%-%dd", line_length, col_length), line, col)
   end,
-  -- separator = { left = "", right = "" },
+  separator = { left = "", right = "" },
 }
 
 M.diff = {
   "diff",
   color = { bg = colors.surface0, fg = colors.mantle, gui = "bold" },
-  -- separator = { left = "", right = "" },
-  symbols = { added = "󰐖 ", modified = " ", removed = " " },
+  separator = { left = "", right = "" },
+  symbols = { added = "󰐖  ", modified = "  ", removed = "  " },
 
   diff_color = {
     added = { fg = colors.green },
@@ -117,14 +118,14 @@ M.modes = {
     local mode_color = modecolor
     return { bg = mode_color[vim.fn.mode()], fg = colors.mantle, gui = "bold" }
   end,
-  -- separator = { left = "", right = "" },
+  separator = { left = "", right = "" },
 }
 
 local function getLspName()
   local bufnr = vim.api.nvim_get_current_buf()
   local buf_clients = vim.lsp.get_clients({ bufnr = bufnr })
   local buf_ft = vim.bo.filetype
-  if next(buf_clients) == nil then return " No servers" end
+  if next(buf_clients) == nil then return "  No servers" end
   ---@type table<string, string>
   local buf_client_names = {}
 
@@ -165,7 +166,7 @@ local function getLspName()
   end
   local language_servers = table.concat(unique_client_names, ", ")
 
-  return " " .. language_servers
+  return "  " .. language_servers
 end
 
 M.macro = {
@@ -185,13 +186,13 @@ M.dia = {
     hint = { fg = colors.sky },
   },
   color = { bg = colors.surface0, fg = colors.mantle, gui = "bold" },
-  -- separator = { left = "" },
+  separator = { left = "" },
 }
 
 M.lsp = {
   function() return getLspName() end,
   -- separator = { left = "", right = "" },
-  -- separator = { left = "", right = "" },
+  separator = { left = "", right = "" },
   color = { bg = colors.maroon, fg = colors.mantle, gui = "italic,bold" },
 }
 
