@@ -33,6 +33,7 @@ return {
         "terraform",
         "starlark",
         "vim",
+        "vimdoc",
         "yaml",
         "graphql",
         "capnp",

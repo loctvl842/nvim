@@ -46,7 +46,8 @@ require("conform.formatters.biome").args = {
   "format",
   "--stdin-file-path",
   "$FILENAME",
-  "--javascript-formatter-indent-style=space",
+  "--indent-style=space",
+  "--line-width=120",
   "--quote-style=single",
 }
 

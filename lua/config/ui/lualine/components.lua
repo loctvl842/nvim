@@ -13,6 +13,23 @@ local hl_str = function(str, hl_cur, hl_after)
   return "%#" .. hl_cur .. "#" .. str .. "%*" .. "%#" .. hl_after .. "#"
 end
 
+--- @param trunc_width number trunctates component when screen width is less then trunc_width
+--- @param trunc_len number truncates component to trunc_len number of chars
+--- @param hide_width number | nil hides component when window width is smaller then hide_width
+--- @param no_ellipsis boolean whether to disable adding '...' at end after truncation
+--- return function that can format the component accordingly
+local function trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
+  return function(str)
+    local win_width = vim.fn.winwidth(0)
+    if hide_width and win_width < hide_width then
+      return ""
+    elseif trunc_width and trunc_len and win_width < trunc_width and #str > trunc_len then
+      return str:sub(1, trunc_len) .. (no_ellipsis and "" or "...")
+    end
+    return str
+  end
+end
+
 local modecolor = {
   n = colors.red,
   i = colors.blue,
@@ -53,12 +70,6 @@ M.space = {
   color = { bg = colors.mantle, fg = colors.blue },
 }
 
-M.filename = {
-  "filename",
-  color = { bg = colors.blue, fg = colors.mantle },
-  separator = { left = "", right = "" },
-}
-
 local function getProject()
   local project_dir = path.cwd()
   -- Get the "root" project name
@@ -70,6 +81,7 @@ M.project = {
   function() return getProject() end,
   color = { bg = colors.blue, fg = colors.mantle, gui = "bold" },
   separator = { left = "", right = "" },
+  fmt = trunc(80, 12, nil, true),
 }
 
 M.filetype = {
@@ -77,6 +89,7 @@ M.filetype = {
   icons_enabled = false,
   color = { bg = colors.surface0, fg = colors.blue, gui = "bold,italic" },
   separator = { right = "" },
+  fmt = trunc(80, 3, 80, true),
 }
 
 M.branch = {
@@ -84,6 +97,7 @@ M.branch = {
   icon = "",
   color = { bg = colors.green, fg = colors.mantle, gui = "bold" },
   separator = { left = "", right = "" },
+  fmt = trunc(80, 12, 80, true),
 }
 
 M.location = {
@@ -94,7 +108,9 @@ M.location = {
     local line_length = string.len(tostring(line))
     local col = vim.fn.virtcol(".")
     local col_length = string.len(tostring(col))
-    return string.format(string.format("%%%dd:%%-%dd", line_length, col_length), line, col)
+    local location = string.format(string.format("%%%dd:%%-%dd", line_length, col_length), line, col)
+    local format_trunc = trunc(80, 6, nil, true)
+    return format_trunc(location)
   end,
   separator = { left = "", right = "" },
 }
@@ -110,6 +126,8 @@ M.diff = {
     modified = { fg = colors.yellow },
     removed = { fg = colors.red },
   },
+
+  fmt = trunc(80, 12, 80, true),
 }
 
 M.modes = {
@@ -119,6 +137,7 @@ M.modes = {
     return { bg = mode_color[vim.fn.mode()], fg = colors.mantle, gui = "bold" }
   end,
   separator = { left = "", right = "" },
+  fmt = trunc(80, 12, nil, true),
 }
 
 local function getLspName()
@@ -173,6 +192,7 @@ M.macro = {
   require("noice").api.status.mode.get,
   cond = require("noice").api.status.mode.has,
   color = { fg = colors.red, bg = colors.mantle, gui = "italic,bold" },
+  fmt = trunc(80, 12, 80, true),
 }
 
 M.dia = {
@@ -194,6 +214,7 @@ M.lsp = {
   -- separator = { left = "", right = "" },
   separator = { left = "", right = "" },
   color = { bg = colors.maroon, fg = colors.mantle, gui = "italic,bold" },
+  fmt = trunc(80, 12, nil, true),
 }
 
 return M

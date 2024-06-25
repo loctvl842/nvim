@@ -23,6 +23,7 @@ vim.defer_fn(function()
         "typescript",
         "terraform",
         "vim",
+        "vimdoc",
         "yaml",
         "graphql",
         "capnp",
