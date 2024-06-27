@@ -10,6 +10,39 @@ require("config.ui.lualine").setup({
   },
 })
 
+--- DAP Configuration ---
+
+vim.fn.sign_define("DapBreakpoint", {
+  text = "",
+  texthl = "DapBreakpoint",
+  linehl = "DapBreakpoint",
+  numhl = "DapBreakpoint",
+})
+vim.fn.sign_define("DapBreakpointCondition", {
+  text = "",
+  texthl = "DapBreakpointCondition",
+  linehl = "DapBreakpointCondition",
+  numhl = "DapBreakpointCondition",
+})
+vim.fn.sign_define("DapBreakpointRejected", {
+  text = "",
+  texthl = "DapBreakpointRejected",
+  linehl = "DapBreakpointRejected",
+  numhl = "DapBreakpointRejected",
+})
+vim.fn.sign_define("DapLogPoint", {
+  text = "",
+  texthl = "DapLogPoint",
+  linehl = "DapLogPoint",
+  numhl = "DapLogPoint",
+})
+vim.fn.sign_define("DapStopped", {
+  text = "",
+  texthl = "DapUIBreakpointsCurrentLine",
+  linehl = "DapUIBreakpointsCurrentLine",
+  numhl = "DapUIBreakpointsCurrentLine",
+})
+
 vim.g.catppuccin_flavour = "macchiato"
 
 require("catppuccin").setup({
@@ -60,6 +93,7 @@ require("catppuccin").setup({
 
     indent_blankline = {
       enabled = true,
+      scope_color = "peach",
       colored_indent_levels = true,
     },
     native_lsp = {
@@ -81,6 +115,8 @@ require("catppuccin").setup({
       enabled = false,
       custom_bg = "NONE",
     },
+    dap = true,
+    dap_ui = true,
   },
   highlight_overrides = {
     all = function(colors)
@@ -204,7 +240,7 @@ require("catppuccin").setup({
         BufferLineFill = { bg = colors.crust },
 
         -- Indent Blankline
-        IblScope = { fg = colors.peach },
+        -- IblScope = { fg = colors.peach },
 
         -- -- Markdown
         -- ["@markup"] = { fg = colors.text },                                                  -- For strings considerated text in a markup language.

@@ -201,6 +201,15 @@ vim.api.nvim_create_autocmd("User", {
 
 ----------------------------- Sessions -----------------------------
 
+vim.api.nvim_create_autocmd("User", {
+  pattern = "LoadSessionPre",
+  callback = function()
+    --- Handle neotest not handling cwd (current working directory) changes while an adapter active
+    local ok, neotest = pcall(require, "neotest")
+    if ok and #neotest.state.adapter_ids() > 0 then require("neotest").run.stop() end
+  end,
+})
+
 --- Attempt to work around issues with neovim-project and session-manager saving sessions.
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   callback = function()
@@ -244,11 +253,6 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
     end
 
     for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
-      -- vim.print("checking buffer=" .. buffer ..
-      --   " name=" .. vim.api.nvim_buf_get_name(buffer) ..
-      --   " filetype=" .. vim.api.nvim_get_option_value("filetype", {buf=buffer}) ..
-      --   " buftype=" .. vim.api.nvim_get_option_value("buftype", {buf=buffer})
-      -- )
       if vim.api.nvim_buf_is_valid(buffer) and not utils.is_restorable(buffer) then
         vim.api.nvim_buf_delete(buffer, { force = true })
       end
@@ -257,6 +261,7 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
       -- Don't save while there's any 'nofile' buffer open.
       if vim.api.nvim_get_option_value("buftype", { buf = buf }) == "nofile" then return end
     end
+
     require("session_manager").save_current_session()
   end,
 })

@@ -10,7 +10,7 @@ require("statuscol").setup({
       condition = { true, builtin.not_empty },
       click = "v:lua.ScLa",
     },
-    { text = { "%s" }, click = "v:lua.ScSa" }, -- Sign
+    { text = { "%s" },                  click = "v:lua.ScSa" }, -- Sign
     { text = { builtin.foldfunc, " " }, click = "v:lua.ScFa" }, -- Fold
   },
 })

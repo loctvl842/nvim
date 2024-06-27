@@ -173,12 +173,14 @@ local function getLspName()
     end
   end
 
+  ---@type table<string,boolean>
   local hash = {}
   ---@type table<string,string>
   local unique_client_names = {}
 
   for _, v in ipairs(buf_client_names) do
     if not hash[v] then
+      ---@type string
       unique_client_names[#unique_client_names + 1] = v
       hash[v] = true
     end

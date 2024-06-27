@@ -28,6 +28,7 @@ function M.setup()
         root_files = { "Gemfile" },
       }),
       require("neotest-go")({
+        dap_go_enabled = true,
         experimental = {
           test_table = true,
         },
