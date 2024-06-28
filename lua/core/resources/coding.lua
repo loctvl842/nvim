@@ -65,39 +65,26 @@ return {
 
   -- Comments
   {
-    "JoosepAlviste/nvim-ts-context-commentstring",
-    config = function()
-      require("ts_context_commentstring").setup({
-        enable_autocmd = false,
-      })
-    end,
-  },
-  {
-    "numToStr/Comment.nvim",
-    config = function()
-      require("Comment").setup({
-        pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
-      })
-    end,
+    "folke/ts-comments.nvim",
+    opts = {},
+    event = "VeryLazy",
+    enabled = vim.fn.has("nvim-0.10.0") == 1,
   },
 
-  "lvimuser/lsp-inlayhints.nvim",
+  -- Documentation
 
   {
-    "ray-x/lsp_signature.nvim",
-    opts = {
-      floating_window = false,               -- show hint in a floating window, set to false for virtual text only mode
-      floating_window_above_cur_line = true, -- try to place the floating above the current line when possible Note:
-      hint_scheme = "Comment",               -- highlight group for the virtual text
-    },
+    "danymat/neogen",
+    config = true,
   },
+
+  -- Testing
 
   {
     "marilari88/neotest-vitest",
     branch = "main",
   },
 
-  -- Testing
   {
     "nvim-neotest/neotest",
     dependencies = {
@@ -175,5 +162,29 @@ return {
   {
     "leoluz/nvim-dap-go",
     opts = {},
+  },
+
+  -- Formatters
+  {
+    "stevearc/conform.nvim",
+    event = { "BufReadPre" },
+    config = function() require("config.lsp.conform") end,
+  },
+
+  {
+    "mfussenegger/nvim-lint",
+    event = "BufReadPre",
+    config = function()
+      require("lint").linters_by_ft = {
+        python = { "ruff" },
+        htmldjango = { "djlint" },
+      }
+      vim.api.nvim_create_autocmd({ "InsertLeave", "BufWritePost", "BufReadPost" }, {
+        callback = function()
+          local lint_status, lint = pcall(require, "lint")
+          if lint_status then lint.try_lint() end
+        end,
+      })
+    end,
   },
 }

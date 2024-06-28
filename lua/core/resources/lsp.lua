@@ -46,29 +46,18 @@ return {
     end,
   },
 
-  -- formatters
-  {
-    "stevearc/conform.nvim",
-    event = { "BufReadPre" },
-    config = function() require("config.lsp.conform") end,
-  },
-
-  {
-    "mfussenegger/nvim-lint",
-    event = "BufReadPre",
-    config = function()
-      require("lint").linters_by_ft = {
-        python = { "ruff" },
-        htmldjango = { "djlint" },
-      }
-      vim.api.nvim_create_autocmd({ "InsertLeave", "BufWritePost", "BufReadPost" }, {
-        callback = function()
-          local lint_status, lint = pcall(require, "lint")
-          if lint_status then lint.try_lint() end
-        end,
-      })
-    end,
-  },
+  -- LSP Capabilities
 
   "mfussenegger/nvim-jdtls",
+
+  "lvimuser/lsp-inlayhints.nvim",
+
+  {
+    "ray-x/lsp_signature.nvim",
+    opts = {
+      floating_window = false,               -- show hint in a floating window, set to false for virtual text only mode
+      floating_window_above_cur_line = true, -- try to place the floating above the current line when possible Note:
+      hint_scheme = "Comment",               -- highlight group for the virtual text
+    },
+  },
 }

@@ -270,7 +270,7 @@ local mappings = {
         "Go to definition",
       },
       e = {
-        "<cmd>require('util').runlua()<cr>",
+        require("util").runlua,
         "Run Lua",
       },
       i = {
@@ -278,6 +278,22 @@ local mappings = {
         "Go to implementations",
       },
       r = { "<cmd>Telescope lsp_references<cr>", "Go to references" },
+      g = {
+        name = "generate",
+
+        f = {
+          function() require("neogen").generate({ type = "func" }) end,
+          "Generate function documentation",
+        },
+        c = {
+          function() require("neogen").generate({ type = "class" }) end,
+          "Generate class documentation",
+        },
+        t = {
+          function() require("neogen").generate({ type = "type" }) end,
+          "Generate type documentation",
+        },
+      },
     },
 
     ["t"] = {
