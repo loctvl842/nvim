@@ -149,7 +149,7 @@ local function getLspName()
   local buf_client_names = {}
 
   for _, client in pairs(buf_clients) do
-    if client.name ~= "null-ls" then table.insert(buf_client_names, client.name) end
+    if client.name ~= "null-ls" or client.name ~= "copilot" then table.insert(buf_client_names, client.name) end
   end
 
   local lint_s, lint = pcall(require, "lint")

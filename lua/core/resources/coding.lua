@@ -134,29 +134,8 @@ return {
       },
       "jay-babu/mason-nvim-dap.nvim",
     },
-    -- stylua: ignore
-    keys = {
-      { "<leader>d",  "",                                                                                   desc = "+debug",                 mode = { "n", "v" } },
-      { "<leader>dB", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
-      { "<leader>db", function() require("dap").toggle_breakpoint() end,                                    desc = "Toggle Breakpoint" },
-      { "<leader>dc", function() require("dap").continue() end,                                             desc = "Continue" },
-      { "<leader>da", function() require("dap").continue({ before = get_args }) end,                        desc = "Run with Args" },
-      { "<leader>dC", function() require("dap").run_to_cursor() end,                                        desc = "Run to Cursor" },
-      { "<leader>dg", function() require("dap").goto_() end,                                                desc = "Go to Line (No Execute)" },
-      { "<leader>di", function() require("dap").step_into() end,                                            desc = "Step Into" },
-      { "<leader>dj", function() require("dap").down() end,                                                 desc = "Down" },
-      { "<leader>dk", function() require("dap").up() end,                                                   desc = "Up" },
-      { "<leader>dl", function() require("dap").run_last() end,                                             desc = "Run Last" },
-      { "<leader>do", function() require("dap").step_out() end,                                             desc = "Step Out" },
-      { "<leader>dO", function() require("dap").step_over() end,                                            desc = "Step Over" },
-      { "<leader>dp", function() require("dap").pause() end,                                                desc = "Pause" },
-      { "<leader>dr", function() require("dap").repl.toggle() end,                                          desc = "Toggle REPL" },
-      { "<leader>ds", function() require("dap").session() end,                                              desc = "Session" },
-      { "<leader>dt", function() require("dap").terminate() end,                                            desc = "Terminate" },
-      { "<leader>dw", function() require("dap.ui.widgets").hover() end,                                     desc = "Widgets" },
-      { "<leader>dx", function() require("dap").clear_breakpoints() end,                                    desc = "Clear Breakpoints" },
-    },
-    config = function() require("config.coding.dap") end,
+    keys = require("config.coding.dap").keys,
+    config = require("config.coding.dap").config,
   },
 
   {
@@ -184,6 +163,43 @@ return {
           local lint_status, lint = pcall(require, "lint")
           if lint_status then lint.try_lint() end
         end,
+      })
+    end,
+  },
+
+  -- Copilot
+  {
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
+    build = ":Copilot auth",
+    opts = {
+      suggestion = { enabled = false },
+      panel = { enabled = false },
+      filetypes = {
+        markdown = true,
+        help = true,
+      },
+    },
+  },
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    branch = "canary",
+    cmd = "CopilotChat",
+    opts = require("config.coding.copilot").opts,
+    keys = require("config.coding.copilot").keys,
+    config = require("config.coding.copilot").config,
+  },
+
+  -- Edgy integration
+  {
+    "folke/edgy.nvim",
+    optional = true,
+    opts = function(_, opts)
+      opts.right = opts.right or {}
+      table.insert(opts.right, {
+        ft = "copilot-chat",
+        title = "Copilot Chat",
+        size = { width = 50 },
       })
     end,
   },
