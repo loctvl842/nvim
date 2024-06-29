@@ -31,6 +31,12 @@ return {
   "tpope/vim-surround",
 
   {
+    "echasnovski/mini.ai",
+    event = "VeryLazy",
+    opts = require("config.coding.mini").ai.opts,
+  },
+
+  {
     "hrsh7th/nvim-cmp",
     version = false,
     event = "BufEnter",

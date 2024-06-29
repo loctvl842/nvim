@@ -2,42 +2,99 @@ local M = {}
 
 M.root_patterns = { ".git", "lua", "package.json", "mvnw", "gradlew", "pom.xml", "build.gradle", "release", ".project" }
 
-M.augroup = function(name) return vim.api.nvim_create_augroup("user_" .. name, { clear = true }) end
+--- Create a named user auto group
+---
+---@param name string
+---@return integer
+function M.augroup(name) return vim.api.nvim_create_augroup("user_" .. name, { clear = true }) end
 
-M.has = function(plugin) return require("lazy.core.config").plugins[plugin] ~= nil end
+--- Check if a plugin exists
+---
+---@param plugin string
+---@return boolean
+function M.has(plugin) return require("lazy.core.config").plugins[plugin] ~= nil end
 
+--- Check if a plugin is loaded
+---
+---@param name string
+---@return boolean
+function M.is_loaded(name) return M.has(name) and require("lazy.core.config").plugins[name]._.loaded ~= nil end
+
+--- Execute the provided function when the specified dependency id loaded
+---
+---@param name string
+---@param fn fun(name:string)
+function M.on_load(name, fn)
+  if M.is_loaded(name) then
+    fn(name)
+  else
+    vim.api.nvim_create_autocmd("User", {
+      pattern = "LazyLoad",
+      callback = function(event)
+        if event.data == name then
+          fn(name)
+          return true
+        end
+      end,
+    })
+  end
+end
+
+--- Execute the provided function on LSP attach
+---
 --- @param on_attach fun(client, buffer)
-M.on_attach = function(on_attach)
+function M.on_attach(on_attach)
   vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(args)
-      local buffer = args.buf
+      local buffer = args.buf --- @type integer
       local client = vim.lsp.get_client_by_id(args.data.client_id)
       on_attach(client, buffer)
     end,
   })
 end
 
-M.get_highlight_value = function(group)
-  local hl = vim.api.nvim_get_hl_by_name(group, true)
-  local hl_config = {}
+--- Get the highlight config for the specified group
+---
+---@param group string
+---@return table<string,string>
+function M.get_highlight_value(group)
+  local hl = vim.api.nvim_get_hl(0, { name = group }) ---@type table<string,string>
+  local hl_config = {} ---@type table<string,string>
   for key, value in pairs(hl) do
     hl_config[key] = string.format("#%02x", value)
   end
   return hl_config
 end
 
-M.get_root = function()
+--- Get buffer options for the specified buffer. Defaults to the current buffer.
+---
+--- @param buf integer
+---@return table<string,string>
+function M.get_buffer_options(buf)
+  buf = buf or 0
+  return {
+    filetype = vim.api.nvim_get_option_value("filetype", { buf = buf }),
+    bufhidden = vim.api.nvim_get_option_value("bufhidden", { buf = buf }),
+    buftype = vim.api.nvim_get_option_value("buftype", { buf = buf }),
+    buflisted = vim.api.nvim_get_option_value("buflisted", { buf = buf }),
+  }
+end
+
+--- Return the project root of the current buffer.
+---
+---@return string
+function M.get_root()
   ---@type string?
   local path = vim.api.nvim_buf_get_name(0)
   path = path ~= "" and vim.loop.fs_realpath(path) or nil
   ---@type string[]
   local roots = {}
   if path then
-    for _, client in pairs(vim.lsp.get_active_clients({ bufnr = 0 })) do
-      local workspace = client.config.workspace_folders
+    for _, client in pairs(vim.lsp.get_clients({ bufnr = 0 })) do
+      local workspace = client.config.workspace_folders ---@type lsp.WorkspaceFolder[]
       local paths = workspace and vim.tbl_map(function(ws) return vim.uri_to_fname(ws.uri) end, workspace)
-        or client.config.root_dir and { client.config.root_dir }
-        or {}
+          or client.config.root_dir and { client.config.root_dir }
+          or {}
       for _, p in ipairs(paths) do
         local r = vim.loop.fs_realpath(p)
         if path:find(r, 1, true) then roots[#roots + 1] = r end
@@ -57,10 +114,16 @@ M.get_root = function()
   return root
 end
 
-M.set_root = function(dir) vim.api.nvim_set_current_dir(dir) end
+--- Set the root to the provided directorty
+---
+---@param dir string
+function M.set_root(dir) vim.api.nvim_set_current_dir(dir) end
 
+--- Set the theme for the telescope
+---
 ---@param type 'ivy' | 'dropdown' | 'cursor' | nil
-M.telescope_theme = function(type)
+---@return table<string, string>
+function M.telescope_theme(type)
   if type == nil then
     return {
       borderchars = M.generate_borderchars("thick"),
@@ -76,24 +139,26 @@ M.telescope_theme = function(type)
   })
 end
 
----@param type 'ivy' | 'dropdown' | 'cursor' | nil
-M.telescope = function(builtin, type, opts)
-  local params = { builtin = builtin, type = type, opts = opts }
-  return function()
-    builtin = params.builtin
-    type = params.type
-    opts = params.opts
-    opts = vim.tbl_deep_extend("force", { cwd = M.get_root() }, opts or {})
-    local theme
-    if vim.tbl_contains({ "ivy", "dropdown", "cursor" }, type) then
-      theme = M.telescope_theme(type)
-    else
-      theme = opts
-    end
-    require("telescope.builtin")[builtin](theme)
-  end
-end
+------@param type 'ivy' | 'dropdown' | 'cursor' | nil
+---M.telescope = function(builtin, type, opts)
+---  local params = { builtin = builtin, type = type, opts = opts }
+---  return function()
+---    builtin = params.builtin
+---    type = params.type
+---    opts = params.opts
+---    opts = vim.tbl_deep_extend("force", { cwd = M.get_root() }, opts or {})
+---    local theme
+---    if vim.tbl_contains({ "ivy", "dropdown", "cursor" }, type) then
+---      theme = M.telescope_theme(type)
+---    else
+---      theme = opts
+---    end
+---    require("telescope.builtin")[builtin](theme)
+---  end
+---end
 
+--- Attempt to load the specified core configuration module
+---
 ---@param name 'autocmds' | 'options' | 'keymaps'
 M.load = function(name)
   local Util = require("lazy.core.util")
@@ -108,6 +173,10 @@ M.load = function(name)
   })
 end
 
+--- Create an autocommand that will execute the provided function only when very lazy plugins
+--- have loaded.
+---
+---@param fn
 M.on_very_lazy = function(fn)
   vim.api.nvim_create_autocmd("User", {
     pattern = "VeryLazy",
