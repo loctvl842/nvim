@@ -239,6 +239,10 @@ require("catppuccin").setup({
         BufferLineIndicatorSelected = { fg = colors.red },
         BufferLineFill = { bg = colors.crust },
 
+        -- Golang
+        ["@lsp.type.namespace.go"] = { fg = colors.peach },
+        ["@lsp.type.function.go"] = { fg = colors.blue, italic = true },
+
         -- Indent Blankline
         -- IblScope = { fg = colors.peach },
 

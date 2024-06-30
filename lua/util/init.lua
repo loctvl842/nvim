@@ -1,3 +1,5 @@
+--- Utility functions
+---@class
 local M = {}
 
 M.root_patterns = { ".git", "lua", "package.json", "mvnw", "gradlew", "pom.xml", "build.gradle", "release", ".project" }
@@ -406,5 +408,3 @@ M.runlua = function()
   }, { __index = _G })
   require("lazy.core.util").try(loadfile(vim.api.nvim_buf_get_name(0), "bt", G))
 end
-
-return M

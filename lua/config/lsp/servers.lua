@@ -160,16 +160,17 @@ local servers = {
         semanticTokens = true,
         usePlaceholders = true,
         ["local"] = "github.com/procore",
-        codelenses = {
-          gc_details = false,
-          generate = true,
-          regenerate_cgo = true,
-          run_govulncheck = true,
-          test = true,
-          tidy = true,
-          upgrade_dependency = true,
-          vendor = true,
-        },
+        -- NOTE: codelenses cause significant performance issues. Keeping disabled for now
+        -- codelenses = {
+        --   gc_details = false,
+        --   generate = true,
+        --   regenerate_cgo = true,
+        --   run_govulncheck = true,
+        --   test = true,
+        --   tidy = true,
+        --   upgrade_dependency = true,
+        --   vendor = true,
+        -- },
         hints = {
           assignVariableTypes = true,
           compositeLiteralFields = true,

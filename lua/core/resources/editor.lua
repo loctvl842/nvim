@@ -6,7 +6,12 @@ return {
       "nvim-tree/nvim-web-devicons",
     },
     cmd = "Neotree",
-    config = function() require("config.editor.neo-tree") end,
+    deactivate = function()
+      vim.cmd([[Neotree close]])
+    end,
+    init = require("config.editor.neo-tree").init,
+    opts = require("config.editor.neo-tree").opts,
+    config = require("config.editor.neo-tree").config,
   },
 
   -- Fuzzy Search
