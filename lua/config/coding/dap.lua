@@ -20,6 +20,8 @@ return {
     { "<leader>dt", function() require("dap").terminate() end,                                            desc = "Terminate" },
     { "<leader>dw", function() require("dap.ui.widgets").hover() end,                                     desc = "Widgets" },
     { "<leader>dx", function() require("dap").clear_breakpoints() end,                                    desc = "Clear Breakpoints" },
+    --- Add debug testing via neotest integration
+    { "<leader>td", function() require("neotest").run.run({ strategy = "dap" }) end,                      desc = "Debug Nearest" }
   },
   config = function(_, opts)
     require("config.coding.dap.ruby")

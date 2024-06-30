@@ -100,10 +100,13 @@ return {
       "antoinemadec/FixCursorHold.nvim",
       "nvim-neotest/neotest-jest",
       "olimorris/neotest-rspec",
-      "nvim-neotest/neotest-go",
+      -- "nvim-neotest/neotest-go",
+      "fredrikaverpil/neotest-golang",
       "marilari88/neotest-vitest",
     },
-    config = function() require("config.coding.neotest").setup() end,
+    keys = require("config.coding.neotest").keys,
+    opts = require("config.coding.neotest").opts,
+    config = require("config.coding.neotest").config,
   },
 
   --- Debugging

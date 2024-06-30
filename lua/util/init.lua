@@ -1,5 +1,5 @@
 --- Utility functions
----@class
+---@class Util
 local M = {}
 
 M.root_patterns = { ".git", "lua", "package.json", "mvnw", "gradlew", "pom.xml", "build.gradle", "release", ".project" }
@@ -75,6 +75,7 @@ end
 function M.get_buffer_options(buf)
   buf = buf or 0
   return {
+    bufname = vim.api.nvim_buf_get_name(buf),
     filetype = vim.api.nvim_get_option_value("filetype", { buf = buf }),
     bufhidden = vim.api.nvim_get_option_value("bufhidden", { buf = buf }),
     buftype = vim.api.nvim_get_option_value("buftype", { buf = buf }),
@@ -408,3 +409,5 @@ M.runlua = function()
   }, { __index = _G })
   require("lazy.core.util").try(loadfile(vim.api.nvim_buf_get_name(0), "bt", G))
 end
+
+return M

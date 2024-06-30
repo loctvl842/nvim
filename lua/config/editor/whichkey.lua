@@ -178,22 +178,6 @@ local mappings = {
       i = { "<cmd>IconPickerInsert<cr>", "Find Icon" },
     },
 
-    ["p"] = {
-      name = "project",
-      p = {
-        "<cmd>Telescope neovim-project history<cr>",
-        "Projects",
-      },
-      d = {
-        "<cmd>Telescope neovim-project discover<cr>",
-        "Discover Projects",
-      },
-      f = {
-        "<cmd>lua require('telescope.builtin').find_files({hidden = true})<cr>",
-        "Find files",
-      },
-    },
-
     -- Buffer Movement
     ["<Tab>"] = { "<cmd>:b#<cr>", "Move back and forth" },
     ["<space>"] = { "<c-6>", "Move back and forth" },
@@ -307,42 +291,6 @@ local mappings = {
           require("conform").format({ async = true, lsp_format = "fallback", range = range })
         end,
         "Format Code",
-      },
-    },
-
-    ["t"] = {
-      name = "testing",
-      ["a"] = {
-        require("neotest").run.attach,
-        "Attach and Debug Test",
-      },
-      ["t"] = {
-        require("neotest").run.run,
-        "Run Current Test",
-      },
-      ["d"] = {
-        function() require("neotest").run.run({ strategy = "dap" }) end,
-        "Debug Current Test",
-      },
-      ["f"] = {
-        function() require("neotest").run.run(vim.fn.expand("%")) end,
-        "Run Current Test File",
-      },
-      ["T"] = {
-        function() require("neotest").run.run(vim.fn.getcwd()) end,
-        "Run All Tests",
-      },
-      ["D"] = {
-        function() require("neotest").run.run({ vim.fn.getcwd(), strategy = "dap" }) end,
-        "Debug Current Test",
-      },
-      ["o"] = {
-        require("neotest").output_panel.toggle,
-        "Open Test Results",
-      },
-      ["s"] = {
-        require("neotest").summary.toggle,
-        "Open Test Summary",
       },
     },
 

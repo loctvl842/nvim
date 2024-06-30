@@ -25,6 +25,7 @@ vim.api.nvim_create_autocmd("FileType", {
     "startuptime",
     "tsplayground",
     "PlenaryTestPopup",
+    "neotest-output",
   },
   callback = function(event)
     vim.bo[event.buf].buflisted = false
@@ -100,10 +101,6 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
   callback = function() vim.cmd([[set formatoptions-=cro]]) end,
 })
 
-vim.api.nvim_create_autocmd({ "VimLeave" }, {
-  callback = function() vim.cmd([[silent! NeoTreeClose]]) end,
-})
-
 -- NeoGit
 vim.api.nvim_create_autocmd({ "FileType" }, {
   pattern = { "NeogitCommitMessage" },
@@ -122,6 +119,7 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 ----------------------------- Markdown -----------------------------
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
+  group = util.augroup("markdown"),
   pattern = { "markdown" },
   callback = function()
     vim.api.nvim_buf_set_keymap(
@@ -137,16 +135,17 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 
 ------------------------------ Lua -------------------------------
 
-local lua_format_sync_group = vim.api.nvim_create_augroup("LuaFormat", {})
 vim.api.nvim_create_autocmd("BufWritePre", {
+  group = util.augroup("lua"),
   pattern = "*.lua",
   callback = function() vim.lsp.buf.format() end,
-  group = lua_format_sync_group,
 })
 
 ----------------------------- Golang -----------------------------
 
+local goaugroup = util.augroup("go")
 vim.api.nvim_create_autocmd({ "FileType" }, {
+  group = goaugroup,
   pattern = { "go" },
   callback = function()
     vim.bo.shiftwidth = 4
@@ -156,14 +155,8 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
-local go_format_sync_group = vim.api.nvim_create_augroup("GoFormat", {})
 vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*.go",
-  callback = function() vim.lsp.buf.format() end,
-  group = go_format_sync_group,
-})
-
-vim.api.nvim_create_autocmd("BufWritePre", {
+  group = goaugroup,
   pattern = { "*.go" },
   callback = function()
     local params = vim.lsp.util.make_range_params(nil, vim.lsp.util._get_offset_encoding())
@@ -179,8 +172,8 @@ vim.api.nvim_create_autocmd("BufWritePre", {
         end
       end
     end
+    vim.lsp.buf.format()
   end,
-  group = go_format_sync_group,
 })
 
 ----------------------------- Terraform -----------------------------
@@ -192,82 +185,27 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 
 ----------------------------- Neogit -----------------------------
 
-local neogit_group = vim.api.nvim_create_augroup("MyCustomNeogitEvents", { clear = true })
 vim.api.nvim_create_autocmd("User", {
+  group = util.augroup("neogit"),
   pattern = "NeogitPushComplete",
-  group = neogit_group,
   callback = function() require("neogit").close() end,
 })
 
 ----------------------------- Sessions -----------------------------
 
-vim.api.nvim_create_autocmd("User", {
-  pattern = "LoadSessionPre",
-  callback = function()
-    --- Handle neotest not handling cwd (current working directory) changes while an adapter active
-    local ok, neotest = pcall(require, "neotest")
-    if ok and #neotest.state.adapter_ids() > 0 then require("neotest").run.stop() end
-  end,
-})
-
 --- Attempt to work around issues with neovim-project and session-manager saving sessions.
-vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+
+vim.api.nvim_create_autocmd({ "VimLeave" }, {
   callback = function()
-    local utils = {}
-    function utils.is_restorable(buffer)
-      local neogit_filetypes = {
-        "NeogitStatus",
-        "NeogitCommitMessage",
-        "NeogitDiffView",
-      }
-
-      if vim.tbl_contains(neogit_filetypes, vim.api.nvim_get_option_value("filetype", { buf = buffer })) then
-        return true
-      end
-
-      if #vim.api.nvim_get_option_value("bufhidden", { buf = buffer }) ~= 0 then return false end
-
-      local buftype = vim.api.nvim_get_option_value("buftype", { buf = buffer })
-      if #buftype == 0 then
-        -- Normal buffer, check if it listed.
-        if not vim.api.nvim_get_option_value("buflisted", { buf = buffer }) then return false end
-        -- Check if it has a filename.
-        if #vim.api.nvim_buf_get_name(buffer) == 0 then return false end
-      elseif buftype ~= "terminal" and buftype ~= "help" then
-        -- Buffers other then normal, terminal and help are impossible to restore.
-        return false
-      end
-
-      local ignore_filetypes = {
-        "ccc-ui",
-        "gitcommit",
-        "gitrebase",
-        "qf",
-        "toggleterm",
-      }
-      if vim.tbl_contains(ignore_filetypes, vim.api.nvim_get_option_value("filetype", { buf = buffer })) then
-        return false
-      end
-
-      return true
-    end
-
-    for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
-      if vim.api.nvim_buf_is_valid(buffer) and not utils.is_restorable(buffer) then
-        vim.api.nvim_buf_delete(buffer, { force = true })
-      end
-    end
-    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-      -- Don't save while there's any 'nofile' buffer open.
-      if vim.api.nvim_get_option_value("buftype", { buf = buf }) == "nofile" then return end
-    end
-
-    require("session_manager").save_current_session()
+    vim.cmd([[silent! NeoTreeClose]])
+    local neotest = require("config.coding.neotest")
+    neotest.save_session()
   end,
 })
 
 ------------------------------- Folds -------------------------------
 
+-- Disable folding for certain filetypes
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "neo-tree", "NeogitStatus" },
   callback = function()
