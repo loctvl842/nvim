@@ -41,21 +41,23 @@ cmp.setup({
   sources = cmp.config.sources({
     { name = "nvim_lsp" },
     { name = "luasnip" },
-    { name = "buffer" },
     { name = "path" },
+  }, {
+    { name = "buffer" },
   }),
   formatting = {
     fields = { "kind", "abbr", "menu" },
     format = function(entry, item)
       local icons = require("core.icons").kinds
-      item.kind = icons[item.kind]
-      item.menu = ({
-        nvim_lsp = "Lsp",
-        nvim_lua = "Lua",
-        luasnip = "Snippet",
-        buffer = "Buffer",
-        path = "Path",
-      })[entry.source.name]
+      if icons[item.kind] then
+        item.kind = icons[item.kind]
+        item.menu = ({
+          nvim_lsp = "Lsp",
+          luasnip = "Snippet",
+          buffer = "Buffer",
+          path = "Path",
+        })[entry.source.name]
+      end
       return item
     end,
   },

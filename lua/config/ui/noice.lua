@@ -27,50 +27,23 @@ require("noice").setup({
   routes = {
     {
       filter = {
+        event = "msg_show",
         any = {
-          {
-            event = "msg_show",
-            kind = "",
-            find = "%d+ lines yanked",
-          },
-          {
-            event = "msg_show",
-            kind = "",
-            find = "%d+ fewer lines",
-          },
-          {
-            event = "msg_show",
-            kind = "",
-            find = "%d+ change",
-          },
-          {
-            event = "msg_show",
-            kind = "",
-            find = "%d+ line less",
-          },
-          {
-            event = "msg_show",
-            kind = "",
-            find = "%d+ fewer lines",
-          },
-          {
-            event = "msg_show",
-            kind = "",
-            find = "%d+ more lines",
-          },
-          {
-            event = "msg_show",
-            kind = "",
-            find = '".+" %d+L, %d+B',
-          },
-          {
-            event = "msg_show",
-            kind = "",
-            find = '".+" %d Lines --%d--',
-          },
+          { find = "%d+ lines yanked" },
+          { find = "%d+ fewer lines" },
+          { find = "%d+ change" },
+          { find = "%d+ line less" },
+          { find = "%d+ fewer lines" },
+          { find = "%d+ more lines" },
+          { find = '".+" %d+L, %d+B' },
+          { find = '".+" %d Lines --%d--' },
+          { find = "%d+L, %d+B" },
+          { find = "; after #%d+" },
+          { find = "; before #%d+" },
         },
       },
-      opts = { skip = true },
+      -- opts = { skip = true },
+      view = "mini",
     },
   },
 })
