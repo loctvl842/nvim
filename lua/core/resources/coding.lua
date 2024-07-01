@@ -81,6 +81,7 @@ return {
 
   {
     "danymat/neogen",
+    keys = require("config.coding.neogen").keys,
     config = true,
   },
 
@@ -155,8 +156,14 @@ return {
   -- Formatters
   {
     "stevearc/conform.nvim",
+    dependencies = { "mason.nvim" },
+    lazy = true,
+    cmd = "ConformInfo",
     event = { "BufReadPre" },
-    config = function() require("config.lsp.conform") end,
+    keys = require("config.lsp.conform").keys,
+    init = require("config.lsp.conform").init,
+    opts = require("config.lsp.conform").opts,
+    config = require("config.lsp.conform").config,
   },
 
   {

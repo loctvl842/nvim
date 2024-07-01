@@ -14,9 +14,9 @@ return {
     },
     opts = {
       icons = {
-        ERROR = icons.diagnostics.error .. " ",
-        INFO = icons.diagnostics.info .. " ",
-        WARN = icons.diagnostics.warn .. " ",
+        ERROR = icons.diagnostics.Error .. " ",
+        INFO = icons.diagnostics.Info .. " ",
+        WARN = icons.diagnostics.Warn .. " ",
       },
       timeout = 3000,
       max_height = function() return math.floor(vim.o.lines * 0.75) end,

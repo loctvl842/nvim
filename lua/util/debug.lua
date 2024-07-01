@@ -165,4 +165,11 @@ function M.trace_require()
   end
 end
 
+function M.print_lsp_capabilities()
+  local clients = vim.lsp.get_clients({ bufnr = 0 }) -- 0 is for current buffer
+  for _, client in ipairs(clients) do
+    print(vim.inspect(client.capabilities))
+  end
+end
+
 return M

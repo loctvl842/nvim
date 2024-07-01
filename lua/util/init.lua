@@ -1,6 +1,23 @@
---- Utility functions
----@class Util
+local LazyUtil = require("lazy.core.util")
+
+---@class util: CoreUtil
+---@field lsp util.lsp
+---@field root util.root
+---@field cmp util.cmp
+---@field format util.format
+---@field toggle util.toggle
 local M = {}
+
+setmetatable(M, {
+  __index = function(t, k)
+    if LazyUtil[k] then
+      return LazyUtil[k]
+    end
+    ---@diagnostic disable-next-line: no-unknown
+    t[k] = require("util." .. k)
+    return t[k]
+  end,
+})
 
 M.root_patterns = { ".git", "lua", "package.json", "mvnw", "gradlew", "pom.xml", "build.gradle", "release", ".project" }
 
@@ -140,6 +157,51 @@ function M.telescope_theme(type)
     cwd = M.get_root(),
     borderchars = M.generate_borderchars("thick", nil, { top = "█", top_left = "█", top_right = "█" }),
   })
+end
+
+---@generic T
+---@param list T[]
+---@return T[]
+function M.dedup(list)
+  local ret = {}
+  local seen = {}
+  for _, v in ipairs(list) do
+    if not seen[v] then
+      table.insert(ret, v)
+      seen[v] = true
+    end
+  end
+  return ret
+end
+
+M.CREATE_UNDO = vim.api.nvim_replace_termcodes("<c-G>u", true, true, true)
+function M.create_undo()
+  if vim.api.nvim_get_mode().mode == "i" then
+    vim.api.nvim_feedkeys(M.CREATE_UNDO, "n", false)
+  end
+end
+
+---@param name string
+function M.get_plugin(name)
+  return require("lazy.core.config").spec.plugins[name]
+end
+
+---@param name string
+---@param path string?
+function M.get_plugin_path(name, path)
+  local plugin = M.get_plugin(name)
+  path = path and "/" .. path or ""
+  return plugin and (plugin.dir .. path)
+end
+
+---@param name string
+function M.opts(name)
+  local plugin = M.get_plugin(name)
+  if not plugin then
+    return {}
+  end
+  local Plugin = require("lazy.core.plugin")
+  return Plugin.values(plugin, "opts", false)
 end
 
 ------@param type 'ivy' | 'dropdown' | 'cursor' | nil
@@ -360,6 +422,15 @@ end
 function _G.P(...)
   local objects = vim.tbl_map(vim.inspect, { ... })
   print(unpack(objects))
+end
+
+--- Override the default title for notifications.
+for _, level in ipairs({ "info", "warn", "error" }) do
+  M[level] = function(msg, opts)
+    opts = opts or {}
+    opts.title = opts.title or "CoreUtil"
+    return LazyUtil[level](msg, opts)
+  end
 end
 
 M.runlua = function()

@@ -11,6 +11,9 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
+-- Define CoreUtil class globally
+_G.CoreUtil = require("util")
+
 -- load lazy
 require("lazy").setup({
   spec = "core.resources",

@@ -78,19 +78,11 @@ which_key.setup({
 local mappings = {
   ["<leader>"] = {
     ["0"] = { "<cmd>Dashboard<CR>", "Dashboard" },
-    -- ["b"] = {
-    -- 	"<cmd>lua require('telescope.builtin').buffers(require('telescope.themes').get_dropdown{previewer = false})<cr>",
-    -- 	"Buffers",
-    -- },
     ["q"] = {
       ["q"] = { "<cmd>q!<CR>", "Quit" },
       ["Q"] = { "<cmd>qa!<CR>", "Quit All" },
       ["r"] = { "<cmd>:source $MYVIMRC<CR>", "Reload" },
     },
-    -- ["r"] = {
-    --   "<cmd>source ~/.config/nvim/lua/core/resources/colorscheme.lua<CR>",
-    --   "Reload monokai-pro",
-    -- },
 
     ["b"] = {
       d = { "<cmd>Bdelete!<CR>", "Close Buffer" },
@@ -107,10 +99,6 @@ local mappings = {
 
     ["f"] = {
       name = "file",
-      -- f = {
-      --   "<cmd>lua require('telescope.builtin').find_files()<cr>",
-      --   "Find files",
-      -- },
       f = {
         "<cmd>lua require('telescope.builtin').find_files({ hidden = true, search_dirs = { '/media/procore', '~/github.com', '~/.config/nvim', '/etc/dotfiles' }})<cr>",
         "Find files",
@@ -244,95 +232,8 @@ local mappings = {
         "Diff",
       },
     },
-
-    ["c"] = {
-      name = "code",
-
-      b = { "<cmd>BufferLinePick<CR>", "Bufferline: pick buffer" },
-      d = {
-        "<cmd>Telescope lsp_definitions<cr>",
-        "Go to definition",
-      },
-      e = {
-        require("util").runlua,
-        "Run Lua",
-      },
-      i = {
-        "<cmd>Telescope lsp_implementations<cr>",
-        "Go to implementations",
-      },
-      r = { "<cmd>Telescope lsp_references<cr>", "Go to references" },
-      g = {
-        name = "generate",
-
-        f = {
-          function() require("neogen").generate({ type = "func" }) end,
-          "Generate function documentation",
-        },
-        c = {
-          function() require("neogen").generate({ type = "class" }) end,
-          "Generate class documentation",
-        },
-        t = {
-          function() require("neogen").generate({ type = "type" }) end,
-          "Generate type documentation",
-        },
-      },
-      f = {
-        function()
-          local range = nil
-          -- if args.count ~= -1 then
-          --   local end_line = vim.api.nvim_buf_get_lines(0, args.line2 - 1, args.line2, true)[1]
-          --   range = {
-          --     start = { args.line1, 0 },
-          --     ["end"] = { args.line2, end_line:len() },
-          --   }
-          -- end
-          require("conform").format({ async = true, lsp_format = "fallback", range = range })
-        end,
-        "Format Code",
-      },
-    },
-
-    ["m"] = {
-      name = "local",
-      ["t"] = {
-        name = "testing",
-        ["a"] = {
-          require("neotest").run.attach,
-          "Attach and Debug Test",
-        },
-        ["t"] = {
-          require("neotest").run.run,
-          "Run Current Test",
-        },
-        ["d"] = {
-          function() require("neotest").run.run({ strategy = "dap" }) end,
-          "Debug Current Test",
-        },
-        ["f"] = {
-          function() require("neotest").run.run(vim.fn.expand("%")) end,
-          "Run Current Test File",
-        },
-        ["T"] = {
-          function() require("neotest").run.run(vim.fn.getcwd()) end,
-          "Run All Tests",
-        },
-        ["D"] = {
-          function() require("neotest").run.run({ vim.fn.getcwd(), strategy = "dap" }) end,
-          "Debug Current Test",
-        },
-        ["o"] = {
-          require("neotest").output_panel.toggle,
-          "Open Test Results",
-        },
-        ["s"] = {
-          require("neotest").summary.toggle,
-          "Open Test Summary",
-        },
-      },
-    },
   },
+
   ["f"] = {
     ["d"] = { "zd", "Delete fold under cursor" },
     ["o"] = {
