@@ -146,6 +146,25 @@ function M.setup(opts)
 
   local cmp = require("cmp")
   cmp.setup(opts)
+
+  -- Use buffer source for "/"
+  cmp.setup.cmdline("/", {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = {
+      { name = "buffer" },
+    },
+  })
+
+  -- Use cmdline & path source for ":"
+  cmp.setup.cmdline(":", {
+    mapping = cmp.mapping.preset.cmdline(),
+    sources = cmp.config.sources({
+      { name = "path" },
+    }, {
+      { name = "cmdline" },
+    }),
+  })
+
   cmp.event:on("confirm_done", function(event)
     if vim.tbl_contains(opts.auto_brackets or {}, vim.bo.filetype) then
       CoreUtil.cmp.auto_brackets(event.entry)

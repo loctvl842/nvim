@@ -3,6 +3,7 @@ local LazyUtil = require("lazy.core.util")
 ---@class util: CoreUtil
 ---@field cmp util.cmp
 ---@field format util.format
+---@field mini util.mini
 ---@field lsp util.lsp
 ---@field toggle util.toggle
 ---@field root util.root
@@ -431,6 +432,21 @@ for _, level in ipairs({ "info", "warn", "error" }) do
     opts = opts or {}
     opts.title = opts.title or "CoreUtil"
     return LazyUtil[level](msg, opts)
+  end
+end
+
+local cache = {} ---@type table<(fun()), table<string, any>>
+---@generic T: fun()
+---@param fn T
+---@return T
+function M.memoize(fn)
+  return function(...)
+    local key = vim.inspect({ ... })
+    cache[fn] = cache[fn] or {}
+    if cache[fn][key] == nil then
+      cache[fn][key] = fn(...)
+    end
+    return cache[fn][key]
   end
 end
 
