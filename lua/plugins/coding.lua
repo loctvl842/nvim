@@ -1,60 +1,160 @@
 return {
-  {
-    "L3MON4D3/LuaSnip",
-    dependencies = {
-      "rafamadriz/friendly-snippets",
-      config = function()
-        require("luasnip.loaders.from_vscode").lazy_load()
-        require("luasnip.loaders.from_snipmate").lazy_load()
-      end,
-    },
-    opts = {
-      history = true,
-      delete_check_events = "TextChanged",
-    },
-    -- stylua: ignore
-    keys = {
-      {
-        "<tab>",
-        function()
-          return require("luasnip").jumpable(1) and "<Plug>luasnip-jump-next" or "<tab>"
-        end,
-        expr = true,
-        silent = true,
-        mode = "i",
-      },
-      { "<tab>",   function() require("luasnip").jump(1) end,  mode = "s" },
-      { "<s-tab>", function() require("luasnip").jump(-1) end, mode = { "i", "s" } },
-    },
-  },
-
-  "tpope/vim-surround",
-
-  {
-    "echasnovski/mini.ai",
-    event = "VeryLazy",
-    opts = require("config.coding.mini").ai.opts,
-  },
-
+  -- auto completion
   {
     "hrsh7th/nvim-cmp",
-    version = false,
-    event = "BufEnter",
+    version = false, -- last release is way too old
+    event = "InsertEnter",
     dependencies = {
-      "mfussenegger/nvim-jdtls",
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
-      "saadparwaiz1/cmp_luasnip",
     },
-    config = function() require("config.coding.cmp") end,
+    -- Not all LSP servers add brackets when completing a function.
+    -- To better deal with this, CoreUtil adds a custom option to cmp,
+    -- that you can configure. For example:
+    --
+    -- ```lua
+    -- opts = {
+    --   auto_brackets = { "python" }
+    -- }
+    -- ```
+    opts = function()
+      vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
+      local cmp = require("cmp")
+      local defaults = require("cmp.config.default")()
+      local auto_select = true
+      return {
+        auto_brackets = {}, -- configure any filetype to auto add brackets
+        completion = {
+          completeopt = "menu,menuone,noinsert" .. (auto_select and "" or ",noselect"),
+        },
+        preselect = auto_select and cmp.PreselectMode.Item or cmp.PreselectMode.None,
+        mapping = cmp.mapping.preset.insert({
+          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-f>"] = cmp.mapping.scroll_docs(4),
+          ["<C-Space>"] = cmp.mapping.complete(),
+          ["<C-g>"] = cmp.mapping.abort(),
+          ["<CR>"] = CoreUtil.cmp.confirm({ select = auto_select }),
+          ["<C-y>"] = CoreUtil.cmp.confirm({ select = true }),
+          ["<S-CR>"] = CoreUtil.cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          ["<C-CR>"] = function(fallback)
+            cmp.abort()
+            fallback()
+          end,
+        }),
+        sources = cmp.config.sources({
+          { name = "nvim_lsp" },
+          { name = "path" },
+        }, {
+          { name = "buffer" },
+        }),
+        formatting = {
+          fields = { "kind", "abbr", "menu" },
+          format = function(entry, item)
+            local icons = require("core.icons").kinds
+            if icons[item.kind] then
+              -- item.kind = icons[item.kind] .. item.kind
+              item.kind = icons[item.kind]
+              item.menu = ({
+                nvim_lsp = "Lsp",
+                luasnip = "Snippet",
+                buffer = "Buffer",
+                path = "Path",
+              })[entry.source.name]
+            end
+
+            local widths = {
+              abbr = vim.g.cmp_widths and vim.g.cmp_widths.abbr or 40,
+              menu = vim.g.cmp_widths and vim.g.cmp_widths.menu or 30,
+            }
+
+            for key, width in pairs(widths) do
+              if item[key] and vim.fn.strdisplaywidth(item[key]) > width then
+                item[key] = vim.fn.strcharpart(item[key], 0, width - 1) .. "…"
+              end
+            end
+
+            return item
+          end,
+        },
+        experimental = {
+          ghost_text = {
+            hl_group = "CmpGhostText",
+          },
+        },
+        sorting = defaults.sorting,
+      }
+    end,
+    main = "util.cmp",
   },
 
+  -- auto pairs
   {
     "echasnovski/mini.pairs",
     event = "VeryLazy",
-    config = function(_, opts) require("mini.pairs").setup(opts) end,
+    opts = {
+      modes = { insert = true, command = true, terminal = false },
+      -- skip autopair when next character is one of these
+      skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
+      -- skip autopair when the cursor is inside these treesitter nodes
+      skip_ts = { "string" },
+      -- skip autopair when next character is closing pair
+      -- and there are more closing pairs than opening pairs
+      skip_unbalanced = true,
+      -- better deal with markdown code blocks
+      markdown = true,
+    },
+    keys = {
+      {
+        "<leader>up",
+        function()
+          vim.g.minipairs_disable = not vim.g.minipairs_disable
+          if vim.g.minipairs_disable then
+            CoreUtil.warn("Disabled auto pairs", { title = "Option" })
+          else
+            CoreUtil.info("Enabled auto pairs", { title = "Option" })
+          end
+        end,
+        desc = "Toggle Auto Pairs",
+      },
+    },
+    config = function(_, opts)
+      CoreUtil.mini.pairs(opts)
+    end,
+  },
+
+  -- Better text-objects
+  {
+    "echasnovski/mini.ai",
+    event = "VeryLazy",
+    opts = function()
+      CoreUtil.on_load("which-key.nvim", function()
+        vim.schedule(CoreUtil.mini.ai_whichkey)
+      end)
+      local ai = require("mini.ai")
+      return {
+        n_lines = 500,
+        custom_textobjects = {
+          o = ai.gen_spec.treesitter({ -- code block
+            a = { "@block.outer", "@conditional.outer", "@loop.outer" },
+            i = { "@block.inner", "@conditional.inner", "@loop.inner" },
+          }),
+          f = ai.gen_spec.treesitter({ a = "@function.outer", i = "@function.inner" }), -- function
+          c = ai.gen_spec.treesitter({ a = "@class.outer", i = "@class.inner" }),       -- class
+          t = { "<([%p%w]-)%f[^<%w][^<>]->.-</%1>", "^<.->().*()</[^/]->$" },           -- tags
+          d = { "%f[%d]%d+" },                                                          -- digits
+          e = {                                                                         -- Word with case
+            { "%u[%l%d]+%f[^%l%d]", "%f[%S][%l%d]+%f[^%l%d]", "%f[%P][%l%d]+%f[^%l%d]", "^[%l%d]+%f[^%l%d]" },
+            "^().*()$",
+          },
+          i = CoreUtil.mini.ai_indent,                               -- indent
+          g = CoreUtil.mini.ai_buffer,                               -- buffer
+          u = ai.gen_spec.function_call(),                           -- u for "Usage"
+          U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }), -- without dot in function name
+        },
+      }
+    end,
   },
 
   -- Git Workflow
@@ -75,119 +175,5 @@ return {
     opts = {},
     event = "VeryLazy",
     enabled = vim.fn.has("nvim-0.10.0") == 1,
-  },
-
-  -- Documentation
-
-  {
-    "danymat/neogen",
-    keys = require("config.coding.neogen").keys,
-    config = true,
-  },
-
-
-  --- Debugging
-
-  -- DAP Configuration
-
-  {
-    "rcarriga/nvim-dap-ui",
-    dependencies = { "nvim-neotest/nvim-nio" },
-    -- stylua: ignore
-    keys = {
-      { "<leader>du", function() require("dapui").toggle({}) end, desc = "Dap UI" },
-      { "<leader>de", function() require("dapui").eval() end,     desc = "Eval",  mode = { "n", "v" } },
-    },
-    opts = {},
-    config = function(_, opts)
-      local dap = require("dap")
-      local dapui = require("dapui")
-      dapui.setup(opts)
-      dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open({ reset = true }) end
-      dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close({}) end
-      dap.listeners.before.event_exited["dapui_config"] = function() dapui.close({}) end
-    end,
-  },
-
-  {
-    "mfussenegger/nvim-dap",
-    dependencies = {
-      "rcarriga/nvim-dap-ui",
-      "nvim-neotest/nvim-nio",
-      {
-        "theHamsta/nvim-dap-virtual-text",
-        opts = {},
-      },
-      "jay-babu/mason-nvim-dap.nvim",
-    },
-    keys = require("config.coding.dap").keys,
-    config = require("config.coding.dap").config,
-  },
-
-  -- Formatters
-  {
-    "stevearc/conform.nvim",
-    dependencies = { "mason.nvim" },
-    lazy = true,
-    cmd = "ConformInfo",
-    event = { "BufReadPre" },
-    keys = require("config.lsp.conform").keys,
-    init = require("config.lsp.conform").init,
-    opts = require("config.lsp.conform").opts,
-    config = require("config.lsp.conform").config,
-  },
-
-  {
-    "mfussenegger/nvim-lint",
-    event = "BufReadPre",
-    config = function()
-      require("lint").linters_by_ft = {
-        python = { "ruff" },
-        htmldjango = { "djlint" },
-      }
-      vim.api.nvim_create_autocmd({ "InsertLeave", "BufWritePost", "BufReadPost" }, {
-        callback = function()
-          local lint_status, lint = pcall(require, "lint")
-          if lint_status then lint.try_lint() end
-        end,
-      })
-    end,
-  },
-
-  -- Copilot
-  {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    build = ":Copilot auth",
-    opts = {
-      suggestion = { enabled = false },
-      panel = { enabled = false },
-      filetypes = {
-        markdown = true,
-        help = true,
-      },
-    },
-  },
-  {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "canary",
-    cmd = "CopilotChat",
-    opts = require("config.coding.copilot").opts,
-    keys = require("config.coding.copilot").keys,
-    config = require("config.coding.copilot").config,
-  },
-
-  -- Edgy integration
-  {
-    "folke/edgy.nvim",
-    optional = true,
-    opts = function(_, opts)
-      opts.right = opts.right or {}
-      table.insert(opts.right, {
-        ft = "copilot-chat",
-        title = "Copilot Chat",
-        size = { width = 50 },
-      })
-    end,
   },
 }

@@ -21,10 +21,16 @@ require("lazy").setup({
     { import = "core.settings" },
     -- Import core plugins
     { import = "plugins" },
+    -- Import additional coding plugins
+    { import = "plugins.extras.coding" },
     -- Import testing plugins
     { import = "plugins.extras.test" },
     -- Import language specific configurations
     { import = "plugins.extras.lang" },
+    -- Import formatting configuration
+    { import = "plugins.extras.formatting" },
+    -- Import linting configuration
+    { import = "plugins.extras.linting" },
   },
   defaults = {
     lazy = false,

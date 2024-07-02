@@ -97,10 +97,10 @@ return {
               },
               inlayHints = {
                 enumMemberValues = { enabled = true },
-                functionLikeReturnTypes = { enabled = true },
+                functionLikeReturnTypes = { enabled = false },
                 parameterNames = { enabled = "literals" },
-                parameterTypes = { enabled = true },
-                propertyDeclarationTypes = { enabled = true },
+                parameterTypes = { enabled = false },
+                propertyDeclarationTypes = { enabled = false },
                 variableTypes = { enabled = false },
               },
             },
@@ -221,5 +221,13 @@ return {
         end,
       },
     },
+  },
+
+  --- Use Javascript snippets in typescript
+  {
+    "L3MON4D3/LuaSnip",
+    config = function()
+      require("luasnip").filetype_extend("typescript", { "javascript" })
+    end,
   },
 }

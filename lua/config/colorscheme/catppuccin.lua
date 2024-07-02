@@ -12,36 +12,36 @@ require("config.ui.lualine").setup({
 
 --- DAP Configuration ---
 
-vim.fn.sign_define("DapBreakpoint", {
-  text = "",
-  texthl = "DapBreakpoint",
-  linehl = "DapBreakpoint",
-  numhl = "DapBreakpoint",
-})
-vim.fn.sign_define("DapBreakpointCondition", {
-  text = "",
-  texthl = "DapBreakpointCondition",
-  linehl = "DapBreakpointCondition",
-  numhl = "DapBreakpointCondition",
-})
-vim.fn.sign_define("DapBreakpointRejected", {
-  text = "",
-  texthl = "DapBreakpointRejected",
-  linehl = "DapBreakpointRejected",
-  numhl = "DapBreakpointRejected",
-})
-vim.fn.sign_define("DapLogPoint", {
-  text = "",
-  texthl = "DapLogPoint",
-  linehl = "DapLogPoint",
-  numhl = "DapLogPoint",
-})
-vim.fn.sign_define("DapStopped", {
-  text = "",
-  texthl = "DapUIBreakpointsCurrentLine",
-  linehl = "DapUIBreakpointsCurrentLine",
-  numhl = "DapUIBreakpointsCurrentLine",
-})
+-- vim.fn.sign_define("DapBreakpoint", {
+--   text = "",
+--   texthl = "DapBreakpoint",
+--   linehl = "DapBreakpoint",
+--   numhl = "DapBreakpoint",
+-- })
+-- vim.fn.sign_define("DapBreakpointCondition", {
+--   text = "",
+--   texthl = "DapBreakpointCondition",
+--   linehl = "DapBreakpointCondition",
+--   numhl = "DapBreakpointCondition",
+-- })
+-- vim.fn.sign_define("DapBreakpointRejected", {
+--   text = "",
+--   texthl = "DapBreakpointRejected",
+--   linehl = "DapBreakpointRejected",
+--   numhl = "DapBreakpointRejected",
+-- })
+-- vim.fn.sign_define("DapLogPoint", {
+--   text = "",
+--   texthl = "DapLogPoint",
+--   linehl = "DapLogPoint",
+--   numhl = "DapLogPoint",
+-- })
+-- vim.fn.sign_define("DapStopped", {
+--   text = "",
+--   texthl = "DapUIBreakpointsCurrentLine",
+--   linehl = "DapUIBreakpointsCurrentLine",
+--   numhl = "DapUIBreakpointsCurrentLine",
+-- })
 
 vim.g.catppuccin_flavour = "macchiato"
 
