@@ -1,11 +1,17 @@
 local function history()
-  require("config.coding.neotest").save_session()
-  vim.cmd([[Telescope neovim-project history]])
+  CoreUtil.session.save_session()
+  local timer = vim.uv.new_timer()
+  timer:start(100, 0, vim.schedule_wrap(function()
+    vim.cmd([[Telescope neovim-project history]])
+  end))
 end
 
 local function discover()
-  require("config.coding.neotest").save_session()
-  vim.cmd([[Telescope neovim-project discover]])
+  CoreUtil.session.save_session()
+  local timer = vim.uv.new_timer()
+  timer:start(100, 0, vim.schedule_wrap(function()
+    vim.cmd([[Telescope neovim-project discover]])
+  end))
 end
 
 return {

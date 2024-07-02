@@ -25,9 +25,9 @@ return {
     },
     require("config.lsp.servers.helm_ls").servers,
     -- require("config.lsp.servers.lua_ls").servers,
-    require("config.lsp.servers.gopls").servers,
-    require("config.lsp.servers.pyright").servers,
-    require("config.lsp.servers.vtsls").servers
+    -- require("config.lsp.servers.gopls").servers,
+    require("config.lsp.servers.pyright").servers
+  -- require("config.lsp.servers.vtsls").servers
   ),
   setup = vim.tbl_deep_extend("force", {},
     require("config.lsp.servers.vtsls").setup

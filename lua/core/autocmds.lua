@@ -198,8 +198,7 @@ vim.api.nvim_create_autocmd("User", {
 vim.api.nvim_create_autocmd({ "VimLeave" }, {
   callback = function()
     vim.cmd([[silent! NeoTreeClose]])
-    local neotest = require("config.coding.neotest")
-    neotest.save_session()
+    CoreUtil.session.save_session()
   end,
 })
 

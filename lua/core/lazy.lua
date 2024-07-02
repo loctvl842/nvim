@@ -16,7 +16,16 @@ _G.CoreUtil = require("util")
 
 -- load lazy
 require("lazy").setup({
-  spec = "core.resources",
+  spec = {
+    -- Import settings to ensure options and user autocommand are setup
+    { import = "core.settings" },
+    -- Import core plugins
+    { import = "plugins" },
+    -- Import testing plugins
+    { import = "plugins.extras.test" },
+    -- Import language specific configurations
+    { import = "plugins.extras.lang" },
+  },
   defaults = {
     lazy = false,
     -- version = false, -- always use the latest git commit
@@ -27,6 +36,16 @@ require("lazy").setup({
   performance = {
     cache = {
       enabled = true,
+    },
+    rtp = {
+      -- disable some rtp plugins
+      disabled_plugins = {
+        "gzip",
+        "tarPlugin",
+        "tohtml",
+        "tutor",
+        "zipPlugin",
+      },
     },
   },
 })

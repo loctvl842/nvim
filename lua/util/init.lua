@@ -1,11 +1,12 @@
 local LazyUtil = require("lazy.core.util")
 
 ---@class util: CoreUtil
----@field lsp util.lsp
----@field root util.root
 ---@field cmp util.cmp
 ---@field format util.format
+---@field lsp util.lsp
 ---@field toggle util.toggle
+---@field root util.root
+---@field session util.session
 local M = {}
 
 setmetatable(M, {
