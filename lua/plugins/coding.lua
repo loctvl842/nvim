@@ -85,30 +85,6 @@ return {
     config = true,
   },
 
-  -- Testing
-
-  {
-    "marilari88/neotest-vitest",
-    branch = "main",
-  },
-
-  {
-    "nvim-neotest/neotest",
-    dependencies = {
-      "nvim-neotest/nvim-nio",
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-lua/plenary.nvim",
-      "antoinemadec/FixCursorHold.nvim",
-      "nvim-neotest/neotest-jest",
-      "olimorris/neotest-rspec",
-      -- "nvim-neotest/neotest-go",
-      "fredrikaverpil/neotest-golang",
-      "marilari88/neotest-vitest",
-    },
-    keys = require("config.coding.neotest").keys,
-    opts = require("config.coding.neotest").opts,
-    config = require("config.coding.neotest").config,
-  },
 
   --- Debugging
 
@@ -127,7 +103,7 @@ return {
       local dap = require("dap")
       local dapui = require("dapui")
       dapui.setup(opts)
-      dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open({}) end
+      dap.listeners.after.event_initialized["dapui_config"] = function() dapui.open({ reset = true }) end
       dap.listeners.before.event_terminated["dapui_config"] = function() dapui.close({}) end
       dap.listeners.before.event_exited["dapui_config"] = function() dapui.close({}) end
     end,
@@ -146,11 +122,6 @@ return {
     },
     keys = require("config.coding.dap").keys,
     config = require("config.coding.dap").config,
-  },
-
-  {
-    "leoluz/nvim-dap-go",
-    opts = {},
   },
 
   -- Formatters
