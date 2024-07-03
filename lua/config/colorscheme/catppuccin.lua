@@ -1,4 +1,4 @@
-require("config.ui.lualine").setup({
+CoreUtil.lualine.setup({
   lualine = {
     float = false,
     separator = "bubble", -- bubble | triangle

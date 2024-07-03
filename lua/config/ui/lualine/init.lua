@@ -1,10 +1,9 @@
-local config = require("config.ui.lualine.config")
+-- local config = require("config.ui.lualine.config")
 
 local M = {}
 
 local function setup(custom_theme)
   local cpn = require("config.ui.lualine.components")
-  local bg = require("util").get_highlight_value("Normal").background
   require("lualine").setup({
     options = {
       theme = cpn.theme,
@@ -64,7 +63,7 @@ local function setup(custom_theme)
   })
 end
 
-M.setup = config.setup
+-- M.setup = config.setup
 
 ---@param theme string
 M.load = function(theme)
