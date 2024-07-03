@@ -4,11 +4,13 @@ local LazyUtil = require("lazy.core.util")
 ---@field cmp util.cmp
 ---@field format util.format
 ---@field lsp util.lsp
+---@field lualine util.lualine
 ---@field mini util.mini
 ---@field root util.root
 ---@field session util.session
 ---@field telescope util.telescope
 ---@field toggle util.toggle
+---@field ui util.ui
 local M = {}
 
 setmetatable(M, {

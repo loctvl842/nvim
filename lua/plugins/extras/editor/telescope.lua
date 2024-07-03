@@ -21,19 +21,13 @@ return {
     version = false,
     keys = {
       -- Buffer
-      { "<leader>bd", "<cmd>Bdelete!<CR>",                                                      desc = "Close Buffer" },
-      { "<leader>bl", "<cmd>lua require('telescope.builtin').buffers()<cr>",                    desc = "Buffer list" },
-      { "<leader>bs", "<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<cr>",  desc = "Buffer Search" },
-      { "<leader>bS", "<cmd>lua require('telescope.builtin').treesitter()<cr>",                 desc = "Buffer Symbols" },
-      -- Close all other buffers, performing the following operations:
-      -- * :w - Save the current file
-      -- * %bdelete - Close all buffers
-      -- * edit# - open the last edited file (the buffer we want to keep)
-      -- * bdelete# - Close the unnamed buffer
-      { "<leader>bO", "<cmd>:w <bar> %bdelete <bar> edit# <bar> bdelete# <bar> normal `\"<CR>", desc = "Delete other buffers" },
+      { "<leader>bd", "<cmd>Bdelete!<CR>",                                                     desc = "Close Buffer" },
+      { "<leader>bl", "<cmd>lua require('telescope.builtin').buffers()<cr>",                   desc = "Buffer list" },
+      { "<leader>bs", "<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<cr>", desc = "Buffer Search" },
+      { "<leader>bS", "<cmd>lua require('telescope.builtin').treesitter()<cr>",                desc = "Buffer Symbols" },
       -- File
-      { "<leader>fs", "<cmd>silent w!<CR>",                                                     desc = "Save" },
-      { "<leader>fS", "<cmd>lua vim.lsp.buf.format()<CR><cmd>silent w!<CR>",                    desc = "Format and Save" },
+      { "<leader>fs", "<cmd>silent w!<CR>",                                                    desc = "Save" },
+      { "<leader>fS", "<cmd>lua vim.lsp.buf.format()<CR><cmd>silent w!<CR>",                   desc = "Format and Save" },
       -- Find
       {
         "<leader>ff",
