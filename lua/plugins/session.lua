@@ -22,6 +22,7 @@ return {
       { "nvim-telescope/telescope.nvim" },
       { "Shatur/neovim-session-manager" },
     },
+    branch = "main",
     lazy = false,
     priority = 100,
     init = function()
@@ -32,7 +33,7 @@ return {
       { "<leader>p",  "",                                                                        desc = "+project" },
       { "<leader>pp", history,                                                                   desc = "Project History" },
       { "<leader>pd", discover,                                                                  desc = "Discover Projects" },
-      { "<leader>pf", function() require("telescope.builtin").find_files({ hidden = true }) end, desc = "Discover Projects" },
+      { "<leader>pf", function() require("telescope.builtin").find_files({ hidden = true }) end, desc = "Discover Files" },
     },
     opts = {
       projects = { -- define project roots
@@ -42,7 +43,7 @@ return {
         "/media/procore/*",
         "/etc/dotfiles",
       },
-      -- last_session_on_startup = false,
+      last_session_on_startup = false,
       dashboard_mode = true,
       session_manager_opts = {
         autosave_last_session = true,      -- Automatically save last session on exit and on session switch.
