@@ -3,11 +3,12 @@ local LazyUtil = require("lazy.core.util")
 ---@class util: CoreUtil
 ---@field cmp util.cmp
 ---@field format util.format
----@field mini util.mini
 ---@field lsp util.lsp
----@field toggle util.toggle
+---@field mini util.mini
 ---@field root util.root
 ---@field session util.session
+---@field telescope util.telescope
+---@field toggle util.toggle
 local M = {}
 
 setmetatable(M, {

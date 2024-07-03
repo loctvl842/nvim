@@ -29,7 +29,7 @@ local function run_live_grep(current_input)
     picker = "live_grep",
     options = {
       additional_args = live_grep_filters.extension
-        and function() return { "-g", "*." .. live_grep_filters.extension } end,
+          and function() return { "-g", "*." .. live_grep_filters.extension } end,
       search_dirs = live_grep_filters.directories,
       default_text = current_input,
     },
@@ -67,33 +67,33 @@ M.actions = transform_mod({
 
     actions.close(prompt_bufnr)
     pickers
-      .new({}, {
-        prompt_title = "Folders for Live Grep",
-        finder = finders.new_table({ results = data, entry_maker = make_entry.gen_from_file({}) }),
-        previewer = conf.file_previewer({}),
-        sorter = conf.file_sorter({}),
-        attach_mappings = function(prompt_bufnr)
-          action_set.select:replace(function()
-            local current_picker = action_state.get_current_picker(prompt_bufnr)
+        .new({}, {
+          prompt_title = "Folders for Live Grep",
+          finder = finders.new_table({ results = data, entry_maker = make_entry.gen_from_file({}) }),
+          previewer = conf.file_previewer({}),
+          sorter = conf.file_sorter({}),
+          attach_mappings = function(prompt_bufnr)
+            action_set.select:replace(function()
+              local current_picker = action_state.get_current_picker(prompt_bufnr)
 
-            local dirs = {}
-            local selections = current_picker:get_multi_selection()
-            if vim.tbl_isempty(selections) then
-              table.insert(dirs, action_state.get_selected_entry().value)
-            else
-              for _, selection in ipairs(selections) do
-                table.insert(dirs, selection.value)
+              local dirs = {}
+              local selections = current_picker:get_multi_selection()
+              if vim.tbl_isempty(selections) then
+                table.insert(dirs, action_state.get_selected_entry().value)
+              else
+                for _, selection in ipairs(selections) do
+                  table.insert(dirs, selection.value)
+                end
               end
-            end
-            live_grep_filters.directories = dirs
+              live_grep_filters.directories = dirs
 
-            actions.close(prompt_bufnr)
-            run_live_grep(current_input)
-          end)
-          return true
-        end,
-      })
-      :find()
+              actions.close(prompt_bufnr)
+              run_live_grep(current_input)
+            end)
+            return true
+          end,
+        })
+        :find()
   end,
 })
 

@@ -2,6 +2,12 @@ local util = require("util")
 local icons = require("core.icons")
 
 return {
+  -- TODO: replace with lazy vim implementation
+  {
+    "luukvbaal/statuscol.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    config = function() require("config.editor.statuscol") end,
+  },
   -- Notifications
   {
     "rcarriga/nvim-notify",
@@ -104,24 +110,6 @@ return {
       })
       require("mini.indentscope").setup(opts)
     end,
-  },
-
-  {
-    "utilyre/barbecue.nvim",
-    lazy = false,
-    events = { "BufReadPost", "BufNewFile" },
-    dependencies = {
-      "SmiteshP/nvim-navic",
-      "nvim-tree/nvim-web-devicons",
-    },
-    opts = {
-      attach_navic = false,
-      theme = "auto",
-      include_buftypes = { "" },
-      exclude_filetypes = { "gitcommit", "Trouble", "toggleterm" },
-      show_modified = false,
-      kinds = icons.kinds,
-    },
   },
 
   {
