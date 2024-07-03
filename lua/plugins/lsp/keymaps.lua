@@ -27,7 +27,7 @@ function M.get()
     { "<leader>cC", vim.lsp.codelens.refresh,                 desc = "Refresh & Display Codelens", mode = { "n" },          has = "codeLens" },
     { "<leader>cd", "<cmd>Telescope lsp_definitions<cr>",     desc = "Goto Definition",            mode = { "n" } },
     { "<leader>cD", "<cmd>Telescope lsp_references<cr>",      desc = "References",                 mode = { "n" } },
-    { "<leader>ce", require("util").runlua,                   desc = "Run Lua",                    mode = { "n" } },
+    { "<leader>ce", CoreUtil.runlua,                          desc = "Run Lua",                    mode = { "n" } },
     { "<leader>cI", "<cmd>Telescope lsp_implementations<cr>", desc = "Goto Implementation",        mode = { "n" } },
     { "<leader>cR", CoreUtil.lsp.rename_file,                 desc = "Rename File",                mode = { "n" },          has = { "workspace/didRenameFiles", "workspace/willRenameFiles" } },
     { "<leader>cr", vim.lsp.buf.rename,                       desc = "Rename",                     has = "rename" },

@@ -4,9 +4,20 @@ return {
     version = false, -- last release is way too old and doesn"t work on Windows
     build = ":TSUpdate",
     event = { "BufReadPost", "BufNewFile" },
-    dependencies = {
-      { "JoosepAlviste/nvim-ts-context-commentstring", dev = false },
-    },
+    lazy = vim.fn.argc(-1) == 0, -- load treesitter early when opening a file from the cmdline
+    init = function(plugin)
+      -- PERF: add nvim-treesitter queries to the rtp and it's custom query predicates early
+      -- This is needed because a bunch of plugins no longer `require("nvim-treesitter")`, which
+      -- no longer trigger the **nvim-treesitter** module to be loaded in time.
+      -- Luckily, the only things that those plugins need are the custom queries, which we make available
+      -- during startup.
+      require("lazy.core.loader").add_to_rtp(plugin)
+      require("nvim-treesitter.query_predicates")
+    end,
+    cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
+    opts_extend = { "ensure_installed" },
+    ---@type TSConfig
+    ---@diagnostic disable-next-line: missing-fields
     opts = {
       ensure_installed = {
         "bash",
@@ -40,79 +51,32 @@ return {
       },
       highlight = { enable = true },
       indent = { enable = true, disable = { "yaml", "python", "html", "ruby" } },
-      rainbow = {
-        enable = false,
-        query = "rainbow-parens",
-        disable = { "jsx", "html" },
-      },
-    },
-    config = function(_, opts) require("nvim-treesitter.configs").setup(opts) end,
-  },
-
-  {
-    "HiPhish/nvim-ts-rainbow2",
-    event = "BufReadPost",
-  },
-
-  {
-    "windwp/nvim-ts-autotag",
-    ft = {
-      "html",
-      "javascript",
-      "typescript",
-      "javascriptreact",
-      "typescriptreact",
-      "svelte",
-      "vue",
-      "tsx",
-      "jsx",
-      "rescript",
-      "xml",
-      "php",
-      "markdown",
-      "glimmer",
-      "handlebars",
-      "hbs",
-    },
-    opts = {
-      enable = true,
-      filetypes = {
-        "html",
-        "javascript",
-        "typescript",
-        "javascriptreact",
-        "typescriptreact",
-        "svelte",
-        "vue",
-        "tsx",
-        "jsx",
-        "rescript",
-        "xml",
-        "php",
-        "markdown",
-        "glimmer",
-        "handlebars",
-        "hbs",
-      },
-    },
-    incremental_selection = {
-      enable = true,
-      keymaps = {
-        init_selection = "<C-space>",
-        node_incremental = "<C-space>",
-        scope_incremental = false,
-        node_decremental = "<bs>",
-      },
-    },
-    textobjects = {
-      move = {
+      incremental_selection = {
         enable = true,
-        goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer", ["]a"] = "@parameter.inner" },
-        goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer", ["]A"] = "@parameter.inner" },
-        goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer", ["[a"] = "@parameter.inner" },
-        goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer", ["[A"] = "@parameter.inner" },
+        keymaps = {
+          init_selection = "<C-space>",
+          node_incremental = "<C-space>",
+          scope_incremental = false,
+          node_decremental = "<bs>",
+        },
+      },
+      textobjects = {
+        move = {
+          enable = true,
+          goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer", ["]a"] = "@parameter.inner" },
+          goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer", ["]A"] = "@parameter.inner" },
+          goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer", ["[a"] = "@parameter.inner" },
+          goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer", ["[A"] = "@parameter.inner" },
+        },
       },
     },
+    ---@param opts TSConfig
+    config = function(_, opts)
+      if type(opts.ensure_installed) == "table" then
+        opts.ensure_installed = CoreUtil.dedup(opts.ensure_installed)
+      end
+      require("nvim-treesitter.configs").setup(opts)
+    end,
   },
 
   {
@@ -121,18 +85,9 @@ return {
     enabled = true,
     config = function()
       -- If treesitter is already loaded, we need to run config again for textobjects
-      if require("util").is_loaded("nvim-treesitter") then
-        require("nvim-treesitter.configs").setup({
-          textobjects = {
-            move = {
-              enable = true,
-              goto_next_start = { ["]f"] = "@function.outer", ["]c"] = "@class.outer", ["]a"] = "@parameter.inner" },
-              goto_next_end = { ["]F"] = "@function.outer", ["]C"] = "@class.outer", ["]A"] = "@parameter.inner" },
-              goto_previous_start = { ["[f"] = "@function.outer", ["[c"] = "@class.outer", ["[a"] = "@parameter.inner" },
-              goto_previous_end = { ["[F"] = "@function.outer", ["[C"] = "@class.outer", ["[A"] = "@parameter.inner" },
-            },
-          },
-        })
+      if CoreUtil.is_loaded("nvim-treesitter") then
+        local opts = CoreUtil.opts("nvim-treesitter")
+        require("nvim-treesitter.configs").setup({ textobjects = opts.textobjects })
       end
 
       -- When in diff mode, we want to use the default
@@ -156,6 +111,13 @@ return {
         end
       end
     end,
+  },
+
+  -- Automatically add closing tags for HTML and JSX
+  {
+    "windwp/nvim-ts-autotag",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = {},
   },
 
   {
