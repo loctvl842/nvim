@@ -62,7 +62,6 @@ end
 ---@field components LualineComponents
 local M = {}
 
-local path = require("neovim-project.utils.path")
 local colors = require("catppuccin.palettes").get_palette("macchiato")
 
 
@@ -120,7 +119,7 @@ M.theme = {
 
 
 local function getProject()
-  local project_dir = path.cwd()
+  local project_dir = CoreUtil.root.cwd()
   -- Get the "root" project name
   local root = string.match(project_dir or "", "[%a%-%_]+$") or ""
   return root

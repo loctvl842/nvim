@@ -21,7 +21,7 @@ return {
     version = false,
     keys = {
       -- Buffer
-      { "<leader>bd", "<cmd>Bdelete!<CR>",                                                     desc = "Close Buffer" },
+      { "<leader>bd", "<cmd>bdelete!<CR>",                                                     desc = "Close Buffer" },
       { "<leader>bl", "<cmd>lua require('telescope.builtin').buffers()<cr>",                   desc = "Buffer list" },
       { "<leader>bs", "<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<cr>", desc = "Buffer Search" },
       { "<leader>bS", "<cmd>lua require('telescope.builtin').treesitter()<cr>",                desc = "Buffer Symbols" },

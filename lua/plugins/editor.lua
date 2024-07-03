@@ -214,7 +214,7 @@ return {
   -- hunks in a commit.
   {
     "lewis6991/gitsigns.nvim",
-    event = "VeryLazy",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = {
       signs = {
         add = { text = "▎" },
@@ -316,7 +316,7 @@ return {
   {
     "folke/todo-comments.nvim",
     cmd = { "TodoTrouble", "TodoTelescope" },
-    event = "VeryLazy",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = {},
     -- stylua: ignore
     keys = {
@@ -364,5 +364,4 @@ return {
       require("toggleterm").setup(opts)
     end,
   },
-
 }
