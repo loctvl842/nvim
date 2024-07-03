@@ -23,6 +23,8 @@ require("lazy").setup({
     { import = "plugins" },
     -- Import additional coding plugins
     { import = "plugins.extras.coding" },
+    -- Import additional editor plugins
+    { import = "plugins.extras.editor" },
     -- Import testing plugins
     { import = "plugins.extras.test" },
     -- Import language specific configurations
