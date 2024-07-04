@@ -195,7 +195,7 @@ vim.api.nvim_create_autocmd("User", {
 
 --- Attempt to work around issues with neovim-project and session-manager saving sessions.
 
-vim.api.nvim_create_autocmd({ "VimLeave" }, {
+vim.api.nvim_create_autocmd({ "VimLeavePre" }, {
   callback = function()
     vim.cmd([[silent! NeoTreeClose]])
     CoreUtil.session.save_session()
