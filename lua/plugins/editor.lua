@@ -174,6 +174,20 @@ return {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {
+      window = {
+        border = "double",        -- none, single, double, shadow
+        position = "bottom",      -- bottom, top
+        margin = { 1, 0, 1, 0 },  -- extra window margin [top, right, bottom, left]
+        padding = { 1, 2, 1, 2 }, -- extra window padding [top, right, bottom, left]
+        winblend = 0,
+      },
+      layout = {
+        height = { min = 5, max = 25 }, -- min and max height of the columns
+        width = { min = 20, max = 50 }, -- min and max width of the columns
+        spacing = 5,                    -- spacing between columns
+        align = "center",               -- align columns left, center or right
+      },
+      ignore_missing = true,            -- enable this to hide mappings for which you didn't specify a label
       plugins = { spelling = true },
       defaults = {
         mode = { "n", "v" },
@@ -194,19 +208,42 @@ return {
         ["<leader>u"] = { name = "+ui" },
         ["<leader>w"] = { name = "+windows" },
         ["<leader>x"] = { name = "+diagnostics/quickfix" },
+        ["<leader>0"] = { "<cmd>Dashboard<cr>", name = "Dashboard" },
       },
+      normal = {
+        ["<leader>0"] = { "<cmd>Dashboard<CR>", "Dashboard" },
+        ["<leader>q"] = {
+          ["q"] = { "<cmd>q!<CR>", "Quit" },
+          ["Q"] = { "<cmd>qa!<CR>", "Quit All" },
+        },
+        -- Window Management
+        ["<leader>w"] = {
+          -- Window Movement
+          h = { "<C-w>h<cr>", "Move left a window" },
+          l = { "<C-w>l<cr>", "Move right a window" },
+          k = { "<C-w>k<cr>", "Move up a window" },
+          j = { "<C-w>j<cr>", "Move down a window" },
+          -- Window Creation
+          s = { "<C-w>s<cr>", "Create split horizontally" },
+          v = { "<C-w>v<cr>", "Create split vertically" },
+          -- Window clean up
+          d = { "<C-w>c<CR>", "Delete Window" },
+        },
+        -- Buffer Movement
+        ["<leader><Tab>"] = { "<cmd>:b#<cr>", "Move back and forth" },
+        ["<leader><space>"] = { "<c-6>", "Move back and forth" },
+      },
+      visual = {
+        ["<leader>c"] = { ["e"] = { CoreUtil.runlua, "Run Lua" } },
+      }
     },
     config = function(_, opts)
       local wk = require("which-key")
       wk.setup(opts)
       wk.register(opts.defaults)
+      wk.register(opts.normal, { mode = "n", prefix = "" })
+      wk.register(opts.visual, { mode = "v", prefix = "" })
     end,
-  },
-
-  -- Core Utils
-  {
-    "folke/which-key.nvim",
-    config = function() require("config.editor.whichkey") end,
   },
 
   -- git signs highlights text that has changed since the list
@@ -333,6 +370,9 @@ return {
   {
     "akinsho/toggleterm.nvim",
     event = { "BufReadPost", "BufNewFile" },
+    keys = {
+      { "<leader>ft", "<cmd>ToggleTerm<cr>", desc = "Terminal" },
+    },
     opts = {
       open_mapping = [[<C-\>]],
       start_in_insert = true,
