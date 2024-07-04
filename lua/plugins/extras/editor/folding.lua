@@ -2,7 +2,7 @@ return {
   -- Buffer Folding
   {
     "kevinhwang91/nvim-ufo",
-    event = { "BufReadPost", "BufNewFile" },
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     dependencies = { "kevinhwang91/promise-async", event = "BufReadPost" },
     opts = {
       fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)

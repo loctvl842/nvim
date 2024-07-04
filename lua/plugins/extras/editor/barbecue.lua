@@ -2,8 +2,8 @@ return {
 
   {
     "utilyre/barbecue.nvim",
-    lazy = false,
-    events = { "BufReadPost", "BufNewFile" },
+    version = "*",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     dependencies = {
       "SmiteshP/nvim-navic",
       "nvim-tree/nvim-web-devicons",
