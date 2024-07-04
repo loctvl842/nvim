@@ -2,24 +2,8 @@
 local M = {}
 
 -- See https://github.com/JoosepAlviste/dotfiles/blob/master/config/nvim/lua/j/pretty_pickers.lua
-local telescope_utils = require("telescope.utils")
-local make_entry = require("telescope.make_entry")
-local plenary_strings = require("plenary.strings")
-local devicons = require("nvim-web-devicons")
-local entry_display = require("telescope.pickers.entry_display")
 -- See https://github.com/JoosepAlviste/dotfiles/blob/master/config/nvim/lua/j/telescope_custom_pickers.lua
-local Path = require("plenary.path")
-local action_set = require("telescope.actions.set")
-local action_state = require("telescope.actions.state")
-local transform_mod = require("telescope.actions.mt").transform_mod
-local actions = require("telescope.actions")
-local conf = require("telescope.config").values
-local finders = require("telescope.finders")
-local os_sep = Path.path.sep
-local pickers = require("telescope.pickers")
-local scan = require("plenary.scandir")
-
-local file_type_icon_width = plenary_strings.strdisplaywidth(devicons.get_icon("fname", { default = true }))
+local telescope_utils = require("telescope.utils")
 
 ---Keep track of the active extension and folders for `live_grep`
 local live_grep_filters = {
@@ -28,6 +12,21 @@ local live_grep_filters = {
   ---@type nil|string[]
   directories = nil,
 }
+
+---Gets the File Path and its Tail (the file name) as a Tuple
+---@param file_name string
+---@return string, string
+local function get_path_and_tail(file_name)
+  local buffer_name_tail = telescope_utils.path_tail(file_name)
+
+  local path_without_tail = require("plenary.strings").truncate(file_name, #file_name - #buffer_name_tail, "")
+
+  local path_to_display = telescope_utils.transform_path({
+    path_display = { "truncate" },
+  }, path_without_tail)
+
+  return buffer_name_tail, path_to_display
+end
 
 -- Generates a Grep Search picker but beautified
 -- ----------------------------------------------
@@ -45,6 +44,11 @@ local function pretty_grep_picker(picker_and_options)
     print("Incorrect argument format. Correct format is: { picker = ")
     return
   end
+
+  local make_entry = require("telescope.make_entry")
+  local entry_display = require("telescope.pickers.entry_display")
+  local devicons = require("nvim-web-devicons")
+  local file_type_icon_width = require("plenary.strings").strdisplaywidth(devicons.get_icon("fname", { default = true }))
 
   local options = picker_and_options.options or {}
 
@@ -94,8 +98,7 @@ local function pretty_grep_picker(picker_and_options)
       ---- Get File columns data ----
       -------------------------------
 
-      local tail, path_to_display = M.get_path_and_tail(entry.filename)
-
+      local tail, path_to_display = get_path_and_tail(entry.filename)
       local icon, icon_highlight = telescope_utils.get_devicons(tail)
 
       ---- Format Text for display ----
@@ -165,81 +168,79 @@ local function run_live_grep(current_input)
   })
 end
 
----Gets the File Path and its Tail (the file name) as a Tuple
----@param file_name string
----@return string, string
-function M.get_path_and_tail(file_name)
-  local buffer_name_tail = telescope_utils.path_tail(file_name)
+M.actions = CoreUtil.memoize(function()
+  local action_set = require("telescope.actions.set")
+  local action_state = require("telescope.actions.state")
+  local transform_mod = require("telescope.actions.mt").transform_mod
+  local actions = require("telescope.actions")
+  local conf = require("telescope.config").values
+  local finders = require("telescope.finders")
+  local pickers = require("telescope.pickers")
+  return transform_mod({
+    ---Ask for a file extension and open a new `live_grep` filtering by it
+    ---@param prompt_bufnr number
+    set_extension = function(prompt_bufnr)
+      local current_input = action_state.get_current_line()
 
-  local path_without_tail = require("plenary.strings").truncate(file_name, #file_name - #buffer_name_tail, "")
+      vim.ui.input({ prompt = "*." }, function(input)
+        if input == nil then return end
 
-  local path_to_display = telescope_utils.transform_path({
-    path_display = { "truncate" },
-  }, path_without_tail)
+        live_grep_filters.extension = input
 
-  return buffer_name_tail, path_to_display
-end
+        actions.close(prompt_bufnr)
+        run_live_grep(current_input)
+      end)
+    end,
+    ---Ask the user for a folder and olen a new `live_grep` filtering by it
+    ---@param prompt_bufnr number
+    set_folders = function(prompt_bufnr)
+      local make_entry = require("telescope.make_entry")
+      local Path = require("plenary.path")
+      local os_sep = Path.path.sep
+      local scan = require("plenary.scandir")
+      local current_input = action_state.get_current_line()
 
-M.actions = transform_mod({
-  ---Ask for a file extension and open a new `live_grep` filtering by it
-  ---@param prompt_bufnr number
-  set_extension = function(prompt_bufnr)
-    local current_input = action_state.get_current_line()
-
-    vim.ui.input({ prompt = "*." }, function(input)
-      if input == nil then return end
-
-      live_grep_filters.extension = input
+      local data = {}
+      scan.scan_dir(vim.uv.cwd(), {
+        hidden = true,
+        only_dirs = true,
+        respect_gitignore = true,
+        on_insert = function(entry) table.insert(data, entry .. os_sep) end,
+      })
+      table.insert(data, 1, "." .. os_sep)
 
       actions.close(prompt_bufnr)
-      run_live_grep(current_input)
-    end)
-  end,
-  ---Ask the user for a folder and olen a new `live_grep` filtering by it
-  ---@param prompt_bufnr number
-  set_folders = function(prompt_bufnr)
-    local current_input = action_state.get_current_line()
+      pickers
+          .new({}, {
+            prompt_title = "Folders for Live Grep",
+            finder = finders.new_table({ results = data, entry_maker = make_entry.gen_from_file({}) }),
+            previewer = conf.file_previewer({}),
+            sorter = conf.file_sorter({}),
+            attach_mappings = function(prompt_bufnr)
+              action_set.select:replace(function()
+                local current_picker = action_state.get_current_picker(prompt_bufnr)
 
-    local data = {}
-    scan.scan_dir(vim.loop.cwd(), {
-      hidden = true,
-      only_dirs = true,
-      respect_gitignore = true,
-      on_insert = function(entry) table.insert(data, entry .. os_sep) end,
-    })
-    table.insert(data, 1, "." .. os_sep)
-
-    actions.close(prompt_bufnr)
-    pickers
-        .new({}, {
-          prompt_title = "Folders for Live Grep",
-          finder = finders.new_table({ results = data, entry_maker = make_entry.gen_from_file({}) }),
-          previewer = conf.file_previewer({}),
-          sorter = conf.file_sorter({}),
-          attach_mappings = function(prompt_bufnr)
-            action_set.select:replace(function()
-              local current_picker = action_state.get_current_picker(prompt_bufnr)
-
-              local dirs = {}
-              local selections = current_picker:get_multi_selection()
-              if vim.tbl_isempty(selections) then
-                table.insert(dirs, action_state.get_selected_entry().value)
-              else
-                for _, selection in ipairs(selections) do
-                  table.insert(dirs, selection.value)
+                local dirs = {}
+                local selections = current_picker:get_multi_selection()
+                if vim.tbl_isempty(selections) then
+                  table.insert(dirs, action_state.get_selected_entry().value)
+                else
+                  for _, selection in ipairs(selections) do
+                    table.insert(dirs, selection.value)
+                  end
                 end
-              end
-              live_grep_filters.directories = dirs
+                live_grep_filters.directories = dirs
 
-              actions.close(prompt_bufnr)
-              run_live_grep(current_input)
-            end)
-            return true
-          end,
-        })
-        :find()
-  end,
-})
+                actions.close(prompt_bufnr)
+                run_live_grep(current_input)
+              end)
+              return true
+            end,
+          })
+          :find()
+    end,
+  })
+end)
 
 ---Small wrapper over `live_grep` to first reset our active filters
 M.live_grep = function()

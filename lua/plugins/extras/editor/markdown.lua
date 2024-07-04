@@ -1,7 +1,7 @@
 return {
   {
     "iamcco/markdown-preview.nvim",
-    event = "VeryLazy",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     filetype = "markdown",
     build = "cd app && yarn install",
   },
