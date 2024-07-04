@@ -29,6 +29,7 @@ function M.get()
     { "<leader>cD", "<cmd>Telescope lsp_references<cr>",      desc = "References",                 mode = { "n" } },
     { "<leader>ce", CoreUtil.runlua,                          desc = "Run Lua",                    mode = { "n" } },
     { "<leader>cI", "<cmd>Telescope lsp_implementations<cr>", desc = "Goto Implementation",        mode = { "n" } },
+    { "<leader>ci", "<cmd>LspInfo<cr>",                       desc = "Info",                       mode = { "n" } },
     { "<leader>cR", CoreUtil.lsp.rename_file,                 desc = "Rename File",                mode = { "n" },          has = { "workspace/didRenameFiles", "workspace/willRenameFiles" } },
     { "<leader>cr", vim.lsp.buf.rename,                       desc = "Rename",                     has = "rename" },
     { "<leader>cA", CoreUtil.lsp.action.source,               desc = "Source Action",              has = "codeAction" },
