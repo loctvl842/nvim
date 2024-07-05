@@ -76,7 +76,7 @@ function M.extmark_leaks()
     end
   end
   table.sort(counts, function(a, b) return a.count > b.count end)
-  dd(counts)
+  M.dump(counts)
 end
 
 function estimateSize(value, visited)
@@ -133,7 +133,7 @@ function M.module_leaks(filter)
   end
   sizes = vim.tbl_values(sizes)
   table.sort(sizes, function(a, b) return a.size > b.size end)
-  dd(sizes)
+  M.dump(sizes)
 end
 
 function M.get_upvalue(func, name)
@@ -143,25 +143,6 @@ function M.get_upvalue(func, name)
     if not n then break end
     if n == name then return v end
     i = i + 1
-  end
-end
-
-function M.trace_require()
-  local requires = {} ---@type string[]
-  local done = {} ---@type table<string, true>
-  local r = require
-  _G.require = function(modname)
-    if not done[modname] then
-      local Util = package.loaded["lazy.core.util"]
-      done[modname] = true
-      if Util then Util.track({ require = modname }) end
-      requires[#requires + 1] = modname
-      local ret, err = r(modname)
-      if Util then Util.track() end
-      return ret, err
-    else
-      return r(modname)
-    end
   end
 end
 

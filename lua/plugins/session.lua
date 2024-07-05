@@ -19,7 +19,7 @@ return {
     "coffebar/neovim-project",
     dependencies = {
       { "nvim-lua/plenary.nvim" },
-      { "nvim-telescope/telescope.nvim" },
+      { "nvim-telescope/telescope.nvim", lazy = true },
       { "Shatur/neovim-session-manager" },
     },
     branch = "main",

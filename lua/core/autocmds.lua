@@ -95,12 +95,6 @@ vim.api.nvim_create_autocmd({ "TermOpen" }, {
   end,
 })
 
--- fix comment on new line
-vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
-  pattern = { "*" },
-  callback = function() vim.cmd([[set formatoptions-=cro]]) end,
-})
-
 -- NeoGit
 vim.api.nvim_create_autocmd({ "FileType" }, {
   pattern = { "NeogitCommitMessage" },
@@ -138,7 +132,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = util.augroup("lua"),
   pattern = "*.lua",
-  callback = function() vim.lsp.buf.format() end,
+  callback = function(event) CoreUtil.format.format({ buf = event.buf }) end,
 })
 
 ----------------------------- Golang -----------------------------
@@ -158,7 +152,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = goaugroup,
   pattern = { "*.go" },
-  callback = function()
+  callback = function(event)
     local params = vim.lsp.util.make_range_params(nil, vim.lsp.util._get_offset_encoding())
     params.context = { only = { "source.organizeImports" } }
 
@@ -172,7 +166,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
         end
       end
     end
-    vim.lsp.buf.format()
+    CoreUtil.format.format({ buf = event.buf })
   end,
 })
 
@@ -180,7 +174,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   pattern = { "*.tf", "*.tfvars" },
-  callback = function() vim.lsp.buf.format() end,
+  callback = function(event) CoreUtil.format.format({ buf = event.buf }) end,
 })
 
 ----------------------------- Neogit -----------------------------
