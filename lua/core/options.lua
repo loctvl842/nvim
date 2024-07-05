@@ -62,8 +62,12 @@ local options = {
     diff = "╱",
     eob = " ",
   },
-  -- sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,globals",
+  smoothscroll = true,
+  foldexpr = "v:lua.CoreUtil.ui.foldexpr()",
+  foldmethod = "expr",
+  foldtext = "",
   sessionoptions = "buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,globals",
+  statuscolumn = [[%!v:lua.CoreUtil.ui.statuscolumn()]]
 }
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1

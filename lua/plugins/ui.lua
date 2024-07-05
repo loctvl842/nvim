@@ -2,13 +2,6 @@ local util = require("util")
 local icons = require("core.icons")
 
 return {
-  -- TODO: replace with lazy vim implementation
-  {
-    "luukvbaal/statuscol.nvim",
-    event = { "BufReadPost", "BufNewFile" },
-    config = function() require("config.editor.statuscol") end,
-  },
-
   -- Notifications
   {
     "rcarriga/nvim-notify",
