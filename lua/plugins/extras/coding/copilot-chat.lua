@@ -18,6 +18,7 @@ return {
     "CopilotC-Nvim/CopilotChat.nvim",
     branch = "canary",
     cmd = "CopilotChat",
+    event = "VeryLazy",
     opts = function()
       local user = vim.env.USER or "JordanFaust"
       user = user:sub(1, 1):upper() .. user:sub(2)
@@ -41,17 +42,13 @@ return {
       { "<leader>a", "",     desc = "+ai",        mode = { "n", "v" } },
       {
         "<leader>aa",
-        function()
-          return require("CopilotChat").toggle()
-        end,
+        function() return require("CopilotChat").toggle() end,
         desc = "Toggle (CopilotChat)",
         mode = { "n", "v" },
       },
       {
         "<leader>ax",
-        function()
-          return require("CopilotChat").reset()
-        end,
+        function() return require("CopilotChat").reset() end,
         desc = "Clear (CopilotChat)",
         mode = { "n", "v" },
       },
@@ -59,9 +56,7 @@ return {
         "<leader>aq",
         function()
           local input = vim.fn.input("Quick Chat: ")
-          if input ~= "" then
-            require("CopilotChat").ask(input)
-          end
+          if input ~= "" then require("CopilotChat").ask(input) end
         end,
         desc = "Quick Chat (CopilotChat)",
         mode = { "n", "v" },

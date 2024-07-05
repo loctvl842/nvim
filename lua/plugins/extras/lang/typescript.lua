@@ -21,6 +21,7 @@ end
 return {
   {
     "marilari88/neotest-vitest",
+    event = "VeryLazy",
     branch = "main",
   },
 
