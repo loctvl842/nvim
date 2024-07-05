@@ -42,7 +42,7 @@ return {
               directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
             },
           },
-        }
+        },
       },
       setup = {
         gopls = function(_, opts)
@@ -106,9 +106,7 @@ return {
         ["neotest-golang"] = {
           dap_go_enabled = true,
         },
-      }
+      },
     },
-  }
-
-
+  },
 }

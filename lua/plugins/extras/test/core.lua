@@ -9,6 +9,7 @@ end
 return {
   {
     "nvim-neotest/neotest",
+    event = "VeryLazy",
     dependencies = {
       "nvim-neotest/nvim-nio",
       "nvim-treesitter/nvim-treesitter",
