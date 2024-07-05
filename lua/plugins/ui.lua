@@ -62,6 +62,11 @@ return {
           if count > 9 then return "9+" end
           return tostring(count)
         end,
+        -- always_show_bufferline = false,
+        custom_filter = function(buf_number)
+          if vim.bo[buf_number].filetype == "dashboard" then return false end
+          return true
+        end,
         buffer_close_icon = "",
         modified_icon = "",
         close_icon = "",

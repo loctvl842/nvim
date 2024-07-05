@@ -302,10 +302,14 @@ return {
 
   -- LSP Capabilities
 
-  "lvimuser/lsp-inlayhints.nvim",
+  {
+    "lvimuser/lsp-inlayhints.nvim",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+  },
 
   {
     "ray-x/lsp_signature.nvim",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = {
       floating_window = false,               -- show hint in a floating window, set to false for virtual text only mode
       floating_window_above_cur_line = true, -- try to place the floating above the current line when possible Note:

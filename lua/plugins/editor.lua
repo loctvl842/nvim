@@ -260,13 +260,6 @@ return {
         changedelete = { text = "▎" },
         untracked = { text = "▎" },
       },
-      -- signs_staged = {
-      --   add = { text = "▎" },
-      --   change = { text = "▎" },
-      --   delete = { text = "" },
-      --   topdelete = { text = "" },
-      --   changedelete = { text = "▎" },
-      -- },
       on_attach = function(buffer)
         local gs = package.loaded.gitsigns
 
@@ -368,7 +361,7 @@ return {
   -- Terminal
   {
     "akinsho/toggleterm.nvim",
-    event = { "BufReadPost", "BufNewFile" },
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     keys = {
       { "<leader>ft", "<cmd>ToggleTerm<cr>", desc = "Terminal" },
     },
@@ -388,10 +381,9 @@ return {
       },
     },
     config = function(_, opts)
-      local toggleterm_group = vim.api.nvim_create_augroup("UserToggleTerm", { clear = true })
       vim.api.nvim_create_autocmd("TermOpen", {
         pattern = "term://*",
-        group = toggleterm_group,
+        group = CoreUtil.augroup("toggleterm"),
         callback = function()
           local options = { buffer = 0 }
           vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], options)
