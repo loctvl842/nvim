@@ -201,15 +201,3 @@ vim.api.nvim_create_autocmd({ "VimLeavePre" }, {
     CoreUtil.session.save_session()
   end,
 })
-
-------------------------------- Folds -------------------------------
-
--- Disable folding for certain filetypes
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "neo-tree", "NeogitStatus" },
-  callback = function()
-    require("ufo").detach()
-    vim.opt_local.foldenable = false
-    vim.opt_local.foldcolumn = "0"
-  end,
-})
