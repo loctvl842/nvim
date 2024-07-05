@@ -311,6 +311,7 @@ return {
 
   {
     "petertriho/nvim-scrollbar",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = {
       set_highlights = false,
       excluded_filetypes = {
@@ -350,9 +351,9 @@ return {
 
   {
     "NvChad/nvim-colorizer.lua",
-    event = "BufReadPre",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = {
-      filetypes = { "*", "!lazy" },
+      filetypes = { "*", "!lazy", "!dashboard" },
       buftype = { "*", "!prompt", "!nofile" },
       user_default_options = {
         RGB = true,       -- #RGB hex codes

@@ -429,6 +429,9 @@ function _G.P(...)
   print(unpack(objects))
 end
 
+-- Colorize the output of P
+vim.print = require("util.debug").dump
+
 --- Override the default title for notifications.
 for _, level in ipairs({ "info", "warn", "error" }) do
   M[level] = function(msg, opts)
