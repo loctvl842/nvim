@@ -9,6 +9,8 @@ local options = {
   hlsearch = true,                                 -- highlight all matches on previous search pattern
   inccommand = "nosplit",
   ignorecase = true,                               -- ignore case in search patterns
+  formatexpr = "v:lua.CoreUtil.format.formatexpr()",
+  formatoptions = "jcroqlnt",                      -- tcqj
   grepformat = "%f:%l:%c:%m",
   grepprg = "rg --vimgrep",
   mouse = "a",          -- allow the mouse to be used in neovim
@@ -67,7 +69,7 @@ local options = {
   foldmethod = "expr",
   foldtext = "",
   sessionoptions = "buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,globals",
-  statuscolumn = [[%!v:lua.CoreUtil.ui.statuscolumn()]]
+  statuscolumn = [[%!v:lua.CoreUtil.ui.statuscolumn()]],
 }
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
