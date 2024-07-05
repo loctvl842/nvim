@@ -3,7 +3,6 @@ local M = {}
 
 -- See https://github.com/JoosepAlviste/dotfiles/blob/master/config/nvim/lua/j/pretty_pickers.lua
 -- See https://github.com/JoosepAlviste/dotfiles/blob/master/config/nvim/lua/j/telescope_custom_pickers.lua
-local telescope_utils = require("telescope.utils")
 
 ---Keep track of the active extension and folders for `live_grep`
 local live_grep_filters = {
@@ -17,6 +16,7 @@ local live_grep_filters = {
 ---@param file_name string
 ---@return string, string
 local function get_path_and_tail(file_name)
+  local telescope_utils = require("telescope.utils")
   local buffer_name_tail = telescope_utils.path_tail(file_name)
 
   local path_without_tail = require("plenary.strings").truncate(file_name, #file_name - #buffer_name_tail, "")
@@ -48,6 +48,7 @@ local function pretty_grep_picker(picker_and_options)
   local make_entry = require("telescope.make_entry")
   local entry_display = require("telescope.pickers.entry_display")
   local devicons = require("nvim-web-devicons")
+  local telescope_utils = require("telescope.utils")
   local file_type_icon_width = require("plenary.strings").strdisplaywidth(devicons.get_icon("fname", { default = true }))
 
   local options = picker_and_options.options or {}

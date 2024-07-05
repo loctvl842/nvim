@@ -50,27 +50,11 @@ return {
       { "<leader>si", "<cmd>IconPickerInsert<cr>",                                "Search Icon" },
     },
     opts = function()
-      local actions = require("telescope.actions")
-      local layout_strategies = require("telescope.pickers.layout_strategies")
-
-      -- Add an extra line between the prompt and results so that the theme looks OK
-      local original_center = layout_strategies.center
-      layout_strategies.center = function(picker, columns, lines, layout_config)
-        local res = original_center(picker, columns, lines, layout_config)
-
-        -- Move results down one line so that the prompt bottom border is visible
-        res.results.line = res.results.line + 1
-
-        return res
-      end
-
       return {
         defaults = {
           prompt_title = false,
           prompt_prefix = "   ",
-          -- selection_caret = "  ",
           selection_caret = "  ",
-          -- entry_prefix = "   ",
           path_display = function(_, path)
             local filename = path:gsub(vim.pesc(vim.uv.cwd()) .. "/", ""):gsub(vim.pesc(vim.fn.expand("$HOME")), "~")
             local tail = require("telescope.utils").path_tail(filename)
@@ -108,7 +92,7 @@ return {
             -- "%.jpg",
             -- "%.jpeg",
             -- "%.png",
-            "%.svg",
+            -- "%.svg",
             "%.otf",
             "%.ttf",
             "%.webp",
@@ -174,15 +158,15 @@ return {
           },
           mappings = {
             i = {
-              ["<C-g>"] = actions.close,
-              ["<c-f>"] = CoreUtil.telescope.actions().set_extension,
-              ["<c-l>"] = CoreUtil.telescope.actions().set_folders,
+              ["<C-g>"] = function(buf) require("telescope.actions").close(buf) end,
+              ["<c-f>"] = function(buf) CoreUtil.telescope.actions().set_extension(buf) end,
+              ["<c-l>"] = function(buf) CoreUtil.telescope.actions().set_folders(buf) end,
             },
 
             n = {
-              ["<esc>"] = actions.close,
-              ["<C-g>"] = actions.close,
-              ["?"] = actions.which_key,
+              ["<esc>"] = function(buf) require("telescope.actions").close(buf) end,
+              ["<C-g>"] = function(buf) require("telescope.actions").close(buf) end,
+              ["?"] = function(buf) require("telescope.actions").which_key(buf) end,
             },
           },
         },
