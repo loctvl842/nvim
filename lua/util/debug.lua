@@ -6,7 +6,10 @@ function M.get_loc()
   local me = debug.getinfo(1, "S")
   local level = 2
   local info = debug.getinfo(level, "S")
-  while info and (info.source == me.source or info.source == "@" .. vim.env.MYVIMRC or info.what ~= "Lua") do
+  while
+    info
+    and (info.source == me.source or info.source == "@" .. vim.env.MYVIMRC or info.what ~= "Lua")
+  do
     level = level + 1
     info = debug.getinfo(level, "S")
   end
@@ -21,10 +24,16 @@ end
 function M._dump(value, opts)
   opts = opts or {}
   opts.loc = opts.loc or M.get_loc()
-  if vim.in_fast_event() then return vim.schedule(function() M._dump(value, opts) end) end
+  if vim.in_fast_event() then
+    return vim.schedule(function()
+      M._dump(value, opts)
+    end)
+  end
   opts.loc = vim.fn.fnamemodify(opts.loc, ":~:.")
   local msg = vim.inspect(value)
-  if opts.bt then msg = msg .. "\n" .. debug.traceback("", 2) end
+  if opts.bt then
+    msg = msg .. "\n" .. debug.traceback("", 2)
+  end
   vim.notify(msg, vim.log.levels.INFO, {
     title = "Debug: " .. opts.loc,
     on_open = function(win)
@@ -32,7 +41,9 @@ function M._dump(value, opts)
       vim.wo[win].concealcursor = ""
       vim.wo[win].spell = false
       local buf = vim.api.nvim_win_get_buf(win)
-      if not pcall(vim.treesitter.start, buf, "lua") then vim.bo[buf].filetype = "lua" end
+      if not pcall(vim.treesitter.start, buf, "lua") then
+        vim.bo[buf].filetype = "lua"
+      end
     end,
   })
 end
@@ -75,12 +86,16 @@ function M.extmark_leaks()
       end
     end
   end
-  table.sort(counts, function(a, b) return a.count > b.count end)
+  table.sort(counts, function(a, b)
+    return a.count > b.count
+  end)
   M.dump(counts)
 end
 
 function estimateSize(value, visited)
-  if value == nil then return 0 end
+  if value == nil then
+    return 0
+  end
   local bytes = 0
 
   -- initialize the visited table if not already done
@@ -106,7 +121,9 @@ function estimateSize(value, visited)
     local i = 1
     while true do
       local name, val = debug.getupvalue(value, i)
-      if not name then break end
+      if not name then
+        break
+      end
       bytes = bytes + estimateSize(val, visited)
       i = i + 1
     end
@@ -116,7 +133,9 @@ function estimateSize(value, visited)
       bytes = bytes + estimateSize(k, visited) + estimateSize(v, visited)
     end
     local mt = debug.getmetatable(value)
-    if mt then bytes = bytes + estimateSize(mt, visited) end
+    if mt then
+      bytes = bytes + estimateSize(mt, visited)
+    end
   end
   return bytes
 end
@@ -132,7 +151,9 @@ function M.module_leaks(filter)
     end
   end
   sizes = vim.tbl_values(sizes)
-  table.sort(sizes, function(a, b) return a.size > b.size end)
+  table.sort(sizes, function(a, b)
+    return a.size > b.size
+  end)
   M.dump(sizes)
 end
 
@@ -140,8 +161,12 @@ function M.get_upvalue(func, name)
   local i = 1
   while true do
     local n, v = debug.getupvalue(func, i)
-    if not n then break end
-    if n == name then return v end
+    if not n then
+      break
+    end
+    if n == name then
+      return v
+    end
     i = i + 1
   end
 end

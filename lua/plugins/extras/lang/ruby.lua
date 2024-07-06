@@ -9,7 +9,7 @@ return {
         ["neotest-rspec"] = {
           root_files = { "Gemfile" },
         },
-      }
+      },
     },
-  }
+  },
 }

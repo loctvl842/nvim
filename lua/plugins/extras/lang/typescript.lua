@@ -13,7 +13,9 @@ end
 ---@param file string
 ---@return boolean
 local function file_belongs_to_monorepo(file)
-  if string.find(file, "/packages") or string.find(file, "/apps") then return true end
+  if string.find(file, "/packages") or string.find(file, "/apps") then
+    return true
+  end
 
   return false
 end
@@ -35,7 +37,9 @@ return {
       adapters = {
         ["neotest-vitest"] = {
           -- Filter directories when searching for test files. Useful in large projects (see Filter directories notes).
-          vitestCommand = function(_args) return "steam-run npx vitest" end,
+          vitestCommand = function(_args)
+            return "steam-run npx vitest"
+          end,
           vitestConfigFile = function()
             local file = vim.fn.expand("%:p")
             local config = vim.fn.getcwd() .. "/vitest.config.ts"
@@ -54,10 +58,12 @@ return {
 
             return vim.fn.getcwd()
           end,
-          filter_dir = function(name, _rel_path, _root) return name ~= "node_modules" end,
-        }
-      }
-    }
+          filter_dir = function(name, _rel_path, _root)
+            return name ~= "node_modules"
+          end,
+        },
+      },
+    },
   },
 
   -- correctly setup lspconfig
@@ -217,8 +223,12 @@ return {
             end
           end, "vtsls")
           -- copy typescript settings to javascript
-          opts.settings.javascript =
-              vim.tbl_deep_extend("force", {}, opts.settings.typescript, opts.settings.javascript or {})
+          opts.settings.javascript = vim.tbl_deep_extend(
+            "force",
+            {},
+            opts.settings.typescript,
+            opts.settings.javascript or {}
+          )
         end,
       },
     },

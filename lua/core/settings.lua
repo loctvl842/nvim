@@ -1,3 +1,6 @@
+-- Define CoreUtil class globally
+_G.CoreUtil = require("util")
+
 -- autocmds and keymaps can wait to load
 vim.api.nvim_create_autocmd("User", {
   pattern = "VeryLazy",

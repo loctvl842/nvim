@@ -11,16 +11,16 @@ return {
               usePlaceholders = true,
               ["local"] = "github.com/procore",
               -- NOTE: codelenses cause significant performance issues. Keeping disabled for now
-              -- codelenses = {
-              --   gc_details = false,
-              --   generate = true,
-              --   regenerate_cgo = true,
-              --   run_govulncheck = true,
-              --   test = true,
-              --   tidy = true,
-              --   upgrade_dependency = true,
-              --   vendor = true,
-              -- },
+              codelenses = {
+                gc_details = true,
+                generate = true,
+                regenerate_cgo = false,
+                run_govulncheck = true,
+                test = true,
+                tidy = true,
+                upgrade_dependency = true,
+                vendor = true,
+              },
               hints = {
                 assignVariableTypes = false,
                 compositeLiteralFields = false,

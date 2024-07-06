@@ -38,17 +38,21 @@ return {
       }
     end,
     keys = {
-      { "<c-s>",     "<CR>", ft = "copilot-chat", desc = "Submit Prompt", remap = true },
-      { "<leader>a", "",     desc = "+ai",        mode = { "n", "v" } },
+      { "<c-s>", "<CR>", ft = "copilot-chat", desc = "Submit Prompt", remap = true },
+      { "<leader>a", "", desc = "+ai", mode = { "n", "v" } },
       {
         "<leader>aa",
-        function() return require("CopilotChat").toggle() end,
+        function()
+          return require("CopilotChat").toggle()
+        end,
         desc = "Toggle (CopilotChat)",
         mode = { "n", "v" },
       },
       {
         "<leader>ax",
-        function() return require("CopilotChat").reset() end,
+        function()
+          return require("CopilotChat").reset()
+        end,
         desc = "Clear (CopilotChat)",
         mode = { "n", "v" },
       },
@@ -56,15 +60,27 @@ return {
         "<leader>aq",
         function()
           local input = vim.fn.input("Quick Chat: ")
-          if input ~= "" then require("CopilotChat").ask(input) end
+          if input ~= "" then
+            require("CopilotChat").ask(input)
+          end
         end,
         desc = "Quick Chat (CopilotChat)",
         mode = { "n", "v" },
       },
       -- Show help actions with telescope
-      { "<leader>ad", M.pick("help"),   desc = "Diagnostic Help (CopilotChat)", mode = { "n", "v" } },
+      {
+        "<leader>ad",
+        M.pick("help"),
+        desc = "Diagnostic Help (CopilotChat)",
+        mode = { "n", "v" },
+      },
       -- Show prompts actions with telescope
-      { "<leader>ap", M.pick("prompt"), desc = "Prompt Actions (CopilotChat)",  mode = { "n", "v" } },
+      {
+        "<leader>ap",
+        M.pick("prompt"),
+        desc = "Prompt Actions (CopilotChat)",
+        mode = { "n", "v" },
+      },
     },
     config = function(_, opts)
       local chat = require("CopilotChat")

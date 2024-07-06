@@ -17,7 +17,7 @@ local default = {
   float = true,
   separator = "bubble", -- bubble | triangle
   ---@type any
-  theme = "auto",       -- nil combine with separator "bubble" and float
+  theme = "auto", -- nil combine with separator "bubble" and float
   colorful = true,
   separator_icon = { left = "", right = " " },
   thin_separator_icon = { left = "", right = " " },
@@ -42,7 +42,9 @@ end
 
 LualineConfig.setup = function(opts)
   LualineConfig.options = vim.tbl_deep_extend("force", {}, default, opts or {})
-  if LualineConfig.options.float then make_separator(LualineConfig.options.separator) end
+  if LualineConfig.options.float then
+    make_separator(LualineConfig.options.separator)
+  end
 end
 
 ---@class LualineComponents
@@ -63,7 +65,6 @@ end
 local M = { components = {} }
 
 local colors = require("catppuccin.palettes").get_palette("macchiato")
-
 
 --- @param trunc_width number trunctates component when screen width is less then trunc_width
 --- @param trunc_len number truncates component to trunc_len number of chars
@@ -117,7 +118,6 @@ M.theme = {
   replace = { a = { fg = colors.mantle, bg = colors.green } },
 }
 
-
 local function getProject()
   local project_dir = CoreUtil.root.cwd()
   -- Get the "root" project name
@@ -129,12 +129,16 @@ local function getLspName()
   local bufnr = vim.api.nvim_get_current_buf()
   local buf_clients = vim.lsp.get_clients({ bufnr = bufnr })
   local buf_ft = vim.bo.filetype
-  if next(buf_clients) == nil then return "  No servers" end
+  if next(buf_clients) == nil then
+    return "  No servers"
+  end
   ---@type table<string, string>
   local buf_client_names = {}
 
   for _, client in pairs(buf_clients) do
-    if client.name ~= "null-ls" or client.name ~= "copilot" then table.insert(buf_client_names, client.name) end
+    if client.name ~= "null-ls" or client.name ~= "copilot" then
+      table.insert(buf_client_names, client.name)
+    end
   end
 
   local lint_s, lint = pcall(require, "lint")
@@ -142,10 +146,14 @@ local function getLspName()
     for ft_k, ft_v in pairs(lint.linters_by_ft) do
       if type(ft_v) == "table" then
         for _, linter in ipairs(ft_v) do
-          if buf_ft == ft_k then table.insert(buf_client_names, linter) end
+          if buf_ft == ft_k then
+            table.insert(buf_client_names, linter)
+          end
         end
       elseif type(ft_v) == "string" then
-        if buf_ft == ft_k then table.insert(buf_client_names, ft_v) end
+        if buf_ft == ft_k then
+          table.insert(buf_client_names, ft_v)
+        end
       end
     end
   end
@@ -154,7 +162,9 @@ local function getLspName()
   if ok then
     local formatters = table.concat(conform.list_formatters_for_buffer(), " ")
     for formatter in formatters:gmatch("%w+") do
-      if formatter then table.insert(buf_client_names, formatter) end
+      if formatter then
+        table.insert(buf_client_names, formatter)
+      end
     end
   end
 
@@ -175,15 +185,17 @@ local function getLspName()
   return "  " .. language_servers
 end
 
-
 M.components.space = {
-  function() return " " end,
+  function()
+    return " "
+  end,
   color = { bg = colors.mantle, fg = colors.blue },
 }
 
-
 M.components.project = {
-  function() return getProject() end,
+  function()
+    return getProject()
+  end,
   color = { bg = colors.blue, fg = colors.mantle, gui = "bold" },
   separator = { left = "", right = "" },
   fmt = trunc(80, 12, nil, true),
@@ -213,7 +225,8 @@ M.components.location = {
     local line_length = string.len(tostring(line))
     local col = vim.fn.virtcol(".")
     local col_length = string.len(tostring(col))
-    local location = string.format(string.format("%%%dd:%%-%dd", line_length, col_length), line, col)
+    local location =
+      string.format(string.format("%%%dd:%%-%dd", line_length, col_length), line, col)
     local format_trunc = trunc(80, 6, nil, true)
     return format_trunc(location)
   end,
@@ -267,7 +280,9 @@ M.components.dia = {
 }
 
 M.components.lsp = {
-  function() return getLspName() end,
+  function()
+    return getLspName()
+  end,
   separator = { left = "", right = "" },
   color = { bg = colors.maroon, fg = colors.mantle, gui = "italic,bold" },
   fmt = trunc(80, 12, nil, true),

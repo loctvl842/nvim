@@ -44,7 +44,9 @@ return {
       mr.refresh(function()
         for _, tool in ipairs(opts.ensure_installed) do
           local p = mr.get_package(tool)
-          if not p:is_installed() then p:install() end
+          if not p:is_installed() then
+            p:install()
+          end
         end
       end)
     end,
@@ -189,9 +191,9 @@ return {
       if opts.inlay_hints.enabled then
         CoreUtil.lsp.on_supports_method("textDocument/inlayHint", function(client, buffer)
           if
-              vim.api.nvim_buf_is_valid(buffer)
-              and vim.bo[buffer].buftype == ""
-              and not vim.tbl_contains(opts.inlay_hints.exclude, vim.bo[buffer].filetype)
+            vim.api.nvim_buf_is_valid(buffer)
+            and vim.bo[buffer].buftype == ""
+            and not vim.tbl_contains(opts.inlay_hints.exclude, vim.bo[buffer].filetype)
           then
             CoreUtil.toggle.inlay_hints(buffer, true)
           end
@@ -311,9 +313,9 @@ return {
     "ray-x/lsp_signature.nvim",
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = {
-      floating_window = false,               -- show hint in a floating window, set to false for virtual text only mode
+      floating_window = false, -- show hint in a floating window, set to false for virtual text only mode
       floating_window_above_cur_line = true, -- try to place the floating above the current line when possible Note:
-      hint_scheme = "Comment",               -- highlight group for the virtual text
+      hint_scheme = "Comment", -- highlight group for the virtual text
     },
   },
 }

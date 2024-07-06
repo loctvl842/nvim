@@ -110,9 +110,9 @@ function M.statuscolumn()
       if vim.fn.foldclosed(vim.v.lnum) >= 0 then
         fold = { text = vim.opt.fillchars:get().foldclose or "", texthl = githl or "Folded" }
       elseif
-          show_open_folds
-          and not CoreUtil.ui.skip_foldexpr[buf]
-          and tostring(vim.treesitter.foldexpr(vim.v.lnum)):sub(1, 1) == ">"
+        show_open_folds
+        and not CoreUtil.ui.skip_foldexpr[buf]
+        and tostring(vim.treesitter.foldexpr(vim.v.lnum)):sub(1, 1) == ">"
       then -- fold start
         fold = { text = vim.opt.fillchars:get().foldopen or "", texthl = githl }
       end
@@ -132,7 +132,7 @@ function M.statuscolumn()
       components[2] = "%l" -- 0.11 handles both the current and other lines with %l
     else
       if vim.v.relnum == 0 then
-        components[2] = is_num and "%l" or "%r"    -- the current line
+        components[2] = is_num and "%l" or "%r" -- the current line
       else
         components[2] = is_relnum and "%r" or "%l" -- other lines
       end
@@ -160,7 +160,7 @@ function M.color(name, bg)
   ---@type {foreground?:number}?
   ---@diagnostic disable-next-line: deprecated
   local hl = vim.api.nvim_get_hl and vim.api.nvim_get_hl(0, { name = name, link = false })
-      or vim.api.nvim_get_hl_by_name(name, true)
+    or vim.api.nvim_get_hl_by_name(name, true)
   ---@diagnostic disable-next-line: undefined-field
   ---@type string?
   local color = nil
@@ -218,7 +218,8 @@ function M.bufremove(buf)
   buf = buf == 0 and vim.api.nvim_get_current_buf() or buf
 
   if vim.bo.modified then
-    local choice = vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
+    local choice =
+      vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
     if choice == 0 or choice == 3 then -- 0 for <Esc>/<C-c> and 3 for Cancel
       return
     end

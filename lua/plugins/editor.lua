@@ -11,28 +11,38 @@ return {
     keys = {
       {
         "<leader>fe",
-        function() require("neo-tree.command").execute({ toggle = true, dir = CoreUtil.root() }) end,
+        function()
+          require("neo-tree.command").execute({ toggle = true, dir = CoreUtil.root() })
+        end,
         desc = "Explorer NeoTree (Root Dir)",
       },
       {
         "<leader>fE",
-        function() require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() }) end,
+        function()
+          require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
+        end,
         desc = "Explorer NeoTree (cwd)",
       },
       { "<leader>e", "<leader>fe", desc = "Explorer NeoTree (Root Dir)", remap = true },
-      { "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)",      remap = true },
+      { "<leader>E", "<leader>fE", desc = "Explorer NeoTree (cwd)", remap = true },
       {
         "<leader>ge",
-        function() require("neo-tree.command").execute({ source = "git_status", toggle = true }) end,
+        function()
+          require("neo-tree.command").execute({ source = "git_status", toggle = true })
+        end,
         desc = "Git Explorer",
       },
       {
         "<leader>be",
-        function() require("neo-tree.command").execute({ source = "buffers", toggle = true }) end,
+        function()
+          require("neo-tree.command").execute({ source = "buffers", toggle = true })
+        end,
         desc = "Buffer Explorer",
       },
     },
-    deactivate = function() vim.cmd([[Neotree close]]) end,
+    deactivate = function()
+      vim.cmd([[Neotree close]])
+    end,
     init = function()
       -- FIX: use `autocmd` for lazy-loading neo-tree instead of directly requiring it,
       -- because `cwd` is not set up properly.
@@ -45,7 +55,9 @@ return {
             return
           else
             local stats = vim.uv.fs_stat(vim.fn.argv(0))
-            if stats and stats.type == "directory" then require("neo-tree") end
+            if stats and stats.type == "directory" then
+              require("neo-tree")
+            end
           end
         end,
       })
@@ -53,7 +65,7 @@ return {
     opts = {
       close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
       source_selector = {
-        winbar = true,             -- toggle to show selector on winbar
+        winbar = true, -- toggle to show selector on winbar
         content_layout = "center",
         tabs_layout = "equal",
         show_separator_on_edge = true,
@@ -90,7 +102,9 @@ return {
             desc = "Copy Path to Clipboard",
           },
           ["O"] = {
-            function(state) require("lazy.util").open(state.tree:get_node().path, { system = true }) end,
+            function(state)
+              require("lazy.util").open(state.tree:get_node().path, { system = true })
+            end,
             desc = "Open with System Application",
           },
           ["P"] = { "toggle_preview", config = { use_float = false } },
@@ -108,7 +122,7 @@ return {
         },
         -- This will find and focus the file in the active buffer every
         -- time the current file is changed while the tree is open.
-        group_empty_dirs = false,               -- when true, empty folders will be grouped together
+        group_empty_dirs = false, -- when true, empty folders will be grouped together
         hijack_netrw_behavior = "open_default", -- netrw disabled, opening a directory opens neo-tree
         -- in whatever position is specified in window.position
         -- "open_current",  -- netrw disabled, opening a directory opens within the
@@ -131,7 +145,9 @@ return {
       vim.api.nvim_create_autocmd("TermClose", {
         pattern = "*lazygit",
         callback = function()
-          if package.loaded["neo-tree.sources.git_status"] then require("neo-tree.sources.git_status").refresh() end
+          if package.loaded["neo-tree.sources.git_status"] then
+            require("neo-tree.sources.git_status").refresh()
+          end
         end,
       })
     end,
@@ -175,19 +191,19 @@ return {
     event = "VeryLazy",
     opts = {
       window = {
-        border = "double",        -- none, single, double, shadow
-        position = "bottom",      -- bottom, top
-        margin = { 1, 0, 1, 0 },  -- extra window margin [top, right, bottom, left]
+        border = "double", -- none, single, double, shadow
+        position = "bottom", -- bottom, top
+        margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
         padding = { 1, 2, 1, 2 }, -- extra window padding [top, right, bottom, left]
         winblend = 0,
       },
       layout = {
         height = { min = 5, max = 25 }, -- min and max height of the columns
         width = { min = 20, max = 50 }, -- min and max width of the columns
-        spacing = 5,                    -- spacing between columns
-        align = "center",               -- align columns left, center or right
+        spacing = 5, -- spacing between columns
+        align = "center", -- align columns left, center or right
       },
-      ignore_missing = true,            -- enable this to hide mappings for which you didn't specify a label
+      ignore_missing = true, -- enable this to hide mappings for which you didn't specify a label
       plugins = { spelling = true },
       defaults = {
         mode = { "n", "v" },
@@ -234,7 +250,7 @@ return {
       },
       visual = {
         ["<leader>c"] = { ["e"] = { CoreUtil.runlua, "Run Lua" } },
-      }
+      },
     },
     config = function(_, opts)
       local wk = require("which-key")
@@ -263,7 +279,9 @@ return {
       on_attach = function(buffer)
         local gs = package.loaded.gitsigns
 
-        local function map(mode, l, r, desc) vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc }) end
+        local function map(mode, l, r, desc)
+          vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
+        end
 
         -- stylua: ignore start
         map("n", "]h", function()
@@ -303,16 +321,16 @@ return {
     cmd = { "Trouble" },
     opts = {},
     keys = {
-      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>",              desc = "Diagnostics (Trouble)" },
+      { "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (Trouble)" },
       { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Buffer Diagnostics (Trouble)" },
-      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>",      desc = "Symbols (Trouble)" },
+      { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "Symbols (Trouble)" },
       {
         "<leader>cS",
         "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
         desc = "LSP references/definitions/... (Trouble)",
       },
       { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
-      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>",  desc = "Quickfix List (Trouble)" },
+      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix List (Trouble)" },
       {
         "[q",
         function()
@@ -320,7 +338,9 @@ return {
             require("trouble").prev({ skip_groups = true, jump = true })
           else
             local ok, err = pcall(vim.cmd.cprev)
-            if not ok then vim.notify(err, vim.log.levels.ERROR) end
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
           end
         end,
         desc = "Previous Trouble/Quickfix Item",
@@ -332,7 +352,9 @@ return {
             require("trouble").next({ skip_groups = true, jump = true })
           else
             local ok, err = pcall(vim.cmd.cnext)
-            if not ok then vim.notify(err, vim.log.levels.ERROR) end
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
           end
         end,
         desc = "Next Trouble/Quickfix Item",
@@ -377,7 +399,9 @@ return {
       },
       winbar = {
         enabled = false,
-        name_formatter = function(term) return term.name end,
+        name_formatter = function(term)
+          return term.name
+        end,
       },
     },
     config = function(_, opts)

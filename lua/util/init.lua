@@ -24,25 +24,41 @@ setmetatable(M, {
   end,
 })
 
-M.root_patterns = { ".git", "lua", "package.json", "mvnw", "gradlew", "pom.xml", "build.gradle", "release", ".project" }
+M.root_patterns = {
+  ".git",
+  "lua",
+  "package.json",
+  "mvnw",
+  "gradlew",
+  "pom.xml",
+  "build.gradle",
+  "release",
+  ".project",
+}
 
 --- Create a named user auto group
 ---
 ---@param name string
 ---@return integer
-function M.augroup(name) return vim.api.nvim_create_augroup("user_" .. name, { clear = true }) end
+function M.augroup(name)
+  return vim.api.nvim_create_augroup("user_" .. name, { clear = true })
+end
 
 --- Check if a plugin exists
 ---
 ---@param plugin string
 ---@return boolean
-function M.has(plugin) return require("lazy.core.config").plugins[plugin] ~= nil end
+function M.has(plugin)
+  return require("lazy.core.config").plugins[plugin] ~= nil
+end
 
 --- Check if a plugin is loaded
 ---
 ---@param name string
 ---@return boolean
-function M.is_loaded(name) return M.has(name) and require("lazy.core.config").plugins[name]._.loaded ~= nil end
+function M.is_loaded(name)
+  return M.has(name) and require("lazy.core.config").plugins[name]._.loaded ~= nil
+end
 
 --- Execute the provided function when the specified dependency id loaded
 ---
@@ -117,16 +133,23 @@ function M.get_root()
   if path then
     for _, client in pairs(vim.lsp.get_clients({ bufnr = 0 })) do
       local workspace = client.config.workspace_folders ---@type lsp.WorkspaceFolder[]
-      local paths = workspace and vim.tbl_map(function(ws) return vim.uri_to_fname(ws.uri) end, workspace)
-          or client.config.root_dir and { client.config.root_dir }
-          or {}
+      local paths = workspace
+          and vim.tbl_map(function(ws)
+            return vim.uri_to_fname(ws.uri)
+          end, workspace)
+        or client.config.root_dir and { client.config.root_dir }
+        or {}
       for _, p in ipairs(paths) do
         local r = vim.loop.fs_realpath(p)
-        if path:find(r, 1, true) then roots[#roots + 1] = r end
+        if path:find(r, 1, true) then
+          roots[#roots + 1] = r
+        end
       end
     end
   end
-  table.sort(roots, function(a, b) return #a > #b end)
+  table.sort(roots, function(a, b)
+    return #a > #b
+  end)
   ---@type string?
   local root = roots[1]
   if not root then
@@ -142,7 +165,9 @@ end
 --- Set the root to the provided directorty
 ---
 ---@param dir string
-function M.set_root(dir) vim.api.nvim_set_current_dir(dir) end
+function M.set_root(dir)
+  vim.api.nvim_set_current_dir(dir)
+end
 
 --- Set the theme for the telescope
 ---
@@ -160,7 +185,11 @@ function M.telescope_theme(type)
   end
   return require("telescope.themes")["get_" .. type]({
     cwd = M.get_root(),
-    borderchars = M.generate_borderchars("thick", nil, { top = "█", top_left = "█", top_right = "█" }),
+    borderchars = M.generate_borderchars(
+      "thick",
+      nil,
+      { top = "█", top_left = "█", top_right = "█" }
+    ),
   })
 end
 
@@ -234,11 +263,15 @@ M.load = function(name)
   local Util = require("lazy.core.util")
   -- always load lazyvim, then user file
   local mod = "core." .. name
-  Util.try(function() require(mod) end, {
+  Util.try(function()
+    require(mod)
+  end, {
     msg = "Failed loading " .. mod,
     on_error = function(msg)
       local modpath = require("lazy.core.cache").find(mod)
-      if modpath then Util.error(msg) end
+      if modpath then
+        Util.error(msg)
+      end
     end,
   })
 end
@@ -250,7 +283,9 @@ end
 M.on_very_lazy = function(fn)
   vim.api.nvim_create_autocmd("User", {
     pattern = "VeryLazy",
-    callback = function() fn() end,
+    callback = function()
+      fn()
+    end,
   })
 end
 
@@ -267,17 +302,27 @@ end
 M.notify = function(msg, level, opts)
   opts = opts or {}
   level = vim.log.levels[level:upper()]
-  if type(msg) == "table" then msg = table.concat(msg, "\n") end
+  if type(msg) == "table" then
+    msg = table.concat(msg, "\n")
+  end
   local nopts = { title = "Nvim" }
-  if opts.once then return vim.schedule(function() vim.notify_once(msg, level, nopts) end) end
-  vim.schedule(function() vim.notify(msg, level, nopts) end)
+  if opts.once then
+    return vim.schedule(function()
+      vim.notify_once(msg, level, nopts)
+    end)
+  end
+  vim.schedule(function()
+    vim.notify(msg, level, nopts)
+  end)
 end
 
 --- @param type 'thin' | 'thick' | 'empty' | nil
 --- @param order 't-r-b-l-tl-tr-br-bl' | 'tl-t-tr-r-bl-b-br-l' | nil
 --- @param opts BorderIcons | nil
 M.generate_borderchars = function(type, order, opts)
-  if order == nil then order = "t-r-b-l-tl-tr-br-bl" end
+  if order == nil then
+    order = "t-r-b-l-tl-tr-br-bl"
+  end
   local border_icons = require("core.icons").borders
   --- @type BorderIcons
   local border = vim.tbl_deep_extend("force", border_icons[type or "empty"], opts or {})
@@ -287,7 +332,9 @@ M.generate_borderchars = function(type, order, opts)
   local extractDirections = (function()
     local index = 1
     return function()
-      if index == nil then return nil end
+      if index == nil then
+        return nil
+      end
       -- Find the next occurence of `char`
       local nextIndex = string.find(order, "-", index)
       -- Extract the first direction
@@ -310,19 +357,25 @@ M.generate_borderchars = function(type, order, opts)
   }
   local direction = extractDirections()
   while direction do
-    if mappings[direction] == nil then M.notify(string.format("Invalid direction '%s'", direction), "error") end
+    if mappings[direction] == nil then
+      M.notify(string.format("Invalid direction '%s'", direction), "error")
+    end
     borderchars[#borderchars + 1] = border[mappings[direction]]
     direction = extractDirections()
   end
 
-  if #borderchars ~= 8 then M.notify(string.format("Invalid order '%s'", order), "error") end
+  if #borderchars ~= 8 then
+    M.notify(string.format("Invalid order '%s'", order), "error")
+  end
 
   return borderchars
 end
 
 function M.lazy_notify()
   local notifs = {}
-  local function temp(...) table.insert(notifs, vim.F.pack_len(...)) end
+  local function temp(...)
+    table.insert(notifs, vim.F.pack_len(...))
+  end
 
   local orig = vim.notify
   vim.notify = temp
@@ -346,7 +399,9 @@ function M.lazy_notify()
 
   -- wait till vim.notify has been replaced
   check:start(function()
-    if vim.notify ~= temp then replay() end
+    if vim.notify ~= temp then
+      replay()
+    end
   end)
   -- or if it took more than 500ms, then something went wrong
   timer:start(500, 0, replay)
@@ -398,7 +453,9 @@ M.read_json_file = function(filename)
   local Path = require("plenary.path")
 
   local path = Path:new(filename)
-  if not path:exists() then return nil end
+  if not path:exists() then
+    return nil
+  end
 
   local json_contents = path:read()
   local json = vim.fn.json_decode(json_contents)
@@ -406,18 +463,26 @@ M.read_json_file = function(filename)
   return json
 end
 
-M.read_package_json = function() return M.read_json_file("package.json") end
+M.read_package_json = function()
+  return M.read_json_file("package.json")
+end
 
 ---Check if the given NPM package is installed in the current project.
 ---@param package string
 ---@return boolean
 M.is_npm_package_installed = function(package)
   local package_json = M.read_package_json()
-  if not package_json then return false end
+  if not package_json then
+    return false
+  end
 
-  if package_json.dependencies and package_json.dependencies[package] then return true end
+  if package_json.dependencies and package_json.dependencies[package] then
+    return true
+  end
 
-  if package_json.devDependencies and package_json.devDependencies[package] then return true end
+  if package_json.devDependencies and package_json.devDependencies[package] then
+    return true
+  end
 
   return false
 end
@@ -486,7 +551,9 @@ M.runlua = function()
       local buf, row = get_source()
       local str = table.concat(
         vim.tbl_map(function(o)
-          if type(o) == "table" then return vim.inspect(o) end
+          if type(o) == "table" then
+            return vim.inspect(o)
+          end
           return tostring(o)
         end, { ... }),
         " "
@@ -494,10 +561,9 @@ M.runlua = function()
       local indent = #vim.api.nvim_buf_get_lines(buf, row, row + 1, false)[1]:match("^%s+")
       local lines = vim.split(str, "\n")
       ---@param line string
-      local virt_lines = vim.tbl_map(
-        function(line) return { { string.rep(" ", indent * 2) .. " ", "DiagnosticInfo" }, { line, "MsgArea" } } end,
-        lines
-      )
+      local virt_lines = vim.tbl_map(function(line)
+        return { { string.rep(" ", indent * 2) .. " ", "DiagnosticInfo" }, { line, "MsgArea" } }
+      end, lines)
       vim.api.nvim_buf_set_extmark(buf, ns, row, 0, { virt_lines = virt_lines })
     end,
   }, { __index = _G })

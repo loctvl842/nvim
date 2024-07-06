@@ -3,13 +3,17 @@ local util = require("util")
 -- Highlight on yank
 vim.api.nvim_create_autocmd({ "TextYankPost" }, {
   group = util.augroup("highlight_yank"),
-  callback = function() vim.highlight.on_yank({ higroup = "Visual" }) end,
+  callback = function()
+    vim.highlight.on_yank({ higroup = "Visual" })
+  end,
 })
 
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd({ "VimResized" }, {
   group = util.augroup("resize_splits"),
-  callback = function() vim.cmd("tabdo wincmd =") end,
+  callback = function()
+    vim.cmd("tabdo wincmd =")
+  end,
 })
 
 -- close some filetypes with <q>
@@ -46,19 +50,25 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
   pattern = "?*",
   group = util.augroup("remember_folds"),
-  callback = function() vim.cmd([[silent! mkview 1]]) end,
+  callback = function()
+    vim.cmd([[silent! mkview 1]])
+  end,
 })
 vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
   pattern = "?*",
   group = util.augroup("remember_folds"),
-  callback = function() vim.cmd([[silent! loadview 1]]) end,
+  callback = function()
+    vim.cmd([[silent! loadview 1]])
+  end,
 })
 
 -- fix comment
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
   group = util.augroup("comment_newline"),
   pattern = { "*" },
-  callback = function() vim.cmd([[set formatoptions-=cro]]) end,
+  callback = function()
+    vim.cmd([[set formatoptions-=cro]])
+  end,
 })
 
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
@@ -78,12 +88,16 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
 -- clear cmd output
 vim.api.nvim_create_autocmd({ "CursorHold" }, {
   group = util.augroup("clear_term"),
-  callback = function() vim.cmd([[echon '']]) end,
+  callback = function()
+    vim.cmd([[echon '']])
+  end,
 })
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
   pattern = { "help" },
-  callback = function() vim.cmd([[wincmd L]]) end,
+  callback = function()
+    vim.cmd([[wincmd L]])
+  end,
 })
 
 vim.api.nvim_create_autocmd({ "TermOpen" }, {
@@ -132,7 +146,9 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 vim.api.nvim_create_autocmd("BufWritePre", {
   group = util.augroup("lua"),
   pattern = "*.lua",
-  callback = function(event) CoreUtil.format.format({ buf = event.buf }) end,
+  callback = function(event)
+    CoreUtil.format.format({ buf = event.buf })
+  end,
 })
 
 ----------------------------- Golang -----------------------------
@@ -174,7 +190,9 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   pattern = { "*.tf", "*.tfvars" },
-  callback = function(event) CoreUtil.format.format({ buf = event.buf }) end,
+  callback = function(event)
+    CoreUtil.format.format({ buf = event.buf })
+  end,
 })
 
 ----------------------------- Neogit -----------------------------
@@ -182,14 +200,16 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 vim.api.nvim_create_autocmd("User", {
   group = util.augroup("neogit"),
   pattern = "NeogitPushComplete",
-  callback = function() require("neogit").close() end,
+  callback = function()
+    require("neogit").close()
+  end,
 })
 
 ----------------------------- Sessions -----------------------------
 
 --- Attempt to work around issues with neovim-project and session-manager saving sessions.
 
-vim.api.nvim_create_autocmd({ "VimLeavePre" }, {
+vim.api.nvim_create_autocmd({ "ExitPre" }, {
   callback = function()
     vim.cmd([[silent! NeoTreeClose]])
     CoreUtil.session.save_session()

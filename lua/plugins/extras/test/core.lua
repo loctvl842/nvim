@@ -17,16 +17,66 @@ return {
       "antoinemadec/FixCursorHold.nvim",
     },
     keys = {
-      { "<leader>t",  "",                                                                             desc = "+test" },
-      { "<leader>tt", run_wrap(function(nt) nt.run.run(vim.fn.expand("%")) end),                      desc = "Run File" },
-      { "<leader>tT", run_wrap(function(nt) nt.run.run(vim.uv.cwd()) end),                            desc = "Run All Test Files" },
-      { "<leader>tr", run_wrap(function(nt) nt.run.run() end),                                        desc = "Run Nearest" },
-      { "<leader>tl", run_wrap(function(nt) nt.run.run_last() end),                                   desc = "Run Last" },
-      { "<leader>ts", run_wrap(function(nt) nt.summary.toggle() end),                                 desc = "Toggle Summary" },
-      { "<leader>to", run_wrap(function(nt) nt.output.open({ enter = true, auto_close = true }) end), desc = "Show Output" },
-      { "<leader>tO", run_wrap(function(nt) nt.output_panel.toggle() end),                            desc = "Toggle Output Panel" },
-      { "<leader>tS", run_wrap(function(nt) nt.run.stop() end),                                       desc = "Stop" },
-      { "<leader>tw", run_wrap(function(nt) nt.watch.toggle(vim.fn.expand("%")) end),                 desc = "Toggle Watch" },
+      { "<leader>t", "", desc = "+test" },
+      {
+        "<leader>tt",
+        run_wrap(function(nt)
+          nt.run.run(vim.fn.expand("%"))
+        end),
+        desc = "Run File",
+      },
+      {
+        "<leader>tT",
+        run_wrap(function(nt)
+          nt.run.run(vim.uv.cwd())
+        end),
+        desc = "Run All Test Files",
+      },
+      {
+        "<leader>tr",
+        run_wrap(function(nt)
+          nt.run.run()
+        end),
+        desc = "Run Nearest",
+      },
+      {
+        "<leader>tl",
+        run_wrap(function(nt)
+          nt.run.run_last()
+        end),
+        desc = "Run Last",
+      },
+      {
+        "<leader>ts",
+        run_wrap(function(nt)
+          nt.summary.toggle()
+        end),
+        desc = "Toggle Summary",
+      },
+      {
+        "<leader>to",
+        run_wrap(function(nt)
+          nt.output.open({ enter = true, auto_close = true })
+        end),
+        desc = "Show Output",
+      },
+      {
+        "<leader>tO",
+        run_wrap(function(nt)
+          nt.output_panel.toggle()
+        end),
+        desc = "Toggle Output Panel",
+      },
+      { "<leader>tS", run_wrap(function(nt)
+        nt.run.stop()
+      end), desc = "Stop" },
+      {
+        "<leader>tw",
+        run_wrap(function(nt)
+          nt.watch.toggle(vim.fn.expand("%"))
+        end),
+        desc = "Toggle Watch",
+      },
     },
     opts = {
       adapters = {},
@@ -114,6 +164,6 @@ return {
       end
 
       require("neotest").setup(opts)
-    end
+    end,
   },
 }

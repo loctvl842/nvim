@@ -29,7 +29,6 @@ function M.get()
     { "<leader>cD", "<cmd>Telescope lsp_references<cr>",      desc = "References",                 mode = { "n" } },
     { "<leader>ce", CoreUtil.runlua,                          desc = "Run Lua",                    mode = { "n" } },
     { "<leader>cI", "<cmd>Telescope lsp_implementations<cr>", desc = "Goto Implementation",        mode = { "n" } },
-    { "<leader>ci", "<cmd>LspInfo<cr>",                       desc = "Info",                       mode = { "n" } },
     { "<leader>cR", CoreUtil.lsp.rename_file,                 desc = "Rename File",                mode = { "n" },          has = { "workspace/didRenameFiles", "workspace/willRenameFiles" } },
     { "<leader>cr", vim.lsp.buf.rename,                       desc = "Rename",                     has = "rename" },
     { "<leader>cA", CoreUtil.lsp.action.source,               desc = "Source Action",              has = "codeAction" },
@@ -111,6 +110,7 @@ function M.on_attach(_, buffer)
     local cond = not (keys.cond == false or ((type(keys.cond) == "function") and not keys.cond()))
 
     if has and cond then
+      ---@class LazyKeysBase
       local opts = Keys.opts(keys)
       opts.cond = nil
       opts.has = nil
@@ -119,7 +119,6 @@ function M.on_attach(_, buffer)
       if keys.rhs == nil then
         _G.P(keys)
       end
-      -- vim.keymap.se
       vim.keymap.set(keys.mode or "n", keys.lhs, keys.rhs, opts)
     end
   end

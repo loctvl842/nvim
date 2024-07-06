@@ -27,13 +27,19 @@ local function is_restorable(buffer)
     return true
   end
 
-  if #options.bufhidden ~= 0 then return false end
+  if #options.bufhidden ~= 0 then
+    return false
+  end
 
   if #options.buftype == 0 then
     -- Normal buffer, check if it listed.
-    if not options.buflisted then return false end
+    if not options.buflisted then
+      return false
+    end
     -- Check if it has a filename.
-    if #options.bufname == 0 then return false end
+    if #options.bufname == 0 then
+      return false
+    end
   elseif options.buftype ~= "terminal" and options.buftype ~= "help" then
     -- Buffers other then normal, terminal and help are impossible to restore.
     return false
@@ -58,8 +64,10 @@ M.save_session = function()
     -- Don't save while there's any 'nofile' buffer open.
     -- vim.print(require("util").get_buffer_options(buf))
     -- vim.print(CoreUtil.get_buffer_options(buffer))
-    if vim.api.nvim_get_option_value("buftype", { buf = buf }) == "nofile"
-        and vim.api.nvim_get_option_value("buftype", { buf = buf }) == "prompt" then
+    if
+      vim.api.nvim_get_option_value("buftype", { buf = buf }) == "nofile"
+      and vim.api.nvim_get_option_value("buftype", { buf = buf }) == "prompt"
+    then
       return
     end
   end

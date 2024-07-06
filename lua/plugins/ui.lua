@@ -8,7 +8,9 @@ return {
     keys = {
       {
         "<leader>un",
-        function() require("notify").dismiss({ silent = true, pending = true }) end,
+        function()
+          require("notify").dismiss({ silent = true, pending = true })
+        end,
         desc = "Dismiss All Notifications",
       },
     },
@@ -20,12 +22,22 @@ return {
       },
       stages = "static",
       timeout = 3000,
-      max_height = function() return math.floor(vim.o.lines * 0.75) end,
-      max_width = function() return math.floor(vim.o.columns * 0.75) end,
-      on_open = function(win) vim.api.nvim_win_set_config(win, { zindex = 100 }) end,
+      max_height = function()
+        return math.floor(vim.o.lines * 0.75)
+      end,
+      max_width = function()
+        return math.floor(vim.o.columns * 0.75)
+      end,
+      on_open = function(win)
+        vim.api.nvim_win_set_config(win, { zindex = 100 })
+      end,
     },
     init = function()
-      if not CoreUtil.has("noice.nvim") then CoreUtil.on_very_lazy(function() vim.notify = require("notify") end) end
+      if not CoreUtil.has("noice.nvim") then
+        CoreUtil.on_very_lazy(function()
+          vim.notify = require("notify")
+        end)
+      end
     end,
   },
 
@@ -39,19 +51,21 @@ return {
     event = "VeryLazy",
     -- version = "v3.5.0",
     keys = {
-      { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>",            desc = "Toggle Pin" },
+      { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
       { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete Non-Pinned Buffers" },
-      { "<leader>bO", "<Cmd>BufferLineCloseOthers<CR>",          desc = "Delete Other Buffers" },
-      { "<S-h>",      "<cmd>BufferLineCyclePrev<cr>",            desc = "Prev Buffer" },
-      { "<S-l>",      "<cmd>BufferLineCycleNext<cr>",            desc = "Next Buffer" },
-      { "[b",         "<cmd>BufferLineCyclePrev<cr>",            desc = "Prev Buffer" },
-      { "]b",         "<cmd>BufferLineCycleNext<cr>",            desc = "Next Buffer" },
-      { "[B",         "<cmd>BufferLineMovePrev<cr>",             desc = "Move buffer prev" },
-      { "]B",         "<cmd>BufferLineMoveNext<cr>",             desc = "Move buffer next" },
+      { "<leader>bO", "<Cmd>BufferLineCloseOthers<CR>", desc = "Delete Other Buffers" },
+      { "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
+      { "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
+      { "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
+      { "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
+      { "[B", "<cmd>BufferLineMovePrev<cr>", desc = "Move buffer prev" },
+      { "]B", "<cmd>BufferLineMoveNext<cr>", desc = "Move buffer next" },
     },
     opts = {
       options = {
-        close_command = function(n) CoreUtil.ui.bufremove(n) end,
+        close_command = function(n)
+          CoreUtil.ui.bufremove(n)
+        end,
         -- stylua: ignore
         right_mouse_command = function(n) CoreUtil.ui.bufremove(n) end,
         diagnostics = "nvim_lsp", -- | "nvim_lsp" | "coc",
@@ -59,12 +73,16 @@ return {
         -- separator_style = { "", "" }, -- | "thick" | "thin" | { "any", "any" },
         separator_style = "thin",
         diagnostics_indicator = function(count, _, _, _)
-          if count > 9 then return "9+" end
+          if count > 9 then
+            return "9+"
+          end
           return tostring(count)
         end,
         -- always_show_bufferline = false,
         custom_filter = function(buf_number)
-          if vim.bo[buf_number].filetype == "dashboard" then return false end
+          if vim.bo[buf_number].filetype == "dashboard" then
+            return false
+          end
           return true
         end,
         buffer_close_icon = "",
@@ -88,7 +106,9 @@ return {
       -- Fix bufferline when restoring a session
       vim.api.nvim_create_autocmd({ "BufAdd", "BufDelete" }, {
         callback = function()
-          vim.schedule(function() pcall(nvim_bufferline) end)
+          vim.schedule(function()
+            pcall(nvim_bufferline)
+          end)
         end,
       })
     end,
@@ -163,7 +183,9 @@ return {
 
       setup()
       vim.api.nvim_create_autocmd("ColorScheme", {
-        callback = function() setup() end,
+        callback = function()
+          setup()
+        end,
       })
     end,
   },
@@ -291,7 +313,9 @@ return {
     config = function(_, opts)
       local dashboard = require("dashboard")
 
-      if vim.o.filetype == "lazy" then vim.cmd.close() end
+      if vim.o.filetype == "lazy" then
+        vim.cmd.close()
+      end
 
       vim.api.nvim_create_autocmd("User", {
         pattern = "LazyVimStarted",
@@ -356,15 +380,15 @@ return {
       filetypes = { "*", "!lazy", "!dashboard" },
       buftype = { "*", "!prompt", "!nofile" },
       user_default_options = {
-        RGB = true,       -- #RGB hex codes
-        RRGGBB = true,    -- #RRGGBB hex codes
-        names = false,    -- "Name" codes like Blue
-        RRGGBBAA = true,  -- #RRGGBBAA hex codes
+        RGB = true, -- #RGB hex codes
+        RRGGBB = true, -- #RRGGBB hex codes
+        names = false, -- "Name" codes like Blue
+        RRGGBBAA = true, -- #RRGGBBAA hex codes
         AARRGGBB = false, -- 0xAARRGGBB hex codes
-        rgb_fn = true,    -- CSS rgb() and rgba() functions
-        hsl_fn = true,    -- CSS hsl() and hsla() functions
-        css = false,      -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
-        css_fn = true,    -- Enable all CSS *functions*: rgb_fn, hsl_fn
+        rgb_fn = true, -- CSS rgb() and rgba() functions
+        hsl_fn = true, -- CSS hsl() and hsla() functions
+        css = false, -- Enable all CSS features: rgb_fn, hsl_fn, names, RGB, RRGGBB
+        css_fn = true, -- Enable all CSS *functions*: rgb_fn, hsl_fn
         -- Available modes: foreground, background
         -- Available modes for `mode`: foreground, background,  virtualtext
         mode = "background", -- Set the display mode.

@@ -41,8 +41,8 @@ return {
         -- CoreUtil will use these options when formatting with the conform.nvim formatter
         format = {
           timeout_ms = 3000,
-          async = false,           -- not recommended to change
-          quiet = false,           -- not recommended to change
+          async = false, -- not recommended to change
+          quiet = false, -- not recommended to change
           lsp_format = "fallback", -- not recommended to change
         },
         ---@type table<string, conform.FormatterUnit[]>
@@ -77,7 +77,7 @@ return {
               "--indent-style=space",
               "--line-width=120",
               "--quote-style=single",
-            }
+            },
           },
           stylua = {
             args = {
@@ -87,7 +87,7 @@ return {
               "--stdin-filepath",
               "$FILENAME",
               "-",
-            }
+            },
           },
           prettier = {
             args = {
@@ -95,8 +95,8 @@ return {
               "2",
               "--stdin-filepath",
               "$FILENAME",
-            }
-          }
+            },
+          },
         },
       }
       return opts

@@ -12,7 +12,10 @@ function M.option(option, silent, values)
       ---@diagnostic disable-next-line: no-unknown
       vim.opt_local[option] = values[1]
     end
-    return CoreUtil.info("Set " .. option .. " to " .. vim.opt_local[option]:get(), { title = "Option" })
+    return CoreUtil.info(
+      "Set " .. option .. " to " .. vim.opt_local[option]:get(),
+      { title = "Option" }
+    )
   end
   ---@diagnostic disable-next-line: no-unknown
   vim.opt_local[option] = not vim.opt_local[option]:get()
@@ -28,7 +31,8 @@ end
 local nu = { number = true, relativenumber = true }
 function M.number()
   if vim.opt_local.number:get() or vim.opt_local.relativenumber:get() then
-    nu = { number = vim.opt_local.number:get(), relativenumber = vim.opt_local.relativenumber:get() }
+    nu =
+      { number = vim.opt_local.number:get(), relativenumber = vim.opt_local.relativenumber:get() }
     vim.opt_local.number = false
     vim.opt_local.relativenumber = false
     CoreUtil.warn("Disabled line numbers", { title = "Option" })

@@ -35,7 +35,10 @@ return {
             formatter.format = function(buf)
               local client = get_client(buf)
               if client then
-                local diag = vim.diagnostic.get(buf, { namespace = vim.lsp.diagnostic.get_namespace(client.id) })
+                local diag = vim.diagnostic.get(
+                  buf,
+                  { namespace = vim.lsp.diagnostic.get_namespace(client.id) }
+                )
                 if #diag > 0 then
                   vim.cmd("EslintFixAll")
                 end
