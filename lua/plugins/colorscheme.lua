@@ -238,15 +238,14 @@ return {
     },
     config = function(_, opts)
       CoreUtil.lualine.setup({
-        lualine = {
-          float = false,
-          separator = "bubble", -- bubble | triangle
-          ---@type any
-          theme = "auto", -- nil combine with separator "bubble" and float
-          colorful = true,
-          separator_icon = { left = "", right = " " },
-          thin_separator_icon = { left = "", right = " " },
-        },
+        float = true,
+        separator = "bubble", -- bubble | triangle
+        ---@type any
+        theme = "auto", -- nil combine with separator "bubble" and float
+        colorful = true,
+        separators_enabled = true,
+        separator_icon = { left = "", right = " " },
+        thin_separator_icon = { left = "", right = " " },
       })
 
       vim.g.catppuccin_flavour = "macchiato"

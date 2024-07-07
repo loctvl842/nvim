@@ -5,6 +5,12 @@ vim.g.maplocalleader = " "
 
 vim.g.autoformat = true
 
+-- Each entry can be:
+-- * the name of a detector function like `lsp` or `cwd`
+-- * a pattern or array of patterns like `.git` or `lua`.
+-- * a function with signature `function(buf) -> string|string[]`
+vim.g.root_spec = { { ".git", "lua" }, "lsp", "cwd" }
+
 local opt = vim.opt
 -- local options = {
 opt.backup = false -- creates a backup file
@@ -46,8 +52,8 @@ opt.number = true -- set numbered lines
 opt.numberwidth = 4 -- set number column width to 2 {default 4}
 opt.signcolumn = "yes" -- always show the sign column, otherwise it would shift the text each time
 opt.wrap = false -- display lines as one long line
--- scrolloff = 6, -- is one of my fav
--- sidescrolloff = 8,
+opt.scrolloff = 6 -- is one of my fav
+opt.sidescrolloff = 8
 opt.laststatus = 3
 opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
 -- guicursor = "a:xxx",

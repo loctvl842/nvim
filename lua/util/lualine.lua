@@ -24,44 +24,22 @@ local default = {
   separators_enabled = false,
 }
 
----@class LualineConfig
-LualineConfig.options = {}
-
----@param type "bubble" | "triangle"
-local function make_separator(type)
-  if type == "bubble" then
-    LualineConfig.options.separator_icon = { left = "█", right = "█" }
-    LualineConfig.options.thin_separator_icon = { left = " ", right = " " }
-  elseif type == "triangle" then
-    LualineConfig.options.separator_icon = { left = "█", right = "█" }
-    LualineConfig.options.thin_separator_icon = { left = " ", right = " " }
-  else
-    return
-  end
-end
-
-LualineConfig.setup = function(opts)
-  LualineConfig.options = vim.tbl_deep_extend("force", {}, default, opts or {})
-  if LualineConfig.options.float then
-    make_separator(LualineConfig.options.separator)
-  end
-end
-
 ---@class LualineComponents
----@field space table
----@field project table
----@field filetype table
----@field branch table
----@field location table
----@field diff table
----@field modes table
----@field macro table
----@field dia table
----@field lsp table
+---@field space fun(): table
+---@field project fun(): table
+---@field filetype fun(): table
+---@field branch fun(): table
+---@field location fun(): table
+---@field diff fun(): table
+---@field modes fun(): table
+---@field macro fun(): table
+---@field dia fun(): table
+---@field lsp fun(): table
 
 ---@class util.lualine
 ---@field setup fun(opts: LualineConfig): void
 ---@field components LualineComponents
+---@field config LualineConfig
 local M = { components = {} }
 
 local colors = require("catppuccin.palettes").get_palette("macchiato")
@@ -70,7 +48,7 @@ local colors = require("catppuccin.palettes").get_palette("macchiato")
 --- @param trunc_len number truncates component to trunc_len number of chars
 --- @param hide_width number | nil hides component when window width is smaller then hide_width
 --- @param no_ellipsis boolean whether to disable adding '...' at end after truncation
----@return string - function that can format the component accordingly
+---@return fun(string): string - function that can format the component accordingly
 local function trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
   return function(str)
     local win_width = vim.fn.winwidth(0)
@@ -118,11 +96,128 @@ M.theme = {
   replace = { a = { fg = colors.mantle, bg = colors.green } },
 }
 
+M.components.space = function()
+  return {
+    function()
+      return " "
+    end,
+    color = { bg = colors.mantle, fg = colors.blue },
+  }
+end
+
 local function getProject()
   local project_dir = CoreUtil.root.cwd()
   -- Get the "root" project name
   local root = string.match(project_dir or "", "[%a%-%_]+$") or ""
   return root
+end
+
+M.components.project = function()
+  return {
+    function()
+      return getProject()
+    end,
+    color = { bg = colors.blue, fg = colors.mantle, gui = "bold" },
+    -- separator = { left = "", right = "" },
+    separator = M.config.separator_icon,
+    fmt = trunc(80, 12, nil, true),
+  }
+end
+
+M.components.filetype = function()
+  return {
+    "filetype",
+    icons_enabled = false,
+    color = { bg = colors.surface0, fg = colors.blue, gui = "bold,italic" },
+    separator = { right = "" },
+    fmt = trunc(80, 3, 80, true),
+  }
+end
+
+M.components.branch = function()
+  return {
+    "branch",
+    icon = "",
+    color = { bg = colors.green, fg = colors.mantle, gui = "bold" },
+    -- separator = { left = "", right = "" },
+    separator = M.config.separator_icon,
+    fmt = trunc(80, 12, 80, true),
+  }
+end
+
+M.components.location = function()
+  return {
+    "location",
+    color = { bg = colors.yellow, fg = colors.mantle, gui = "bold" },
+    fmt = function(_str)
+      local line = vim.fn.line(".")
+      local line_length = string.len(tostring(line))
+      local col = vim.fn.virtcol(".")
+      local col_length = string.len(tostring(col))
+      local location = string.format(string.format("%%%dd:%%-%dd", line_length, col_length), line, col)
+      local format_trunc = trunc(80, 6, nil, true)
+      return format_trunc(location)
+    end,
+    -- separator = { left = "", right = "" },
+    separator = M.config.separator_icon,
+  }
+end
+
+M.components.diff = function()
+  return {
+    "diff",
+    color = { bg = colors.surface0, fg = colors.mantle, gui = "bold" },
+    -- separator = { left = "", right = "" },
+    separator = M.config.separator_icon,
+    symbols = { added = "󰐖  ", modified = "  ", removed = "  " },
+
+    diff_color = {
+      added = { fg = colors.green },
+      modified = { fg = colors.yellow },
+      removed = { fg = colors.red },
+    },
+
+    fmt = trunc(80, 12, 80, true),
+  }
+end
+
+M.components.modes = function()
+  return {
+    "mode",
+    color = function()
+      local mode_color = modecolor
+      return { bg = mode_color[vim.fn.mode()], fg = colors.mantle, gui = "bold" }
+    end,
+    -- separator = { left = "", right = "" },
+    separator = M.config.separator_icon,
+    fmt = trunc(80, 12, nil, true),
+  }
+end
+
+M.components.macro = function()
+  return {
+    require("noice").api.status.mode.get,
+    cond = require("noice").api.status.mode.has,
+    color = { fg = colors.red, bg = colors.mantle, gui = "italic,bold" },
+    fmt = trunc(80, 12, 80, true),
+  }
+end
+
+M.components.dia = function()
+  return {
+    "diagnostics",
+    sources = { "nvim_diagnostic" },
+    symbols = { error = " ", warn = " ", info = " ", hint = " " },
+    diagnostics_color = {
+      error = { fg = colors.red },
+      warn = { fg = colors.yellow },
+      info = { fg = colors.teal },
+      hint = { fg = colors.sky },
+    },
+    color = { bg = colors.surface0, fg = colors.mantle, gui = "bold" },
+    -- separator = { left = "" },
+    separator = { left = M.config.separator_icon.left },
+  }
 end
 
 local function getLspName()
@@ -174,7 +269,7 @@ local function getLspName()
   local unique_client_names = {}
 
   for _, v in ipairs(buf_client_names) do
-    if not hash[v] then
+    if v ~= "copilot" and not hash[v] then
       ---@type string
       unique_client_names[#unique_client_names + 1] = v
       hash[v] = true
@@ -185,109 +280,28 @@ local function getLspName()
   return "  " .. language_servers
 end
 
-M.components.space = {
-  function()
-    return " "
-  end,
-  color = { bg = colors.mantle, fg = colors.blue },
-}
+M.components.lsp = function()
+  return {
+    function()
+      return getLspName()
+    end,
+    -- separator = { left = "", right = "" },
+    separator = M.config.separator_icon,
+    color = { bg = colors.maroon, fg = colors.mantle, gui = "italic,bold" },
+    fmt = trunc(80, 12, nil, true),
+  }
+end
 
-M.components.project = {
-  function()
-    return getProject()
-  end,
-  color = { bg = colors.blue, fg = colors.mantle, gui = "bold" },
-  separator = { left = "", right = "" },
-  fmt = trunc(80, 12, nil, true),
-}
-
-M.components.filetype = {
-  "filetype",
-  icons_enabled = false,
-  color = { bg = colors.surface0, fg = colors.blue, gui = "bold,italic" },
-  separator = { right = "" },
-  fmt = trunc(80, 3, 80, true),
-}
-
-M.components.branch = {
-  "branch",
-  icon = "",
-  color = { bg = colors.green, fg = colors.mantle, gui = "bold" },
-  separator = { left = "", right = "" },
-  fmt = trunc(80, 12, 80, true),
-}
-
-M.components.location = {
-  "location",
-  color = { bg = colors.yellow, fg = colors.mantle, gui = "bold" },
-  fmt = function(_str)
-    local line = vim.fn.line(".")
-    local line_length = string.len(tostring(line))
-    local col = vim.fn.virtcol(".")
-    local col_length = string.len(tostring(col))
-    local location =
-      string.format(string.format("%%%dd:%%-%dd", line_length, col_length), line, col)
-    local format_trunc = trunc(80, 6, nil, true)
-    return format_trunc(location)
-  end,
-  separator = { left = "", right = "" },
-}
-
-M.components.diff = {
-  "diff",
-  color = { bg = colors.surface0, fg = colors.mantle, gui = "bold" },
-  separator = { left = "", right = "" },
-  symbols = { added = "󰐖  ", modified = "  ", removed = "  " },
-
-  diff_color = {
-    added = { fg = colors.green },
-    modified = { fg = colors.yellow },
-    removed = { fg = colors.red },
-  },
-
-  fmt = trunc(80, 12, 80, true),
-}
-
-M.components.modes = {
-  "mode",
-  color = function()
-    local mode_color = modecolor
-    return { bg = mode_color[vim.fn.mode()], fg = colors.mantle, gui = "bold" }
-  end,
-  separator = { left = "", right = "" },
-  fmt = trunc(80, 12, nil, true),
-}
-
-M.components.macro = {
-  require("noice").api.status.mode.get,
-  cond = require("noice").api.status.mode.has,
-  color = { fg = colors.red, bg = colors.mantle, gui = "italic,bold" },
-  fmt = trunc(80, 12, 80, true),
-}
-
-M.components.dia = {
-  "diagnostics",
-  sources = { "nvim_diagnostic" },
-  symbols = { error = " ", warn = " ", info = " ", hint = " " },
-  diagnostics_color = {
-    error = { fg = colors.red },
-    warn = { fg = colors.yellow },
-    info = { fg = colors.teal },
-    hint = { fg = colors.sky },
-  },
-  color = { bg = colors.surface0, fg = colors.mantle, gui = "bold" },
-  separator = { left = "" },
-}
-
-M.components.lsp = {
-  function()
-    return getLspName()
-  end,
-  separator = { left = "", right = "" },
-  color = { bg = colors.maroon, fg = colors.mantle, gui = "italic,bold" },
-  fmt = trunc(80, 12, nil, true),
-}
-
-M.setup = LualineConfig.setup
+M.setup = function(opts)
+  local config = vim.tbl_deep_extend("force", {}, default, opts or {})
+  if config.float and config.separator == "bubble" then
+    config.separator_icon = { left = "", right = "" }
+    config.thin_separator_icon = { left = "", right = "" }
+  elseif config.float and type == "triangle" then
+    config.separator_icon = { left = "█", right = "█" }
+    config.thin_separator_icon = { left = " ", right = " " }
+  end
+  M.config = config
+end
 
 return M

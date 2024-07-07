@@ -126,8 +126,6 @@ return {
           options = {
             theme = CoreUtil.lualine.theme,
             icons_enabled = true,
-            component_separators = { left = "", right = "" },
-            section_separators = { left = "", right = "" },
             disabled_filetypes = {
               statusline = {},
               winbar = { "neo-tree" },
@@ -145,27 +143,27 @@ return {
           },
           sections = {
             lualine_a = {
-              cpn.modes,
+              cpn.modes(),
             },
             lualine_b = {
-              cpn.space,
+              cpn.space(),
             },
             lualine_c = {
-              cpn.project,
-              cpn.filetype,
-              cpn.space,
-              cpn.branch,
-              cpn.diff,
-              cpn.space,
-              cpn.location,
+              cpn.project(),
+              cpn.filetype(),
+              cpn.space(),
+              cpn.branch(),
+              cpn.diff(),
+              cpn.space(),
+              cpn.location(),
             },
             lualine_x = {
-              cpn.space,
+              cpn.space(),
             },
-            lualine_y = { cpn.macro, cpn.space },
+            lualine_y = { cpn.macro(), cpn.space() },
             lualine_z = {
-              cpn.dia,
-              cpn.lsp,
+              cpn.dia(),
+              cpn.lsp(),
             },
           },
           inactive_sections = {

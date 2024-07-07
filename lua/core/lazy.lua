@@ -54,5 +54,3 @@ require("lazy").setup({
     },
   },
 })
-
-require("neovim-project").setup(CoreUtil.opts("neovim-project"))
