@@ -24,12 +24,14 @@ require("lazy").setup({
     { import = "plugins.extras.editor" },
     -- Import testing plugins
     { import = "plugins.extras.test" },
-    -- Import language specific configurations
+    -- Import language specific plugins
     { import = "plugins.extras.lang" },
-    -- Import formatting configuration
+    -- Import formatting plugins
     { import = "plugins.extras.formatting" },
-    -- Import linting configuration
+    -- Import linting plugins
     { import = "plugins.extras.linting" },
+    -- Import utility plugin
+    { import = "plugins.extras.util" },
   },
   defaults = {
     lazy = false,
