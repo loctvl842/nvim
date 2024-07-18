@@ -189,75 +189,84 @@ return {
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
+    opts_extend = { "spec" },
     opts = {
-      window = {
-        border = "double", -- none, single, double, shadow
-        position = "bottom", -- bottom, top
-        margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
-        padding = { 1, 2, 1, 2 }, -- extra window padding [top, right, bottom, left]
-        winblend = 0,
+      -- preset = "modern",
+      win = {
+        border = "none", -- none, single, double, shadow
+        height = { min = 10, max = 25 }, -- min and max height of the columns
+        -- margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
+        padding = { 1, 8 }, -- extra window padding [top, right, bottom, left]
+        -- wo = {
+        --   winblend = 0,
+        -- },
       },
       layout = {
-        height = { min = 5, max = 25 }, -- min and max height of the columns
         width = { min = 20, max = 50 }, -- min and max width of the columns
         spacing = 5, -- spacing between columns
         align = "center", -- align columns left, center or right
       },
-      ignore_missing = true, -- enable this to hide mappings for which you didn't specify a label
-      plugins = { spelling = true },
-      defaults = {
-        mode = { "n", "v" },
-        ["g"] = { name = "+goto" },
-        ["gs"] = { name = "+surround" },
-        ["z"] = { name = "+fold" },
-        ["]"] = { name = "+next" },
-        ["["] = { name = "+prev" },
-        ["<leader><tab>"] = { name = "+tabs" },
-        ["<leader>b"] = { name = "+buffer" },
-        ["<leader>c"] = { name = "+code" },
-        ["<leader>f"] = { name = "+file/find" },
-        ["<leader>g"] = { name = "+git" },
-        ["<leader>gh"] = { name = "+hunks", ["_"] = "which_key_ignore" },
-        ["<leader>h"] = { name = "+help" },
-        ["<leader>q"] = { name = "+quit/session" },
-        ["<leader>s"] = { name = "+search" },
-        ["<leader>u"] = { name = "+ui" },
-        ["<leader>w"] = { name = "+windows" },
-        ["<leader>x"] = { name = "+diagnostics/quickfix" },
-      },
-      normal = {
-        ["<leader>0"] = { "<cmd>Dashboard<CR>", "Dashboard" },
-        ["<leader>q"] = {
-          ["q"] = { "<cmd>q!<CR>", "Quit" },
-          ["Q"] = { "<cmd>qa!<CR>", "Quit All" },
+      -- ignore_missing = true, -- enable this to hide mappings for which you didn't specify a label
+      spec = {
+        {
+          mode = { "n", "v" },
+          { "<leader><tab>", group = "+tabs" },
+          { "<leader>b", group = "+buffer" },
+          { "<leader>c", group = "+code" },
+          { "<leader>f", group = "+file/find" },
+          { "<leader>g", group = "+git" },
+          { "<leader>gh", group = "+hunks" },
+          { "<leader>h", group = "+help", icon = "󰋖" },
+          { "<leader>p", group = "+project", icon = { icon = "󰲋", color = "purple" } },
+          { "<leader>q", group = "+quit/session" },
+          { "<leader>s", group = "+search" },
+          { "<leader>u", group = "+ui" },
+          { "<leader>w", group = "+windows" },
+          { "<leader>x", group = "+diagnostics/quickfix" },
+          { "g", group = "+goto" },
+          { "gs", group = "+surround" },
+          { "z", group = "+fold" },
+          { "]", group = "+next" },
+          { "[", group = "+prev" },
         },
-        -- Window Management
-        ["<leader>w"] = {
-          -- Window Movement
-          h = { "<C-w>h<cr>", "Move left a window" },
-          l = { "<C-w>l<cr>", "Move right a window" },
-          k = { "<C-w>k<cr>", "Move up a window" },
-          j = { "<C-w>j<cr>", "Move down a window" },
-          -- Window Creation
-          s = { "<C-w>s<cr>", "Create split horizontally" },
-          v = { "<C-w>v<cr>", "Create split vertically" },
-          -- Window clean up
-          d = { "<C-w>c<CR>", "Delete Window" },
+        {
+          mode = { "n" },
+          { "<leader>0", "<cmd>Dashboard<CR>", desc = "Dashboard" },
+          { "<leader>qq", "<cmd>q!<CR>", desc = "Quit" },
+          { "<leader>qQ", "<cmd>qa!<CR>", desc = "Quit All" },
+          -- Window Management
+          --- Window Movement
+          { "<leader>wh", "<C-w>h<cr>", desc = "Move left a window" },
+          { "<leader>wl", "<C-w>l<cr>", desc = "Move right a window" },
+          { "<leader>wk", "<C-w>k<cr>", desc = "Move up a window" },
+          { "<leader>wj", "<C-w>j<cr>", desc = "Move down a window" },
+          --- Window Creation
+          { "<leader>ws", "<C-w>s<cr>", desc = "Create split horizontally" },
+          { "<leader>wv", "<C-w>v<cr>", desc = "Create split vertically" },
+          --- Window clean up
+          { "<leader>wd", "<C-w>c<CR>", desc = "Delete Window" },
+          --- Buffer Movement
+          { "<leader><Tab>", "<cmd>:b#<cr>", desc = "Previous Buffer", hidden = true },
+          { "<leader><leader>", "<c-6>", desc = "Previous Buffer", hidden = true },
         },
-        -- Buffer Movement
-        ["<leader><Tab>"] = { "<cmd>:b#<cr>", "Move back and forth" },
-        ["<leader><space>"] = { "<c-6>", "Move back and forth" },
+        {
+          mode = { "v" },
+          { "<leader>ce", CoreUtil.runlua, desc = "Run Lua" },
+        },
       },
-      visual = {
-        ["<leader>c"] = { ["e"] = { CoreUtil.runlua, "Run Lua" } },
+    },
+    keys = {
+      {
+        "<leader>?",
+        function()
+          require("which-key").show({ global = false })
+        end,
+        desc = "Buffer Local Keymaps (which-key)",
       },
     },
     config = function(_, opts)
       local wk = require("which-key")
       wk.setup(opts)
-      wk.register(opts.defaults)
-      wk.register(opts.normal, { mode = "n", prefix = "" })
-      wk.register(opts.visual, { mode = "v", prefix = "" })
     end,
   },
 

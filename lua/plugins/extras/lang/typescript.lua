@@ -28,6 +28,12 @@ return {
   },
 
   {
+    "nvim-neotest/neotest-jest",
+    event = "VeryLazy",
+    branch = "main",
+  },
+
+  {
     "nvim-neotest/neotest",
     dependencies = {
       "marilari88/neotest-vitest",
@@ -60,6 +66,16 @@ return {
           end,
           filter_dir = function(name, _rel_path, _root)
             return name ~= "node_modules"
+          end,
+        },
+        ["neotest-jest"] = {
+          jestCommand = "npm test --",
+          -- jestConfigFile = "custom.jest.config.ts",
+          env = { CI = true },
+          cwd = function()
+            local root = CoreUtil.root.detect({ spec = { "lsp" } })
+            local cwd = root[1].paths[1]
+            return cwd
           end,
         },
       },
@@ -105,7 +121,8 @@ return {
               inlayHints = {
                 enumMemberValues = { enabled = true },
                 functionLikeReturnTypes = { enabled = false },
-                parameterNames = { enabled = "literals" },
+                -- parameterNames = { enabled = "literals" },
+                parameterNames = { enabled = "none" },
                 parameterTypes = { enabled = false },
                 propertyDeclarationTypes = { enabled = false },
                 variableTypes = { enabled = false },
@@ -223,13 +240,120 @@ return {
             end
           end, "vtsls")
           -- copy typescript settings to javascript
-          opts.settings.javascript = vim.tbl_deep_extend(
-            "force",
-            {},
-            opts.settings.typescript,
-            opts.settings.javascript or {}
-          )
+          opts.settings.javascript =
+            vim.tbl_deep_extend("force", {}, opts.settings.typescript, opts.settings.javascript or {})
         end,
+      },
+    },
+  },
+
+  {
+    "mfussenegger/nvim-dap",
+    optional = true,
+    dependencies = {
+      {
+        "williamboman/mason.nvim",
+        opts = function(_, opts)
+          opts.ensure_installed = opts.ensure_installed or {}
+          table.insert(opts.ensure_installed, "js-debug-adapter")
+        end,
+      },
+    },
+    opts = function()
+      local dap = require("dap")
+      if not dap.adapters["pwa-node"] then
+        require("dap").adapters["pwa-node"] = {
+          type = "server",
+          host = "localhost",
+          port = "${port}",
+          executable = {
+            command = require("mason-registry").get_package("js-debug-adapter"):get_install_path()
+              .. "/js-debug-adapter",
+            -- 💀 Make sure to update this path to point to your installation
+            args = {
+              "${port}",
+            },
+          },
+        }
+      end
+      if not dap.adapters["node"] then
+        dap.adapters["node"] = function(cb, config)
+          if config.type == "node" then
+            config.type = "pwa-node"
+          end
+          local nativeAdapter = dap.adapters["pwa-node"]
+          if type(nativeAdapter) == "function" then
+            nativeAdapter(cb, config)
+          else
+            cb(nativeAdapter)
+          end
+        end
+      end
+
+      local js_filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact" }
+
+      local vscode = require("dap.ext.vscode")
+      vscode.type_to_filetypes["node"] = js_filetypes
+      vscode.type_to_filetypes["pwa-node"] = js_filetypes
+
+      for _, language in ipairs(js_filetypes) do
+        if not dap.configurations[language] then
+          dap.configurations[language] = {
+            {
+              type = "pwa-node",
+              request = "launch",
+              name = "Launch file",
+              program = "${file}",
+              cwd = "${workspaceFolder}",
+            },
+            {
+              type = "pwa-node",
+              request = "attach",
+              name = "Attach",
+              processId = require("dap.utils").pick_process,
+              cwd = "${workspaceFolder}",
+            },
+            {
+              type = "pwa-node",
+              request = "launch",
+              name = "Debug Vitest Tests",
+              -- trace = true, -- include debugger info
+              runtimeExecutable = "node",
+              runtimeArgs = {
+                "./node_modules/vitest/vitest.mjs",
+                "--inspect",
+                "--no-file-parallelism",
+                "${file}",
+              },
+              rootPath = "${workspaceFolder}",
+              cwd = "${workspaceFolder}",
+              console = "integratedTerminal",
+              internalConsoleOptions = "neverOpen",
+              resolveSourceMapLocations = {
+                "${workspaceFolder}/**",
+                "!**/node_modules/**",
+              },
+            },
+          }
+        end
+      end
+    end,
+  },
+
+  -- Filetype icons
+  {
+    "echasnovski/mini.icons",
+    opts = {
+      file = {
+        [".eslintrc.js"] = { glyph = "󰱺", hl = "MiniIconsYellow" },
+        [".node-version"] = { glyph = "", hl = "MiniIconsGreen" },
+        [".prettierrc"] = { glyph = "", hl = "MiniIconsPurple" },
+        [".yarnrc.yml"] = { glyph = "", hl = "MiniIconsBlue" },
+        ["eslint.config.js"] = { glyph = "󰱺", hl = "MiniIconsYellow" },
+        ["package.json"] = { glyph = "", hl = "MiniIconsGreen" },
+        ["tsconfig.json"] = { glyph = "", hl = "MiniIconsAzure" },
+        ["tsconfig.build.json"] = { glyph = "", hl = "MiniIconsAzure" },
+        ["yarn.lock"] = { glyph = "", hl = "MiniIconsBlue" },
       },
     },
   },

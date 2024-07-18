@@ -47,7 +47,7 @@ return {
         telescope = true,
         treesitter = true,
         treesitter_context = false,
-        ts_rainbow = true,
+        -- ts_rainbow = true,
         which_key = false,
 
         indent_blankline = {

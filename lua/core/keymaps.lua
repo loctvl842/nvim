@@ -1,4 +1,4 @@
-local opts = { noremap = true, silent = true }
+local opts = { noremap = true, silent = true, desc = "which_key_ignore" }
 
 -- Shorten function name
 local keymap = vim.api.nvim_set_keymap

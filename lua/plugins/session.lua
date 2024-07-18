@@ -38,7 +38,6 @@ return {
       vim.opt.sessionoptions:append("globals") -- save global variables that start with an uppercase letter and contain at least one lowercase letter.
     end,
     keys = {
-      { "<leader>p", "", desc = "+project" },
       {
         "<leader>pp",
         history,

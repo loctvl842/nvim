@@ -110,9 +110,7 @@ return {
           prompt_prefix = "   ",
           selection_caret = "  ",
           path_display = function(_, path)
-            local filename = path
-              :gsub(vim.pesc(vim.uv.cwd()) .. "/", "")
-              :gsub(vim.pesc(vim.fn.expand("$HOME")), "~")
+            local filename = path:gsub(vim.pesc(vim.uv.cwd()) .. "/", ""):gsub(vim.pesc(vim.fn.expand("$HOME")), "~")
             local tail = require("telescope.utils").path_tail(filename)
             local folder = vim.fn.fnamemodify(filename, ":h")
             if folder == "." then
@@ -122,28 +120,20 @@ return {
             return string.format("%s  —  %s", tail, folder)
           end,
           borderchars = {
-            prompt = CoreUtil.generate_borderchars(
-              "thick",
-              nil,
-              {
-                top = "█",
-                top_left = "█",
-                left = "█",
-                right = " ",
-                top_right = " ",
-                bottom_right = " ",
-              }
-            ),
+            prompt = CoreUtil.generate_borderchars("thick", nil, {
+              top = "█",
+              top_left = "█",
+              left = "█",
+              right = " ",
+              top_right = " ",
+              bottom_right = " ",
+            }),
             results = CoreUtil.generate_borderchars(
               "thick",
               nil,
               { top = "█", top_left = "█", right = " ", top_right = " ", bottom_right = " " }
             ),
-            preview = CoreUtil.generate_borderchars(
-              "thick",
-              nil,
-              { top = "█", top_left = "█", top_right = "█" }
-            ),
+            preview = CoreUtil.generate_borderchars("thick", nil, { top = "█", top_left = "█", top_right = "█" }),
           },
           -- dynamic_preview_title = true,
           hl_result_eol = true,

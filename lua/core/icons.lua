@@ -1,4 +1,7 @@
 return {
+  misc = {
+    dots = "󰇘",
+  },
   diagnostics = {
     error = " ",
     Error = " ",
