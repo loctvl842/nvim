@@ -66,6 +66,7 @@ return {
   {
     "rebelot/heirline.nvim",
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    -- lazy = true,
     opts = function()
       local monokai_opts = Utils.plugin.opts("monokai-pro.nvim")
       return {
@@ -288,7 +289,7 @@ return {
       animation = { enable = true, duration = 150, fps = 60 },
       autowidth = { enable = true },
     },
-    keys = { { "<leader>m", "<cmd>WindowsMaximize<CR>", desc = "Zoom window" } },
+    keys = { { "<leader>z", "<cmd>WindowsMaximize<CR>", desc = "Zoom window" } },
     init = function()
       vim.o.winwidth = 30
       vim.o.winminwidth = 30

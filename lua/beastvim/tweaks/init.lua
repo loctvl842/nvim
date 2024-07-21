@@ -13,7 +13,7 @@ setmetatable(M, {
   end,
 })
 
----@param mod "autocmds" | "options" | "keymaps" | "commands"
+---@param mod "autocmds" | "options" | "keymaps" | "commands" | "neovide"
 M.load = function(mod)
   Utils.try(function()
     require("beastvim.tweaks." .. mod)
@@ -49,6 +49,9 @@ function M.init()
   M.did_init = true
 
   M.load("options")
+  if vim.g.neovide then
+    M.load("neovide")
+  end
 end
 
 return M

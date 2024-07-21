@@ -94,6 +94,17 @@ return {
         ["graphql"] = { "prettier" },
         ["handlebars"] = { "prettier" },
       },
+      formatters = {
+        prettier = {
+          command = "prettier",
+          args = {
+            "--print-width",
+            "150",
+            "--stdin-filepath",
+            "$FILENAME",
+          },
+        },
+      },
     },
   },
 }

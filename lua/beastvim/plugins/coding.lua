@@ -124,10 +124,10 @@ return {
   },
 
   -- comments
-  { "JoosepAlviste/nvim-ts-context-commentstring", lazy = true },
+  { "JoosepAlviste/nvim-ts-context-commentstring", lazy = false },
   {
     "echasnovski/mini.comment",
-    event = "VeryLazy",
+    event = "BufEnter",
     opts = {
       options = {
         custom_commentstring = function()

@@ -56,6 +56,8 @@ local config = {
     mappings = {
       ["<1-LeftMouse>"] = "open",
       ["l"] = "open",
+      ["<space>"] = "none",
+      ["P"] = { "toggle_preview", config = { use_float = false } },
     },
   },
   filesystem = {

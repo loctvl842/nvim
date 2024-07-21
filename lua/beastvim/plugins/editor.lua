@@ -6,11 +6,16 @@ return {
     "folke/which-key.nvim",
     event = "VeryLazy",
     opts = {
-      plugins = { spelling = true },
-      window = {
-        margin = { 1, 0, 2, 0 }, -- extra window margin [top, right, bottom, left]
-        padding = { 1, 0, 1, 2 }, -- extra window padding [top, right, bottom, left]
-        winblend = 5, -- value between 0-100 0 for fully opaque and 100 for fully transparent
+      plugins = {
+        spelling = { enabled = true },
+        presets = { operators = false, motions = false },
+      },
+      delay = function(ctx)
+        return ctx.plugin and 0 or 100
+      end,
+      win = {
+        padding = { 1, 2 }, -- extra window padding [top/bottom, right/left]
+        wo = { winblend = 5 },
       },
       layout = {
         height = { min = 3, max = 25 }, -- min and max height of the columns
@@ -18,22 +23,71 @@ return {
         spacing = 5, -- spacing between columns
         align = "center", -- align columns left, center or right
       },
-      defaults = {
+      sort = { "group", "alphanum" },
+      icons = {
+        mappings = true,
+        rules = {
+          { pattern = "dashboard", icon = "🦁", color = "red" },
+          { pattern = "find", icon = " ", color = "cyan" },
+          { pattern = "close", icon = "󰅙", color = "red" },
+          { pattern = "monokai", icon = "", color = "yellow" },
+          { pattern = "explorer", icon = "󱏒", color = "green" },
+          { pattern = "format and save", icon = "󱣪", color = "green" },
+          { pattern = "save", icon = "󰆓", color = "green" },
+          { pattern = "zoom", icon = "", color = "gray" },
+          { pattern = "split.*vertical", icon = "󰤼", color = "gray" },
+          { pattern = "split.*horizontal", icon = "󰤻", color = "gray" },
+          { pattern = "lsp", icon = "󰒋", color = "cyan" },
+          { pattern = "chatgpt", icon = "󰚩", color = "azure" },
+          { pattern = "markdown", icon = "", color = "green" },
+          { pattern = "diagnostic", icon = "", color = "red" },
+          { pattern = "definition", icon = "󰇀", color = "purple" },
+          { pattern = "implement", icon = "󰳽", color = "purple" },
+          { pattern = "reference", icon = "󰆽", color = "purple" },
+          -- Group [<leader>h]
+          { pattern = "blame", icon = "", color = "yellow" },
+          { pattern = "diff", icon = "", color = "green" },
+          { pattern = "hunk change", icon = "", color = "yellow" },
+          { pattern = "reset", icon = "", color = "gray" },
+          { pattern = "stage", icon = "", color = "green" },
+          { pattern = "undo", icon = "", color = "gray" },
+          { pattern = "hunk", icon = "󰊢", color = "red" },
+          { pattern = "branch", icon = "", color = "red" },
+          { pattern = "commit", icon = "", color = "green" },
+          -- Group [g]
+          { pattern = "word", icon = "", color = "gray" },
+          { pattern = "first line", icon = "", color = "gray" },
+          { pattern = "comment", icon = "󰅺", color = "cyan" },
+          { pattern = "cycle backwards", icon = "󰾹", color = "gray" },
+          { pattern = "selection", icon = "󰒉", color = "gray" },
+        },
+      },
+      defaults = {},
+      spec = {
         mode = { "n", "v" },
-        ["<leader>g"] = { name = "+Git" },
-        ["<leader>s"] = { name = "+Session" },
-        ["<leader>c"] = { name = "+ChatGPT" },
-        ["<leader>l"] = { name = "+LSP" },
-        ["<leader>h"] = { name = "+Hunk" },
-        ["f"] = { name = "+Fold" },
-        ["g"] = { name = "+Goto" },
-        ["s"] = { name = "+Search" },
+        { "<leader>g", group = "+Git" },
+        { "<leader>s", group = "+Session" },
+        { "<leader>c", group = "+ChatGPT" },
+        { "<leader>l", group = "+LSP" },
+        { "<leader>h", group = "+Hunk" },
+        { "<leader>t", group = "+Toggle" },
+        { "<leader>m", group = "+Markdown" },
+        { "f", group = "+Fold" },
+        { "g", group = "+Goto" },
+        { "s", group = "+Search" },
+      },
+      triggers = {
+        { "<leader>", mode = { "n", "v" } },
+        { "[", group = "prev" },
+        { "]", group = "next" },
+        { "f", mode = { "n" } }, -- fold group
+        { "s", mode = { "n" } }, -- search group
+        { "g", mode = { "n", "v" } }, -- search group
       },
     },
     config = function(_, opts)
       local wk = require("which-key")
       wk.setup(opts)
-      wk.register(opts.defaults)
     end,
   },
 
@@ -62,6 +116,9 @@ return {
         desc = "Explorer Float (root dir)",
       },
     },
+    deactivate = function()
+      vim.cmd([[Neotree close]])
+    end,
     opts = require("beastvim.features.neo-tree"),
     init = function()
       vim.g.neo_tree_remove_legacy_commands = 1
@@ -324,15 +381,14 @@ return {
       -- { "gr", "<cmd>Telescope lsp_references<cr>", desc = "Go to references" },
       -- { "gi", "<cmd>Telescope lsp_implementations<cr>", desc = "Go to implementations" },
       -- search
-      { "sb", "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
-      { "sc", "<cmd>Telescope colorscheme<cr>", desc = "Colorscheme" },
-      { "sh", "<cmd>Telescope help_tags<cr>", desc = "Find Help" },
-      { "sM", "<cmd>Telescope man_pages<cr>", desc = "Man Pages" },
-      { "sr", "<cmd>Telescope oldfiles<cr>", desc = "Open Recent File" },
-      { "sR", "<cmd>Telescope registers<cr>", desc = "Registers" },
-      { "sk", "<cmd>Telescope keymaps<cr>", desc = "Keymaps" },
-      { "sC", "<cmd>Telescope commands<cr>", desc = "Commands" },
-      { "sH", "<cmd>Telescope highlights<cr>", desc = "Highlight Groups" },
+      { "sc", "<cmd>Telescope colorscheme<cr>", desc = "Search Colorscheme" },
+      { "sh", "<cmd>Telescope help_tags<cr>", desc = "Search Help" },
+      { "sM", "<cmd>Telescope man_pages<cr>", desc = "Search Man Pages" },
+      { "sr", "<cmd>Telescope oldfiles<cr>", desc = "Search Recent File" },
+      { "sR", "<cmd>Telescope registers<cr>", desc = "Search Registers" },
+      { "sk", "<cmd>Telescope keymaps<cr>", desc = "Search Keymaps" },
+      { "sC", "<cmd>Telescope commands<cr>", desc = "Search Commands" },
+      { "sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },
       -- Git
       { "<leader>go", "<cmd>Telescope git_status<cr>", desc = "Open changed file" },
       { "<leader>gb", "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
@@ -349,60 +405,6 @@ return {
     event = { "BufRead" },
     keys = {
       { "<leader>d", "<cmd>Bdelete!<cr>", desc = "Close Buffer" },
-    },
-  },
-
-  -- TODO: Remove this when upgrading Neovim to version >= 0.10.0.
-  -- references
-  {
-    "RRethy/vim-illuminate",
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-    opts = {
-      filetypes_denylist = {
-        "dirvish",
-        "fugitive",
-        "neo-tree",
-        "alpha",
-        "NvimTree",
-        "neo-tree",
-        "dashboard",
-        "TelescopePrompt",
-        "TelescopeResult",
-        "DressingInput",
-        "neo-tree-popup",
-        "markdown",
-        "",
-      },
-      delay = 200,
-      large_file_cutoff = 2000,
-      large_file_overrides = {
-        providers = { "lsp" },
-      },
-    },
-    config = function(_, opts)
-      require("illuminate").configure(opts)
-
-      local function map(key, dir, buffer)
-        vim.keymap.set("n", key, function()
-          require("illuminate")["goto_" .. dir .. "_reference"](false)
-        end, { desc = dir:sub(1, 1):upper() .. dir:sub(2) .. " Reference", buffer = buffer })
-      end
-
-      map("]]", "next")
-      map("[[", "prev")
-
-      -- also set it after loading ftplugins, since a lot overwrite [[ and ]]
-      vim.api.nvim_create_autocmd("FileType", {
-        callback = function()
-          local buffer = vim.api.nvim_get_current_buf()
-          map("]]", "next", buffer)
-          map("[[", "prev", buffer)
-        end,
-      })
-    end,
-    keys = {
-      { "]]", desc = "Next Reference" },
-      { "[[", desc = "Prev Reference" },
     },
   },
 }

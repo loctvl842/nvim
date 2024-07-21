@@ -1,6 +1,7 @@
 local Utils = require("beastvim.utils")
 
 ---@class LspServer
+---@field enabled? boolean
 ---@field keys? LazyKeysSpec
 ---@field capabilities? table
 ---@field on_attach? fun(client, bufnr)
@@ -11,12 +12,14 @@ local Utils = require("beastvim.utils")
 ---@field capabilities? table
 ---@field diagnostics? LspDiagnosticsOptions
 ---@field inlay_hints? LspInlayHintsOptions
+---@field codelens? LspCodeLensOptions
 
 ---@class Lsp
 ---@field keymaps beastvim.features.lsp.keymaps
 ---@field navic beastvim.features.lsp.navic
 ---@field diagnostics beastvim.features.lsp.diagnostics
 ---@field inlay_hints beastvim.features.lsp.inlay_hints
+---@field codelens beastvim.features.lsp.codelens
 ---@field ui beastvim.features.lsp.ui
 local M = {}
 
@@ -43,6 +46,9 @@ function M.setup(opts)
 
   -- Inlay Hints
   M.inlay_hints.setup(opts.inlay_hints)
+
+  -- Codelens
+  M.codelens.setup(opts.codelens)
 
   -- Keymaps
   Utils.lsp.on_attach(function(client, bufnr)
@@ -107,10 +113,12 @@ function M.setup(opts)
   local ensure_installed = {}
   for server, server_opts in pairs(servers) do
     if server_opts then
-      if not vim.tbl_contains(available, server) then
-        setup(server)
-      else
-        ensure_installed[#ensure_installed + 1] = server
+      if server_opts.enabled ~= false then
+        if not vim.tbl_contains(available, server) then
+          setup(server)
+        else
+          ensure_installed[#ensure_installed + 1] = server
+        end
       end
     end
   end

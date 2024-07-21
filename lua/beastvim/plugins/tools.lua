@@ -44,7 +44,7 @@ return {
     },
     keys = {
       -- suggested keymap
-      { "<leader>p", "<cmd>PasteImage<cr>", desc = "Paste clipboard image" },
+      { "<leader>mp", "<cmd>PasteImage<cr>", desc = "Paste clipboard image" },
     },
   },
 
@@ -54,7 +54,7 @@ return {
     build = "cd app && yarn install",
     keys = {
       {
-        "<leader>P",
+        "<leader>mP",
         function()
           vim.cmd([[MarkdownPreviewToggle]])
         end,
@@ -63,7 +63,18 @@ return {
     },
     init = function()
       vim.g.mkdp_filetypes = { "markdown" }
+      vim.g.mkdp_theme = "light"
     end,
     ft = { "markdown" },
+  },
+
+  {
+    "MeanderingProgrammer/markdown.nvim",
+    ft = { "markdown" },
+    name = "render-markdown", -- Only needed if you have another plugin named markdown.nvim
+    dependencies = { "nvim-treesitter/nvim-treesitter", "nvim-tree/nvim-web-devicons" }, -- if you prefer nvim-web-devicons
+    config = function()
+      require("render-markdown").setup({})
+    end,
   },
 }

@@ -20,8 +20,8 @@ require("lazy").setup({
     { import = "beastvim.features.lsp.lang.go", enabled = true },
     { import = "beastvim.features.lsp.lang.docker", enabled = true },
     { import = "beastvim.features.lsp.lang.dotnet", enabled = false },
-    { import = "beastvim.features.lsp.lang.tailwind", enabled = false },
-    { import = "beastvim.features.lsp.lang.dot", enabled = true },
+    { import = "beastvim.features.lsp.lang.tailwind", enabled = true },
+    { import = "beastvim.features.lsp.lang.dot", enabled = false },
   },
   defaults = {
     lazy = true,

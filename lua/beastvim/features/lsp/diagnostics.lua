@@ -55,7 +55,7 @@ function M.setup(opts)
   local map = Utils.safe_keymap_set
   map("n", "<leader>td", function()
     M.toggle()
-  end, { desc = "Toggle LSP inlay hints" })
+  end, { desc = "Toggle LSP diagnostics" })
 end
 
 function M.toggle(value)

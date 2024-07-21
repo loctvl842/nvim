@@ -20,6 +20,7 @@ return {
     opts = {
       servers = {
         pyright = {
+          enabled = false,
           capabilities = function()
             -- Disable the hint of pyright as it coincides with ruff_lsp.
             local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -55,6 +56,47 @@ return {
                 useLibraryCodeForTypes = true,
               },
             },
+          },
+        },
+        basedpyright = {
+          enabled = true,
+          settings = {
+            basedpyright = {
+              analysis = {
+                autoImportCompletions = true,
+                autoSearchPaths = true,
+                diagnosticMode = "workspace",
+                -- These diagnostics are useless, therefore disable them.
+                diagnosticSeverityOverrides = {
+                  reportArgumentType = "none",
+                  reportAttributeAccessIssue = "none",
+                  reportCallIssue = "none",
+                  reportFunctionMemberAccess = "none",
+                  reportGeneralTypeIssues = "none",
+                  reportIncompatibleMethodOverride = "none",
+                  reportIncompatibleVariableOverride = "none",
+                  reportIndexIssue = "none",
+                  reportOptionalMemberAccess = "none",
+                  reportOptionalSubscript = "none",
+                  reportPrivateImportUsage = "none",
+                },
+                indexing = true,
+                inlayHints = {
+                  functionReturnTypes = true,
+                  variableTypes = true,
+                },
+                typeCheckingMode = "off", -- Pyright diagnostics is bloody slow
+                useLibraryCodeForTypes = true,
+              },
+            },
+          },
+          root_dir = {
+            "pyproject.toml",
+            "setup.py",
+            "setup.cfg",
+            "requirements.txt",
+            "Pipfile",
+            "pyrightconfig.json",
           },
         },
         ruff_lsp = {

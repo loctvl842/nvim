@@ -44,7 +44,8 @@ opt.numberwidth = 4 -- set number column width to 2 {default 4}
 opt.signcolumn = "yes" -- always show the sign column, otherwise it would shift the text each time
 opt.wrap = false -- display lines as one long line
 opt.sidescrolloff = 0
--- opt.smoothscroll = true
+opt.scrolloff = 4
+opt.smoothscroll = true
 opt.laststatus = 3
 opt.list = true -- Show some invisible characters (tabs...
 opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
@@ -55,7 +56,6 @@ opt.virtualedit = "onemore"
 opt.showcmd = false
 opt.title = true
 opt.titlestring = "%<%F%=%l/%L - nvim"
-opt.linespace = 8
 opt.mousemoveevent = true
 opt.syntax = "off"
 opt.spelllang = { "en", "vi" }

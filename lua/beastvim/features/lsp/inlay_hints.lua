@@ -14,16 +14,18 @@ setmetatable(M, {
 
 ---@param opts LspInlayHintsOptions
 function M.setup(opts)
-  Utils.lsp.on_support_methods("textDocument/inlayHint", function(client, buffer)
-    if vim.api.nvim_buf_is_valid(buffer) and vim.bo[buffer].buftype == "" then
-      M.toggle(buffer, true)
-    end
-  end)
+  if opts.enabled then
+    Utils.lsp.on_support_methods("textDocument/inlayHint", function(_, buffer)
+      if vim.api.nvim_buf_is_valid(buffer) and vim.bo[buffer].buftype == "" then
+        M.toggle(buffer, true)
+      end
+    end)
 
-  local map = Utils.safe_keymap_set
-  map("n", "<leader>th", function()
-    M.toggle()
-  end, { desc = "Toggle LSP inlay hints" })
+    local map = Utils.safe_keymap_set
+    map("n", "<leader>th", function()
+      M.toggle()
+    end, { desc = "Toggle LSP inlay hints" })
+  end
 end
 
 function M.toggle(buf, value)
