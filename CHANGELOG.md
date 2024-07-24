@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.3.0](https://github.com/loctvl842/nvim/compare/v2.2.1...v2.3.0) (2024-07-21)
+
+
+### Features
+
+* Add Heirline ([b828bfc](https://github.com/loctvl842/nvim/commit/b828bfc7497516be14378b44ee386d2730e39237))
+
+
+### Performance Improvements
+
+* optimize treesitter ([1508987](https://github.com/loctvl842/nvim/commit/1508987f8e0245b96320f6dff4294feab91dca19))
+
 ## [2.2.1](https://github.com/loctvl842/nvim/compare/v2.2.0...v2.2.1) (2024-04-02)
 
 
