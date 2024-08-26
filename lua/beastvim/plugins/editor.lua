@@ -15,7 +15,7 @@ return {
       end,
       win = {
         padding = { 1, 2 }, -- extra window padding [top/bottom, right/left]
-        wo = { winblend = 5 },
+        wo = { winblend = 10 },
       },
       layout = {
         height = { min = 3, max = 25 }, -- min and max height of the columns
@@ -60,6 +60,8 @@ return {
           { pattern = "comment", icon = "󰅺", color = "cyan" },
           { pattern = "cycle backwards", icon = "󰾹", color = "gray" },
           { pattern = "selection", icon = "󰒉", color = "gray" },
+          -- Group [<leader>hn]
+          { pattern = "annotation", icon = "󰙆", color = "cyan" },
         },
       },
       defaults = {},
@@ -69,9 +71,12 @@ return {
         { "<leader>s", group = "+Session" },
         { "<leader>c", group = "+ChatGPT" },
         { "<leader>l", group = "+LSP" },
-        { "<leader>h", group = "+Hunk" },
+        { "<leader>h", group = "+Help" },
         { "<leader>t", group = "+Toggle" },
         { "<leader>m", group = "+Markdown" },
+        { "<leader>n", group = "+Neogen" },
+        { "<leader>gc", group = "+Git checkout" },
+        { "<leader>hn", group = "+Neogen" },
         { "f", group = "+Fold" },
         { "g", group = "+Goto" },
         { "s", group = "+Search" },
@@ -179,24 +184,24 @@ return {
         end, { buffer = bufnr, expr = true, desc = "Previous git hunk" })
 
         -- Actions
-        map("n", "<leader>hs", gs.stage_hunk, { desc = "Stage current hunk" })
-        map("n", "<leader>hr", gs.reset_hunk, { desc = "Reset current hunk" })
-        map("v", "<leader>hs", function()
+        map("n", "<leader>gs", gs.stage_hunk, { desc = "Stage current hunk" })
+        map("n", "<leader>gr", gs.reset_hunk, { desc = "Reset current hunk" })
+        map("v", "<leader>gs", function()
           gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
         end, { desc = "Stage visual selection" })
-        map("v", "<leader>hr", function()
+        map("v", "<leader>gr", function()
           gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
         end, { desc = "Reset visual selection" })
-        map("n", "<leader>hS", gs.stage_buffer, { desc = "Stage entire buffer" })
-        map("n", "<leader>hu", gs.undo_stage_hunk, { desc = "Undo last hunk staging" })
-        map("n", "<leader>hR", gs.reset_buffer, { desc = "Reset entire buffer" })
-        map("n", "<leader>hp", gs.preview_hunk, { desc = "Preview current hunk changes" })
-        map("n", "<leader>hb", function()
+        map("n", "<leader>gS", gs.stage_buffer, { desc = "Stage entire buffer" })
+        map("n", "<leader>gu", gs.undo_stage_hunk, { desc = "Undo last hunk staging" })
+        map("n", "<leader>gR", gs.reset_buffer, { desc = "Reset entire buffer" })
+        map("n", "<leader>gp", gs.preview_hunk, { desc = "Preview current hunk changes" })
+        map("n", "<leader>gb", function()
           gs.blame_line({ full = true })
         end, { desc = "Show blame for current line" })
         map("n", "<leader>tb", gs.toggle_current_line_blame, { desc = "Toggle blame for current line" })
-        map("n", "<leader>hd", gs.diffthis, { desc = "Diff current hunk" })
-        map("n", "<leader>hD", function()
+        map("n", "<leader>gd", gs.diffthis, { desc = "Diff current hunk" })
+        map("n", "<leader>gD", function()
           gs.diffthis("~")
         end, { desc = "Diff all changes in the file" })
       end,
@@ -391,8 +396,8 @@ return {
       { "sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },
       -- Git
       { "<leader>go", "<cmd>Telescope git_status<cr>", desc = "Open changed file" },
-      { "<leader>gb", "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
-      { "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Checkout commit" },
+      { "<leader>gcb", "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
+      { "<leader>gcc", "<cmd>Telescope git_commits<cr>", desc = "Checkout commit" },
       -- Find
       { "<leader>f", Utils.telescope("find_files"), desc = "Find files" },
       { "<leader>F", Utils.telescope("live_grep"), desc = "Find Text" },

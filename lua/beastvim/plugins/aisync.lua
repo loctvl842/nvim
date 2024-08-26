@@ -115,7 +115,7 @@ return {
     "jackMort/ChatGPT.nvim",
     cmd = { "ChatGPTActAs", "ChatGPT" },
     opts = {
-      api_key_cmd = "pass show OpenAI/Rockship",
+      api_key_cmd = "pass show OpenAI/SignalLab",
       openai_edit_params = {
         -- model = "gpt-4-1106-preview",
         model = "gpt-3.5-turbo",
