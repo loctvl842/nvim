@@ -132,4 +132,16 @@ return {
       },
     },
   },
+
+  {
+    "kiyoon/jupynium.nvim",
+    -- build = "pip3 install --user .",
+    build = "conda run --no-capture-output -n playground pip install .",
+    enabled = vim.fn.isdirectory(vim.fn.expand("~/miniconda3/envs/jupynium")),
+    setup = function()
+      require("jupynium").setup({
+        python_host = { "conda", "run", "--no-capture-output", "-n", "jupynium", "python" },
+      })
+    end,
+  },
 }

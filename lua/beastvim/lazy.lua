@@ -11,17 +11,18 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   spec = {
     { import = "beastvim.plugins" },
-    { import = "beastvim.features.lsp.lang.markup", enabled = true },
+    { import = "beastvim.features.lsp.lang.markup", enabled = false },
     { import = "beastvim.features.lsp.lang.python", enabled = true },
-    { import = "beastvim.features.lsp.lang.markdown", enabled = true },
-    { import = "beastvim.features.lsp.lang.typescript", enabled = true },
+    { import = "beastvim.features.lsp.lang.markdown", enabled = false },
+    { import = "beastvim.features.lsp.lang.typescript", enabled = false },
     { import = "beastvim.features.lsp.lang.flutter", enabled = false },
     { import = "beastvim.features.lsp.lang.vue", enabled = false },
     { import = "beastvim.features.lsp.lang.go", enabled = true },
     { import = "beastvim.features.lsp.lang.docker", enabled = true },
     { import = "beastvim.features.lsp.lang.dotnet", enabled = false },
-    { import = "beastvim.features.lsp.lang.tailwind", enabled = true },
+    { import = "beastvim.features.lsp.lang.tailwind", enabled = false },
     { import = "beastvim.features.lsp.lang.dot", enabled = false },
+    { import = "beastvim.features.lsp.lang.terraform", enabled = true },
   },
   defaults = {
     lazy = true,
