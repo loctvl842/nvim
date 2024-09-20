@@ -1,5 +1,7 @@
 local Profile = require("beastvim.profile")
 local Utils = require("beastvim.utils")
+_G.Utils = require("beastvim.utils")
+
 
 ---@class Tweaks
 ---@field icons beastvim.tweaks.icons

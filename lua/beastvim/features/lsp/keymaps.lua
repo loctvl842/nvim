@@ -7,12 +7,16 @@ local M = setmetatable({}, {
   end,
 })
 
+---@type LazyKeysSpec[]|nil
+M._keys = nil
+
 ---@return LazyKeysSpec[]
 function M.get()
-  return {
-    { "<leader>la", "<cmd>lua vim.lsp.buf.code_action()<cr>", desc = "Code Action" },
-    { "<leader>ld", "<cmd>Telescope lsp_document_diagnostics<cr>", desc = "Document Diagnostics" },
-    { "<leader>lw", "<cmd>Telescope lsp_workspace_diagnostics<cr>", desc = "Workspace Diagnostics" },
+  if M._keys then
+    return M._keys
+  end
+  M._keys = {
+    { "<leader>la", vim.lsp.buf.code_action, desc = "Code Action" },
     -- stylua: ignore
     { "<leader>li", "<cmd>LspInfo<cr>", desc = "Info" },
     { "<leader>lI", "<cmd>LspInstallInfo<cr>", desc = "Installer Info" },
@@ -22,12 +26,10 @@ function M.get()
     { "<leader>lc", vim.lsp.codelens.refresh, desc = "Refresh & Display Codelens", mode = { "n" } },
     { "<leader>lq", "<cmd>lua vim.lsp.diagnostic.set_loclist()<cr>", desc = "Quickfix" },
     { "<leader>lr", "<cmd>lua vim.lsp.buf.rename()<cr>", desc = "Rename" },
-    { "<leader>ls", "<cmd>Telescope lsp_document_symbols<cr>", desc = "Document Symbols" },
-    { "<leader>lS", "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", desc = "Workspace Symbols" },
     -- Goto
-    { "gd", "<cmd>Telescope lsp_definitions<cr>", desc = "Definition" },
-    { "gr", "<cmd>Telescope lsp_references<cr>", desc = "References" },
-    { "gi", "<cmd>Telescope lsp_implementations<cr>", desc = "Implementations" },
+    { "gd", vim.lsp.buf.definition, desc = "Goto Definition", has = "definition" },
+    { "gr", vim.lsp.buf.references, desc = "References", nowait = true },
+    { "gi", vim.lsp.buf.implementation, desc = "Goto Implementation" },
     { "K", "<cmd>lua vim.lsp.buf.hover()<CR>", desc = "Hover" },
     { "<c-k>", vim.lsp.buf.signature_help, mode = "i", desc = "Signature Help" },
     { "gl", vim.diagnostic.open_float, desc = "Show diagnostics" },
@@ -35,6 +37,8 @@ function M.get()
     { "]d", vim.diagnostic.goto_next, desc = "Next Diagnostic" },
     { "<leader>lq", "<cmd>lua vim.diagnostic.setloclist()<CR>", desc = "Quickfix" },
   }
+
+  return M._keys
 end
 
 ---@return LazyKeys

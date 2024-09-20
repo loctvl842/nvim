@@ -2,7 +2,9 @@
 
 *My Beast*
 
-**nvim v0.9.5**
+> **Neovim version:** Requires **v0.9.5** or higher
+
+> ⚠️ **Warning:** This configuration is for personal use and evolves frequently. It references a lot from [LazyVim](https://www.lazyvim.org/), which is a better option for those starting out. Proceed with caution if you're looking for a more stable setup.
 
 ## Installation
 

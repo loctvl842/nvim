@@ -1,4 +1,4 @@
----@alias BorderStyle "rounded" | "double" | "thin" | "empty" | "thick"
+---@alias BorderStyle "rounded" | "double" | "thin" | "empty" | "thick" | "debug"
 ---@alias BorderOrder "t-r-b-l-tl-tr-br-bl" | "tl-t-tr-r-br-b-bl-l"
 
 ---@class BorderIcons
@@ -144,6 +144,16 @@ local M = {
       bottom_right = "▀",
       bottom_left = "▀",
     },
+    debug = {
+      top = "t",
+      right = "r",
+      bottom = "b",
+      left = "l",
+      top_left = "🭽",
+      top_right = "🭾",
+      bottom_right = "🭿",
+      bottom_left = "🭼",
+    }
   },
   brain = {
     codeium = "󰘦 ",

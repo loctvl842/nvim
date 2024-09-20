@@ -2,7 +2,7 @@ local Profile = require("beastvim.profile")
 
 ---@class Util
 ---@field root beastvim.utils.root
----@field telescope beastvim.utils.telescope
+---@field pick beastvim.utils.pick
 ---@field theme beastvim.utils.theme
 ---@field plugin beastvim.utils.plugin
 ---@field lualine beastvim.utils.lualine
@@ -61,6 +61,14 @@ function M.error(msg)
   M.notify(msg, "ERROR", { title = Profile.name, timeout = 1000 })
 end
 
+function M.warn(msg)
+  M.notify(msg, "WARN", { title = Profile.name, timeout = 1000 })
+end
+
+function M.info(msg)
+  M.notify(msg, "INFO", { title = Profile.name, timeout = 1000 })
+end
+
 ---@param fn fun() The function to try
 ---@param opts {msg?: string, on_error?: fun(err: string)}
 function M.try(fn, opts)
@@ -106,6 +114,12 @@ function M.once(callback)
     callback()
     executed = true
   end
+end
+
+---@param feature string
+function M.has_feature(feature)
+  local modname = "beastvim.features." .. feature
+  return vim.tbl_contains(require("lazy.core.config").spec.modules, modname)
 end
 
 return M

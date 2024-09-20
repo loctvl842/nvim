@@ -11,6 +11,8 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   spec = {
     { import = "beastvim.plugins" },
+    { import = "beastvim.features.fzf", enabled = true },
+    { import = "beastvim.features.telescope", enabled = false },
     { import = "beastvim.features.lsp.lang.markup", enabled = false },
     { import = "beastvim.features.lsp.lang.python", enabled = true },
     { import = "beastvim.features.lsp.lang.markdown", enabled = false },

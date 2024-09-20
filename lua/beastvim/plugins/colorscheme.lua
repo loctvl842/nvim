@@ -29,7 +29,7 @@ return {
         "nvim-tree",
         -- "neo-tree",
         "bufferline",
-        -- "telescope",
+        "telescope",
         "toggleterm",
       },
       plugins = {

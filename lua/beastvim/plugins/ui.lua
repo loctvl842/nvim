@@ -177,7 +177,7 @@ return {
           header = Logos(),
           center = {
             {
-              action = "Telescope oldfiles",
+              action = "lua Utils.pick('oldfiles')()",
               desc = "Recent Files",
               key = "r",
               icon = " ",
@@ -309,9 +309,7 @@ return {
           border = Utils.ui.borderchars(border_style, "tl-t-tr-r-br-b-bl-l"),
           win_options = { winblend = 0 },
         },
-        select = vim.tbl_contains(monokai_opts.background_clear or {}, "telescope") and {} or {
-          telescope = Utils.telescope.theme("cursor", "thick"),
-        },
+        select = {}
       }
     end,
     init = function()
