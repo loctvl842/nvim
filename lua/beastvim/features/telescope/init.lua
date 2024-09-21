@@ -74,18 +74,17 @@ return {
     version = false,
     keys = {
       -- search
-      { "sc", "<cmd>Telescope colorscheme<cr>", desc = "Search Colorscheme" },
-      { "sh", "<cmd>Telescope help_tags<cr>", desc = "Search Help" },
-      { "sM", "<cmd>Telescope man_pages<cr>", desc = "Search Man Pages" },
-      { "sr", "<cmd>Telescope oldfiles<cr>", desc = "Search Recent File" },
-      { "sR", "<cmd>Telescope registers<cr>", desc = "Search Registers" },
-      { "sk", "<cmd>Telescope keymaps<cr>", desc = "Search Keymaps" },
-      { "sC", "<cmd>Telescope commands<cr>", desc = "Search Commands" },
-      { "sH", "<cmd>Telescope highlights<cr>", desc = "Search Highlight Groups" },
+      { "sc", Utils.pick("colorschemes"), desc = "Search Colorscheme" },
+      { "sh", Utils.pick("help_tags"), desc = "Search Help" },
+      { "sr", Utils.pick("oldfiles"), desc = "Search Recent File" },
+      { "sk", Utils.pick("keymaps"), desc = "Search Keymaps" },
+      { "sC", Utils.pick("commands"), desc = "Search Commands" },
+      { "sH", Utils.pick("highlights"), desc = "Search Highlight Groups" },
       -- Git
-      { "<leader>go", "<cmd>Telescope git_status<cr>", desc = "Open changed file" },
-      { "<leader>gcb", "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
-      { "<leader>gcc", "<cmd>Telescope git_commits<cr>", desc = "Checkout commit" },
+      { "<leader>go", Utils.pick("git_status"), desc = "Search and view Git status" },
+      { "<leader>gb", Utils.pick("git_branches"), desc = "Search and switch Git branches" },
+      { "<leader>gc", Utils.pick("git_commits"), desc = "Search through Git commit history" },
+      { "<leader>gt", Utils.pick("git_tags"), desc = "Search and checkout Git tags" },
       -- Find
       { "<leader>f", Utils.pick("files"), desc = "Find files" },
       { "<leader>F", Utils.pick("live_grep"), desc = "Find Text" },

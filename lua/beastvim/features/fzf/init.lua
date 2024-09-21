@@ -182,11 +182,16 @@ return {
     keys = {
       -- search
       { "sc", Utils.pick("colorschemes"), desc = "Search Colorscheme" },
-      { "sh", "<cmd>FzfLua help_tags<cr>", desc = "Search Help" },
-      { "sr", "<cmd>FzfLua oldfiles<cr>", desc = "Search Recent File" },
-      { "sk", "<cmd>FzfLua keymaps<cr>", desc = "Search Keymaps" },
-      { "sC", "<cmd>FzfLua commands<cr>", desc = "Search Commands" },
-      { "sH", "<cmd>FzfLua highlights<cr>", desc = "Search Highlight Groups" },
+      { "sh", Utils.pick("help_tags"), desc = "Search Help" },
+      { "sr", Utils.pick("oldfiles"), desc = "Search Recent File" },
+      { "sk", Utils.pick("keymaps"), desc = "Search Keymaps" },
+      { "sC", Utils.pick("commands"), desc = "Search Commands" },
+      { "sH", Utils.pick("highlights"), desc = "Search Highlight Groups" },
+      -- Git
+      { "<leader>go", Utils.pick("git_status"), desc = "Search and view Git status" },
+      { "<leader>gb", Utils.pick("git_branches"), desc = "Search and switch Git branches" },
+      { "<leader>gc", Utils.pick("git_commits"), desc = "Search through Git commit history" },
+      { "<leader>gt", Utils.pick("git_tags"), desc = "Search and checkout Git tags" },
       -- Find
       { "<leader>f", Utils.pick("files"), desc = "Find files" },
       { "<leader>F", Utils.pick("live_grep"), desc = "Find Text" },
