@@ -15,32 +15,31 @@ return {
       require("nvim-treesitter.query_predicates")
     end,
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
-    opts = function()
-      return {
-        ensure_installed = {
-          "vimdoc",
-          "bash",
-          "html",
-          "json",
-          "lua",
-          "markdown",
-          "markdown_inline",
-          "query",
-          "regex",
-          "vim",
-          "yaml",
-          "scss",
-          "graphql",
-        },
-        highlight = { enable = true },
-        indent = { enable = true, disable = { "yaml", "python", "html" } },
-        rainbow = {
-          enable = true,
-          query = "rainbow-parens",
-          disable = { "jsx", "html" },
-        },
-      }
-    end,
+    opts_extend = { "ensure_installed" },
+    opts = {
+      ensure_installed = {
+        "vimdoc",
+        "bash",
+        "html",
+        "json",
+        "lua",
+        "markdown",
+        "markdown_inline",
+        "query",
+        "regex",
+        "vim",
+        "yaml",
+        "scss",
+        "graphql",
+      },
+      highlight = { enable = true },
+      indent = { enable = true, disable = { "yaml", "python", "html" } },
+      rainbow = {
+        enable = true,
+        query = "rainbow-parens",
+        disable = { "jsx", "html" },
+      },
+    },
     config = function(_, opts)
       require("nvim-treesitter.configs").setup(opts)
     end,
