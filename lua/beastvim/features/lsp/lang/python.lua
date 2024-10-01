@@ -21,76 +21,80 @@ return {
             capabilities.textDocument.publishDiagnostics.tagSupport.valueSet = { 2 }
             return capabilities
           end,
-          settings = {
-            python = {
-              analysis = {
-                autoImportCompletions = true,
-                autoSearchPaths = true,
-                diagnosticMode = "openFilesOnly",
-                -- These diagnostics are useless, therefore disable them.
-                diagnosticSeverityOverrides = {
-                  reportArgumentType = "none",
-                  reportAttributeAccessIssue = "none",
-                  reportCallIssue = "none",
-                  reportFunctionMemberAccess = "none",
-                  reportGeneralTypeIssues = "none",
-                  reportIncompatibleMethodOverride = "none",
-                  reportIncompatibleVariableOverride = "none",
-                  reportIndexIssue = "none",
-                  reportOptionalMemberAccess = "none",
-                  reportOptionalSubscript = "none",
-                  reportPrivateImportUsage = "none",
+          opts = {
+            settings = {
+              python = {
+                analysis = {
+                  autoImportCompletions = true,
+                  autoSearchPaths = true,
+                  diagnosticMode = "openFilesOnly",
+                  -- These diagnostics are useless, therefore disable them.
+                  diagnosticSeverityOverrides = {
+                    reportArgumentType = "none",
+                    reportAttributeAccessIssue = "none",
+                    reportCallIssue = "none",
+                    reportFunctionMemberAccess = "none",
+                    reportGeneralTypeIssues = "none",
+                    reportIncompatibleMethodOverride = "none",
+                    reportIncompatibleVariableOverride = "none",
+                    reportIndexIssue = "none",
+                    reportOptionalMemberAccess = "none",
+                    reportOptionalSubscript = "none",
+                    reportPrivateImportUsage = "none",
+                  },
+                  indexing = true,
+                  inlayHints = {
+                    functionReturnTypes = true,
+                    variableTypes = true,
+                  },
+                  typeCheckingMode = "standard",
+                  useLibraryCodeForTypes = true,
                 },
-                indexing = true,
-                inlayHints = {
-                  functionReturnTypes = true,
-                  variableTypes = true,
-                },
-                typeCheckingMode = "standard",
-                useLibraryCodeForTypes = true,
               },
             },
           },
         },
         basedpyright = {
           enabled = true,
-          settings = {
-            basedpyright = {
-              analysis = {
-                autoImportCompletions = true,
-                autoSearchPaths = true,
-                diagnosticMode = "workspace",
-                -- These diagnostics are useless, therefore disable them.
-                diagnosticSeverityOverrides = {
-                  reportArgumentType = "none",
-                  reportAttributeAccessIssue = "none",
-                  reportCallIssue = "none",
-                  reportFunctionMemberAccess = "none",
-                  reportGeneralTypeIssues = "none",
-                  reportIncompatibleMethodOverride = "none",
-                  reportIncompatibleVariableOverride = "none",
-                  reportIndexIssue = "none",
-                  reportOptionalMemberAccess = "none",
-                  reportOptionalSubscript = "none",
-                  reportPrivateImportUsage = "none",
+          opts = {
+            settings = {
+              basedpyright = {
+                analysis = {
+                  autoImportCompletions = true,
+                  autoSearchPaths = true,
+                  diagnosticMode = "workspace",
+                  -- These diagnostics are useless, therefore disable them.
+                  diagnosticSeverityOverrides = {
+                    reportArgumentType = "none",
+                    reportAttributeAccessIssue = "none",
+                    reportCallIssue = "none",
+                    reportFunctionMemberAccess = "none",
+                    reportGeneralTypeIssues = "none",
+                    reportIncompatibleMethodOverride = "none",
+                    reportIncompatibleVariableOverride = "none",
+                    reportIndexIssue = "none",
+                    reportOptionalMemberAccess = "none",
+                    reportOptionalSubscript = "none",
+                    reportPrivateImportUsage = "none",
+                  },
+                  indexing = true,
+                  inlayHints = {
+                    functionReturnTypes = true,
+                    variableTypes = true,
+                  },
+                  typeCheckingMode = "off", -- Pyright diagnostics is bloody slow
+                  useLibraryCodeForTypes = true,
                 },
-                indexing = true,
-                inlayHints = {
-                  functionReturnTypes = true,
-                  variableTypes = true,
-                },
-                typeCheckingMode = "off", -- Pyright diagnostics is bloody slow
-                useLibraryCodeForTypes = true,
               },
             },
-          },
-          root_dir = {
-            "pyproject.toml",
-            "setup.py",
-            "setup.cfg",
-            "requirements.txt",
-            "Pipfile",
-            "pyrightconfig.json",
+            root_dir = {
+              "pyproject.toml",
+              "setup.py",
+              "setup.cfg",
+              "requirements.txt",
+              "Pipfile",
+              "pyrightconfig.json",
+            },
           },
         },
         ruff_lsp = {

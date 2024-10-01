@@ -1,5 +1,3 @@
-local Utils = require("beastvim.utils")
-
 ---@class LspCodeLensOptions
 ---@field enabled boolean
 
@@ -14,15 +12,17 @@ setmetatable(M, {
 
 ---@param opts LspCodeLensOptions
 function M.setup(opts)
-  if opts.enabled then
-    Utils.lsp.on_support_methods("textDocument/codeLens", function(client, buffer)
-      vim.lsp.codelens.refresh()
-      vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
-        buffer = buffer,
-        callback = vim.lsp.codelens.refresh,
-      })
-    end)
+  opts = opts or {}
+  if not opts.enabled then
+    return
   end
+  Utils.lsp.on_support_methods("textDocument/codeLens", function(client, buffer)
+    vim.lsp.codelens.refresh()
+    vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+      buffer = buffer,
+      callback = vim.lsp.codelens.refresh,
+    })
+  end)
 end
 
 return M

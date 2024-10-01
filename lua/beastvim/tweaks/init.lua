@@ -2,7 +2,6 @@ local Profile = require("beastvim.profile")
 local Utils = require("beastvim.utils")
 _G.Utils = require("beastvim.utils")
 
-
 ---@class Tweaks
 ---@field icons beastvim.tweaks.icons
 ---@field logos beastvim.tweaks.logos
@@ -20,6 +19,9 @@ M.load = function(mod)
   Utils.try(function()
     require("beastvim.tweaks." .. mod)
   end, { msg = "Error loading '" .. mod .. "'" })
+  local pattern = "BeastVim" .. mod:sub(1, 1):upper() .. mod:sub(2)
+
+  vim.api.nvim_exec_autocmds("User", { pattern = pattern, modeline = false })
 end
 
 function M.setup()

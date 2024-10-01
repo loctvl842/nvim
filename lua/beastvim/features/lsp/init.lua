@@ -1,11 +1,11 @@
 local Utils = require("beastvim.utils")
 
 ---@class LspServer
+---@field opts table
 ---@field enabled? boolean
 ---@field keys? LazyKeysSpec
 ---@field capabilities? table
 ---@field on_attach? fun(client, bufnr)
----@field root_dir? string|string[]|fun(client, bufnr):string Root pattern or function to get the root directory
 
 ---@class LspOptions
 ---@field servers table<string, LspServer>
@@ -13,6 +13,7 @@ local Utils = require("beastvim.utils")
 ---@field diagnostics? LspDiagnosticsOptions
 ---@field inlay_hints? LspInlayHintsOptions
 ---@field codelens? LspCodeLensOptions
+---@field document_highlight? LspDocumentHighlightOptions
 
 ---@class Lsp
 ---@field keymaps beastvim.features.lsp.keymaps
@@ -20,6 +21,7 @@ local Utils = require("beastvim.utils")
 ---@field diagnostics beastvim.features.lsp.diagnostics
 ---@field inlay_hints beastvim.features.lsp.inlay_hints
 ---@field codelens beastvim.features.lsp.codelens
+---@field document_highlight beastvim.features.lsp.document_highlight
 ---@field ui beastvim.features.lsp.ui
 local M = {}
 
@@ -38,6 +40,8 @@ function M.setup(opts)
     return
   end
 
+  Utils.lsp.setup()
+
   -- UI
   M.ui.setup()
 
@@ -49,6 +53,9 @@ function M.setup(opts)
 
   -- Codelens
   M.codelens.setup(opts.codelens)
+
+  -- Document Highlight
+  M.document_highlight.setup(opts.document_highlight)
 
   -- Keymaps
   Utils.lsp.on_attach(function(client, bufnr)
@@ -76,9 +83,10 @@ function M.setup(opts)
       servers[server].capabilities = servers[server].capabilities() or {}
     end
 
+    local server_config = servers[server] or { opts = {} }
     local server_opts = vim.tbl_deep_extend("force", {
       capabilities = vim.deepcopy(capabilities),
-    }, servers[server] or {})
+    }, server_config.opts or {})
 
     if server_opts.on_attach then
       local function callback(client, bufnr)
@@ -89,7 +97,6 @@ function M.setup(opts)
       Utils.lsp.on_attach(callback)
     end
 
-    -- TODO Set root_dir pattern
     local pending = true
     if not pending and server_opts.root_dir then
       -- If root_dir is string or list of strings
