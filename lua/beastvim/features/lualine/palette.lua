@@ -1,5 +1,3 @@
-local Utils = require("beastvim.utils")
-
 ---@class DefaultLualinePalette
 local palette = {
   yellow = "#ffff00",

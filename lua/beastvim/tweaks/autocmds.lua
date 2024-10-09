@@ -1,5 +1,3 @@
-local Utils = require("beastvim.utils")
-
 -- Turn off paste mode when leaving insert
 vim.api.nvim_create_autocmd("InsertLeave", {
   command = "set nopaste",

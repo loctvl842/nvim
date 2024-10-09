@@ -4,7 +4,6 @@
   creating a streamlined and innovative development experience.
                                         -- Aisync --
 ]]
-local Utils = require("beastvim.utils")
 
 return {
   -- Copilot

@@ -1,4 +1,3 @@
-local Utils = require("beastvim.utils")
 local config = require("beastvim.features.lualine.config")
 
 local M = {}

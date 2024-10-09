@@ -1,5 +1,3 @@
-local Utils = require("beastvim.utils")
-
 ---@class beastvim.features.lsp.ui
 local M = {}
 

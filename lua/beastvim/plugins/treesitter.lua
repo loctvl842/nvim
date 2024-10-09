@@ -34,6 +34,7 @@ return {
       },
       highlight = { enable = true },
       indent = { enable = true, disable = { "yaml", "python", "html" } },
+      incremental_selection = { enable = true },
       rainbow = {
         enable = true,
         query = "rainbow-parens",
@@ -50,7 +51,7 @@ return {
     "nvim-treesitter/nvim-treesitter-context",
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     enabled = true,
-    opts = { mode = "cursor", max_lines = 3 },
+    opts = { mode = "cursor", max_lines = 1, zindex = 20 },
     keys = {
       { "<leader>tt", "<cmd>TSContextToggle<cr>", desc = "Toggle Treesitter Context" },
     },

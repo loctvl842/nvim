@@ -1,5 +1,3 @@
-local Utils = require("beastvim.utils")
-
 ---@class LspInlayHintsOptions
 ---@field enabled boolean
 

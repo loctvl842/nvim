@@ -96,26 +96,44 @@ return {
               "pyrightconfig.json",
             },
           },
+          on_attach = function(client, _)
+            -- `ruff_lsp` does not support hover as well as `pyright`
+            client.server_capabilities.hoverProvider = true
+          end,
         },
         ruff_lsp = {
+          enabled = false,
           keys = {
             {
               "<leader>lo",
-              function()
-                vim.lsp.buf.code_action({
-                  apply = true,
-                  context = {
-                    only = { "source.organizeImports" },
-                    diagnostics = {},
-                  },
-                })
-              end,
+              Utils.lsp.action["source.organizeImports"],
               desc = "Organize Imports",
             },
           },
           on_attach = function(client, _)
             -- `ruff_lsp` does not support hover as well as `pyright`
-            client.server_capabilities.hoverProvider = true
+            client.server_capabilities.hoverProvider = false
+          end,
+        },
+        ruff = {
+          opts = {
+            cmd_env = { RUFF_TRACE = "messages" },
+            init_options = {
+              settings = {
+                logLevel = "error",
+              },
+            },
+          },
+          keys = {
+            {
+              "<leader>lo",
+              Utils.lsp.action["source.organizeImports"],
+              desc = "Organize Imports",
+            },
+          },
+          on_attach = function(client, _)
+            -- `ruff_lsp` does not support hover as well as `pyright`
+            client.server_capabilities.hoverProvider = false
           end,
         },
       },

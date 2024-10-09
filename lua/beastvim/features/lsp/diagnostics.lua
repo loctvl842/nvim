@@ -1,4 +1,3 @@
-local Utils = require("beastvim.utils")
 local Icons = require("beastvim.tweaks").icons
 
 ---@class LspDiagnosticsOptions

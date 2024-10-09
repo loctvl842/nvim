@@ -14,42 +14,44 @@ return {
       servers = {
         html = {},
         lua_ls = {
-          settings = {
-            Lua = {
-              hint = { enable = true },
-              diagnostics = {
-                globals = { "vim" },
-              },
-              workspace = {
-                checkThirdParty = false,
-                library = {
-                  [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-                  [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
-                  [vim.fn.stdpath("data") .. "/lazy/lazy.nvim/lua/lazy"] = true,
+          opts = {
+            settings = {
+              Lua = {
+                hint = { enable = true },
+                diagnostics = {
+                  globals = { "vim" },
                 },
-                maxPreload = 100000,
-                preloadFileSize = 10000,
-              },
-              codeLens = {
-                enable = true,
-              },
-              completion = {
-                callSnippet = "Replace",
-              },
-              doc = {
-                privateName = { "^_" },
-              },
-              misc = {
-                parameters = {
-                  "--log-level=trace",
+                workspace = {
+                  checkThirdParty = false,
+                  library = {
+                    [vim.fn.expand("$VIMRUNTIME/lua")] = true,
+                    [vim.fn.expand("$VIMRUNTIME/lua/vim/lsp")] = true,
+                    [vim.fn.stdpath("data") .. "/lazy/lazy.nvim/lua/lazy"] = true,
+                  },
+                  maxPreload = 100000,
+                  preloadFileSize = 10000,
                 },
-              },
-              format = {
-                enable = false,
-                defaultConfig = {
-                  indent_style = "space",
-                  indent_size = "2",
-                  continuation_indent_size = "2",
+                codeLens = {
+                  enable = true,
+                },
+                completion = {
+                  callSnippet = "Replace",
+                },
+                doc = {
+                  privateName = { "^_" },
+                },
+                misc = {
+                  parameters = {
+                    "--log-level=trace",
+                  },
+                },
+                format = {
+                  enable = false,
+                  defaultConfig = {
+                    indent_style = "space",
+                    indent_size = "2",
+                    continuation_indent_size = "2",
+                  },
                 },
               },
             },

@@ -1,4 +1,3 @@
-local Utils = require("beastvim.utils")
 local create_command = vim.api.nvim_create_user_command
 
 --- Toggle monochrome mode

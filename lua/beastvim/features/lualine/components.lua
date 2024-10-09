@@ -1,4 +1,3 @@
-local Utils = require("beastvim.utils")
 local Icons = require("beastvim.tweaks").icons
 local palette = require("beastvim.features.lualine.palette")
 local config = require("beastvim.features.lualine.config")

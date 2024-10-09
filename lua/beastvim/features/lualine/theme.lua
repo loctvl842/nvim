@@ -1,5 +1,3 @@
-local Utils = require("beastvim.utils")
-
 ---@class LualineTheme
 local M = setmetatable({}, {
   __call = function(m, ...)

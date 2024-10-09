@@ -1,5 +1,3 @@
-local Utils = require("beastvim.utils")
-
 ---@class DefaultHeirlinePalette
 local palette = {
   yellow = "#ffff00",

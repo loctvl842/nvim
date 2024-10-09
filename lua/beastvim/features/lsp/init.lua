@@ -1,7 +1,5 @@
-local Utils = require("beastvim.utils")
-
 ---@class LspServer
----@field opts table
+---@field opts? table
 ---@field enabled? boolean
 ---@field keys? LazyKeysSpec
 ---@field capabilities? table
@@ -88,10 +86,10 @@ function M.setup(opts)
       capabilities = vim.deepcopy(capabilities),
     }, server_config.opts or {})
 
-    if server_opts.on_attach then
+    if server_config.on_attach then
       local function callback(client, bufnr)
         if client.name == server then
-          server_opts.on_attach(client, bufnr)
+          server_config.on_attach(client, bufnr)
         end
       end
       Utils.lsp.on_attach(callback)

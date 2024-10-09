@@ -1,6 +1,5 @@
 local conditions = require("heirline.conditions")
 
-local Utils = require("beastvim.utils")
 local config = require("beastvim.features.heirline.config")
 
 local M = {}
