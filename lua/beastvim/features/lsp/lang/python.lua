@@ -59,31 +59,33 @@ return {
           opts = {
             settings = {
               basedpyright = {
+                disableOrganizeImports = true, -- Using Ruff
                 analysis = {
-                  autoImportCompletions = true,
-                  autoSearchPaths = true,
-                  diagnosticMode = "workspace",
-                  -- These diagnostics are useless, therefore disable them.
-                  diagnosticSeverityOverrides = {
-                    reportArgumentType = "none",
-                    reportAttributeAccessIssue = "none",
-                    reportCallIssue = "none",
-                    reportFunctionMemberAccess = "none",
-                    reportGeneralTypeIssues = "none",
-                    reportIncompatibleMethodOverride = "none",
-                    reportIncompatibleVariableOverride = "none",
-                    reportIndexIssue = "none",
-                    reportOptionalMemberAccess = "none",
-                    reportOptionalSubscript = "none",
-                    reportPrivateImportUsage = "none",
-                  },
-                  indexing = true,
-                  inlayHints = {
-                    functionReturnTypes = true,
-                    variableTypes = true,
-                  },
-                  typeCheckingMode = "off", -- Pyright diagnostics is bloody slow
-                  useLibraryCodeForTypes = true,
+                  ignore = { "*" },
+                  -- autoImportCompletions = true,
+                  -- autoSearchPaths = true,
+                  -- diagnosticMode = "workspace",
+                  -- -- These diagnostics are useless, therefore disable them.
+                  -- diagnosticSeverityOverrides = {
+                  --   reportArgumentType = "none",
+                  --   reportAttributeAccessIssue = "none",
+                  --   reportCallIssue = "none",
+                  --   reportFunctionMemberAccess = "none",
+                  --   reportGeneralTypeIssues = "none",
+                  --   reportIncompatibleMethodOverride = "none",
+                  --   reportIncompatibleVariableOverride = "none",
+                  --   reportIndexIssue = "none",
+                  --   reportOptionalMemberAccess = "none",
+                  --   reportOptionalSubscript = "none",
+                  --   reportPrivateImportUsage = "none",
+                  -- },
+                  -- indexing = true,
+                  -- inlayHints = {
+                  --   functionReturnTypes = true,
+                  --   variableTypes = true,
+                  -- },
+                  -- typeCheckingMode = "off", -- Pyright diagnostics is bloody slow
+                  -- useLibraryCodeForTypes = true,
                 },
               },
             },

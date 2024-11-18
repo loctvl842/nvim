@@ -33,6 +33,7 @@ return {
       local cmp = require("cmp")
       local defaults = require("cmp.config.default")()
       local monokai_opts = Utils.plugin.opts("monokai-pro.nvim")
+      local auto_select = true
 
       cmp.setup.cmdline({ "/", "?" }, {
         mapping = cmp.mapping.preset.cmdline(),
@@ -48,7 +49,13 @@ return {
           completion = cmp.config.window.bordered({ border = "rounded" }),
           documentation = cmp.config.window.bordered({ border = "rounded" }),
         } or nil,
-        completion = { completeopt = "menu,menuone,noinsert" },
+        performance = {
+          fetching_timeout = 1,
+        },
+        completion = {
+          completeopt = "menu,menuone,noinsert" .. (auto_select and "" or ",noselect"),
+        },
+        preselect = auto_select and cmp.PreselectMode.Item or cmp.PreselectMode.None,
         snippet = {
           expand = function(args)
             require("luasnip").lsp_expand(args.body)
@@ -72,10 +79,10 @@ return {
         sources = cmp.config.sources({
           { name = "codeium", keyword_length = 2 },
           { name = "copilot", keyword_length = 2 },
-          { name = "nvim_lsp", keyword_length = 3 },
-          { name = "luasnip", keyword_length = 2 },
+          { name = "nvim_lsp" },
           { name = "buffer", keyword_length = 3 },
           { name = "path" },
+          { name = "luasnip", keyword_length = 2 },
         }),
         formatting = {
           fields = { "kind", "abbr", "menu" },
@@ -123,26 +130,9 @@ return {
   },
 
   -- comments
-  { "JoosepAlviste/nvim-ts-context-commentstring", lazy = false },
   {
-    "echasnovski/mini.comment",
-    event = "BufEnter",
-    opts = {
-      options = {
-        custom_commentstring = function()
-          return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
-        end,
-      },
-    },
-  },
-
-  {
-    "ray-x/lsp_signature.nvim",
-    event = { "InsertEnter" },
-    opts = {
-      floating_window = false, -- show hint in a floating window, set to false for virtual text only mode
-      floating_window_above_cur_line = true, -- try to place the floating above the current line when possible Note:
-      hint_scheme = "Comment", -- highlight group for the virtual text
-    },
+    "folke/ts-comments.nvim",
+    event = "VeryLazy",
+    opts = {},
   },
 }

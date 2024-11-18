@@ -495,6 +495,7 @@ return {
 
   {
     "lewis6991/hover.nvim",
+    enabled = false,
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     config = function()
       require("hover").setup({
