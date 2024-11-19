@@ -25,6 +25,7 @@ require("lazy").setup({
     { import = "beastvim.features.lsp.lang.tailwind", enabled = false },
     { import = "beastvim.features.lsp.lang.dot", enabled = false },
     { import = "beastvim.features.lsp.lang.terraform", enabled = true },
+    { import = "beastvim.features.lsp.lang.tex", enabled = true },
   },
   defaults = {
     lazy = true,
