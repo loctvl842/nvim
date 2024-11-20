@@ -83,7 +83,7 @@ return {
         },
       },
       diagnostics = { enabled = true },
-      inlay_hints = { enabled = false },
+      inlay_hints = { enabled = true },
       codelens = { enabled = true },
       document_highlight = { enabled = true },
     },

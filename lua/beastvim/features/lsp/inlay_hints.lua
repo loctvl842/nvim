@@ -15,7 +15,7 @@ function M.setup(opts)
   if opts.enabled then
     Utils.lsp.on_support_methods("textDocument/inlayHint", function(_, buffer)
       if vim.api.nvim_buf_is_valid(buffer) and vim.bo[buffer].buftype == "" then
-        M.toggle(buffer, true)
+        M.toggle(buffer, false)
       end
     end)
 
