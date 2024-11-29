@@ -149,6 +149,8 @@ return {
         },
         files = {
           cwd_prompt = false,
+          -- https://github.com/sharkdp/fd
+          cmd = "fd --type f --hidden --exclude .git --follow",
           actions = {
             ["alt-i"] = { actions.toggle_ignore },
             ["alt-h"] = { actions.toggle_hidden },
