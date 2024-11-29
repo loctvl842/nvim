@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.3.0](https://github.com/loctvl842/nvim/compare/v2.2.1...v2.3.0) (2024-11-29)
+
+
+### Features
+
+* Add Heirline ([b828bfc](https://github.com/loctvl842/nvim/commit/b828bfc7497516be14378b44ee386d2730e39237))
+* add tex ([e9d7712](https://github.com/loctvl842/nvim/commit/e9d77125b8a8a94d5924149ae7fe9c6d0bb85ca0))
+* using fd instead of find in fzf ([8cbfa4b](https://github.com/loctvl842/nvim/commit/8cbfa4bf1c83543ecc7a086891a533ee31c1d469))
+
+
+### Performance Improvements
+
+* optimize treesitter ([1508987](https://github.com/loctvl842/nvim/commit/1508987f8e0245b96320f6dff4294feab91dca19))
+
 ## [2.2.1](https://github.com/loctvl842/nvim/compare/v2.2.0...v2.2.1) (2024-04-02)
 
 
