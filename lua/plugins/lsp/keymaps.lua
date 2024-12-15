@@ -15,6 +15,7 @@ function M.get()
   M._keys = {
     { "<leader>cl", "<cmd>LspInfo<cr>",                       desc = "Lsp Info" },
     { "gd",         vim.lsp.buf.definition,                   desc = "Goto Definition" },
+    -- { "gd",         "<cmd>Telescope lsp_definitions<cr>",                   desc = "Goto Definition" },
     { "gr",         vim.lsp.buf.references,                   desc = "References",                 nowait = true },
     { "gI",         vim.lsp.buf.implementation,               desc = "Goto Implementation" },
     { "gy",         vim.lsp.buf.type_definition,              desc = "Goto T[y]pe Definition" },
@@ -25,13 +26,19 @@ function M.get()
     { "<leader>ca", vim.lsp.buf.code_action,                  desc = "Code Action",                mode = { "n", "v" },     has = "codeAction" },
     { "<leader>cc", vim.lsp.codelens.run,                     desc = "Run Codelens",               mode = { "n", "v" },     has = "codeLens" },
     { "<leader>cC", vim.lsp.codelens.refresh,                 desc = "Refresh & Display Codelens", mode = { "n" },          has = "codeLens" },
-    { "<leader>cd", "<cmd>Telescope lsp_definitions<cr>",     desc = "Goto Definition",            mode = { "n" } },
-    { "<leader>cD", "<cmd>Telescope lsp_references<cr>",      desc = "References",                 mode = { "n" } },
+    { "<leader>cd", vim.lsp.buf.definition,                   desc = "Goto Definition",            mode = { "n" } },
+    { "<leader>cD", vim.lsp.buf.references,                   desc = "References",                 mode = { "n" } },
     { "<leader>ce", CoreUtil.runlua,                          desc = "Run Lua",                    mode = { "n" } },
     { "<leader>cI", "<cmd>Telescope lsp_implementations<cr>", desc = "Goto Implementation",        mode = { "n" } },
     { "<leader>cR", CoreUtil.lsp.rename_file,                 desc = "Rename File",                mode = { "n" },          has = { "workspace/didRenameFiles", "workspace/willRenameFiles" } },
     { "<leader>cr", vim.lsp.buf.rename,                       desc = "Rename",                     has = "rename" },
     { "<leader>cA", CoreUtil.lsp.action.source,               desc = "Source Action",              has = "codeAction" },
+    -- File
+    {
+      "<leader>fS",
+      "<cmd>lua vim.lsp.buf.format()<CR><cmd>silent w!<CR>",
+      desc = "Format and Save",
+    },
     {
       "]]",
       function() CoreUtil.lsp.words.jump(vim.v.count1) end,

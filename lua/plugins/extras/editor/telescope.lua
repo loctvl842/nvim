@@ -28,13 +28,6 @@ return {
         "<cmd>lua require('telescope.builtin').treesitter()<cr>",
         desc = "Buffer Symbols",
       },
-      -- File
-      { "<leader>fs", "<cmd>silent w!<CR>", desc = "Save" },
-      {
-        "<leader>fS",
-        "<cmd>lua vim.lsp.buf.format()<CR><cmd>silent w!<CR>",
-        desc = "Format and Save",
-      },
       -- Find
       {
         "<leader>ff",

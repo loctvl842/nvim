@@ -32,7 +32,7 @@ opt.mouse = "a" -- allow the mouse to be used in neovim
 opt.pumheight = 10 -- pop up menu height
 opt.showmode = false -- we don't need to see things like -- INSERT -- anymore
 opt.showtabline = 2 -- always show tabs
--- smartcase = true,                        -- smart case
+-- smartcase = true,                        -- smart caseoption
 opt.smartindent = true -- make indenting smarter again
 opt.splitbelow = true -- force all horizontal splits to go below current window
 opt.splitright = true -- force all vertical splits to go to the right of current window
@@ -86,7 +86,6 @@ opt.foldmethod = "expr"
 opt.foldtext = ""
 opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp" }
 opt.statuscolumn = [[%!v:lua.CoreUtil.ui.statuscolumn()]]
-opt.spelllang = { "en" }
 
 opt.shortmess:append({ W = true, I = true, c = true, C = true })
 opt.list = true

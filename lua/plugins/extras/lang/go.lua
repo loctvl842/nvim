@@ -24,11 +24,11 @@ return {
               hints = {
                 assignVariableTypes = false,
                 compositeLiteralFields = false,
-                compositeLiteralTypes = true,
-                constantValues = true,
+                compositeLiteralTypes = false,
+                constantValues = false,
                 functionTypeParameters = true,
                 parameterNames = true,
-                rangeVariableTypes = true,
+                rangeVariableTypes = false,
               },
               analyses = {
                 fieldalignment = true,

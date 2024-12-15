@@ -24,6 +24,14 @@ return {
       local cmp = require("cmp")
       local defaults = require("cmp.config.default")()
       local auto_select = true
+
+      -- -- Make sure LSP shows up ahead of copilot comptetions
+      -- local ok, copilot_cmp = pcall(require, "copilot_cmp.comparators")
+      -- if ok then
+      --   table.insert(defaults.sorting, 3, copilot_cmp.prioritize)
+      -- end
+      --
+
       return {
         auto_brackets = {}, -- configure any filetype to auto add brackets
         completion = {
@@ -52,10 +60,12 @@ return {
         formatting = {
           fields = { "kind", "abbr", "menu" },
           format = function(entry, item)
-            local icons = require("core.icons").kinds
-            if icons[item.kind] then
+            -- local icons = require("core.icons").kinds
+            local kind = item.kind or ""
+            local mini_icon, _, _ = require("mini.icons").get("lsp", kind)
+            if mini_icon then
               -- item.kind = icons[item.kind] .. item.kind
-              item.kind = icons[item.kind]
+              item.kind = mini_icon .. " " .. kind
               item.menu = ({
                 nvim_lsp = "Lsp",
                 luasnip = "Snippet",
@@ -84,6 +94,24 @@ return {
           },
         },
         sorting = defaults.sorting,
+        -- sorting = {
+        --   priority_weight = 2,
+        --   comparators = {
+        --
+        --     -- Below is the default comparitor list and order for nvim-cmp
+        --     cmp.config.compare.offset,
+        --     -- cmp.config.compare.scopes, --this is commented in nvim-cmp too
+        --     cmp.config.compare.exact,
+        --     require("copilot_cmp.comparators").prioritize,
+        --     cmp.config.compare.score,
+        --     cmp.config.compare.recently_used,
+        --     cmp.config.compare.locality,
+        --     cmp.config.compare.kind,
+        --     cmp.config.compare.sort_text,
+        --     cmp.config.compare.length,
+        --     cmp.config.compare.order,
+        --   },
+        -- },
       }
     end,
     main = "util.cmp",
@@ -234,7 +262,7 @@ return {
       { "<leader>go", "<cmd>Telescope git_status<cr>", desc = "Open changed file" },
       { "<leader>gb", "<cmd>Telescope git_branches<cr>", desc = "Checkout branch" },
       { "<leader>gc", "<cmd>Telescope git_commits<cr>", desc = "Checkout commit" },
-      { "<leader>gd", "<cmd>Gitsigns diffthis HEAD<cr>", desc = "Diff" },
+      -- { "<leader>gd", "<cmd>Gitsigns diffthis HEAD<cr>", desc = "Diff" },
     },
     opts = {
       {

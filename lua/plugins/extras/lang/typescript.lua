@@ -1,25 +1,3 @@
----@param file string
----@return string
-local function monorepo_root(file)
-  if string.match(file, "(.-/[^/]+/)test") then
-    ---@type string
-    return string.match(file, "(.-/[^/]+/)test")
-  end
-
-  ---@type string
-  return string.match(file, "(.-/[^/]+/)src")
-end
-
----@param file string
----@return boolean
-local function file_belongs_to_monorepo(file)
-  if string.find(file, "/packages") or string.find(file, "/apps") then
-    return true
-  end
-
-  return false
-end
-
 return {
   {
     "marilari88/neotest-vitest",
@@ -47,34 +25,28 @@ return {
             return "steam-run npx vitest"
           end,
           vitestConfigFile = function()
-            local file = vim.fn.expand("%:p")
-            local config = vim.fn.getcwd() .. "/vitest.config.ts"
-            if file_belongs_to_monorepo(file) then
-              local monorepo_config = monorepo_root(file) .. "vitest.config.ts"
-              return monorepo_config
-            end
+            local root = CoreUtil.root.detect({ spec = { "lsp" } })
+            local cwd = root[1].paths[1]
+            local config = cwd .. "/vitest.config.ts"
             return config
           end,
           cwd = function()
-            local file = vim.fn.expand("%:p")
-            if file_belongs_to_monorepo(file) then
-              local cwd = monorepo_root(file)
-              return cwd
-            end
-
-            return vim.fn.getcwd()
+            local root = CoreUtil.root.detect({ spec = { "lsp" } })
+            local cwd = root[1].paths[1]
+            return cwd
           end,
           filter_dir = function(name, _rel_path, _root)
             return name ~= "node_modules"
           end,
         },
         ["neotest-jest"] = {
-          jestCommand = "npm test --",
+          jestCommand = "node --expose-gc --no-compilation-cache ./node_modules/.bin/jest --logHeapUsage --colors --silent",
           -- jestConfigFile = "custom.jest.config.ts",
           env = { CI = true },
           cwd = function()
             local root = CoreUtil.root.detect({ spec = { "lsp" } })
             local cwd = root[1].paths[1]
+            print("cwd " .. cwd)
             return cwd
           end,
         },
@@ -88,7 +60,7 @@ return {
     opts = {
       -- make sure mason installs the server
       servers = {
-        tsserver = {
+        ts_ls = {
           enabled = false,
         },
         vtsls = {
@@ -184,7 +156,7 @@ return {
         },
       },
       setup = {
-        tsserver = function()
+        ts_ls = function()
           -- disable tsserver
           return true
         end,

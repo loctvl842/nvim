@@ -99,6 +99,9 @@ vim.keymap.set("n", "<C-f>", function()
   require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes"))
 end, { desc = "[/] Fuzzily search in current buffer]" })
 
+-------------------- File --------------------------------
+keymap("n", "<leader>fs", "<cmd>silent w!<CR>", opts)
+
 -------------------- Doom Emacs Compatability --------------------
 keymap("n", "<C-g>", "<C-c>", opts)
 
