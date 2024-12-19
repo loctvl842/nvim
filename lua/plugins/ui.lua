@@ -1,46 +1,4 @@
-local util = require("util")
-local icons = require("core.icons")
-
 return {
-  -- Notifications
-  {
-    "rcarriga/nvim-notify",
-    keys = {
-      {
-        "<leader>un",
-        function()
-          require("notify").dismiss({ silent = true, pending = true })
-        end,
-        desc = "Dismiss All Notifications",
-      },
-    },
-    opts = {
-      icons = {
-        ERROR = icons.diagnostics.Error .. " ",
-        INFO = icons.diagnostics.Info .. " ",
-        WARN = icons.diagnostics.Warn .. " ",
-      },
-      stages = "static",
-      timeout = 3000,
-      max_height = function()
-        return math.floor(vim.o.lines * 0.75)
-      end,
-      max_width = function()
-        return math.floor(vim.o.columns * 0.75)
-      end,
-      on_open = function(win)
-        vim.api.nvim_win_set_config(win, { zindex = 100 })
-      end,
-    },
-    init = function()
-      if not CoreUtil.has("noice.nvim") then
-        CoreUtil.on_very_lazy(function()
-          vim.notify = require("notify")
-        end)
-      end
-    end,
-  },
-
   -- Buffer Management
 
   {
@@ -63,11 +21,10 @@ return {
     },
     opts = {
       options = {
-        close_command = function(n)
-          CoreUtil.ui.bufremove(n)
-        end,
         -- stylua: ignore
-        right_mouse_command = function(n) CoreUtil.ui.bufremove(n) end,
+        close_command = function(n) Snacks.bufdelete(n)end,
+        -- stylua: ignore
+        right_mouse_command = function(n) Snacks.bufdelete(n) end,
         diagnostics = "nvim_lsp", -- | "nvim_lsp" | "coc",
         -- separator_style = "slant", -- | "thick" | "thin" | "slope" | { "any", "any" },
         -- separator_style = { "", "" }, -- | "thick" | "thin" | { "any", "any" },
@@ -186,37 +143,6 @@ return {
         end,
       })
     end,
-  },
-
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-    main = "ibl",
-    opts = {
-      indent = {
-        char = "▏",
-      },
-      scope = {
-        enabled = true,
-        -- show_end = false,
-      },
-      exclude = {
-        filetypes = {
-          "help",
-          "startify",
-          "dashboard",
-          "packer",
-          "neogitstatus",
-          "NvimTree",
-          "Trouble",
-          "alpha",
-        },
-        buftypes = {
-          "terminal",
-          "nofile",
-        },
-      },
-    },
   },
 
   -- icons
@@ -421,10 +347,10 @@ return {
     lazy = false,
     opts = {
       input = {
-        border = util.generate_borderchars("thick", "tl-t-tr-r-bl-b-br-l"),
+        border = CoreUtil.generate_borderchars("thick", "tl-t-tr-r-bl-b-br-l"),
         win_options = { winblend = 0 },
       },
-      select = { telescope = util.telescope_theme("cursor") },
+      select = { telescope = CoreUtil.telescope_theme("cursor") },
     },
     init = function()
       ---@diagnostic disable-next-line: duplicate-set-field
@@ -492,6 +418,27 @@ return {
           view = "mini",
         },
       },
+    },
+  },
+
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    opts = {
+      indent = { enabled = true },
+      input = { enabled = true },
+      notifier = { enabled = true },
+      scope = { enabled = true },
+      scroll = { enabled = true },
+      statuscolumn = { enabled = false }, -- we set this in options.lua
+      toggle = { map = CoreUtil.safe_keymap_set },
+      words = { enabled = true },
+    },
+    -- stylua: ignore
+    keys = {
+      { "<leader>n", function() Snacks.notifier.show_history() end, desc = "Notification History" },
+      { "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
     },
   },
 }

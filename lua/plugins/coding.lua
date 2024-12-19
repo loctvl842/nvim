@@ -158,9 +158,6 @@ return {
     "echasnovski/mini.ai",
     event = "VeryLazy",
     opts = function()
-      CoreUtil.on_load("which-key.nvim", function()
-        vim.schedule(CoreUtil.mini.ai_whichkey)
-      end)
       local ai = require("mini.ai")
       return {
         n_lines = 500,
@@ -183,6 +180,14 @@ return {
           U = ai.gen_spec.function_call({ name_pattern = "[%w_]" }), -- without dot in function name
         },
       }
+    end,
+    config = function(_, opts)
+      require("mini.ai").setup(opts)
+      CoreUtil.on_load("which-key.nvim", function()
+        vim.schedule(function()
+          CoreUtil.mini.ai_whichkey(opts)
+        end)
+      end)
     end,
   },
 
@@ -284,5 +289,18 @@ return {
     opts = {},
     event = "VeryLazy",
     enabled = vim.fn.has("nvim-0.10.0") == 1,
+  },
+
+  {
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+        { path = "snacks.nvim", words = { "Snacks" } },
+      },
+    },
   },
 }

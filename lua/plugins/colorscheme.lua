@@ -44,6 +44,8 @@ return {
         neogit = true,
         neotree = true,
         notify = true,
+        semantic_tokens = true,
+        -- snacks = true,
         telescope = true,
         treesitter = true,
         treesitter_context = false,

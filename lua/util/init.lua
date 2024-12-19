@@ -36,12 +36,17 @@ M.root_patterns = {
   ".project",
 }
 
---- Create a named user auto group
----
 ---@param name string
----@return integer
-function M.augroup(name)
-  return vim.api.nvim_create_augroup("user_" .. name, { clear = true })
+function M.get_plugin(name)
+  return require("lazy.core.config").spec.plugins[name]
+end
+
+---@param name string
+---@param path string?
+function M.get_plugin_path(name, path)
+  local plugin = M.get_plugin(name)
+  path = path and "/" .. path or ""
+  return plugin and (plugin.dir .. path)
 end
 
 --- Check if a plugin exists
@@ -50,6 +55,35 @@ end
 ---@return boolean
 function M.has(plugin)
   return require("lazy.core.config").plugins[plugin] ~= nil
+end
+
+---@param extra string
+function M.has_extra(extra)
+  local Config = require("config")
+  local modname = "plugins.extras." .. extra
+  return vim.tbl_contains(require("lazy.core.config").spec.modules, modname)
+    or vim.tbl_contains(Config.json.data.extras, modname)
+end
+
+--- Create an autocommand that will execute the provided function only when very lazy plugins
+--- have loaded.
+---
+---@param fn
+M.on_very_lazy = function(fn)
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "VeryLazy",
+    callback = function()
+      fn()
+    end,
+  })
+end
+
+--- Create a named user auto group
+---
+---@param name string
+---@return integer
+function M.augroup(name)
+  return vim.api.nvim_create_augroup("user_" .. name, { clear = true })
 end
 
 --- Check if a plugin is loaded
@@ -185,12 +219,33 @@ function M.telescope_theme(type)
   end
   return require("telescope.themes")["get_" .. type]({
     cwd = M.get_root(),
-    borderchars = M.generate_borderchars(
-      "thick",
-      nil,
-      { top = "█", top_left = "█", top_right = "█" }
-    ),
+    borderchars = M.generate_borderchars("thick", nil, { top = "█", top_left = "█", top_right = "█" }),
   })
+end
+
+-- Wrapper around vim.keymap.set that will
+-- not create a keymap if a lazy key handler exists.
+-- It will also set `silent` to true by default.
+function M.safe_keymap_set(mode, lhs, rhs, opts)
+  local keys = require("lazy.core.handler").handlers.keys
+  ---@cast keys LazyKeysHandler
+  local modes = type(mode) == "string" and { mode } or mode
+
+  ---@param m string
+  modes = vim.tbl_filter(function(m)
+    return not (keys.have and keys:have(lhs, m))
+  end, modes)
+
+  -- do not create the keymap if a lazy keys handler exists
+  if #modes > 0 then
+    opts = opts or {}
+    opts.silent = opts.silent ~= false
+    if opts.remap and not vim.g.vscode then
+      ---@diagnostic disable-next-line: no-unknown
+      opts.remap = nil
+    end
+    vim.keymap.set(modes, lhs, rhs, opts)
+  end
 end
 
 ---@generic T
@@ -213,19 +268,6 @@ function M.create_undo()
   if vim.api.nvim_get_mode().mode == "i" then
     vim.api.nvim_feedkeys(M.CREATE_UNDO, "n", false)
   end
-end
-
----@param name string
-function M.get_plugin(name)
-  return require("lazy.core.config").spec.plugins[name]
-end
-
----@param name string
----@param path string?
-function M.get_plugin_path(name, path)
-  local plugin = M.get_plugin(name)
-  path = path and "/" .. path or ""
-  return plugin and (plugin.dir .. path)
 end
 
 ---@param name string
@@ -272,19 +314,6 @@ M.load = function(name)
       if modpath then
         Util.error(msg)
       end
-    end,
-  })
-end
-
---- Create an autocommand that will execute the provided function only when very lazy plugins
---- have loaded.
----
----@param fn
-M.on_very_lazy = function(fn)
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "VeryLazy",
-    callback = function()
-      fn()
     end,
   })
 end
