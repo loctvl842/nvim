@@ -6,7 +6,8 @@ return {
     dependencies = {
       "nvim-tree/nvim-web-devicons",
     },
-    event = "VeryLazy",
+    -- event = "VeryLazy",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     -- version = "v3.5.0",
     keys = {
       { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
@@ -136,6 +137,16 @@ return {
         })
       end
 
+      CoreUtil.lualine.setup({
+        float = true,
+        separator = "bubble", -- bubble | triangle
+        ---@type any
+        theme = "auto", -- nil combine with separator "bubble" and float
+        colorful = true,
+        separators_enabled = true,
+        separator_icon = { left = "", right = " " },
+        thin_separator_icon = { left = "", right = " " },
+      })
       setup()
       vim.api.nvim_create_autocmd("ColorScheme", {
         callback = function()

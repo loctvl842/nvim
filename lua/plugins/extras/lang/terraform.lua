@@ -37,30 +37,4 @@ return {
       },
     },
   },
-  {
-    "nvim-telescope/telescope.nvim",
-    optional = true,
-    dependencies = {
-      {
-        "ANGkeith/telescope-terraform-doc.nvim",
-        filetypes = { "tf", "hcl" },
-        cmd = "Telescope",
-        config = function()
-          CoreUtil.on_very_lazy(function()
-            require("telescope").load_extension("terraform_doc")
-          end)
-        end,
-      },
-      {
-        "cappyzawa/telescope-terraform.nvim",
-        filetypes = { "tf", "hcl" },
-        cmd = "Telescope",
-        config = function()
-          CoreUtil.on_very_lazy(function()
-            require("telescope").load_extension("terraform")
-          end)
-        end,
-      },
-    },
-  },
 }

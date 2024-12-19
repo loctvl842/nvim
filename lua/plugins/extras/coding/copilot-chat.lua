@@ -15,25 +15,19 @@ end
 return {
   {
     "CopilotC-Nvim/CopilotChat.nvim",
+    branch = "main",
     cmd = "CopilotChat",
-    event = "VeryLazy",
+    -- event = "VeryLazy",
     opts = function()
       local user = vim.env.USER or "JordanFaust"
       user = user:sub(1, 1):upper() .. user:sub(2)
       return {
-        model = "gpt-4",
         auto_insert_mode = true,
-        show_help = true,
         question_header = "  " .. user .. " ",
         answer_header = "  Copilot ",
         window = {
           width = 0.4,
         },
-        selection = function(source)
-          local select = require("CopilotChat.select")
-          return select.visual(source) or select.buffer(source)
-        end,
-        chat_autocomplete = true,
       }
     end,
     keys = {

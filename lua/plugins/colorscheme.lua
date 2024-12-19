@@ -2,7 +2,7 @@ return {
   {
     "catppuccin/nvim",
     name = "catppuccin",
-    lazy = false,
+    lazy = true,
     priority = 1000,
     opts = {
       flavor = "macchiato",
@@ -45,7 +45,7 @@ return {
         neotree = true,
         notify = true,
         semantic_tokens = true,
-        -- snacks = true,
+        snacks = true,
         telescope = true,
         treesitter = true,
         treesitter_context = false,
@@ -239,21 +239,10 @@ return {
       },
     },
     config = function(_, opts)
-      CoreUtil.lualine.setup({
-        float = true,
-        separator = "bubble", -- bubble | triangle
-        ---@type any
-        theme = "auto", -- nil combine with separator "bubble" and float
-        colorful = true,
-        separators_enabled = true,
-        separator_icon = { left = "", right = " " },
-        thin_separator_icon = { left = "", right = " " },
-      })
-
       vim.g.catppuccin_flavour = "macchiato"
 
       require("catppuccin").setup(opts)
-      vim.cmd([[colorscheme catppuccin]])
+      vim.cmd.colorscheme("catppuccin-macchiato")
     end,
   },
 }

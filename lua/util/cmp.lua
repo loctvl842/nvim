@@ -3,6 +3,41 @@ local M = {}
 
 ---@alias Placeholder {n:number, text:string}
 
+---@alias CoreUtil.util.cmp.Action fun():boolean?
+---@type table<string, CoreUtil.util.cmp.Action>
+M.actions = {
+  -- Native Snippets
+  snippet_forward = function()
+    if vim.snippet.active({ direction = 1 }) then
+      vim.schedule(function()
+        vim.snippet.jump(1)
+      end)
+      return true
+    end
+  end,
+  snippet_stop = function()
+    if vim.snippet then
+      vim.snippet.stop()
+    end
+  end,
+}
+
+---@param actions string[]
+---@param fallback? string|fun()
+function M.map(actions, fallback)
+  return function()
+    for _, name in ipairs(actions) do
+      if M.actions[name] then
+        local ret = M.actions[name]()
+        if ret then
+          return true
+        end
+      end
+    end
+    return type(fallback) == "function" and fallback() or fallback
+  end
+end
+
 ---@param snippet string
 ---@param fn fun(placeholder:Placeholder):string
 ---@return string
@@ -42,8 +77,7 @@ function M.auto_brackets(entry)
   local item = entry:get_completion_item()
   if vim.tbl_contains({ Kind.Function, Kind.Method }, item.kind) then
     local cursor = vim.api.nvim_win_get_cursor(0)
-    local prev_char =
-      vim.api.nvim_buf_get_text(0, cursor[1] - 1, cursor[2], cursor[1] - 1, cursor[2] + 1, {})[1]
+    local prev_char = vim.api.nvim_buf_get_text(0, cursor[1] - 1, cursor[2], cursor[1] - 1, cursor[2] + 1, {})[1]
     if prev_char ~= "(" and prev_char ~= ")" then
       local keys = vim.api.nvim_replace_termcodes("()<left>", false, false, true)
       vim.api.nvim_feedkeys(keys, "i", true)
@@ -64,11 +98,7 @@ function M.add_missing_snippet_docs(window)
       if not item.documentation and item.insertText then
         item.documentation = {
           kind = cmp.lsp.MarkupKind.Markdown,
-          value = string.format(
-            "```%s\n%s\n```",
-            vim.bo.filetype,
-            M.snippet_preview(item.insertText)
-          ),
+          value = string.format("```%s\n%s\n```", vim.bo.filetype, M.snippet_preview(item.insertText)),
         }
       end
     end

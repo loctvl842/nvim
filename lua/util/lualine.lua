@@ -40,7 +40,7 @@ local default = {
 ---@field setup fun(opts: LualineConfig): void
 ---@field components LualineComponents
 ---@field config LualineConfig
-local M = { components = {} }
+local M = { components = {}, config = default }
 
 local colors = require("catppuccin.palettes").get_palette("macchiato")
 
