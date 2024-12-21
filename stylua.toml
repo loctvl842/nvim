@@ -1,4 +1,5 @@
-column_width = 120
 indent_type = "Spaces"
-quote_style = "AutoPreferDouble"
 indent_width = 2
+column_width = 120
+[sort_requires]
+enabled = true

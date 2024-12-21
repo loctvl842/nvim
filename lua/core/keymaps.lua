@@ -2,6 +2,7 @@ local opts = { noremap = true, silent = true, desc = "which_key_ignore" }
 
 -- Shorten function name
 local keymap = vim.api.nvim_set_keymap
+local map = CoreUtil.safe_keymap_set
 
 --Remap space as leader key
 -- keymap("", "<Space>", "<Nop>", opts)
@@ -105,4 +106,15 @@ keymap("n", "<leader>fs", "<cmd>silent w!<CR>", opts)
 -------------------- Doom Emacs Compatability --------------------
 keymap("n", "<C-g>", "<C-c>", opts)
 
--- vim.keymap.set("v", "<leader>ce", require("util").runlua, { desc = "Run Lua" })
+-- floating terminal
+-- stylua: ignore start
+map("n", "<leader>fT", function() Snacks.terminal() end, { desc = "Terminal (cwd)" })
+map("n", "<leader>ft", function() Snacks.terminal(nil, { cwd = CoreUtil.root() }) end, { desc = "Terminal (Root Dir)" })
+map("n", "<c-/>", function() Snacks.terminal(nil, { cwd = CoreUtil.root() }) end, { desc = "Terminal (Root Dir)" })
+map("n", "<c-_>", function() Snacks.terminal(nil, { cwd = CoreUtil.root() }) end, { desc = "which_key_ignore" })
+-- stylua: ignore end
+
+-- Terminal Mappings
+map("t", "<C-/>", "<cmd>close<cr>", { desc = "Hide Terminal" })
+map("t", "<c-g>", "<cmd>stopinsert<cr>", { desc = "Close Terminal" })
+map("t", "<c-_>", "<cmd>close<cr>", { desc = "which_key_ignore" })

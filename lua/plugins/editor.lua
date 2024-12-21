@@ -418,41 +418,26 @@ return {
 
   -- Terminal
   {
-    "akinsho/toggleterm.nvim",
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-    keys = {
-      { "<leader>ft", "<cmd>ToggleTerm<cr>", desc = "Terminal" },
-    },
-    opts = {
-      open_mapping = [[<C-\>]],
-      start_in_insert = true,
-      autochdir = false,
-      shade_terminals = true,
-      highlights = {
-        FloatBorder = { link = "ToggleTermBorder" },
-        Normal = { link = "ToggleTerm" },
-        NormalFloat = { link = "ToggleTerm" },
-      },
-      winbar = {
-        enabled = false,
-        name_formatter = function(term)
-          return term.name
-        end,
-      },
-    },
-    config = function(_, opts)
-      vim.api.nvim_create_autocmd("TermOpen", {
-        pattern = "term://*",
-        group = CoreUtil.augroup("toggleterm"),
-        callback = function()
-          local options = { buffer = 0 }
-          vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], options)
-          vim.keymap.set("t", "jk", [[<C-\><C-n>]], options)
-          vim.keymap.set("t", "<C-g>", [[<C-\><C-n>]], options)
-        end,
-      })
-
-      require("toggleterm").setup(opts)
+    "folke/edgy.nvim",
+    ---@module 'edgy'
+    ---@param opts Edgy.Config
+    opts = function(_, opts)
+      for _, pos in ipairs({ "top", "bottom", "left", "right" }) do
+        opts[pos] = opts[pos] or {}
+        table.insert(opts[pos], {
+          ft = "snacks_terminal",
+          size = { height = 0.4 },
+          title = function()
+            return CoreUtil.root.cwd()
+          end,
+          filter = function(_buf, win)
+            return vim.w[win].snacks_win
+              and vim.w[win].snacks_win.position == pos
+              and vim.w[win].snacks_win.relative == "editor"
+              and not vim.w[win].trouble_preview
+          end,
+        })
+      end
     end,
   },
 }
