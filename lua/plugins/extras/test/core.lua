@@ -12,9 +12,9 @@ return {
     event = "VeryLazy",
     dependencies = {
       "nvim-neotest/nvim-nio",
-      "nvim-treesitter/nvim-treesitter",
-      "nvim-lua/plenary.nvim",
-      "antoinemadec/FixCursorHold.nvim",
+      -- "nvim-treesitter/nvim-treesitter",
+      -- "nvim-lua/plenary.nvim",
+      -- "antoinemadec/FixCursorHold.nvim",
     },
     -- stylua: ignore
     keys = {
@@ -31,10 +31,11 @@ return {
     },
     opts = {
       adapters = {},
+      status = { virtual_text = true },
       output = { open_on_run = true },
       quickfix = {
         open = function()
-          if require("util").has("trouble.nvim") then
+          if CoreUtil.has("trouble.nvim") then
             require("trouble").open({ mode = "quickfix", focus = false })
           else
             vim.cmd("copen")
@@ -116,5 +117,13 @@ return {
 
       require("neotest").setup(opts)
     end,
+  },
+  {
+    "mfussenegger/nvim-dap",
+    optional = true,
+    -- stylua: ignore
+    keys = {
+      { "<leader>td", function() require("neotest").run.run({strategy = "dap"}) end, desc = "Debug Nearest" },
+    },
   },
 }

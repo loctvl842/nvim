@@ -17,13 +17,14 @@ return {
       "marilari88/neotest-vitest",
       "nvim-neotest/neotest-jest",
     },
+    event = "VeryLazy",
     opts = {
       adapters = {
         ["neotest-vitest"] = {
           -- Filter directories when searching for test files. Useful in large projects (see Filter directories notes).
-          vitestCommand = function(_args)
-            return "steam-run npx vitest"
-          end,
+          -- vitestCommand = function(_args)
+          --   return "steam-run npx vitest"
+          -- end,
           vitestConfigFile = function()
             local root = CoreUtil.root.detect({ spec = { "lsp" } })
             local cwd = root[1].paths[1]
@@ -40,13 +41,12 @@ return {
           end,
         },
         ["neotest-jest"] = {
-          jestCommand = "node --expose-gc --no-compilation-cache ./node_modules/.bin/jest --logHeapUsage --colors --silent",
+          -- jestCommand = "node --expose-gc --no-compilation-cache ./node_modules/.bin/jest --logHeapUsage --colors --silent",
           -- jestConfigFile = "custom.jest.config.ts",
           env = { CI = true },
           cwd = function()
             local root = CoreUtil.root.detect({ spec = { "lsp" } })
             local cwd = root[1].paths[1]
-            print("cwd " .. cwd)
             return cwd
           end,
         },
@@ -156,6 +156,10 @@ return {
         },
       },
       setup = {
+        tsserver = function()
+          -- disable tsserver
+          return true
+        end,
         ts_ls = function()
           -- disable tsserver
           return true
@@ -285,27 +289,27 @@ return {
               processId = require("dap.utils").pick_process,
               cwd = "${workspaceFolder}",
             },
-            {
-              type = "pwa-node",
-              request = "launch",
-              name = "Debug Vitest Tests",
-              -- trace = true, -- include debugger info
-              runtimeExecutable = "node",
-              runtimeArgs = {
-                "./node_modules/vitest/vitest.mjs",
-                "--inspect",
-                "--no-file-parallelism",
-                "${file}",
-              },
-              rootPath = "${workspaceFolder}",
-              cwd = "${workspaceFolder}",
-              console = "integratedTerminal",
-              internalConsoleOptions = "neverOpen",
-              resolveSourceMapLocations = {
-                "${workspaceFolder}/**",
-                "!**/node_modules/**",
-              },
-            },
+            -- {
+            --   type = "pwa-node",
+            --   request = "launch",
+            --   name = "Debug Vitest Tests",
+            --   -- trace = true, -- include debugger info
+            --   runtimeExecutable = "node",
+            --   runtimeArgs = {
+            --     "./node_modules/vitest/vitest.mjs",
+            --     "--inspect",
+            --     "--no-file-parallelism",
+            --     "${file}",
+            --   },
+            --   rootPath = "${workspaceFolder}",
+            --   cwd = "${workspaceFolder}",
+            --   console = "integratedTerminal",
+            --   internalConsoleOptions = "neverOpen",
+            --   resolveSourceMapLocations = {
+            --     "${workspaceFolder}/**",
+            --     "!**/node_modules/**",
+            --   },
+            -- },
           }
         end
       end

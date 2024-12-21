@@ -52,8 +52,7 @@ return {
           },
         },
         menu = {
-          -- min_width = 30,
-          max_width = 70,
+          -- max_width = 70,
           max_height = 15,
           draw = {
             treesitter = { "lsp" },
@@ -126,15 +125,15 @@ return {
       end
 
       ---  NOTE: compat with latest version. Currenlty 0.7.6
-      if not vim.g.lazyvim_blink_main then
-        ---@diagnostic disable-next-line: inject-field
-        opts.sources.completion = opts.sources.completion or {}
-        opts.sources.completion.enabled_providers = enabled
-        if vim.tbl_get(opts, "completion", "menu", "draw", "treesitter") then
-          ---@diagnostic disable-next-line: assign-type-mismatch
-          opts.completion.menu.draw.treesitter = true
-        end
-      end
+      -- if not vim.g.lazyvim_blink_main then
+      --   ---@diagnostic disable-next-line: inject-field
+      --   opts.sources.completion = opts.sources.completion or {}
+      --   opts.sources.completion.enabled_providers = enabled
+      --   -- if vim.tbl_get(opts, "completion", "menu", "draw", "treesitter") then
+      --   --   ---@diagnostic disable-next-line: assign-type-mismatch
+      --   --   opts.completion.menu.draw.treesitter = true
+      --   -- end
+      -- end
 
       -- Unset custom prop to pass blink.cmp validation
       opts.sources.compat = nil
