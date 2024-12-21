@@ -233,8 +233,8 @@ return {
         {
           mode = { "n", "v" },
           { "<leader><tab>", group = "+tabs" },
-          { "<leader>b", group = "+buffer" },
           { "<leader>c", group = "+code" },
+          { "<leader>d", group = "+debug" },
           { "<leader>f", group = "+file/find" },
           { "<leader>g", group = "+git" },
           { "<leader>gh", group = "+hunks" },
@@ -243,30 +243,33 @@ return {
           { "<leader>q", group = "+quit/session" },
           { "<leader>s", group = "+search" },
           { "<leader>u", group = "+ui" },
-          { "<leader>w", group = "+windows" },
           { "<leader>x", group = "+diagnostics/quickfix" },
+          { "]", group = "+next" },
+          { "[", group = "+prev" },
           { "g", group = "+goto" },
           { "gs", group = "+surround" },
           { "z", group = "+fold" },
-          { "]", group = "+next" },
-          { "[", group = "+prev" },
+          {
+            "<leader>b",
+            group = "+buffer",
+            expand = function()
+              return require("which-key.extras").expand.buf()
+            end,
+          },
+          {
+            "<leader>w",
+            group = "+windows",
+            proxy = "<c-w>",
+            expand = function()
+              return require("which-key.extras").expand.win()
+            end,
+          },
         },
         {
           mode = { "n" },
           { "<leader>0", "<cmd>Dashboard<CR>", desc = "Dashboard" },
           { "<leader>qq", "<cmd>q!<CR>", desc = "Quit" },
           { "<leader>qQ", "<cmd>qa!<CR>", desc = "Quit All" },
-          -- Window Management
-          --- Window Movement
-          { "<leader>wh", "<C-w>h<cr>", desc = "Move left a window" },
-          { "<leader>wl", "<C-w>l<cr>", desc = "Move right a window" },
-          { "<leader>wk", "<C-w>k<cr>", desc = "Move up a window" },
-          { "<leader>wj", "<C-w>j<cr>", desc = "Move down a window" },
-          --- Window Creation
-          { "<leader>ws", "<C-w>s<cr>", desc = "Create split horizontally" },
-          { "<leader>wv", "<C-w>v<cr>", desc = "Create split vertically" },
-          --- Window clean up
-          { "<leader>wd", "<C-w>c<CR>", desc = "Delete Window" },
           --- Buffer Movement
           { "<leader><Tab>", "<cmd>:b#<cr>", desc = "Previous Buffer", hidden = true },
           { "<leader><leader>", "<c-6>", desc = "Previous Buffer", hidden = true },
