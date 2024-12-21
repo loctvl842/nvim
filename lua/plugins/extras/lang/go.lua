@@ -7,8 +7,6 @@ return {
         gopls = {
           settings = {
             gopls = {
-              semanticTokens = true,
-              usePlaceholders = true,
               ["local"] = "github.com/procore",
               -- NOTE: codelenses cause significant performance issues. Keeping disabled for now
               codelenses = {
@@ -37,9 +35,11 @@ return {
                 unusedwrite = true,
                 useany = true,
               },
+              usePlaceholders = true,
               completeUnimported = true,
               staticcheck = true,
               directoryFilters = { "-.git", "-.vscode", "-.idea", "-.vscode-test", "-node_modules" },
+              semanticTokens = true,
             },
           },
         },
@@ -106,6 +106,19 @@ return {
         ["neotest-golang"] = {
           dap_go_enabled = true,
         },
+      },
+    },
+  },
+
+  -- Filetype icons
+  {
+    "echasnovski/mini.icons",
+    opts = {
+      file = {
+        [".go-version"] = { glyph = "", hl = "MiniIconsBlue" },
+      },
+      filetype = {
+        gotmpl = { glyph = "󰟓", hl = "MiniIconsGrey" },
       },
     },
   },

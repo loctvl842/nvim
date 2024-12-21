@@ -229,7 +229,7 @@ return {
                 require("telescope.actions").close(buf)
               end,
               ["?"] = function(buf)
-                require("telescope.actions").which_key(buf)
+                require("telescope.actions").which_key()
               end,
             },
           },

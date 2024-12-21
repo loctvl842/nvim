@@ -69,7 +69,7 @@ end
 --- have loaded.
 ---
 ---@param fn
-M.on_very_lazy = function(fn)
+function M.on_very_lazy(fn)
   vim.api.nvim_create_autocmd("User", {
     pattern = "VeryLazy",
     callback = function()
@@ -78,12 +78,71 @@ M.on_very_lazy = function(fn)
   })
 end
 
---- Create a named user auto group
----
+--- This extends a deeply nested list with a key in a table
+--- that is a dot-separated string.
+--- The nested list will be created if it does not exist.
+---@generic T
+---@param t T[]
+---@param key string
+---@param values T[]
+---@return T[]?
+function M.extend(t, key, values)
+  local keys = vim.split(key, ".", { plain = true })
+  for i = 1, #keys do
+    local k = keys[i]
+    t[k] = t[k] or {}
+    if type(t) ~= "table" then
+      return
+    end
+    t = t[k]
+  end
+  return vim.list_extend(t, values)
+end
+
 ---@param name string
----@return integer
-function M.augroup(name)
-  return vim.api.nvim_create_augroup("user_" .. name, { clear = true })
+function M.opts(name)
+  local plugin = M.get_plugin(name)
+  if not plugin then
+    return {}
+  end
+  local Plugin = require("lazy.core.plugin")
+  return Plugin.values(plugin, "opts", false)
+end
+
+function M.lazy_notify()
+  local notifs = {}
+  local function temp(...)
+    table.insert(notifs, vim.F.pack_len(...))
+  end
+
+  local orig = vim.notify
+  vim.notify = temp
+
+  local timer = vim.loop.new_timer()
+  local check = vim.loop.new_check()
+
+  local replay = function()
+    timer:stop()
+    check:stop()
+    if vim.notify == temp then
+      vim.notify = orig -- put back the original notify if needed
+    end
+    vim.schedule(function()
+      ---@diagnostic disable-next-line: no-unknown
+      for _, notif in ipairs(notifs) do
+        vim.notify(vim.F.unpack_len(notif))
+      end
+    end)
+  end
+
+  -- wait till vim.notify has been replaced
+  check:start(function()
+    if vim.notify ~= temp then
+      replay()
+    end
+  end)
+  -- or if it took more than 500ms, then something went wrong
+  timer:start(500, 0, replay)
 end
 
 --- Check if a plugin is loaded
@@ -112,6 +171,106 @@ function M.on_load(name, fn)
       end,
     })
   end
+end
+
+-- Wrapper around vim.keymap.set that will
+-- not create a keymap if a lazy key handler exists.
+-- It will also set `silent` to true by default.
+function M.safe_keymap_set(mode, lhs, rhs, opts)
+  local keys = require("lazy.core.handler").handlers.keys
+  ---@cast keys LazyKeysHandler
+  local modes = type(mode) == "string" and { mode } or mode
+
+  ---@param m string
+  modes = vim.tbl_filter(function(m)
+    return not (keys.have and keys:have(lhs, m))
+  end, modes)
+
+  -- do not create the keymap if a lazy keys handler exists
+  if #modes > 0 then
+    opts = opts or {}
+    opts.silent = opts.silent ~= false
+    if opts.remap and not vim.g.vscode then
+      ---@diagnostic disable-next-line: no-unknown
+      opts.remap = nil
+    end
+    vim.keymap.set(modes, lhs, rhs, opts)
+  end
+end
+
+---@generic T
+---@param list T[]
+---@return T[]
+function M.dedup(list)
+  local ret = {}
+  local seen = {}
+  for _, v in ipairs(list) do
+    if not seen[v] then
+      table.insert(ret, v)
+      seen[v] = true
+    end
+  end
+  return ret
+end
+
+M.CREATE_UNDO = vim.api.nvim_replace_termcodes("<c-G>u", true, true, true)
+function M.create_undo()
+  if vim.api.nvim_get_mode().mode == "i" then
+    vim.api.nvim_feedkeys(M.CREATE_UNDO, "n", false)
+  end
+end
+
+--- Gets a path to a package in the Mason registry.
+--- Prefer this to `get_package`, since the package might not always be
+--- available yet and trigger errors.
+---@param pkg string
+---@param path? string
+---@param opts? { warn?: boolean }
+function M.get_pkg_path(pkg, path, opts)
+  pcall(require, "mason") -- make sure Mason is loaded. Will fail when generating docs
+  local root = vim.env.MASON or (vim.fn.stdpath("data") .. "/mason")
+  opts = opts or {}
+  opts.warn = opts.warn == nil and true or opts.warn
+  path = path or ""
+  local ret = root .. "/packages/" .. pkg .. "/" .. path
+  if opts.warn and not vim.loop.fs_stat(ret) and not require("lazy.core.config").headless() then
+    M.warn(
+      ("Mason package path not found for **%s**:\n- `%s`\nYou may need to force update the package."):format(pkg, path)
+    )
+  end
+  return ret
+end
+
+--- Override the default title for notifications.
+for _, level in ipairs({ "info", "warn", "error" }) do
+  M[level] = function(msg, opts)
+    opts = opts or {}
+    opts.title = opts.title or "CoreUtil"
+    return CoreUtil[level](msg, opts)
+  end
+end
+
+local cache = {} ---@type table<(fun()), table<string, any>>
+---@generic T: fun()
+---@param fn T
+---@return T
+function M.memoize(fn)
+  return function(...)
+    local key = vim.inspect({ ... })
+    cache[fn] = cache[fn] or {}
+    if cache[fn][key] == nil then
+      cache[fn][key] = fn(...)
+    end
+    return cache[fn][key]
+  end
+end
+
+--- Create a named user auto group
+---
+---@param name string
+---@return integer
+function M.augroup(name)
+  return vim.api.nvim_create_augroup("user_" .. name, { clear = true })
 end
 
 --- Execute the provided function on LSP attach
@@ -203,101 +362,6 @@ function M.set_root(dir)
   vim.api.nvim_set_current_dir(dir)
 end
 
---- Set the theme for the telescope
----
----@param type 'ivy' | 'dropdown' | 'cursor' | nil
----@return table<string, string>
-function M.telescope_theme(type)
-  if type == nil then
-    return {
-      borderchars = M.generate_borderchars("thick"),
-      layout_config = {
-        width = 80,
-        height = 0.5,
-      },
-    }
-  end
-  return require("telescope.themes")["get_" .. type]({
-    cwd = M.get_root(),
-    borderchars = M.generate_borderchars("thick", nil, { top = "█", top_left = "█", top_right = "█" }),
-  })
-end
-
--- Wrapper around vim.keymap.set that will
--- not create a keymap if a lazy key handler exists.
--- It will also set `silent` to true by default.
-function M.safe_keymap_set(mode, lhs, rhs, opts)
-  local keys = require("lazy.core.handler").handlers.keys
-  ---@cast keys LazyKeysHandler
-  local modes = type(mode) == "string" and { mode } or mode
-
-  ---@param m string
-  modes = vim.tbl_filter(function(m)
-    return not (keys.have and keys:have(lhs, m))
-  end, modes)
-
-  -- do not create the keymap if a lazy keys handler exists
-  if #modes > 0 then
-    opts = opts or {}
-    opts.silent = opts.silent ~= false
-    if opts.remap and not vim.g.vscode then
-      ---@diagnostic disable-next-line: no-unknown
-      opts.remap = nil
-    end
-    vim.keymap.set(modes, lhs, rhs, opts)
-  end
-end
-
----@generic T
----@param list T[]
----@return T[]
-function M.dedup(list)
-  local ret = {}
-  local seen = {}
-  for _, v in ipairs(list) do
-    if not seen[v] then
-      table.insert(ret, v)
-      seen[v] = true
-    end
-  end
-  return ret
-end
-
-M.CREATE_UNDO = vim.api.nvim_replace_termcodes("<c-G>u", true, true, true)
-function M.create_undo()
-  if vim.api.nvim_get_mode().mode == "i" then
-    vim.api.nvim_feedkeys(M.CREATE_UNDO, "n", false)
-  end
-end
-
----@param name string
-function M.opts(name)
-  local plugin = M.get_plugin(name)
-  if not plugin then
-    return {}
-  end
-  local Plugin = require("lazy.core.plugin")
-  return Plugin.values(plugin, "opts", false)
-end
-
-------@param type 'ivy' | 'dropdown' | 'cursor' | nil
----M.telescope = function(builtin, type, opts)
----  local params = { builtin = builtin, type = type, opts = opts }
----  return function()
----    builtin = params.builtin
----    type = params.type
----    opts = params.opts
----    opts = vim.tbl_deep_extend("force", { cwd = M.get_root() }, opts or {})
----    local theme
----    if vim.tbl_contains({ "ivy", "dropdown", "cursor" }, type) then
----      theme = M.telescope_theme(type)
----    else
----      theme = opts
----    end
----    require("telescope.builtin")[builtin](theme)
----  end
----end
-
 --- Attempt to load the specified core configuration module
 ---
 ---@param name 'autocmds' | 'options' | 'keymaps'
@@ -316,16 +380,6 @@ M.load = function(name)
       end
     end,
   })
-end
-
-M.capabilities = function(ext)
-  return vim.tbl_deep_extend(
-    "force",
-    {},
-    ext or {},
-    require("cmp_nvim_lsp").default_capabilities(),
-    { textDocument = { foldingRange = { dynamicRegistration = false, lineFoldingOnly = true } } }
-  )
 end
 
 M.notify = function(msg, level, opts)
@@ -400,42 +454,6 @@ M.generate_borderchars = function(type, order, opts)
   return borderchars
 end
 
-function M.lazy_notify()
-  local notifs = {}
-  local function temp(...)
-    table.insert(notifs, vim.F.pack_len(...))
-  end
-
-  local orig = vim.notify
-  vim.notify = temp
-
-  local timer = vim.loop.new_timer()
-  local check = vim.loop.new_check()
-
-  local replay = function()
-    timer:stop()
-    check:stop()
-    if vim.notify == temp then
-      vim.notify = orig -- put back the original notify if needed
-    end
-    vim.schedule(function()
-      ---@diagnostic disable-next-line: no-unknown
-      for _, notif in ipairs(notifs) do
-        vim.notify(vim.F.unpack_len(notif))
-      end
-    end)
-  end
-
-  -- wait till vim.notify has been replaced
-  check:start(function()
-    if vim.notify ~= temp then
-      replay()
-    end
-  end)
-  -- or if it took more than 500ms, then something went wrong
-  timer:start(500, 0, replay)
-end
-
 -- Bust the cache of all required Lua files.
 -- After running this, each require() would re-run the file.
 local function unload_all_modules()
@@ -478,44 +496,6 @@ M.restart = function()
   vim.cmd.doautocmd("VimEnter")
 end
 
-M.read_json_file = function(filename)
-  local Path = require("plenary.path")
-
-  local path = Path:new(filename)
-  if not path:exists() then
-    return nil
-  end
-
-  local json_contents = path:read()
-  local json = vim.fn.json_decode(json_contents)
-
-  return json
-end
-
-M.read_package_json = function()
-  return M.read_json_file("package.json")
-end
-
----Check if the given NPM package is installed in the current project.
----@param package string
----@return boolean
-M.is_npm_package_installed = function(package)
-  local package_json = M.read_package_json()
-  if not package_json then
-    return false
-  end
-
-  if package_json.dependencies and package_json.dependencies[package] then
-    return true
-  end
-
-  if package_json.devDependencies and package_json.devDependencies[package] then
-    return true
-  end
-
-  return false
-end
-
 -- Useful function for debugging
 -- Print the given items
 function _G.P(...)
@@ -525,30 +505,6 @@ end
 
 -- Colorize the output of P
 vim.print = require("util.debug").dump
-
---- Override the default title for notifications.
-for _, level in ipairs({ "info", "warn", "error" }) do
-  M[level] = function(msg, opts)
-    opts = opts or {}
-    opts.title = opts.title or "CoreUtil"
-    return LazyUtil[level](msg, opts)
-  end
-end
-
-local cache = {} ---@type table<(fun()), table<string, any>>
----@generic T: fun()
----@param fn T
----@return T
-function M.memoize(fn)
-  return function(...)
-    local key = vim.inspect({ ... })
-    cache[fn] = cache[fn] or {}
-    if cache[fn][key] == nil then
-      cache[fn][key] = fn(...)
-    end
-    return cache[fn][key]
-  end
-end
 
 M.runlua = function()
   local ns = vim.api.nvim_create_namespace("runlua")

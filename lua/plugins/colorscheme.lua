@@ -4,6 +4,7 @@ return {
     name = "catppuccin",
     lazy = true,
     priority = 1000,
+    branch = "main",
     opts = {
       flavor = "macchiato",
       transparent_background = false,

@@ -1,8 +1,14 @@
-local util = require("util")
+--- Create a named user auto group
+---
+---@param name string
+---@return integer
+function augroup(name)
+  return vim.api.nvim_create_augroup("user_" .. name, { clear = true })
+end
 
 -- Highlight on yank
 vim.api.nvim_create_autocmd({ "TextYankPost" }, {
-  group = util.augroup("highlight_yank"),
+  group = augroup("highlight_yank"),
   callback = function()
     vim.highlight.on_yank({ higroup = "Visual" })
   end,
@@ -10,7 +16,7 @@ vim.api.nvim_create_autocmd({ "TextYankPost" }, {
 
 -- resize splits if window got resized
 vim.api.nvim_create_autocmd({ "VimResized" }, {
-  group = util.augroup("resize_splits"),
+  group = augroup("resize_splits"),
   callback = function()
     vim.cmd("tabdo wincmd =")
   end,
@@ -18,7 +24,7 @@ vim.api.nvim_create_autocmd({ "VimResized" }, {
 
 -- close some filetypes with <q>
 vim.api.nvim_create_autocmd("FileType", {
-  group = util.augroup("close_with_q"),
+  group = augroup("close_with_q"),
   pattern = {
     "qf",
     "help",
@@ -30,16 +36,27 @@ vim.api.nvim_create_autocmd("FileType", {
     "tsplayground",
     "PlenaryTestPopup",
     "neotest-output",
+    "neotest-output-panel",
+    "neotest-summary",
   },
   callback = function(event)
     vim.bo[event.buf].buflisted = false
-    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = event.buf, silent = true })
+    vim.schedule(function()
+      vim.keymap.set("n", "q", function()
+        vim.cmd("close")
+        pcall(vim.api.nvim_buf_delete, event.buf, { force = true })
+      end, {
+        buffer = event.buf,
+        silent = true,
+        desc = "Quit buffer",
+      })
+    end)
   end,
 })
 
 -- Set wrap and spell in markdown and gitcommit
 vim.api.nvim_create_autocmd({ "FileType" }, {
-  group = util.augroup("wrap_spell"),
+  group = augroup("wrap_spell"),
   pattern = { "gitcommit", "markdown" },
   callback = function()
     vim.opt_local.wrap = true
@@ -47,24 +64,9 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
   end,
 })
 
-vim.api.nvim_create_autocmd({ "BufWinLeave" }, {
-  pattern = "?*",
-  group = util.augroup("remember_folds"),
-  callback = function()
-    vim.cmd([[silent! mkview 1]])
-  end,
-})
-vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
-  pattern = "?*",
-  group = util.augroup("remember_folds"),
-  callback = function()
-    vim.cmd([[silent! loadview 1]])
-  end,
-})
-
 -- fix comment
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter" }, {
-  group = util.augroup("comment_newline"),
+  group = augroup("comment_newline"),
   pattern = { "*" },
   callback = function()
     vim.cmd([[set formatoptions-=cro]])
@@ -85,27 +87,10 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
   end,
 })
 
--- clear cmd output
-vim.api.nvim_create_autocmd({ "CursorHold" }, {
-  group = util.augroup("clear_term"),
-  callback = function()
-    vim.cmd([[echon '']])
-  end,
-})
-
 vim.api.nvim_create_autocmd({ "FileType" }, {
   pattern = { "help" },
   callback = function()
     vim.cmd([[wincmd L]])
-  end,
-})
-
-vim.api.nvim_create_autocmd({ "TermOpen" }, {
-  pattern = { "*" },
-  callback = function()
-    vim.opt_local["number"] = false
-    vim.opt_local["signcolumn"] = "no"
-    vim.opt_local["foldcolumn"] = "0"
   end,
 })
 
@@ -127,7 +112,7 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 ----------------------------- Markdown -----------------------------
 
 vim.api.nvim_create_autocmd({ "FileType" }, {
-  group = util.augroup("markdown"),
+  group = augroup("markdown"),
   pattern = { "markdown" },
   callback = function()
     vim.api.nvim_buf_set_keymap(
@@ -144,7 +129,7 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
 ------------------------------ Lua -------------------------------
 
 vim.api.nvim_create_autocmd("BufWritePre", {
-  group = util.augroup("lua"),
+  group = augroup("lua"),
   pattern = "*.lua",
   callback = function(event)
     CoreUtil.format.format({ buf = event.buf })
@@ -153,7 +138,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 
 ----------------------------- Golang -----------------------------
 
-local goaugroup = util.augroup("go")
+local goaugroup = augroup("go")
 vim.api.nvim_create_autocmd({ "FileType" }, {
   group = goaugroup,
   pattern = { "go" },
@@ -198,7 +183,7 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 ----------------------------- Neogit -----------------------------
 
 vim.api.nvim_create_autocmd("User", {
-  group = util.augroup("neogit"),
+  group = augroup("neogit"),
   pattern = "NeogitPushComplete",
   callback = function()
     require("neogit").close()

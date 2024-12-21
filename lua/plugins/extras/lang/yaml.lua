@@ -49,6 +49,13 @@ return {
           },
         },
       },
+      setup = {
+        yamlls = function()
+          CoreUtil.lsp.on_attach(function(client, _)
+            client.server_capabilities.documentFormattingProvider = true
+          end, "yamlls")
+        end,
+      },
     },
   },
 }

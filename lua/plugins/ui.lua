@@ -80,6 +80,16 @@ return {
     event = "VeryLazy",
     config = function()
       local function setup()
+        CoreUtil.lualine.setup({
+          float = true,
+          separator = "bubble", -- bubble | triangle
+          ---@type any
+          theme = "auto", -- nil combine with separator "bubble" and float
+          colorful = true,
+          separators_enabled = true,
+          separator_icon = { left = "", right = " " },
+          thin_separator_icon = { left = "", right = " " },
+        })
         local cpn = CoreUtil.lualine.components
         require("lualine").setup({
           options = {
@@ -138,16 +148,6 @@ return {
         })
       end
 
-      CoreUtil.lualine.setup({
-        float = true,
-        separator = "bubble", -- bubble | triangle
-        ---@type any
-        theme = "auto", -- nil combine with separator "bubble" and float
-        colorful = true,
-        separators_enabled = true,
-        separator_icon = { left = "", right = " " },
-        thin_separator_icon = { left = "", right = " " },
-      })
       setup()
       vim.api.nvim_create_autocmd("ColorScheme", {
         callback = function()
@@ -313,24 +313,6 @@ return {
   },
 
   {
-    "anuvyklack/windows.nvim",
-    event = "WinNew",
-    dependencies = {
-      { "anuvyklack/middleclass" },
-      { "anuvyklack/animation.nvim", enabled = true },
-    },
-    opts = {
-      animation = { enable = true, duration = 150, fps = 60 },
-      autowidth = { enable = true },
-    },
-    init = function()
-      vim.o.winwidth = 30
-      vim.o.winminwidth = 30
-      vim.o.equalalways = true
-    end,
-  },
-
-  {
     "NvChad/nvim-colorizer.lua",
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = {
@@ -352,30 +334,6 @@ return {
         virtualtext = "■",
       },
     },
-  },
-
-  {
-    "stevearc/dressing.nvim",
-    lazy = false,
-    opts = {
-      input = {
-        border = CoreUtil.generate_borderchars("thick", "tl-t-tr-r-bl-b-br-l"),
-        win_options = { winblend = 0 },
-      },
-      select = { telescope = CoreUtil.telescope_theme("cursor") },
-    },
-    init = function()
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.ui.select = function(...)
-        require("lazy").load({ plugins = { "dressing.nvim" } })
-        return vim.ui.select(...)
-      end
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.ui.input = function(...)
-        require("lazy").load({ plugins = { "dressing.nvim" } })
-        return vim.ui.input(...)
-      end
-    end,
   },
 
   -- noicer ui
@@ -435,8 +393,6 @@ return {
 
   {
     "folke/snacks.nvim",
-    priority = 1000,
-    lazy = false,
     opts = {
       indent = { enabled = true },
       input = { enabled = true },
