@@ -7,7 +7,7 @@ vim.g.autoformat = true
 
 -- if the completion engine supports the AI source,
 -- use that instead of inline suggestions
-vim.g.ai_cmp = false
+vim.g.ai_cmp = true
 
 -- Each entry can be:
 -- * the name of a detector function like `lsp` or `cwd`
