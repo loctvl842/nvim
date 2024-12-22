@@ -9,11 +9,6 @@ return {
     keys = {
       -- Buffer
       {
-        "<leader>bd",
-        "<cmd>bdelete!<CR>",
-        desc = "Close Buffer",
-      },
-      {
         "<leader>bl",
         "<cmd>lua require('telescope.builtin').buffers()<cr>",
         desc = "Buffer list",
@@ -235,6 +230,39 @@ return {
           },
         },
       }
+    end,
+  },
+
+  -- better vim.ui with telescope
+  {
+    "stevearc/dressing.nvim",
+    lazy = true,
+    init = function()
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.select = function(...)
+        require("lazy").load({ plugins = { "dressing.nvim" } })
+        return vim.ui.select(...)
+      end
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.input = function(...)
+        require("lazy").load({ plugins = { "dressing.nvim" } })
+        return vim.ui.input(...)
+      end
+    end,
+  },
+
+  {
+    "neovim/nvim-lspconfig",
+    opts = function()
+      local Keys = require("plugins.lsp.keymaps").get()
+      local telescope = require("telescope.builtin")
+      -- stylua: ignore
+      vim.list_extend(Keys, {
+        { "gd", function() telescope.lsp_definitions({ reuse_win = true }) end, desc = "Goto Definition", has = "definition" },
+        { "gr", "<cmd>Telescope lsp_references<cr>", desc = "References", nowait = true },
+        { "gI", function() telescope.lsp_implementations({ reuse_win = true }) end, desc = "Goto Implementation" },
+        { "gy", function() telescope.lsp_type_definitions({ reuse_win = true }) end, desc = "Goto T[y]pe Definition" },
+      })
     end,
   },
 }

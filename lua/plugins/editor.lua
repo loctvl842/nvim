@@ -274,10 +274,6 @@ return {
           { "<leader><Tab>", "<cmd>:b#<cr>", desc = "Previous Buffer", hidden = true },
           { "<leader><leader>", "<c-6>", desc = "Previous Buffer", hidden = true },
         },
-        {
-          mode = { "v" },
-          { "<leader>ce", CoreUtil.runlua, desc = "Run Lua" },
-        },
       },
     },
     keys = {

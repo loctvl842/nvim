@@ -68,7 +68,7 @@ end
 --- Create an autocommand that will execute the provided function only when very lazy plugins
 --- have loaded.
 ---
----@param fn
+---@param fn fun()
 function M.on_very_lazy(fn)
   vim.api.nvim_create_autocmd("User", {
     pattern = "VeryLazy",
@@ -245,8 +245,8 @@ end
 for _, level in ipairs({ "info", "warn", "error" }) do
   M[level] = function(msg, opts)
     opts = opts or {}
-    opts.title = opts.title or "CoreUtil"
-    return CoreUtil[level](msg, opts)
+    opts.title = opts.title or "LazyVim"
+    return LazyUtil[level](msg, opts)
   end
 end
 
@@ -312,54 +312,6 @@ function M.get_buffer_options(buf)
     buftype = vim.api.nvim_get_option_value("buftype", { buf = buf }),
     buflisted = vim.api.nvim_get_option_value("buflisted", { buf = buf }),
   }
-end
-
---- Return the project root of the current buffer.
----
----@return string
-function M.get_root()
-  ---@type string?
-  local path = vim.api.nvim_buf_get_name(0)
-  path = path ~= "" and vim.loop.fs_realpath(path) or nil
-  ---@type string[]
-  local roots = {}
-  if path then
-    for _, client in pairs(vim.lsp.get_clients({ bufnr = 0 })) do
-      local workspace = client.config.workspace_folders ---@type lsp.WorkspaceFolder[]
-      local paths = workspace
-          and vim.tbl_map(function(ws)
-            return vim.uri_to_fname(ws.uri)
-          end, workspace)
-        or client.config.root_dir and { client.config.root_dir }
-        or {}
-      for _, p in ipairs(paths) do
-        local r = vim.loop.fs_realpath(p)
-        if path:find(r, 1, true) then
-          roots[#roots + 1] = r
-        end
-      end
-    end
-  end
-  table.sort(roots, function(a, b)
-    return #a > #b
-  end)
-  ---@type string?
-  local root = roots[1]
-  if not root then
-    path = path and vim.fs.dirname(path) or vim.loop.cwd()
-    ---@type string?
-    root = vim.fs.find(M.root_patterns, { path = path, upward = true })[1]
-    root = root and vim.fs.dirname(root) or vim.loop.cwd()
-  end
-  ---@cast root string
-  return root
-end
-
---- Set the root to the provided directorty
----
----@param dir string
-function M.set_root(dir)
-  vim.api.nvim_set_current_dir(dir)
 end
 
 --- Attempt to load the specified core configuration module
@@ -452,107 +404,6 @@ M.generate_borderchars = function(type, order, opts)
   end
 
   return borderchars
-end
-
--- Bust the cache of all required Lua files.
--- After running this, each require() would re-run the file.
-local function unload_all_modules()
-  -- Lua patterns for the modules to unload
-  local unload_modules = {
-    "^core.",
-    "^config.",
-  }
-
-  for k, _ in pairs(package.loaded) do
-    for _, v in ipairs(unload_modules) do
-      if k:match(v) then
-        package.loaded[k] = nil
-        break
-      end
-    end
-  end
-end
-
-M.reload = function()
-  -- Stop LSP
-  vim.cmd.LspStop()
-
-  -- Stop eslint_d
-  vim.fn.execute("silent !pkill -9 eslint_d")
-
-  -- Unload all already loaded modules
-  unload_all_modules()
-
-  -- Source init.lua
-  vim.cmd.luafile("$MYVIMRC")
-end
-
--- Restart Vim without having to close and run again
-M.restart = function()
-  -- Reload config
-  M.reload()
-
-  -- Manually run VimEnter autocmd to emulate a new run of Vim
-  vim.cmd.doautocmd("VimEnter")
-end
-
--- Useful function for debugging
--- Print the given items
-function _G.P(...)
-  local objects = vim.tbl_map(vim.inspect, { ... })
-  print(unpack(objects))
-end
-
--- Colorize the output of P
-vim.print = require("util.debug").dump
-
-M.runlua = function()
-  local ns = vim.api.nvim_create_namespace("runlua")
-  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    vim.api.nvim_buf_clear_namespace(buf, ns, 0, -1)
-    vim.diagnostic.reset(ns, buf)
-  end
-
-  local global = _G
-  ---@type {lnum:number, col:number, message:string}[]
-  local diagnostics = {}
-
-  local function get_source()
-    local info = debug.getinfo(3, "Sl")
-    ---@diagnostic disable-next-line: param-type-mismatch
-    local buf = vim.fn.bufload(info.source:sub(2))
-    local row = info.currentline - 1
-    return buf, row
-  end
-
-  local G = setmetatable({
-    error = function(msg, level)
-      local buf, row = get_source()
-      diagnostics[#diagnostics + 1] = { lnum = row, col = 0, message = msg or "error" }
-      vim.diagnostic.set(ns, buf, diagnostics)
-      global.error(msg, level)
-    end,
-    print = function(...)
-      local buf, row = get_source()
-      local str = table.concat(
-        vim.tbl_map(function(o)
-          if type(o) == "table" then
-            return vim.inspect(o)
-          end
-          return tostring(o)
-        end, { ... }),
-        " "
-      )
-      local indent = #vim.api.nvim_buf_get_lines(buf, row, row + 1, false)[1]:match("^%s+")
-      local lines = vim.split(str, "\n")
-      ---@param line string
-      local virt_lines = vim.tbl_map(function(line)
-        return { { string.rep(" ", indent * 2) .. " ", "DiagnosticInfo" }, { line, "MsgArea" } }
-      end, lines)
-      vim.api.nvim_buf_set_extmark(buf, ns, row, 0, { virt_lines = virt_lines })
-    end,
-  }, { __index = _G })
-  require("lazy.core.util").try(loadfile(vim.api.nvim_buf_get_name(0), "bt", G))
 end
 
 return M

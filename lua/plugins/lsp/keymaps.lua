@@ -28,7 +28,6 @@ function M.get()
     { "<leader>cC", vim.lsp.codelens.refresh,                 desc = "Refresh & Display Codelens", mode = { "n" },          has = "codeLens" },
     { "<leader>cd", telescope.lsp_definitions,                desc = "Goto Definition",            mode = { "n" } },
     { "<leader>cD", telescope.lsp_references,                 desc = "References",                 mode = { "n" } },
-    { "<leader>ce", CoreUtil.runlua,                          desc = "Run Lua",                    mode = { "n" } },
     { "<leader>cI", "<cmd>Telescope lsp_implementations<cr>", desc = "Goto Implementation",        mode = { "n" } },
     { "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File", mode ={"n"}, has = { "workspace/didRenameFiles", "workspace/willRenameFiles" } },
     { "<leader>cr", vim.lsp.buf.rename,                       desc = "Rename",                     has = "rename" },
@@ -103,9 +102,6 @@ function M.on_attach(_, buffer)
       opts.has = nil
       opts.silent = opts.silent ~= false
       opts.buffer = buffer
-      if keys.rhs == nil then
-        _G.P(keys)
-      end
       vim.keymap.set(keys.mode or "n", keys.lhs, keys.rhs, opts)
     end
   end

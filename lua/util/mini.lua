@@ -1,4 +1,4 @@
----@class CoreUtil.util.mini
+---@class util.mini
 local M = {}
 
 -- taken from MiniExtra.gen_ai_spec.buffer
