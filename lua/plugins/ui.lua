@@ -101,6 +101,8 @@ return {
               winbar = { "neo-tree" },
               "alpha",
               "dashboard",
+              "man",
+              "manconf",
             },
             ignore_focus = {},
             always_divide_middle = true,
@@ -150,11 +152,6 @@ return {
       end
 
       setup()
-      vim.api.nvim_create_autocmd("ColorScheme", {
-        callback = function()
-          setup()
-        end,
-      })
     end,
   },
 
