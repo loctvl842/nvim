@@ -11,8 +11,6 @@ return {
     version = not vim.g.lazyvim_blink_main and "*",
     build = vim.g.lazyvim_blink_main and "cargo build --release",
     opts_extend = {
-      "sources.completion.enabled_providers",
-      "sources.compat",
       "sources.default",
     },
     dependencies = {
@@ -52,7 +50,6 @@ return {
           },
         },
         menu = {
-          -- max_width = 70,
           max_height = 15,
           draw = {
             treesitter = { "lsp" },
@@ -62,6 +59,11 @@ return {
               { "label_description", width = { max = 20 } },
               { "source_name", width = { min = 3 } },
             },
+            components = {
+              label = {
+                width = { fill = true, max = 30 },
+              },
+            },
           },
         },
         documentation = {
@@ -70,7 +72,7 @@ return {
           window = {
             max_height = 15,
             min_width = 40,
-            max_width = 80,
+            max_width = 70,
           },
         },
         ghost_text = {
@@ -97,17 +99,17 @@ return {
     ---@param opts blink.cmp.Config | { sources: { compat: string[] } }
     config = function(_, opts)
       -- setup compat sources
-      local enabled = opts.sources.default
-      for _, source in ipairs(opts.sources.compat or {}) do
-        opts.sources.providers[source] = vim.tbl_deep_extend(
-          "force",
-          { name = source, module = "blink.compat.source" },
-          opts.sources.providers[source] or {}
-        )
-        if type(enabled) == "table" and not vim.tbl_contains(enabled, source) then
-          table.insert(enabled, source)
-        end
-      end
+      -- local enabled = opts.sources.default
+      -- for _, source in ipairs(opts.sources.compat or {}) do
+      --   opts.sources.providers[source] = vim.tbl_deep_extend(
+      --     "force",
+      --     { name = source, module = "blink.compat.source" },
+      --     opts.sources.providers[source] or {}
+      --   )
+      --   if type(enabled) == "table" and not vim.tbl_contains(enabled, source) then
+      --     table.insert(enabled, source)
+      --   end
+      -- end
 
       -- add ai_accept to <Tab> key
       if not opts.keymap["<Tab>"] then
