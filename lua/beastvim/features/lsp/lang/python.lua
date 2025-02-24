@@ -1,7 +1,7 @@
 return {
   {
     "williamboman/mason.nvim",
-    opts = { ensure_installed = { "black" } },
+    opts = { ensure_installed = { "black", "ruff" } },
   },
 
   {
@@ -22,36 +22,7 @@ return {
             return capabilities
           end,
           opts = {
-            settings = {
-              python = {
-                analysis = {
-                  autoImportCompletions = true,
-                  autoSearchPaths = true,
-                  diagnosticMode = "openFilesOnly",
-                  -- These diagnostics are useless, therefore disable them.
-                  diagnosticSeverityOverrides = {
-                    reportArgumentType = "none",
-                    reportAttributeAccessIssue = "none",
-                    reportCallIssue = "none",
-                    reportFunctionMemberAccess = "none",
-                    reportGeneralTypeIssues = "none",
-                    reportIncompatibleMethodOverride = "none",
-                    reportIncompatibleVariableOverride = "none",
-                    reportIndexIssue = "none",
-                    reportOptionalMemberAccess = "none",
-                    reportOptionalSubscript = "none",
-                    reportPrivateImportUsage = "none",
-                  },
-                  indexing = true,
-                  inlayHints = {
-                    functionReturnTypes = true,
-                    variableTypes = true,
-                  },
-                  typeCheckingMode = "standard",
-                  useLibraryCodeForTypes = true,
-                },
-              },
-            },
+            -- Use default
           },
         },
         basedpyright = {
@@ -61,31 +32,8 @@ return {
               basedpyright = {
                 disableOrganizeImports = true, -- Using Ruff
                 analysis = {
+                  typeCheckingMode = "off",
                   ignore = { "*" },
-                  -- autoImportCompletions = true,
-                  -- autoSearchPaths = true,
-                  -- diagnosticMode = "workspace",
-                  -- -- These diagnostics are useless, therefore disable them.
-                  -- diagnosticSeverityOverrides = {
-                  --   reportArgumentType = "none",
-                  --   reportAttributeAccessIssue = "none",
-                  --   reportCallIssue = "none",
-                  --   reportFunctionMemberAccess = "none",
-                  --   reportGeneralTypeIssues = "none",
-                  --   reportIncompatibleMethodOverride = "none",
-                  --   reportIncompatibleVariableOverride = "none",
-                  --   reportIndexIssue = "none",
-                  --   reportOptionalMemberAccess = "none",
-                  --   reportOptionalSubscript = "none",
-                  --   reportPrivateImportUsage = "none",
-                  -- },
-                  -- indexing = true,
-                  -- inlayHints = {
-                  --   functionReturnTypes = true,
-                  --   variableTypes = true,
-                  -- },
-                  -- typeCheckingMode = "off", -- Pyright diagnostics is bloody slow
-                  -- useLibraryCodeForTypes = true,
                 },
               },
             },
@@ -146,7 +94,7 @@ return {
     "stevearc/conform.nvim",
     opts = {
       formatters_by_ft = {
-        ["python"] = { "black" },
+        ["python"] = { "ruff_format" },
       },
     },
   },

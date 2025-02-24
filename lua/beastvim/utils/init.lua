@@ -69,6 +69,13 @@ function M.info(msg)
   M.notify(msg, "INFO", { title = Profile.name, timeout = 1000 })
 end
 
+M.CREATE_UNDO = vim.api.nvim_replace_termcodes("<c-G>u", true, true, true)
+function M.create_undo()
+  if vim.api.nvim_get_mode().mode == "i" then
+    vim.api.nvim_feedkeys(M.CREATE_UNDO, "n", false)
+  end
+end
+
 ---@param fn fun() The function to try
 ---@param opts {msg?: string, on_error?: fun(err: string)}
 function M.try(fn, opts)
@@ -120,6 +127,50 @@ end
 function M.has_feature(feature)
   local modname = "beastvim.features." .. feature
   return vim.tbl_contains(require("lazy.core.config").spec.modules, modname)
+end
+
+--- Reference: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/util/init.lua#L249C1-L251C1
+--- This extends a deeply nested list with a key in a table
+--- that is a dot-separated string.
+--- The nested list will be created if it does not exist.
+---@generic T
+---@param t T[]
+---@param key string
+---@param values T[]
+---@return T[]?
+function M.extend(t, key, values)
+  local keys = vim.split(key, ".", { plain = true })
+  for i = 1, #keys do
+    local k = keys[i]
+    t[k] = t[k] or {}
+    if type(t) ~= "table" then
+      return
+    end
+    t = t[k]
+  end
+  return vim.list_extend(t, values)
+end
+
+--- Reference: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/util/init.lua#L250C1-L251C1
+--- Gets a path to a package in the Mason registry.
+--- Prefer this to `get_package`, since the package might not always be
+--- available yet and trigger errors.
+---@param pkg string
+---@param path? string
+---@param opts? { warn?: boolean }
+function M.get_pkg_path(pkg, path, opts)
+  pcall(require, "mason") -- make sure Mason is loaded. Will fail when generating docs
+  local root = vim.env.MASON or (vim.fn.stdpath("data") .. "/mason")
+  opts = opts or {}
+  opts.warn = opts.warn == nil and true or opts.warn
+  path = path or ""
+  local ret = root .. "/packages/" .. pkg .. "/" .. path
+  if opts.warn and not vim.loop.fs_stat(ret) and not require("lazy.core.config").headless() then
+    M.warn(
+      ("Mason package path not found for **%s**:\n- `%s`\nYou may need to force update the package."):format(pkg, path)
+    )
+  end
+  return ret
 end
 
 return M

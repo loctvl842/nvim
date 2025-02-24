@@ -136,17 +136,19 @@ M.aisync = function(sources, sep_type)
     if not package.loaded.cmp then
       return
     end
-    for _, s in ipairs(require("cmp").core.sources) do
-      if s.name == name then
-        if s.source:is_available() then
-          cmp_source = true
-        else
-          return cmp_source and "error" or nil
+    if Utils.plugin.has("nvim-cmp") then
+      for _, s in ipairs(require("cmp").core.sources) do
+        if s.name == name then
+          if s.source:is_available() then
+            cmp_source = true
+          else
+            return cmp_source and "error" or nil
+          end
+          if s.status == s.SourceStatus.FETCHING then
+            return "pending"
+          end
+          return "ok"
         end
-        if s.status == s.SourceStatus.FETCHING then
-          return "pending"
-        end
-        return "ok"
       end
     end
   end

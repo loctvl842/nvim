@@ -127,13 +127,14 @@ function M.get(type)
     end
     local dragon_names = get_dragon_names()
     local name = dragon_names[math.random(1, #dragon_names)]
-    return vim.split(dragons[name], "\n")
+    return dragons[name]
   end
   if type == "week_day" then
     local current_day = os.date("%A")
-    return vim.split("\n\n\n" .. week_days[current_day] .. "\n\n" .. os.date("%Y-%m-%d %H:%M:%S" .. "\n"), "\n")
+    return "\n\n\n" .. week_days[current_day] .. "\n\n" .. os.date("%Y-%m-%d %H:%M:%S" .. "\n")
   end
-  return vim.split("\n" .. dragons[type], "\n")
+  return dragons[type]
+  -- return vim.split("\n" .. dragons[type], "\n")
 end
 
 return M

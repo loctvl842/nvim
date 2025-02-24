@@ -157,6 +157,7 @@ return {
           },
         },
         grep = {
+          no_ignore = false,
           actions = {
             ["alt-i"] = { actions.toggle_ignore },
             ["alt-h"] = { actions.toggle_hidden },
@@ -217,10 +218,10 @@ return {
       local Keys = require("beastvim.features.lsp.keymaps").get()
       -- stylua: ignore
       vim.list_extend(Keys, {
-        { "gd", "<cmd>FzfLua lsp_definitions     jump_to_single_result=true ignore_current_line=true<cr>", desc = "Goto Definition", has = "definition" },
-        { "gr", "<cmd>FzfLua lsp_references      jump_to_single_result=true ignore_current_line=true<cr>", desc = "References", nowait = true },
-        { "gI", "<cmd>FzfLua lsp_implementations jump_to_single_result=true ignore_current_line=true<cr>", desc = "Goto Implementation" },
-        { "gy", "<cmd>FzfLua lsp_typedefs        jump_to_single_result=true ignore_current_line=true<cr>", desc = "Goto T[y]pe Definition" },
+        { "gd", "<cmd>FzfLua lsp_definitions     jump_to_single_result=true silent=true ignore_current_line=true<cr>", desc = "Goto Definition", has = "definition" },
+        { "gr", "<cmd>FzfLua lsp_references      jump_to_single_result=true silent=true ignore_current_line=true<cr>", desc = "References", nowait = true },
+        { "gI", "<cmd>FzfLua lsp_implementations jump_to_single_result=true silent=true ignore_current_line=true<cr>", desc = "Goto Implementation" },
+        { "gy", "<cmd>FzfLua lsp_typedefs        jump_to_single_result=true silent=true ignore_current_line=true<cr>", desc = "Goto T[y]pe Definition" },
       })
     end,
   },

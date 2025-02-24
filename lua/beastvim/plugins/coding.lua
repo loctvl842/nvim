@@ -18,6 +18,7 @@ return {
 
   {
     "hrsh7th/nvim-cmp",
+    enabled = false,
     version = false,
     event = { "InsertEnter", "CmdlineEnter" },
     dependencies = {
@@ -79,6 +80,7 @@ return {
         sources = cmp.config.sources({
           { name = "codeium", keyword_length = 2 },
           { name = "copilot", keyword_length = 2 },
+          { name = "supermaven", keyword_length = 2 },
           { name = "nvim_lsp" },
           { name = "buffer", keyword_length = 3 },
           { name = "path" },
@@ -90,6 +92,7 @@ return {
             item.menu = ({
               codeium = "Codeium",
               copilot = "Copilot",
+              supermaven = "SuperMaven",
               nvim_lsp = item.kind,
               luasnip = "Snippet",
               buffer = "Buffer",
@@ -120,6 +123,195 @@ return {
           Utils.cmp.auto_brackets(event.entry)
         end
       end)
+    end,
+  },
+
+  {
+    "saghen/blink.cmp",
+    enabled = true,
+    event = { "InsertEnter", "CmdlineEnter" },
+    version = "*",
+    build = vim.g.lazyvim_blink_main and "cargo build --release",
+    opts_extend = {
+      "sources.completion.enabled_providers",
+      "sources.compat",
+      "sources.default",
+    },
+    dependencies = {
+      "rafamadriz/friendly-snippets",
+      -- add blink.compat to dependencies
+      {
+        "saghen/blink.compat",
+        optional = true, -- make optional so it's only enabled if any extras need it
+        opts = {},
+        version = "*",
+      },
+    },
+    opts = {
+      snippets = {
+        expand = function(snippet, _)
+          return Utils.cmp.expand(snippet)
+        end,
+      },
+      appearance = {
+        -- sets the fallback highlight groups to nvim-cmp's highlight groups
+        -- useful for when your theme doesn't support blink.cmp
+        -- will be removed in a future release, assuming themes add support
+        use_nvim_cmp_as_default = false,
+        -- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
+        -- adjusts spacing to ensure icons are aligned
+        nerd_font_variant = "mono",
+        kind_icons = Icons.kinds,
+      },
+      completion = {
+        keyword = { range = "prefix" },
+        list = {
+          selection = {
+            preselect = function(ctx)
+              return ctx.mode ~= "cmdline"
+            end,
+            auto_insert = false,
+          },
+        },
+        accept = { auto_brackets = { enabled = true } },
+        menu = {
+          draw = {
+            align_to = "cursor",
+            treesitter = { "lsp" },
+            columns = { { "kind_icon", "label", "label_description", gap = 1 }, { "source_name", gap = 1 } },
+            components = {
+              source_name = {
+                ellipsis = false,
+                width = { fill = true },
+                text = function(ctx)
+                  if ctx.source_name == "LSP" then
+                    return ctx.kind
+                  else
+                    return ctx.source_name
+                  end
+                end,
+              },
+              kind_icon = {
+                ellipsis = false,
+                text = function(ctx)
+                  local brain_kind = Icons.brain[ctx.source_name]
+                  if brain_kind then
+                    local hl_gr = Utils.string.capitalize("BlinkCmpKind" .. Utils.string.capitalize(ctx.source_name))
+                    vim.api.nvim_set_hl(0, hl_gr, { fg = Icons.colors.brain[ctx.source_name] })
+                    return brain_kind .. ctx.icon_gap
+                  end
+                  return ctx.kind_icon .. ctx.icon_gap
+                end,
+              },
+            },
+          },
+        },
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 200,
+        },
+        ghost_text = {
+          enabled = true,
+        },
+      },
+      sources = {
+        compat = {},
+        default = { "lsp", "path", "snippets", "buffer" },
+      },
+      cmdline = {
+        enabled = true,
+        keymap = {
+          ["<CR>"] = { "accept_and_enter", "fallback" },
+          preset = "enter",
+          ["<C-y>"] = { "select_and_accept" },
+        }, -- Inherits from top level `keymap` config when not set
+        sources = function()
+          local type = vim.fn.getcmdtype()
+          -- Search forward and backward
+          if type == "/" or type == "?" then
+            return { "buffer" }
+          end
+          -- Commands
+          if type == ":" or type == "@" then
+            return { "cmdline" }
+          end
+          return {}
+        end,
+        completion = {
+          trigger = {
+            show_on_blocked_trigger_characters = {},
+            show_on_x_blocked_trigger_characters = nil, -- Inherits from top level `completion.trigger.show_on_blocked_trigger_characters` config when not set
+          },
+          menu = {
+            auto_show = nil, -- Inherits from top level `completion.menu.auto_show` config when not set
+            draw = {
+              columns = { { "kind_icon", "label", "label_description", gap = 1 } },
+            },
+          },
+        },
+      },
+      keymap = {
+        preset = "enter",
+        ["<C-y>"] = { "select_and_accept" },
+      },
+    },
+    config = function(_, opts)
+      local enabled = opts.sources.default
+      for _, source in ipairs(opts.sources.compat or {}) do
+        opts.sources.providers[source] = vim.tbl_deep_extend(
+          "force",
+          { name = source, module = "blink.compat.source" },
+          opts.sources.providers[source] or {}
+        )
+        if type(enabled) == "table" and not vim.tbl_contains(enabled, source) then
+          table.insert(enabled, source)
+        end
+      end
+
+      -- if not opts.keymap["<Tab>"] then
+      --   if opts.keymap.preset == "super-tab" then
+      --     opts.keymap["<Tab>"] = {
+      --       require("blink.cmp.keymap.presets")["super-tab"]["<Tab>"][1],
+      --       Utils.cmp.map({ "snippet_forward", "ai_accept" }),
+      --       "fallback",
+      --     }
+      --   else
+      --     opts.keymap["<Tab>"] = {
+      --       Utils.cmp.map({ "snippet_forward", "ai_accept" }),
+      --       "fallback",
+      --     }
+      --   end
+      -- end
+
+      -- Unset custom prop to pass blink.cmp validation
+      opts.sources.compat = nil
+
+      for _, provider in pairs(opts.sources.providers or {}) do
+        if provider.kind then
+          local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
+          local kind_idx = #CompletionItemKind + 1
+
+          CompletionItemKind[kind_idx] = provider.kind
+          CompletionItemKind[provider.kind] = kind_idx
+
+          ---@type fun(ctx: blink.cmp.Context, items: blink.cmp.CompletionItem[]): blink.cmp.CompletionItem[]
+          local transform_items = provider.transform_items
+          ---@param ctx blink.cmp.Context
+          ---@param items blink.cmp.CompletionItem[]
+          provider.transform_items = function(ctx, items)
+            items = transform_items and transform_items(ctx, items) or items
+            for _, item in ipairs(items) do
+              item.kind = kind_idx or item.kind
+            end
+            return items
+          end
+
+          -- Unset custom prop to pass blink.cmp validation
+          provider.kind = nil
+        end
+      end
+
+      require("blink.cmp").setup(opts)
     end,
   },
 

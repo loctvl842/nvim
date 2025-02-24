@@ -39,97 +39,66 @@ return {
             },
           },
         },
-        vtsls = {
-          filetypes = {
-            "javascript",
-            "javascriptreact",
-            "javascript.jsx",
-            "typescript",
-            "typescriptreact",
-            "typescript.tsx",
-          },
-          opts = {
-            root_dir = { "tsconfig.json", "package.json", "jsconfig.json", ".git" },
-            settings = {
-              complete_function_calls = true,
-              vtsls = {
-                enableMoveToFileCodeAction = true,
-                autoUseWorkspaceTsdk = true,
-                experimental = {
-                  completion = {
-                    enableServerSideFuzzyMatch = true,
+        ts_ls = {
+          enabled = true,
+        },
+        vtsls = function(_, opts)
+          Utils.lsp.on_attach(function(client, _)
+            client.commands["_typescript.moveToFileRefactoring"] = function(command, _)
+              ---@type string, string, lsp.Range
+              local action = tostring(command.arguments[1] or "")
+              local uri = tostring(command.arguments[2] or "")
+              local range = command.arguments[3] -- Assuming this is a table representing `lsp.Range`
+
+              local function move(newf)
+                client.request("workspace/executeCommand", {
+                  command = command.command,
+                  arguments = { action, uri, range, newf },
+                })
+              end
+
+              local fname = vim.uri_to_fname(uri)
+              client.request("workspace/executeCommand", {
+                command = "typescript.tsserverRequest",
+                arguments = {
+                  "getMoveToRefactoringFileSuggestions",
+                  {
+                    file = fname,
+                    startLine = range.start.line + 1,
+                    startOffset = range.start.character + 1,
+                    endLine = range["end"].line + 1,
+                    endOffset = range["end"].character + 1,
                   },
                 },
-              },
-              typescript = {
-                updateImportsOnFileMove = { enabled = "always" },
-                suggest = {
-                  completeFunctionCalls = true,
-                },
-                inlayHints = {
-                  enumMemberValues = { enabled = true },
-                  functionLikeReturnTypes = { enabled = true },
-                  parameterNames = { enabled = "literals" },
-                  parameterTypes = { enabled = true },
-                  propertyDeclarationTypes = { enabled = true },
-                  variableTypes = { enabled = false },
-                },
-              },
-            },
-          },
-          keys = {
-            {
-              "gD",
-              function()
-                local params = vim.lsp.util.make_position_params()
-                Utils.lsp.execute({
-                  command = "typescript.goToSourceDefinition",
-                  arguments = { params.textDocument.uri, params.position },
-                  open = true,
-                })
-              end,
-              desc = "Goto Source Definition",
-            },
-            {
-              "gR",
-              function()
-                Utils.lsp.execute({
-                  command = "typescript.findAllFileReferences",
-                  arguments = { vim.uri_from_bufnr(0) },
-                  open = true,
-                })
-              end,
-              desc = "File References",
-            },
-            {
-              "<leader>lo",
-              Utils.lsp.action["source.organizeImports"],
-              desc = "Organize Imports",
-            },
-            {
-              "<leader>lM",
-              Utils.lsp.action["source.addMissingImports.ts"],
-              desc = "Add missing imports",
-            },
-            {
-              "<leader>lu",
-              Utils.lsp.action["source.removeUnused.ts"],
-              desc = "Remove unused imports",
-            },
-            {
-              "<leader>lD",
-              Utils.lsp.action["source.fixAll.ts"],
-              desc = "Fix all diagnostics",
-            },
-            {
-              "<leader>lV",
-              function()
-                Utils.lsp.execute({ command = "typescript.selectTypeScriptVersion" })
-              end,
-              desc = "Select TS workspace version",
-            },
-          },
-        },
+              }, function(_, result)
+                ---@type string[]
+                local files = result.body.files
+                table.insert(files, 1, "Enter new path...")
+                vim.ui.select(files, {
+                  prompt = "Select move destination:",
+                  format_item = function(f)
+                    return vim.fn.fnamemodify(f, ":~:.")
+                  end,
+                }, function(f)
+                  if f and f:find("^Enter new path") then
+                    vim.ui.input({
+                      prompt = "Enter move destination:",
+                      default = vim.fn.fnamemodify(fname, ":h") .. "/",
+                      completion = "file",
+                    }, function(newf)
+                      return newf and move(newf)
+                    end)
+                  elseif f then
+                    move(f)
+                  end
+                end)
+              end)
+            end
+          end, "vtsls")
+          -- copy typescript settings to javascript
+          opts.settings.javascript =
+            vim.tbl_deep_extend("force", {}, opts.settings.typescript, opts.settings.javascript or {})
+        end,
         eslint = {
           opts = {
             settings = {
@@ -140,7 +109,7 @@ return {
           on_attach = function()
             vim.api.nvim_create_autocmd("BufWritePre", {
               callback = function(event)
-                local clients = require("tvl.util").get_clients({ bufnr = event.buf, name = "eslint" })
+                local clients = Utils.lsp.get_clients({ bufnr = event.buf, name = "eslint" })
                 local client
 
                 if clients and #clients > 0 then
@@ -166,11 +135,11 @@ return {
     "stevearc/conform.nvim",
     opts = {
       formatters_by_ft = {
-        ["javascript"] = { "prettier" },
-        ["javascriptreact"] = { "prettier" },
-        ["typescript"] = { "prettier" },
-        ["typescriptreact"] = { "prettier" },
-        ["vue"] = { "prettier" },
+        ["javascript"] = { "eslint" },
+        ["javascriptreact"] = { "eslint" },
+        ["typescript"] = { "eslint" },
+        ["typescriptreact"] = { "eslint" },
+        ["vue"] = { "eslint" },
         ["css"] = { "prettier" },
         ["scss"] = { "prettier" },
         ["less"] = { "prettier" },

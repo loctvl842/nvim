@@ -65,11 +65,14 @@ function M.setup(opts)
   -- Gets a new ClientCapabilities object describing the LSP client capabilities.
   local client_capabilites = vim.lsp.protocol.make_client_capabilities()
 
+  local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
+  local has_blink, blink = pcall(require, "blink.cmp")
   local capabilities = vim.tbl_deep_extend(
     "force",
     {},
     client_capabilites,
-    require("cmp_nvim_lsp").default_capabilities(),
+    has_cmp and cmp_nvim_lsp.default_capabilities() or {},
+    has_blink and blink.get_lsp_capabilities() or {},
     opts.capabilities or {}
   )
 

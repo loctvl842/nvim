@@ -11,7 +11,12 @@ function M.attach(client, bufnr)
     return
   end
 
-  if client.server_capabilities.documentSymbolProvider then
+  -- if client.server_capabilities.documentSymbolProvider then
+  if client.supports_method("textDocument/documentSymbol") then
+    if navic.is_available(bufnr) then
+      return
+    end
+
     navic.attach(client, bufnr)
   end
 end

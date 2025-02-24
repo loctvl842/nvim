@@ -8,7 +8,60 @@ return {
   -- icons
   { "nvim-tree/nvim-web-devicons", lazy = true },
 
-  -- Statusline
+  {
+    "rcarriga/nvim-notify",
+    keys = {
+      {
+        "<leader>n",
+        function()
+          require("notify").dismiss({ silent = true, pending = true })
+        end,
+        desc = "Clear all notifications",
+      },
+    },
+    opts = {
+      icons = {
+        ERROR = Icons.diagnostics.error .. " ",
+        INFO = Icons.diagnostics.info .. " ",
+        WARN = Icons.diagnostics.warn .. " ",
+      },
+      timeout = 3000,
+      max_height = function()
+        return math.floor(vim.o.lines * 0.75)
+      end,
+      max_width = function()
+        return math.floor(vim.o.columns * 0.75)
+      end,
+    },
+    init = function()
+      if not Utils.plugin.has("noice.nvim") then
+        Utils.on_very_lazy(function()
+          vim.notify = require("notify")
+        end)
+      end
+    end,
+  },
+
+  {
+    "nvim-lualine/lualine.nvim",
+    -- event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    lazy = true,
+    opts = function()
+      local lualine_require = require("lualine_require")
+      lualine_require.require = require
+      local monokai_opts = Utils.plugin.opts("monokai-pro.nvim")
+      return {
+        float = vim.tbl_contains(monokai_opts.background_clear or {}, "neo-tree"),
+        colorful = true,
+      }
+    end,
+    config = function(_, opts)
+      local lualine = require("beastvim.features.lualine")
+      lualine.setup(opts)
+      lualine.load()
+    end,
+  },
+
   {
     "rebelot/heirline.nvim",
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
@@ -89,7 +142,6 @@ return {
     end,
   },
 
-  -- [Possible Deprecated]
   {
     "utilyre/barbecue.nvim",
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
@@ -108,25 +160,98 @@ return {
   },
 
   {
-    "folke/snacks.nvim",
+    "nvimdev/dashboard-nvim",
     event = "VimEnter",
-    opts = {
-      dashboard = {
-        preset = {
-          header = Logos(),
-
-          -- stylua: ignore
-          keys = {
-            { icon = " ",key = "r", desc = "Recent Files", action = ":lua Utils.pick('oldfiles')()", icon_hl = "DashboardRecent", key_hl = "DashboardRecent" },
-            { icon = " ", key = "s", desc = "Last Session", action = ":lua require('persistence').load({last = true})", icon_hl = "DashboardSession", key_hl = "DashboardSession" },
-            { icon = " ", key = "i", desc = "Configuration", action = ":edit $MYVIMRC", icon_hl = "DashboardConfiguration", key_hl = "DashboardConfiguration" },
-            { icon = "󰤄 ", key = "l", desc = "Lazy", action = ":Lazy", icon_hl = "DashboardLazy", key_hl = "DashboardLazy" },
-            { icon = " ", key = "m", desc = "Mason", action = ":Mason", icon_hl = "DashboardServer", key_hl = "DashboardServer" },
-            { icon = " ", key = "q", desc = "Quit Neovim", action = ":qa", icon_hl = "DashboardQuit", key_hl = "DashboardQuit" },
-          },
+    dependencies = { { "nvim-tree/nvim-web-devicons" } },
+    keys = { { "<leader>0", "<cmd>Dashboard<CR>", desc = "Dashboard" } },
+    opts = function()
+      local opts = {
+        theme = "doom",
+        hide = {
+          statusline = 0,
+          tabline = 0,
+          winbar = 0,
         },
-      },
-    },
+        config = {
+          header = vim.split(Logos(), "\n"),
+          center = {
+            {
+              action = "lua Utils.pick('oldfiles')()",
+              desc = "Recent Files",
+              key = "r",
+              icon = " ",
+              icon_hl = "DashboardRecent",
+              key_hl = "DashboardRecent",
+            },
+            {
+              action = "lua require('persistence').load({last = true})",
+              desc = "Last Session",
+              key = "s",
+              icon = " ",
+              icon_hl = "DashboardSession",
+              key_hl = "DashboardSession",
+            },
+            {
+              icon = " ",
+              icon_hl = "DashboardConfiguration",
+              desc = "Configuration",
+              key = "i",
+              key_hl = "DashboardConfiguration",
+              action = "edit $MYVIMRC",
+            },
+            {
+              icon = "󰤄 ",
+              icon_hl = "DashboardLazy",
+              desc = "Lazy",
+              key = "l",
+              key_hl = "DashboardLazy",
+              action = "Lazy",
+            },
+            {
+              icon = " ",
+              icon_hl = "DashboardServer",
+              desc = "Mason",
+              key = "m",
+              key_hl = "DashboardServer",
+              action = "Mason",
+            },
+            {
+              icon = " ",
+              icon_hl = "DashboardQuit",
+              desc = "Quit Neovim",
+              key = "q",
+              key_hl = "DashboardQuit",
+              action = "qa",
+            },
+          },
+          footer = function()
+            ---@diagnostic disable-next-line: different-requires
+            local stats = require("lazy").stats()
+            local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
+            return {
+              "⚡  eovim loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms .. "ms",
+            }
+          end,
+        },
+      }
+      for _, button in pairs(opts.config.center) do
+        button.desc = button.desc .. string.rep(" ", 45 - #button.desc)
+        button.icon = button.icon .. string.rep(" ", 5 - #button.icon)
+      end
+
+      -- close Lazy and re-open when the dashboard is ready
+      if vim.o.filetype == "lazy" then
+        vim.cmd.close()
+        vim.api.nvim_create_autocmd("User", {
+          pattern = "DashboardLoaded",
+          callback = function()
+            ---@diagnostic disable-next-line: different-requires
+            require("lazy").show()
+          end,
+        })
+      end
+      return opts
+    end,
   },
 
   {
@@ -201,6 +326,112 @@ return {
   },
 
   {
+    "echasnovski/mini.hipatterns",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    opts = function()
+      local hi = require("mini.hipatterns")
+      return {
+        highlighters = {
+          -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
+          fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
+          hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
+          todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
+          note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
+          wip = { pattern = "%f[%w]()WIP()%f[%W]", group = "MiniHipatternsWip" },
+          -- Highlight hex color strings (`#rrggbb`) using that color
+          hex_color = hi.gen_highlighter.hex_color({ priority = 2000 }),
+        },
+      }
+    end,
+  },
+
+  {
+    "kosayoda/nvim-lightbulb",
+    opts = {
+      sign = {
+        enabled = true,
+        -- Priority of the gutter sign
+        priority = 20,
+      },
+      status_text = {
+        enabled = true,
+        -- Text to provide when code actions are available
+        text = "status_text",
+        -- Text to provide when no actions are available
+        text_unavailable = "",
+      },
+      autocmd = {
+        enabled = true,
+        -- see :help autocmd-pattern
+        pattern = { "*" },
+        -- see :help autocmd-events
+        events = { "CursorHold", "CursorHoldI", "LspAttach" },
+      },
+    },
+  },
+
+  -- noicer ui
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+      cmdline = {
+        enabled = true,
+        view = "cmdline",
+        format = {
+          cmdline = { icon = "  " },
+          search_down = { icon = " 🔍 󰄼" },
+          search_up = { icon = " 🔍 " },
+          help = { icon = " 󰋖" },
+          lua = { icon = "  " },
+        },
+      },
+      lsp = {
+        progress = {
+          enabled = true,
+          format = "lsp_progress",
+          format_done = "lsp_progress_done",
+          view = "mini",
+        },
+        hover = { enabled = false },
+        signature = { enabled = false },
+        -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true,
+        },
+      },
+      presets = {
+        lsp_doc_border = true, -- add a border to hover docs and signature help
+      },
+      routes = {
+        {
+          filter = {
+            event = "msg_show",
+            any = {
+              { find = "%d+L, %d+B" },
+              { find = "No active Snippet" },
+              { find = "; after #%d+" },
+              { find = "; before #%d+" },
+              { find = "Hunk" },
+            },
+          },
+          view = "mini",
+        },
+        {
+          filter = {
+            event = "notify",
+            any = {
+              { find = "No information available" },
+            },
+          },
+        },
+      },
+    },
+  },
+
+  {
     "lukas-reineke/indent-blankline.nvim",
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     opts = function()
@@ -263,116 +494,49 @@ return {
   },
 
   {
-    "folke/snacks.nvim",
-    opts = {
-      indent = { enabled = false },
-      input = { enabled = true },
-      notifier = { enabled = true, style= "compact" },
-      scope = { enabled = true },
-      scroll = { enabled = false },
-      statuscolumn = { enabled = false }, -- we set this in options.lua
-      toggle = { map = Utils.safe_keymap_set },
-      words = { enabled = true },
-      styles = {
-        notification = {
-          border = Utils.ui.borderchars("rounded", "tl-t-tr-r-br-b-bl-l"),
-          title_pos = "left",
-          wo = {
-            -- winhighlight = "LineNr:SnacksNotifierInfo",
-            winhighlight = "LineNr:SnacksNotifierIconInfo ",
-            winblend = 0,
-            wrap = false,
-            conceallevel = 0,
-            colorcolumn = "",
-          },
-        },
-      },
-    },
-    -- stylua: ignore
-    keys = {
-      { "<leader>n", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
-    },
-  },
-
-  {
-    "echasnovski/mini.hipatterns",
+    "lewis6991/hover.nvim",
+    enabled = false,
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-    desc = "Highlight colors in your code. Also includes Tailwind CSS support.",
-    opts = function()
-      local hi = require("mini.hipatterns")
-      return {
-        highlighters = {
-          -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
-          fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
-          hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
-          todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
-          note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
-          wip = { pattern = "%f[%w]()WIP()%f[%W]", group = "MiniHipatternsWip" },
-          -- Highlight hex color strings (`#rrggbb`) using that color
-          hex_color = hi.gen_highlighter.hex_color({ priority = 2000 }),
+    config = function()
+      require("hover").setup({
+        init = function()
+          -- Require providers
+          require("hover.providers.lsp")
+          -- require('hover.providers.gh')
+          -- require('hover.providers.gh_user')
+          -- require('hover.providers.jira')
+          -- require('hover.providers.dap')
+          -- require('hover.providers.fold_preview')
+          -- require('hover.providers.diagnostic')
+          -- require('hover.providers.man')
+          -- require('hover.providers.dictionary')
+        end,
+        preview_opts = {
+          border = "single",
         },
-      }
-    end,
-  },
+        -- Whether the contents of a currently open hover window should be moved
+        -- to a :h preview-window when pressing the hover keymap.
+        preview_window = false,
+        title = true,
+        mouse_providers = {
+          "LSP",
+        },
+        mouse_delay = 1000,
+      })
 
-  -- noicer ui
-  {
-    "folke/noice.nvim",
-    event = "VeryLazy",
-    opts = {
-      cmdline = {
-        enabled = true,
-        view = "cmdline",
-        format = {
-          cmdline = { icon = "  " },
-          search_down = { icon = " 🔍 󰄼" },
-          search_up = { icon = " 🔍 " },
-          help = { icon = " 󰋖" },
-          lua = { icon = "  " },
-        },
-      },
-      lsp = {
-        progress = {
-          enabled = true,
-          format = "lsp_progress",
-          format_done = "lsp_progress_done",
-          view = "mini",
-        },
-        hover = { enabled = false },
-        signature = { enabled = false },
-        -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
-        override = {
-          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-          ["vim.lsp.util.stylize_markdown"] = true,
-          ["cmp.entry.get_documentation"] = true,
-        },
-      },
-      presets = {
-        lsp_doc_border = true, -- add a border to hover docs and signature help
-      },
-      routes = {
-        {
-          filter = {
-            event = "msg_show",
-            any = {
-              { find = "%d+L, %d+B" },
-              { find = "No active Snippet" },
-              { find = "; after #%d+" },
-              { find = "; before #%d+" },
-              { find = "Hunk" },
-            },
-          },
-          view = "mini",
-        },
-        {
-          filter = {
-            event = "notify",
-            any = {
-              { find = "No information available" },
-            },
-          },
-        },
-      },
-    },
+      -- Setup keymaps
+      vim.keymap.set("n", "K", require("hover").hover, { desc = "hover.nvim" })
+      vim.keymap.set("n", "gK", require("hover").hover_select, { desc = "hover.nvim (select)" })
+      vim.keymap.set("n", "<C-p>", function()
+        require("hover").hover_switch("previous")
+      end, { desc = "hover.nvim (previous source)" })
+      vim.keymap.set("n", "<C-n>", function()
+        require("hover").hover_switch("next")
+      end, { desc = "hover.nvim (next source)" })
+
+      -- Mouse support
+      vim.keymap.set("n", "<MouseMove>", require("hover").hover_mouse, { desc = "hover.nvim (mouse)" })
+      vim.o.mousemoveevent = true
+    end,
   },
 }

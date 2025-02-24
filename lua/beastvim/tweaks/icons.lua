@@ -158,6 +158,7 @@ local M = {
   brain = {
     codeium = "󰘦 ",
     copilot = " ",
+    supermaven = " "
   },
 }
 
@@ -165,6 +166,7 @@ M.colors = {
   brain = {
     codeium = "#09B6A2",
     copilot = "#FEFFFF",
+    supermaven = "#6CC644",
   },
 }
 

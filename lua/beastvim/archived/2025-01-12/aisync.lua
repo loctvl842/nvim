@@ -11,26 +11,9 @@ return {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
     event = { "InsertEnter" },
-    optional = true,
     enabled = false,
     build = ":Copilot auth",
-    dependencies = {
-      {
-        "zbirenbaum/copilot-cmp",
-        opts = {},
-        optional = true,
-        enabled = Utils.plugin.has("nvim-cmp"),
-        config = function(_, opts)
-          local copilot_cmp = require("copilot_cmp")
-          copilot_cmp.setup(opts)
-          -- attach cmp source whenever copilot attaches
-          -- fixes lazy-loading issues with the copilot cmp source
-          Utils.lsp.on_attach(function()
-            copilot_cmp._on_insert_enter({})
-          end, "copilot")
-        end,
-      },
-    },
+    dependencies = { "zbirenbaum/copilot-cmp" },
     opts = {
       suggestion = { enabled = false },
       panel = { enabled = false },
@@ -66,36 +49,6 @@ return {
     },
   },
 
-  {
-    "monkoose/neocodeium",
-    enabled = false,
-    event = "VeryLazy",
-    config = function()
-      local neocodeium = require("neocodeium")
-
-      neocodeium.setup({
-        manual = true, -- recommended to not conflict with nvim-cmp
-      })
-
-      -- create an autocommand which closes cmp when ai completions are displayed
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "NeoCodeiumCompletionDisplayed",
-        callback = function()
-          require("cmp").abort()
-        end,
-      })
-
-      -- set up some sort of keymap to cycle and complete to trigger completion
-      vim.keymap.set("i", "<A-e>", function()
-        neocodeium.cycle_or_complete()
-      end)
-      -- make sure to have a mapping to accept a completion
-      vim.keymap.set("i", "<A-f>", function()
-        neocodeium.accept()
-      end)
-    end,
-  },
-
   -- Supermaven
   {
     "supermaven-inc/supermaven-nvim",
@@ -105,44 +58,11 @@ return {
       "SupermavenUseFree",
       "SupermavenUsePro",
     },
-    opts = function()
-      -- if Utils.plugin.has("nvim-cmp") then
-      --   require("supermaven-nvim.completion_preview").suggestion_group = "SupermavenSuggestion"
-      --   Utils.cmp.actions.ai_accept = function()
-      --     local suggestion = require("supermaven-nvim.completion_preview")
-      --     if suggestion.has_suggestion() then
-      --       Utils.create_undo()
-      --       vim.schedule(function()
-      --         suggestion.on_accept_suggestion()
-      --       end)
-      --       return true
-      --     end
-      --   end
-      -- end
-      return {
-        keymaps = {
-          accept_suggestion = "<C-o>",
-        },
-        ignore_filetypes = { "snacks_input", "snacks_notif" },
-      }
-    end,
-  },
-
-  {
-    "saghen/blink.cmp",
-    optional = true,
-    dependencies = { "supermaven-nvim", "saghen/blink.compat" },
     opts = {
-      sources = {
-        compat = { "supermaven" },
-        providers = {
-          supermaven = {
-            kind = "Supermaven",
-            score_offset = 100,
-            async = true,
-          },
-        },
+      keymaps = {
+        accept_suggestion = "<C-o>",
       },
+      ignore_filetypes = { "bigfile", "snacks_input", "snacks_notif" },
     },
   },
 
