@@ -1,7 +1,7 @@
 return {
   {
     "williamboman/mason.nvim",
-    opts = { ensure_installed = { "prettier" } },
+    opts = { ensure_installed = { "prettier", "eslint_d" } },
   },
 
   {
@@ -29,6 +29,9 @@ return {
               end,
               desc = "Organize Imports",
             },
+          },
+          format = {
+            enabled = false,
           },
           opts = {
             settings = {
@@ -126,7 +129,8 @@ return {
             })
           end,
         },
-        volar = {},
+        volar = {
+        },
       },
     },
   },
@@ -135,11 +139,11 @@ return {
     "stevearc/conform.nvim",
     opts = {
       formatters_by_ft = {
-        ["javascript"] = { "eslint" },
-        ["javascriptreact"] = { "eslint" },
-        ["typescript"] = { "eslint" },
-        ["typescriptreact"] = { "eslint" },
-        ["vue"] = { "eslint" },
+        ["javascript"] = { "prettier" },
+        ["javascriptreact"] = { "prettier" },
+        ["typescript"] = { "prettier" },
+        ["typescriptreact"] = { "prettier" },
+        ["vue"] = { "prettier" },
         ["css"] = { "prettier" },
         ["scss"] = { "prettier" },
         ["less"] = { "prettier" },
@@ -153,15 +157,6 @@ return {
         ["handlebars"] = { "prettier" },
       },
       formatters = {
-        prettier = {
-          command = "prettier",
-          args = {
-            "--print-width",
-            "150",
-            "--stdin-filepath",
-            "$FILENAME",
-          },
-        },
       },
     },
   },

@@ -105,6 +105,11 @@ return {
       "SupermavenUseFree",
       "SupermavenUsePro",
     },
+    -- cond = function()
+    --   local fsize = vim.fn.getfsize(vim.fn.expand("%"))
+    --   -- Only load the plugin if the file is less than 1 MB
+    --   return fsize > 0 and fsize < (1024 * 1024)
+    -- end,
     opts = function()
       -- if Utils.plugin.has("nvim-cmp") then
       --   require("supermaven-nvim.completion_preview").suggestion_group = "SupermavenSuggestion"

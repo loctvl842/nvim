@@ -1,7 +1,7 @@
 return {
   "stevearc/conform.nvim",
   dependencies = { "mason.nvim" },
-  event = { "BufWritePre" },
+  lazy = true,
   cmd = { "ConformInfo" },
   opts = {
     formatters_by_ft = {
@@ -17,7 +17,10 @@ return {
       "<leader>W",
       function()
         local cf = require("conform")
-        cf.format({ async = false, lsp_fallback = true })
+        cf.format({
+          lsp_fallback = false,
+          timeout = 1000,
+        })
         vim.cmd([[w!]])
       end,
       desc = "Format and save",

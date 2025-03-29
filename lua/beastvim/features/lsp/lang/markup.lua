@@ -1,6 +1,6 @@
 return {
   {
-    "mattn/emmet-vim",
+    "loctvl842/emmet-vim",
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     init = function()
       vim.g.user_emmet_leader_key = "f"
