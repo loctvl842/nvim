@@ -5,8 +5,11 @@ local M = setmetatable({}, {
   end,
 })
 
----@type LazyKeysSpec[]|nil
+---@type LazyKeysLspSpec[]|nil
 M._keys = nil
+
+---@alias LazyKeysLspSpec LazyKeysSpec|{has?:string|string[], cond?:fun():boolean}
+---@alias LazyKeysLsp LazyKeys|{has?:string|string[], cond?:fun():boolean}
 
 ---@return LazyKeysSpec[]
 function M.get()
@@ -39,19 +42,14 @@ function M.get()
   return M._keys
 end
 
----@return LazyKeys
+---@return LazyKeysLsp[]
 function M.resolve(bufnr)
   local Keys = require("lazy.core.handler.keys")
   local spec = M.get()
 
   ---@type LspOptions
-  local opts = Utils.plugin.opts("nvim-lspconfig")
-  local clients
-  if vim.fn.has("nvim-0.11") == 1 then
-    clients = vim.lsp.get_clients({ bufnr = bufnr })
-  else
-    clients = vim.lsp.get_active_clients({ bufnr = bufnr })
-  end
+  local opts = Util.plugin.opts("nvim-lspconfig")
+  local clients = Util.lsp.get_clients({ bufnr = bufnr })
   for _, client in ipairs(clients) do
     local maps = opts.servers[client.name] and opts.servers[client.name].keys or {}
     vim.list_extend(spec, maps)

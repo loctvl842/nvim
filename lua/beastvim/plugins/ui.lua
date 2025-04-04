@@ -1,9 +1,9 @@
-local Icons = require("beastvim.tweaks").icons
-local Logos = require("beastvim.tweaks").logos
+local Icons = require("beastvim.config").icons
+local Logos = require("beastvim.config").logos
 
 return {
   -- UI components
-  { "MunifTanjim/nui.nvim", lazy = true },
+  { "MunifTanjim/nui.nvim", verison = false, branch = "main", lazy = true },
 
   -- icons
   { "nvim-tree/nvim-web-devicons", lazy = true },
@@ -14,7 +14,7 @@ return {
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     -- lazy = true,
     opts = function()
-      local monokai_opts = Utils.plugin.opts("monokai-pro.nvim")
+      local monokai_opts = Util.plugin.opts("monokai-pro.nvim")
       return {
         float = vim.tbl_contains(monokai_opts.background_clear or {}, "neo-tree"),
         colorful = true,
@@ -29,11 +29,11 @@ return {
 
   {
     "akinsho/bufferline.nvim",
-    event = { "BufReadPost", "BufNewFile" },
+    event = { "VeryLazy" },
     keys = {
-      { "<C-1>", "<Cmd>BufferLineGoToBuffer 1<CR>", desc = "Go to buffer 1" },
-      { "<C-2>", "<Cmd>BufferLineGoToBuffer 2<CR>", desc = "Go to buffer 2" },
-      { "<C-3>", "<Cmd>BufferLineGoToBuffer 3<CR>", desc = "Go to buffer 3" },
+      { "<M-1>", "<Cmd>BufferLineGoToBuffer 1<CR>", desc = "Go to buffer 1" },
+      { "<M-2>", "<Cmd>BufferLineGoToBuffer 2<CR>", desc = "Go to buffer 2" },
+      { "<M-3>", "<Cmd>BufferLineGoToBuffer 3<CR>", desc = "Go to buffer 3" },
       { "<C-4>", "<Cmd>BufferLineGoToBuffer 4<CR>", desc = "Go to buffer 4" },
       { "<C-5>", "<Cmd>BufferLineGoToBuffer 5<CR>", desc = "Go to buffer 5" },
       { "<C-6>", "<Cmd>BufferLineGoToBuffer 6<CR>", desc = "Go to buffer 6" },
@@ -42,11 +42,11 @@ return {
       { "<C-9>", "<Cmd>BufferLineGoToBuffer 9<CR>", desc = "Go to buffer 9" },
       { "<S-l>", "<Cmd>BufferLineCycleNext<CR>", desc = "Next buffer" },
       { "<S-h>", "<Cmd>BufferLineCyclePrev<CR>", desc = "Previous buffer" },
-      { "<A-S-l>", "<Cmd>BufferLineMoveNext<CR>", desc = "Move buffer right" },
-      { "<A-S-h>", "<Cmd>BufferLineMovePrev<CR>", desc = "Move buffer left" },
+      { "<A-S-Right>", "<Cmd>BufferLineMoveNext<CR>", desc = "Move buffer right" },
+      { "<A-S-Left>", "<Cmd>BufferLineMovePrev<CR>", desc = "Move buffer left" },
     },
     opts = function()
-      local monokai_opts = Utils.plugin.opts("monokai-pro.nvim")
+      local monokai_opts = Util.plugin.opts("monokai-pro.nvim")
       return {
         options = {
           diagnostics = "nvim_lsp", -- | "nvim_lsp" | "coc",
@@ -89,7 +89,6 @@ return {
     end,
   },
 
-  -- [Possible Deprecated]
   {
     "utilyre/barbecue.nvim",
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
@@ -105,214 +104,6 @@ return {
       show_modified = false,
       kinds = Icons.kinds,
     },
-  },
-
-  {
-    "folke/snacks.nvim",
-    event = "VimEnter",
-    opts = {
-      dashboard = {
-        preset = {
-          header = Logos(),
-
-          -- stylua: ignore
-          keys = {
-            { icon = " ",key = "r", desc = "Recent Files", action = ":lua Utils.pick('oldfiles')()", icon_hl = "DashboardRecent", key_hl = "DashboardRecent" },
-            { icon = " ", key = "s", desc = "Last Session", action = ":lua require('persistence').load({last = true})", icon_hl = "DashboardSession", key_hl = "DashboardSession" },
-            { icon = " ", key = "i", desc = "Configuration", action = ":edit $MYVIMRC", icon_hl = "DashboardConfiguration", key_hl = "DashboardConfiguration" },
-            { icon = "󰤄 ", key = "l", desc = "Lazy", action = ":Lazy", icon_hl = "DashboardLazy", key_hl = "DashboardLazy" },
-            { icon = " ", key = "m", desc = "Mason", action = ":Mason", icon_hl = "DashboardServer", key_hl = "DashboardServer" },
-            { icon = " ", key = "q", desc = "Quit Neovim", action = ":qa", icon_hl = "DashboardQuit", key_hl = "DashboardQuit" },
-          },
-        },
-      },
-    },
-  },
-
-  {
-    "petertriho/nvim-scrollbar",
-    event = { "BufReadPost", "BufNewFile" },
-    opts = {
-      set_highlights = false,
-      excluded_filetypes = {
-        "prompt",
-        "TelescopePrompt",
-        "noice",
-        "neo-tree",
-        "dashboard",
-        "alpha",
-        "lazy",
-        "mason",
-        "DressingInput",
-        "",
-      },
-      handlers = {
-        gitsigns = true,
-      },
-    },
-  },
-
-  {
-    "anuvyklack/windows.nvim",
-    event = "WinNew",
-    dependencies = {
-      { "anuvyklack/middleclass" },
-      { "anuvyklack/animation.nvim", enabled = true },
-    },
-    opts = {
-      animation = { enable = true, duration = 150, fps = 60 },
-      autowidth = { enable = true },
-    },
-    keys = { { "<leader>z", "<cmd>WindowsMaximize<CR>", desc = "Zoom window" } },
-    init = function()
-      vim.o.winwidth = 30
-      vim.o.winminwidth = 30
-      vim.o.equalalways = true
-    end,
-  },
-
-  -- better vim.ui
-  {
-    "stevearc/dressing.nvim",
-    event = { "BufReadPost", "BufNewFile" },
-    opts = function()
-      local monokai_opts = Utils.plugin.opts("monokai-pro.nvim")
-      local border_style = vim.tbl_contains(monokai_opts.background_clear or {}, "float_win") and "rounded" or "thick"
-      return {
-        input = {
-          border = Utils.ui.borderchars(border_style, "tl-t-tr-r-br-b-bl-l"),
-          win_options = { winblend = 0 },
-        },
-        select = {},
-      }
-    end,
-    init = function()
-      vim.ui.select = function(...)
-        ---@diagnostic disable-next-line: different-requires
-        require("lazy").load({ plugins = { "dressing.nvim" } })
-        return vim.ui.select(...)
-      end
-      vim.ui.input = function(...)
-        ---@diagnostic disable-next-line: different-requires
-        require("lazy").load({ plugins = { "dressing.nvim" } })
-        return vim.ui.input(...)
-      end
-    end,
-  },
-
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-    opts = function()
-      local hooks = require("ibl.hooks")
-      hooks.register(hooks.type.SCOPE_ACTIVE, function(bufnr)
-        return vim.api.nvim_buf_line_count(bufnr) < 2000
-      end)
-
-      local highlight = {
-        "RainbowDelimiterRed",
-        "RainbowDelimiterYellow",
-        "RainbowDelimiterBlue",
-        "RainbowDelimiterOrange",
-        "RainbowDelimiterGreen",
-        "RainbowDelimiterViolet",
-        "RainbowDelimiterCyan",
-      }
-      return {
-        debounce = 200,
-        indent = {
-          char = "▏",
-          tab_char = "▏",
-          -- highlight = "IndentBlanklineChar",
-          -- highlight = highlight,
-        },
-        scope = {
-          injected_languages = true,
-          highlight = highlight,
-          enabled = true,
-          show_start = true,
-          show_end = false,
-          char = "▏",
-          -- include = {
-          --   node_type = { ["*"] = { "*" } },
-          -- },
-          -- exclude = {
-          --   node_type = { ["*"] = { "source_file", "program" }, python = { "module" }, lua = { "chunk" } },
-          -- },
-        },
-        exclude = {
-          filetypes = {
-            "help",
-            "startify",
-            "dashboard",
-            "packer",
-            "neogitstatus",
-            "NvimTree",
-            "Trouble",
-            "alpha",
-            "neo-tree",
-          },
-          buftypes = {
-            "terminal",
-            "nofile",
-          },
-        },
-      }
-    end,
-    main = "ibl",
-  },
-
-  {
-    "folke/snacks.nvim",
-    opts = {
-      indent = { enabled = false },
-      input = { enabled = true },
-      notifier = { enabled = true, style= "compact" },
-      scope = { enabled = true },
-      scroll = { enabled = false },
-      statuscolumn = { enabled = false }, -- we set this in options.lua
-      toggle = { map = Utils.safe_keymap_set },
-      words = { enabled = true },
-      styles = {
-        notification = {
-          border = Utils.ui.borderchars("rounded", "tl-t-tr-r-br-b-bl-l"),
-          title_pos = "left",
-          wo = {
-            -- winhighlight = "LineNr:SnacksNotifierInfo",
-            winhighlight = "LineNr:SnacksNotifierIconInfo ",
-            winblend = 0,
-            wrap = false,
-            conceallevel = 0,
-            colorcolumn = "",
-          },
-        },
-      },
-    },
-    -- stylua: ignore
-    keys = {
-      { "<leader>n", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
-    },
-  },
-
-  {
-    "echasnovski/mini.hipatterns",
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
-    desc = "Highlight colors in your code. Also includes Tailwind CSS support.",
-    opts = function()
-      local hi = require("mini.hipatterns")
-      return {
-        highlighters = {
-          -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
-          fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
-          hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
-          todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
-          note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
-          wip = { pattern = "%f[%w]()WIP()%f[%W]", group = "MiniHipatternsWip" },
-          -- Highlight hex color strings (`#rrggbb`) using that color
-          hex_color = hi.gen_highlighter.hex_color({ priority = 2000 }),
-        },
-      }
-    end,
   },
 
   -- noicer ui
@@ -374,5 +165,235 @@ return {
         },
       },
     },
+  },
+
+  {
+    "snacks.nvim",
+    opts = {
+      indent = { enabled = false },
+      input = { enabled = false },
+      notifier = { enabled = true },
+      scope = { enabled = true },
+      scroll = { enabled = false },
+      ---@class snacks.statuscolumn.Config
+      statuscolumn = {
+        enabled = false, -- This is enabled in options opts.statucolumn
+        left = { "mark", "sign" }, -- priority of signs on the left (high to low)
+        right = { "fold", "git" }, -- priority of signs on the right (high to low)
+        folds = {
+          open = true, -- show open fold icons
+          git_hl = true, -- use Git Signs hl for fold icons
+        },
+        git = {
+          -- patterns to match Git signs
+          patterns = { "GitSign", "MiniDiffSign" },
+        },
+        refresh = 10, -- refresh at most every 50ms
+      }, -- we set this in options.lua
+      toggle = { map = Util.safe_keymap_set },
+      words = { enabled = true },
+      styles = {
+        notification = {
+          border = Util.ui.borderchars("rounded", "tl-t-tr-r-br-b-bl-l"),
+          title_pos = "left",
+          wo = {
+            -- winhighlight = "LineNr:SnacksNotifierInfo",
+            winhighlight = "LineNr:SnacksNotifierIconInfo ",
+            winblend = 0,
+            wrap = false,
+            conceallevel = 0,
+            colorcolumn = "",
+          },
+        },
+      },
+    },
+    keys = {
+      {
+        "<leader>n",
+        function()
+          Snacks.notifier.hide()
+        end,
+        desc = "Dismiss All Notifications",
+      },
+    },
+  },
+
+  {
+    "folke/snacks.nvim",
+    event = "VimEnter",
+    opts = {
+      dashboard = {
+        preset = {
+          header = Logos(),
+
+          -- stylua: ignore
+          keys = {
+            { icon = " ",key = "r", desc = "Recent Files", action = ":lua Util.pick('oldfiles')()", icon_hl = "DashboardRecent", key_hl = "DashboardRecent" },
+            { icon = " ", key = "s", desc = "Last Session", action = ":lua require('persistence').load({last = true})", icon_hl = "DashboardSession", key_hl = "DashboardSession" },
+            { icon = " ", key = "i", desc = "Configuration", action = ":edit $MYVIMRC", icon_hl = "DashboardConfiguration", key_hl = "DashboardConfiguration" },
+            { icon = "󰤄 ", key = "l", desc = "Lazy", action = ":Lazy", icon_hl = "DashboardLazy", key_hl = "DashboardLazy" },
+            { icon = " ", key = "m", desc = "Mason", action = ":Mason", icon_hl = "DashboardServer", key_hl = "DashboardServer" },
+            { icon = " ", key = "q", desc = "Quit Neovim", action = ":qa", icon_hl = "DashboardQuit", key_hl = "DashboardQuit" },
+          },
+        },
+      },
+    },
+  },
+
+  {
+    "petertriho/nvim-scrollbar",
+    -- event = { "BufReadPost", "BufNewFile" },
+    lazy = true,
+    opts = {
+      set_highlights = false,
+      excluded_filetypes = {
+        "prompt",
+        "TelescopePrompt",
+        "noice",
+        "neo-tree",
+        "dashboard",
+        "alpha",
+        "lazy",
+        "mason",
+        "DressingInput",
+        "",
+      },
+      handlers = {
+        gitsigns = true,
+      },
+    },
+  },
+
+  {
+    "anuvyklack/windows.nvim",
+    event = "WinNew",
+    dependencies = {
+      { "anuvyklack/middleclass" },
+      { "anuvyklack/animation.nvim", enabled = true },
+    },
+    opts = {
+      animation = { enable = true, duration = 150, fps = 60 },
+      autowidth = { enable = true },
+    },
+    keys = { { "<leader>z", "<cmd>WindowsMaximize<CR>", desc = "Zoom window" } },
+    init = function()
+      vim.o.winwidth = 30
+      vim.o.winminwidth = 30
+      vim.o.equalalways = true
+    end,
+  },
+
+  -- better vim.ui
+  {
+    "stevearc/dressing.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    opts = function()
+      local monokai_opts = Util.plugin.opts("monokai-pro.nvim")
+      local border_style = vim.tbl_contains(monokai_opts.background_clear or {}, "float_win") and "rounded" or "thick"
+      return {
+        input = {
+          border = Util.ui.borderchars(border_style, "tl-t-tr-r-br-b-bl-l"),
+          win_options = { winblend = 0 },
+        },
+        select = {},
+      }
+    end,
+    init = function()
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.select = function(...)
+        ---@diagnostic disable-next-line: different-requires
+        require("lazy").load({ plugins = { "dressing.nvim" } })
+        return vim.ui.select(...)
+      end
+      ---@diagnostic disable-next-line: duplicate-set-field
+      vim.ui.input = function(...)
+        ---@diagnostic disable-next-line: different-requires
+        require("lazy").load({ plugins = { "dressing.nvim" } })
+        return vim.ui.input(...)
+      end
+    end,
+  },
+
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    event = "LazyFile",
+    opts = function()
+      local hooks = require("ibl.hooks")
+      hooks.register(hooks.type.SCOPE_ACTIVE, function(bufnr)
+        return vim.api.nvim_buf_line_count(bufnr) < 2000
+      end)
+
+      local highlight = {
+        "RainbowDelimiterRed",
+        "RainbowDelimiterYellow",
+        "RainbowDelimiterBlue",
+        "RainbowDelimiterOrange",
+        "RainbowDelimiterGreen",
+        "RainbowDelimiterViolet",
+        "RainbowDelimiterCyan",
+      }
+      return {
+        debounce = 200,
+        indent = {
+          char = "▏",
+          tab_char = "▏",
+          -- highlight = "IndentBlanklineChar",
+          -- highlight = highlight,
+        },
+        scope = {
+          injected_languages = true,
+          highlight = highlight,
+          enabled = true,
+          show_start = true,
+          show_end = false,
+          char = "▏",
+          -- include = {
+          --   node_type = { ["*"] = { "*" } },
+          -- },
+          -- exclude = {
+          --   node_type = { ["*"] = { "source_file", "program" }, python = { "module" }, lua = { "chunk" } },
+          -- },
+        },
+        exclude = {
+          filetypes = {
+            "help",
+            "startify",
+            "dashboard",
+            "packer",
+            "neogitstatus",
+            "NvimTree",
+            "Trouble",
+            "alpha",
+            "neo-tree",
+          },
+          buftypes = {
+            "terminal",
+            "nofile",
+          },
+        },
+      }
+    end,
+    main = "ibl",
+  },
+
+  {
+    "echasnovski/mini.hipatterns",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    desc = "Highlight colors in your code. Also includes Tailwind CSS support.",
+    opts = function()
+      local hi = require("mini.hipatterns")
+      return {
+        highlighters = {
+          -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
+          fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
+          hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
+          todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
+          note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
+          wip = { pattern = "%f[%w]()WIP()%f[%W]", group = "MiniHipatternsWip" },
+          -- Highlight hex color strings (`#rrggbb`) using that color
+          hex_color = hi.gen_highlighter.hex_color({ priority = 2000 }),
+        },
+      }
+    end,
   },
 }

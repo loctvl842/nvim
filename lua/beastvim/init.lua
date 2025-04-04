@@ -1,8 +1,11 @@
+vim.uv = vim.uv or vim.loop
+vim.tbl_islist = vim.islist
+
 local M = {}
 
-function M.bootstrap()
-  require("beastvim.tweaks").setup()
+function M.setup()
   require("beastvim.lazy")
+  require("beastvim.config").setup()
 end
 
 return M

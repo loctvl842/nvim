@@ -12,7 +12,7 @@ local palette = {
 
 ---@class HeirlinePalette: DefaultHeirlinePalette
 local M = setmetatable({}, {
-  __index = function(m, k)
+  __index = function(_, k)
     return rawget(palette or {}, k)
   end,
   __newindex = function(t, k, v)
@@ -29,9 +29,9 @@ local M = setmetatable({}, {
 
 ---@param config HeirlineOptions
 function M.setup(config)
-  local BAR_FG = Utils.theme.highlight("StatusLine").fg or "#aaaaaa"
+  local BAR_FG = Util.theme.highlight("StatusLine").fg or "#aaaaaa"
   local colorful = config.colorful
-  local highlight = Utils.theme.highlight
+  local highlight = Util.theme.highlight
 
   if colorful then
     palette = vim.tbl_deep_extend("force", palette, {

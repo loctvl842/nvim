@@ -1,4 +1,4 @@
-local Icons = require("beastvim.tweaks").icons
+local Icons = require("beastvim.config").icons
 
 ---@class LspDiagnosticsOptions
 ---@field enabled boolean
@@ -30,6 +30,14 @@ local function on()
       header = "",
       prefix = "",
     },
+    signs = {
+      text = {
+        [vim.diagnostic.severity.ERROR] = Icons.diagnostics.error,
+        [vim.diagnostic.severity.WARN] = Icons.diagnostics.warn,
+        [vim.diagnostic.severity.HINT] = Icons.diagnostics.hint,
+        [vim.diagnostic.severity.INFO] = Icons.diagnostics.info,
+      },
+    },
   })
 end
 
@@ -45,13 +53,9 @@ end
 
 ---@param opts LspDiagnosticsOptions
 function M.setup(opts)
-  for name, icon in pairs(Icons.diagnostics) do
-    name = "DiagnosticSign" .. Utils.string.capitalize(name)
-    vim.fn.sign_define(name, { text = icon, texthl = name, numhl = name })
-  end
   M.toggle(opts.enabled)
 
-  local map = Utils.safe_keymap_set
+  local map = Util.safe_keymap_set
   map("n", "<leader>td", function()
     M.toggle()
   end, { desc = "Toggle LSP diagnostics" })

@@ -1,7 +1,7 @@
----@class FzfLuaOpts: beastvim.utils.pick.Opts
+---@class FzfLuaOpts: beastvim.util.pick.Opts
 ---@field cmd string?
 
----@class FzfLuaThemeOpts: beastvim.utils.pick.ThemeOpts
+---@class FzfLuaThemeOpts: beastvim.util.pick.ThemeOpts
 ---@field layout? "ivy" | "dropdown" | "cursor"
 
 ---@type Picker
@@ -57,7 +57,7 @@ local picker = {
     return supported_layouts[layout]
   end,
 }
-if not Utils.pick.register(picker) then
+if not Util.pick.register(picker) then
   return {}
 end
 
@@ -65,7 +65,7 @@ return {
   {
     "ibhagwan/fzf-lua",
     cmd = "FzfLua",
-    opts = function(_, opts)
+    opts = function(_, _)
       local config = require("fzf-lua.config")
       local actions = require("fzf-lua.actions")
 
@@ -85,7 +85,7 @@ return {
         o.root = o.root == false
         o.cwd = nil
         o.buf = ctx.__CTX.bufnr
-        Utils.pick.open(ctx.__INFO.cmd, o)
+        Util.pick.open(ctx.__INFO.cmd, o)
       end
       config.defaults.actions.files["alt-c"] = config.defaults.actions.files["ctrl-r"]
       config.set_action_helpstr(config.defaults.actions.files["ctrl-r"], "toggle-root-dir")
@@ -141,7 +141,7 @@ return {
           height = 0.8,
           row = 0.5,
           col = 0.5,
-          border = Utils.ui.borderchars("rounded", "tl-t-tr-r-br-b-bl-l"),
+          border = Util.ui.borderchars("rounded", "tl-t-tr-r-br-b-bl-l"),
           preview = {
             scrollchars = { "┃", "" },
           },
@@ -184,21 +184,21 @@ return {
     end,
     keys = {
       -- search
-      { "sc", Utils.pick("colorschemes"), desc = "Search Colorscheme" },
-      { "sh", Utils.pick("help_tags"), desc = "Search Help" },
-      { "sr", Utils.pick("oldfiles"), desc = "Search Recent File" },
-      { "sk", Utils.pick("keymaps"), desc = "Search Keymaps" },
-      { "sC", Utils.pick("commands"), desc = "Search Commands" },
-      { "sH", Utils.pick("highlights"), desc = "Search Highlight Groups" },
+      { "sc", Util.pick("colorschemes"), desc = "Search Colorscheme" },
+      { "sh", Util.pick("help_tags"), desc = "Search Help" },
+      { "sr", Util.pick("oldfiles"), desc = "Search Recent File" },
+      { "sk", Util.pick("keymaps"), desc = "Search Keymaps" },
+      { "sC", Util.pick("commands"), desc = "Search Commands" },
+      { "sH", Util.pick("highlights"), desc = "Search Highlight Groups" },
       -- Git
-      { "<leader>go", Utils.pick("git_status"), desc = "Search and view Git status" },
-      { "<leader>gb", Utils.pick("git_branches"), desc = "Search and switch Git branches" },
-      { "<leader>gc", Utils.pick("git_commits"), desc = "Search through Git commit history" },
-      { "<leader>gt", Utils.pick("git_tags"), desc = "Search and checkout Git tags" },
+      { "<leader>go", Util.pick("git_status"), desc = "Search and view Git status" },
+      { "<leader>gb", Util.pick("git_branches"), desc = "Search and switch Git branches" },
+      { "<leader>gc", Util.pick("git_commits"), desc = "Search through Git commit history" },
+      { "<leader>gt", Util.pick("git_tags"), desc = "Search and checkout Git tags" },
       -- Find
-      { "<leader>f", Utils.pick("files"), desc = "Find files" },
-      { "<leader>F", Utils.pick("live_grep"), desc = "Find Text" },
-      { "<leader>b", Utils.pick("buffers"), desc = "Find buffer" },
+      { "<leader>f", Util.pick("files"), desc = "Find files" },
+      { "<leader>F", Util.pick("live_grep"), desc = "Find Text" },
+      { "<leader>b", Util.pick("buffers"), desc = "Find buffer" },
     },
   },
 
@@ -208,7 +208,7 @@ return {
       ---@type TelescopeThemeOpts
       local theme_opts = { layout = "cursor" }
       opts.select = opts.select or {}
-      opts.select.fzf_lua = Utils.pick.theme(theme_opts)
+      opts.select.fzf_lua = Util.pick.theme(theme_opts)
     end,
   },
 

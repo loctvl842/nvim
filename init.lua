@@ -1,2 +1,2 @@
 local beast = require("beastvim")
-beast.bootstrap()
+beast.setup()

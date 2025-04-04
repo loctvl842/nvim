@@ -1,19 +1,7 @@
 return {
   {
-    "folke/tokyonight.nvim",
-    lazy = true,
-    opts = { style = "night" },
-  },
-
-  {
-    "catppuccin/nvim",
-    lazy = true,
-  },
-
-  {
     "loctvl842/monokai-pro.nvim",
-    lazy = false,
-    priority = 1000,
+    lazy = true,
     keys = { { "<leader>C", "<cmd>MonokaiProSelect<cr>", desc = "Select Monokai pro filter" } },
     opts = {
       transparent_background = false,
@@ -65,7 +53,7 @@ return {
           MiniHipatternsWip = { fg = c.base.black, bg = c.base.cyan, bold = true }, -- WIP
         }
       end,
-      overridePalette = function(filter)
+      overridePalette = function()
         -- if filter == "pro" then
         --   return {
         --     dark2 = "#101014",
@@ -87,10 +75,5 @@ return {
         -- end
       end,
     },
-    config = function(_, opts)
-      local monokai = require("monokai-pro")
-      monokai.setup(opts)
-      monokai.load()
-    end,
   },
 }

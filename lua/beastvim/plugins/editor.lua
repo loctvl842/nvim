@@ -1,4 +1,4 @@
-local Icons = require("beastvim.tweaks").icons
+local Icons = require("beastvim.config").icons
 
 return {
   {
@@ -98,12 +98,17 @@ return {
   {
     "nvim-neo-tree/neo-tree.nvim",
     cmd = "Neotree",
-    dependencies = "mrbjarksen/neo-tree-diagnostics.nvim",
+    dependencies = {
+      "mrbjarksen/neo-tree-diagnostics.nvim",
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+    },
     keys = {
       {
         "<leader>e",
         function()
-          require("neo-tree.command").execute({ toggle = true, position = "left", dir = Utils.root() })
+          require("neo-tree.command").execute({ toggle = true, position = "left", dir = Util.root() })
         end,
         desc = "Explorer (root dir)",
         remap = true,
@@ -114,7 +119,7 @@ return {
           require("neo-tree.command").execute({
             toggle = true,
             position = "float",
-            dir = Utils.root(),
+            dir = Util.root(),
           })
         end,
         desc = "Explorer Float (root dir)",
@@ -128,7 +133,6 @@ return {
       local function on_move(data)
         Snacks.rename.on_rename_file(data.source, data.destination)
       end
-
       local events = require("neo-tree.events")
       opts.event_handlers = opts.event_handlers or {}
       vim.list_extend(opts.event_handlers, {
@@ -136,32 +140,12 @@ return {
         { event = events.FILE_RENAMED, handler = on_move },
       })
       require("neo-tree").setup(opts)
-      vim.api.nvim_create_autocmd("TermClose", {
-        pattern = "*lazygit",
-        callback = function()
-          if package.loaded["neo-tree.sources.git_status"] then
-            require("neo-tree.sources.git_status").refresh()
-          end
-        end,
-      })
-    end,
-    init = function()
-      vim.g.neo_tree_remove_legacy_commands = 1
-      if vim.fn.argc() == 1 then
-        local stat = vim.uv.fs_stat(vim.fn.argv(0))
-        if stat and stat.type == "directory" then
-          ---@diagnostic disable-next-line: different-requires
-          require("neo-tree")
-          vim.cmd([[set showtabline=0]])
-        end
-      end
     end,
   },
 
   {
     "lewis6991/gitsigns.nvim",
-    ft = { "gitcommit", "diff" },
-    event = { "BufReadPre", "BufNewFile" },
+    event = "LazyFile",
     opts = {
       signs = {
         add = { text = Icons.gitsigns.add },
@@ -171,59 +155,54 @@ return {
         changedelete = { text = Icons.gitsigns.changedelete },
         untracked = { text = Icons.gitsigns.untracked },
       },
+      signs_staged = {
+        add = { text = Icons.gitsigns.add },
+        change = { text = Icons.gitsigns.change },
+        delete = { text = Icons.gitsigns.delete },
+        topdelete = { text = Icons.gitsigns.topdelete },
+        changedelete = { text = Icons.gitsigns.changedelete },
+      },
       current_line_blame = true,
       current_line_blame_opts = {
         delay = 300,
       },
       current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
       preview_config = {
-        border = Utils.ui.borderchars("thick", "tl-t-tr-r-br-b-bl-l"), -- [ top top top - right - bottom bottom bottom - left ]
+        border = Util.ui.borderchars("thick", "tl-t-tr-r-br-b-bl-l"), -- [ top top top - right - bottom bottom bottom - left ]
       },
-      on_attach = function(bufnr)
+      on_attach = function(buffer)
         local gs = package.loaded.gitsigns
-        local map = Utils.safe_keymap_set
 
-        -- Navigation
+        local function map(mode, l, r, desc)
+          vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc })
+        end
+
+        -- stylua: ignore start
         map("n", "]c", function()
           if vim.wo.diff then
-            return "]c"
+            vim.cmd.normal({ "]c", bang = true })
+          else
+            gs.nav_hunk("next")
           end
-          vim.schedule(function()
-            gs.next_hunk()
-          end)
-          return "<Ignore>"
-        end, { buffer = bufnr, expr = true, desc = "Next git hunk" })
+        end, "Next git hunk")
         map("n", "[c", function()
           if vim.wo.diff then
-            return "[c"
+            vim.cmd.normal({ "[c", bang = true })
+          else
+            gs.nav_hunk("prev")
           end
-          vim.schedule(function()
-            gs.prev_hunk()
-          end)
-          return "<Ignore>"
-        end, { buffer = bufnr, expr = true, desc = "Previous git hunk" })
-
-        -- Actions
-        map("n", "<leader>gs", gs.stage_hunk, { desc = "Stage current hunk" })
-        map("n", "<leader>gr", gs.reset_hunk, { desc = "Reset current hunk" })
-        map("v", "<leader>gs", function()
-          gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-        end, { desc = "Stage visual selection" })
-        map("v", "<leader>gr", function()
-          gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-        end, { desc = "Reset visual selection" })
-        map("n", "<leader>gS", gs.stage_buffer, { desc = "Stage entire buffer" })
-        map("n", "<leader>gu", gs.undo_stage_hunk, { desc = "Undo last hunk staging" })
-        map("n", "<leader>gR", gs.reset_buffer, { desc = "Reset entire buffer" })
-        map("n", "<leader>gp", gs.preview_hunk, { desc = "Preview current hunk changes" })
-        map("n", "<leader>gb", function()
-          gs.blame_line({ full = true })
-        end, { desc = "Show blame for current line" })
-        map("n", "<leader>tb", gs.toggle_current_line_blame, { desc = "Toggle blame for current line" })
-        map("n", "<leader>gd", gs.diffthis, { desc = "Diff current hunk" })
-        map("n", "<leader>gD", function()
-          gs.diffthis("~")
-        end, { desc = "Diff all changes in the file" })
+        end, "Previous git hunk")
+        map({ "n", "v" }, "<leader>gs", ":Gitsigns stage_hunk<CR>", "Stage current hunk")
+        map({ "n", "v" }, "<leader>gr", ":Gitsigns reset_hunk<CR>", "Reset current hunk")
+        map("n", "<leader>ghS", gs.stage_buffer, "Stage entire buffer")
+        map("n", "<leader>gu", gs.undo_stage_hunk, "Undo last hunk staging")
+        map("n", "<leader>gR", gs.reset_buffer, "Reset entire buffer")
+        map("n", "<leader>gp", gs.preview_hunk, "Preview current hunk changes")
+        map("n", "<leader>gb", function() gs.blame_line({ full = true }) end, "Show blame for current line")
+        map("n", "<leader>gB", function() gs.blame() end, "Blame Buffer")
+        map("n", "<leader>gd", gs.diffthis, "Diff This")
+        map("n", "<leader>gD", function() gs.diffthis("~") end, "Diff This ~")
+        map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
       end,
     },
   },
@@ -232,6 +211,8 @@ return {
   {
     "kevinhwang91/nvim-ufo",
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    branch = "main",
+    version = false,
     dependencies = { "kevinhwang91/promise-async", event = "BufReadPost" },
     opts = {
       fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)

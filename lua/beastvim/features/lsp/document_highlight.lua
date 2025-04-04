@@ -30,7 +30,7 @@ function M.setup(opts)
   --   vim.lsp.buf.clear_references()
   --   return handler(err, result, ctx, config)
   -- end
-  Utils.lsp.on_support_methods("textDocument/documentHighlight", function(_, buf)
+  Util.lsp.on_support_methods("textDocument/documentHighlight", function(_, buf)
     vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI", "CursorMoved", "CursorMovedI" }, {
       group = vim.api.nvim_create_augroup("lsp_word_" .. buf, { clear = true }),
       buffer = buf,

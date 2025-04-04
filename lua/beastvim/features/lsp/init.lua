@@ -8,18 +8,18 @@
 ---@class LspOptions
 ---@field servers table<string, LspServer>
 ---@field capabilities? table
----@field diagnostics? LspDiagnosticsOptions
----@field inlay_hints? LspInlayHintsOptions
 ---@field codelens? LspCodeLensOptions
+---@field diagnostics? LspDiagnosticsOptions
 ---@field document_highlight? LspDocumentHighlightOptions
+---@field inlay_hints? LspInlayHintsOptions
 
 ---@class Lsp
+---@field codelens beastvim.features.lsp.codelens
+---@field diagnostics beastvim.features.lsp.diagnostics
+---@field document_highlight beastvim.features.lsp.document_highlight
+---@field inlay_hints beastvim.features.lsp.inlay_hints
 ---@field keymaps beastvim.features.lsp.keymaps
 ---@field navic beastvim.features.lsp.navic
----@field diagnostics beastvim.features.lsp.diagnostics
----@field inlay_hints beastvim.features.lsp.inlay_hints
----@field codelens beastvim.features.lsp.codelens
----@field document_highlight beastvim.features.lsp.document_highlight
 ---@field ui beastvim.features.lsp.ui
 local M = {}
 
@@ -34,11 +34,17 @@ setmetatable(M, {
 function M.setup(opts)
   local ok, lspconfig = pcall(require, "lspconfig")
   if not ok then
-    Utils.notify("Plugin `neovim/nvim-lspconfig` not installed", "ERROR")
+    Util.error("Plugin `neovim/nvim-lspconfig` not installed")
     return
   end
 
-  Utils.lsp.setup()
+  Util.lsp.setup()
+  Util.lsp.on_dynamic_capability(function(client, bufnr)
+    return require("beastvim.features.lsp.keymaps").attach(client, bufnr)
+  end)
+
+  -- Codelens
+  M.codelens.setup(opts.codelens)
 
   -- UI
   M.ui.setup()
@@ -46,17 +52,14 @@ function M.setup(opts)
   -- Diagnostics
   M.diagnostics.setup(opts.diagnostics)
 
-  -- Inlay Hints
-  M.inlay_hints.setup(opts.inlay_hints)
-
-  -- Codelens
-  M.codelens.setup(opts.codelens)
-
   -- Document Highlight
   M.document_highlight.setup(opts.document_highlight)
 
+  -- Inlay Hints
+  M.inlay_hints.setup(opts.inlay_hints)
+
   -- Keymaps
-  Utils.lsp.on_attach(function(client, bufnr)
+  Util.lsp.on_attach(function(client, bufnr)
     M.keymaps(client, bufnr)
     M.navic(client, bufnr)
   end)
@@ -95,7 +98,7 @@ function M.setup(opts)
           server_config.on_attach(client, bufnr)
         end
       end
-      Utils.lsp.on_attach(callback)
+      Util.lsp.on_attach(callback)
     end
 
     local pending = true
@@ -103,6 +106,7 @@ function M.setup(opts)
       -- If root_dir is string or list of strings
       local lsp_utils = require("lspconfig/util")
       if type(server_opts.root_dir) == "string" then
+        print("vaicalon", server_opts.root_dir)
         server_opts.root_dir = lsp_utils.root_pattern(server_opts.root_dir)
       end
       if type(server_opts.root_dir) == "table" then

@@ -1,6 +1,6 @@
 ---@class HeirlineOptions
 local options = {
-  float =  true,
+  float = true,
   colorful = true,
   ---@enum (key) HeirlineSeparatorType
   separator = {

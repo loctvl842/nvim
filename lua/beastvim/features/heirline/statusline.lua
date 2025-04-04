@@ -1,4 +1,3 @@
-local Icons = require("beastvim.tweaks").icons
 local conditions = require("heirline.conditions")
 local config = require("beastvim.features.heirline.config")
 local cpn = require("beastvim.features.heirline.components")
@@ -9,7 +8,7 @@ local DefaultStatusLine = {
   cpn.git(),
   cpn.diagnostic(),
   cpn.justify, ---------------------------------------------------------------
-  cpn.aisync({ "copilot", "codeium", "supermaven" }),
+  cpn.aisync({ "copilot" }),
   cpn.position(),
   cpn.filetype(),
   cpn.shiftwidth(),

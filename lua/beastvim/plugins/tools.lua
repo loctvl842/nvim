@@ -1,10 +1,5 @@
 return {
   {
-    "mg979/vim-visual-multi",
-    event = { "BufReadPost", "BufNewFile" },
-  },
-
-  {
     "folke/persistence.nvim",
     event = "BufReadPre",
     opts = {
@@ -76,37 +71,5 @@ return {
     config = function()
       require("render-markdown").setup({})
     end,
-  },
-
-  {
-    "danymat/neogen",
-    config = true,
-    -- Uncomment next line if you want to follow only stable versions
-    -- version = "*"
-    opts = {
-      snippet_engine = "luasnip",
-    },
-    keys = {
-      {
-        "<leader>hnf",
-        "<cmd>lua require('neogen').generate({ type = 'func' })<CR>",
-        desc = "Generate annotation for current function",
-      },
-      {
-        "<leader>hnc",
-        "<cmd>lua require('neogen').generate({ type = 'class' })<CR>",
-        desc = "Generate annotation for current class",
-      },
-      {
-        "<leader>hnt",
-        "<cmd>lua require('neogen').generate({ type = 'type' })<CR>",
-        desc = "Generate annotation for current type",
-      },
-      {
-        "<leader>hnF",
-        "<cmd>lua require('neogen').generate({ type = 'file' })<CR>",
-        desc = "Generate annotation for current file",
-      },
-    },
   },
 }

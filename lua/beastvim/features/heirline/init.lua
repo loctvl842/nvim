@@ -29,7 +29,7 @@ end
 
 function M.load()
   M._load()
-  local group = Utils.augroup("Heirline")
+  local group = Util.augroup("Heirline")
   vim.api.nvim_create_autocmd("ColorScheme", {
     group = group,
     callback = function()

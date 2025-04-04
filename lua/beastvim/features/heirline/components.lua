@@ -1,6 +1,6 @@
-local Icons = require("beastvim.tweaks").icons
-local config = require("beastvim.features.heirline.config")
+local Icons = require("beastvim.config").icons
 local conditions = require("heirline.conditions")
+local config = require("beastvim.features.heirline.config")
 
 local M = {}
 
@@ -133,24 +133,30 @@ M.aisync = function(sources, sep_type)
   ---@param name string The name of the  source
   ---@return "ok"|"pending"|"error"?
   local function status(name)
-    if not package.loaded.cmp then
-      return
+    local clients = package.loaded["copilot"] and Util.lsp.get_clients({ name = "copilot", bufnr = 0 }) or {}
+    if #clients > 0 then
+      local status = require("copilot.api").status.data.status
+      return (status == "InProgress" and "pending") or (status == "Warning" and "error") or "ok"
     end
-    if Utils.plugin.has("nvim-cmp") then
-      for _, s in ipairs(require("cmp").core.sources) do
-        if s.name == name then
-          if s.source:is_available() then
-            cmp_source = true
-          else
-            return cmp_source and "error" or nil
-          end
-          if s.status == s.SourceStatus.FETCHING then
-            return "pending"
-          end
-          return "ok"
-        end
-      end
-    end
+
+    -- if not package.loaded.cmp then
+    --   return
+    -- end
+    -- if Util.plugin.has("nvim-cmp") then
+    --   for _, s in ipairs(require("cmp").core.sources) do
+    --     if s.name == name then
+    --       if s.source:is_available() then
+    --         cmp_source = true
+    --       else
+    --         return cmp_source and "error" or nil
+    --       end
+    --       if s.status == s.SourceStatus.FETCHING then
+    --         return "pending"
+    --       end
+    --       return "ok"
+    --     end
+    --   end
+    -- end
   end
 
   local final = {}
@@ -168,8 +174,8 @@ M.aisync = function(sources, sep_type)
         if s then
           local colors = {
             ok = Icons.colors.brain[source],
-            pending = Utils.theme.highlight("Whitespace").fg,
-            error = Utils.theme.highlight("DiagnosticError").fg,
+            pending = Util.theme.highlight("Whitespace").fg,
+            error = Util.theme.highlight("DiagnosticError").fg,
           }
           self.text = { text = Icons.brain[source], color = colors[s] }
         end
@@ -190,7 +196,7 @@ M.aisync = function(sources, sep_type)
 
   return {
     condition = function()
-      return Utils.table.any(sources, status)
+      return Util.table.any(sources, status)
     end,
     M.space,
     M.sep_left(sep_type),
@@ -265,7 +271,7 @@ M.filetype = function(sep_type)
           prev_ft = current_ft
           ft = current_ft
         end
-        return Utils.string.capitalize(ft)
+        return Util.string.capitalize(ft)
       end,
       hl = { bg = (config.float and sep_type == "fill") and "float_bg" or nil, fg = "blue" },
     },

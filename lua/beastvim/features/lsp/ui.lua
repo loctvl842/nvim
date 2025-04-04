@@ -15,7 +15,7 @@ function M.setup()
   })
   vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
     border = nil,
-    title = "concac",
+    title = "",
   })
 end
 
