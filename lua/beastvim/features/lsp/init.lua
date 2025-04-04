@@ -10,13 +10,11 @@
 ---@field capabilities? table
 ---@field codelens? LspCodeLensOptions
 ---@field diagnostics? LspDiagnosticsOptions
----@field document_highlight? LspDocumentHighlightOptions
 ---@field inlay_hints? LspInlayHintsOptions
 
 ---@class Lsp
 ---@field codelens beastvim.features.lsp.codelens
 ---@field diagnostics beastvim.features.lsp.diagnostics
----@field document_highlight beastvim.features.lsp.document_highlight
 ---@field inlay_hints beastvim.features.lsp.inlay_hints
 ---@field keymaps beastvim.features.lsp.keymaps
 ---@field navic beastvim.features.lsp.navic
@@ -51,9 +49,6 @@ function M.setup(opts)
 
   -- Diagnostics
   M.diagnostics.setup(opts.diagnostics)
-
-  -- Document Highlight
-  M.document_highlight.setup(opts.document_highlight)
 
   -- Inlay Hints
   M.inlay_hints.setup(opts.inlay_hints)

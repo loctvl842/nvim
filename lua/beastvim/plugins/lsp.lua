@@ -69,7 +69,6 @@ return {
       diagnostics = { enabled = true },
       inlay_hints = { enabled = true },
       codelens = { enabled = true },
-      document_highlight = { enabled = true },
     },
     config = function(_, opts)
       require("beastvim.features.lsp").setup(opts)
