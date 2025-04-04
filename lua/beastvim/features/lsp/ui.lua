@@ -8,8 +8,6 @@ setmetatable(M, {
 })
 
 function M.setup()
-  local monokai_opts = Utils.plugin.opts("monokai-pro.nvim")
-
   -- LSP Handlers
   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
     border = nil,
