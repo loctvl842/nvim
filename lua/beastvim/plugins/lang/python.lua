@@ -1,3 +1,15 @@
+local root_spec = {
+  "pyproject.toml",
+  "setup.py",
+  "setup.cfg",
+  "requirements.txt",
+  "Pipfile",
+  "pyrightconfig.json",
+}
+
+vim.list_extend(root_spec, vim.g.root_spec)
+vim.g.root_spec = root_spec
+
 return {
   {
     "williamboman/mason.nvim",
@@ -76,20 +88,5 @@ return {
         },
       },
     },
-    init = function()
-      local root_spec = {
-        "pyproject.toml",
-        "setup.py",
-        "setup.cfg",
-        "requirements.txt",
-        "Pipfile",
-        "pyrightconfig.json",
-      }
-
-      vim.list_extend(root_spec, vim.g.root_spec)
-
-      -- Set it back (as a Vim-compatible table)
-      vim.g.root_spec = root_spec
-    end,
   },
 }

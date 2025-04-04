@@ -1,3 +1,9 @@
+local root_spec = {
+  "package*json",
+}
+vim.list_extend(root_spec, vim.g.root_spec)
+vim.g.root_spec = root_spec
+
 return {
   {
     "williamboman/mason.nvim",
@@ -111,13 +117,6 @@ return {
         },
       },
     },
-    init = function()
-      local root_spec = {
-        "package*json",
-      }
-      vim.list_extend(root_spec, vim.g.root_spec)
-      vim.g.root_spec = root_spec
-    end,
   },
 
   {
