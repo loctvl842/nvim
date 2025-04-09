@@ -62,11 +62,6 @@ return {
         desc = "Display Keymaps",
       },
       {
-        "<leader>hn",
-        "<cmd>Notifications<CR>",
-        desc = "Display Notifications",
-      },
-      {
         "<leader>hm",
         "<cmd>Noice telescope<CR>",
         desc = "Display Messages",

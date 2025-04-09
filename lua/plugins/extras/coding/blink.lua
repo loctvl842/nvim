@@ -11,6 +11,8 @@ return {
     version = not vim.g.lazyvim_blink_main and "*",
     build = vim.g.lazyvim_blink_main and "cargo build --release",
     opts_extend = {
+      "sources.completion.enabled_providers",
+      "sources.compat",
       "sources.default",
     },
     dependencies = {
@@ -88,7 +90,10 @@ return {
         -- with blink.compat
         compat = {},
         default = { "lsp", "path", "snippets", "buffer" },
-        cmdline = {},
+      },
+
+      cmdline = {
+        enabled = false,
       },
 
       keymap = {
@@ -98,19 +103,6 @@ return {
     },
     ---@param opts blink.cmp.Config | { sources: { compat: string[] } }
     config = function(_, opts)
-      -- setup compat sources
-      -- local enabled = opts.sources.default
-      -- for _, source in ipairs(opts.sources.compat or {}) do
-      --   opts.sources.providers[source] = vim.tbl_deep_extend(
-      --     "force",
-      --     { name = source, module = "blink.compat.source" },
-      --     opts.sources.providers[source] or {}
-      --   )
-      --   if type(enabled) == "table" and not vim.tbl_contains(enabled, source) then
-      --     table.insert(enabled, source)
-      --   end
-      -- end
-
       -- add ai_accept to <Tab> key
       if not opts.keymap["<Tab>"] then
         if opts.keymap.preset == "super-tab" then -- super-tab
@@ -167,9 +159,8 @@ return {
     "saghen/blink.cmp",
     opts = function(_, opts)
       opts.appearance = opts.appearance or {}
-      opts.appearance.kind_icons = vim.tbl_extend("keep", {
-        Color = "██", -- Use block instead of icon for color items to make swatches more usable
-      }, icons.kinds)
+      opts.appearance.kind_icons =
+        vim.tbl_extend("force", opts.appearance.kind_icons or {}, require("core.icons").kinds)
     end,
   },
 

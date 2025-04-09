@@ -205,6 +205,9 @@ return {
             ["@lsp.type.namespace.go"] = { fg = colors.peach },
             ["@lsp.type.function.go"] = { fg = colors.blue, italic = true },
 
+            AvanteSidebarWinSeparator = { fg = colors.crust, bg = colors.crust },
+            AvanteSidebarWinHorizontalSeparator = { fg = colors.crust, bg = colors.crust },
+
             -- Indent Blankline
             -- IblScope = { fg = colors.peach },
 

@@ -64,6 +64,9 @@ return {
         "/media/procore/*",
         "/etc/dotfiles",
       },
+      picker = {
+        type = "snacks_picker_list",
+      },
       last_session_on_startup = false,
       dashboard_mode = true,
       session_manager_opts = {
