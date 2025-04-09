@@ -18,7 +18,7 @@ return {
     opts_extend = { "ensure_installed" },
     opts = {
       highlight = { enable = true },
-      indent = { enable = true, disable = { "yaml", "python", "html" } },
+      indent = { enable = true, disable = { "yaml", "html" } },
       ensure_installed = {
         "bash",
         "c",

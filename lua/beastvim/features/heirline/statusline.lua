@@ -8,7 +8,7 @@ local DefaultStatusLine = {
   cpn.git(),
   cpn.diagnostic(),
   cpn.justify, ---------------------------------------------------------------
-  cpn.aisync({ "copilot" }),
+  cpn.aisync({ "copilot", "codeium", "supermaven" }),
   cpn.position(),
   cpn.filetype(),
   cpn.shiftwidth(),

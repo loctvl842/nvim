@@ -130,33 +130,10 @@ M.aisync = function(sources, sep_type)
 
   local cmp_source = false
   ---Status of the source
-  ---@param name string The name of the  source
+  ---@param name string The name of the source
   ---@return "ok"|"pending"|"error"?
   local function status(name)
-    local clients = package.loaded["copilot"] and Util.lsp.get_clients({ name = "copilot", bufnr = 0 }) or {}
-    if #clients > 0 then
-      local status = require("copilot.api").status.data.status
-      return (status == "InProgress" and "pending") or (status == "Warning" and "error") or "ok"
-    end
-
-    -- if not package.loaded.cmp then
-    --   return
-    -- end
-    -- if Util.plugin.has("nvim-cmp") then
-    --   for _, s in ipairs(require("cmp").core.sources) do
-    --     if s.name == name then
-    --       if s.source:is_available() then
-    --         cmp_source = true
-    --       else
-    --         return cmp_source and "error" or nil
-    --       end
-    --       if s.status == s.SourceStatus.FETCHING then
-    --         return "pending"
-    --       end
-    --       return "ok"
-    --     end
-    --   end
-    -- end
+    return "ok"
   end
 
   local final = {}
