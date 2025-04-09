@@ -183,20 +183,39 @@ M.aisync = function(sources, sep_type)
   }
 end
 
+M._pos = nil
 ---@param sep_type? HeirlineSeparatorType
 M.position = function(sep_type)
   sep_type = sep_type or "fill"
+  local ignored_filetypes = {
+    "help",
+    "packer",
+    "neogitstatus",
+    "NvimTree",
+    "Trouble",
+    "lir",
+    "Outline",
+    "spectre_panel",
+    "toggleterm",
+    "DressingSelect",
+    "neo-tree",
+    "neo-tree-popup",
+    "",
+  }
 
   return {
     -- stylua: ignore
-    condition = function() return true end,
+    condition = function() return not vim.tbl_contains(ignored_filetypes, vim.bo.filetype) or M._pos end,
     M.space,
     M.sep_left(sep_type),
     {
       update = { "CursorMoved", "CursorMovedI" },
       init = function(self)
-        local current_line = vim.fn.line(".")
-        local current_column = vim.fn.col(".")
+        local current_line = vim.tbl_contains(ignored_filetypes, vim.bo.filetype) and M._pos.current_line
+          or vim.fn.line(".")
+        local current_column = vim.tbl_contains(ignored_filetypes, vim.bo.filetype) and M._pos.current_column
+          or vim.fn.col(".")
+        M._pos = { current_line = current_line, current_column = current_column }
         self.text = "Ln " .. current_line .. ", Col " .. current_column
       end,
       {

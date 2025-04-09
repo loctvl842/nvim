@@ -11,7 +11,7 @@ return {
   -- Statusline
   {
     "rebelot/heirline.nvim",
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    event = { "VimEnter", "BufReadPost", "BufNewFile" },
     -- lazy = true,
     opts = function()
       local monokai_opts = Util.plugin.opts("monokai-pro.nvim")
@@ -29,7 +29,7 @@ return {
 
   {
     "akinsho/bufferline.nvim",
-    event = { "BufReadPost", "BufNewFile" },
+    event = { "VimEnter", "BufReadPost", "BufNewFile" },
     keys = {
       { "<M-1>", "<Cmd>BufferLineGoToBuffer 1<CR>", desc = "Go to buffer 1" },
       { "<M-2>", "<Cmd>BufferLineGoToBuffer 2<CR>", desc = "Go to buffer 2" },
@@ -98,7 +98,7 @@ return {
           end)
         end,
       })
-    end
+    end,
   },
 
   {
