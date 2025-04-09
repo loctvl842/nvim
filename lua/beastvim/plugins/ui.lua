@@ -29,7 +29,7 @@ return {
 
   {
     "akinsho/bufferline.nvim",
-    event = { "VeryLazy" },
+    event = { "BufReadPost", "BufNewFile" },
     keys = {
       { "<M-1>", "<Cmd>BufferLineGoToBuffer 1<CR>", desc = "Go to buffer 1" },
       { "<M-2>", "<Cmd>BufferLineGoToBuffer 2<CR>", desc = "Go to buffer 2" },
@@ -40,10 +40,10 @@ return {
       { "<C-7>", "<Cmd>BufferLineGoToBuffer 7<CR>", desc = "Go to buffer 7" },
       { "<C-8>", "<Cmd>BufferLineGoToBuffer 8<CR>", desc = "Go to buffer 8" },
       { "<C-9>", "<Cmd>BufferLineGoToBuffer 9<CR>", desc = "Go to buffer 9" },
-      { "<S-l>", "<Cmd>BufferLineCycleNext<CR>", desc = "Next buffer" },
-      { "<S-h>", "<Cmd>BufferLineCyclePrev<CR>", desc = "Previous buffer" },
-      { "<A-S-Right>", "<Cmd>BufferLineMoveNext<CR>", desc = "Move buffer right" },
-      { "<A-S-Left>", "<Cmd>BufferLineMovePrev<CR>", desc = "Move buffer left" },
+      { "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
+      { "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
+      { "[B", "<cmd>BufferLineMovePrev<cr>", desc = "Move buffer prev" },
+      { "]B", "<cmd>BufferLineMoveNext<cr>", desc = "Move buffer next" },
     },
     opts = function()
       local monokai_opts = Util.plugin.opts("monokai-pro.nvim")
@@ -58,7 +58,8 @@ return {
             -- style = 'icon',
             style = "underline",
           },
-          close_command = "Bdelete! %d", -- can be a string | function, see "Mouse actions"
+          -- stylua: ignore
+          close_command = function(n) Snacks.bufdelete(n) end,
           diagnostics_indicator = function(count, _, _, _)
             if count > 9 then
               return "9+"
@@ -87,6 +88,17 @@ return {
         },
       }
     end,
+    config = function(_, opts)
+      require("bufferline").setup(opts)
+      -- Fix bufferline when restoring a session
+      vim.api.nvim_create_autocmd({ "BufAdd", "BufDelete" }, {
+        callback = function()
+          vim.schedule(function()
+            pcall(nvim_bufferline)
+          end)
+        end,
+      })
+    end
   },
 
   {

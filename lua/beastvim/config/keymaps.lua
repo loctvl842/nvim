@@ -11,6 +11,17 @@ map("n", "<C-j>", "<C-w>j", { desc = "Go to lower window", remap = true })
 map("n", "<C-k>", "<C-w>k", { desc = "Go to upper window", remap = true })
 map("n", "<C-l>", "<C-w>l", { desc = "Go to right window", remap = true })
 
+-------------------- Buffers ----------------------------------
+map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
+map("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
+map("n", "[b", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
+map("n", "]b", "<cmd>bnext<cr>", { desc = "Next Buffer" })
+map("n", "<C-Tab>", "<cmd>e #<cr>", { desc = "Switch to Other Buffer" })
+map("n", "<leader>d", function()
+  Snacks.bufdelete()
+end, { desc = "Delete Buffer" })
+
+
 -------------------- Press jk fast to enter --------------------
 map("i", "jk", "<ESC>", { desc = "Escape from insert mode" })
 map("i", "Jk", "<ESC>", { desc = "Escape from insert mode" })
