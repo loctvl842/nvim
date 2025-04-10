@@ -29,7 +29,7 @@ return {
 
   {
     "akinsho/bufferline.nvim",
-    event = { "VimEnter", "BufReadPost", "BufNewFile" },
+    event = "VeryLazy",
     keys = {
       { "<M-1>", "<Cmd>BufferLineGoToBuffer 1<CR>", desc = "Go to buffer 1" },
       { "<M-2>", "<Cmd>BufferLineGoToBuffer 2<CR>", desc = "Go to buffer 2" },
@@ -241,7 +241,7 @@ return {
           -- stylua: ignore
           keys = {
             { icon = " ",key = "r", desc = "Recent Files", action = ":lua Util.pick('oldfiles')()", icon_hl = "DashboardRecent", key_hl = "DashboardRecent" },
-            { icon = " ", key = "s", desc = "Last Session", action = ":lua require('persistence').load({last = true})", icon_hl = "DashboardSession", key_hl = "DashboardSession" },
+            { icon = " ", key = "s", desc = "Last Session", action = "<leader>sl", icon_hl = "DashboardSession", key_hl = "DashboardSession" },
             { icon = " ", key = "i", desc = "Configuration", action = ":edit $MYVIMRC", icon_hl = "DashboardConfiguration", key_hl = "DashboardConfiguration" },
             { icon = "󰤄 ", key = "l", desc = "Lazy", action = ":Lazy", icon_hl = "DashboardLazy", key_hl = "DashboardLazy" },
             { icon = " ", key = "m", desc = "Mason", action = ":Mason", icon_hl = "DashboardServer", key_hl = "DashboardServer" },

@@ -69,7 +69,8 @@ return {
 
   {
     "folke/persistence.nvim",
-    event = "BufReadPre",
+    enabled = false,
+    lazy = true,
     opts = {
       options = { "buffers", "curdir", "tabpages", "winsize", "help", "blank", "terminal", "folds", "tabpages" },
     },
@@ -96,6 +97,36 @@ return {
         desc = "Don't Save Current Session",
       },
     },
+  },
+
+  {
+    "stevearc/resession.nvim",
+    lazy = true,
+    keys = {
+      {
+        "<leader>sl",
+        function()
+          require("resession").load("last")
+        end,
+        desc = "Restore Last Session",
+      },
+    },
+    config = function(_, opts)
+      local resession = require("resession")
+      resession.setup(opts)
+    end,
+    init = function()
+      local resession = require("resession")
+      vim.api.nvim_create_autocmd("VimLeavePre", {
+        callback = function()
+          if Util.buffer.is_valid_session() then
+            -- Always save a special session named "last"
+            resession.save("last")
+            resession.save(vim.fn.getcwd(), { dir = "dirsession", notify = false })
+          end
+        end,
+      })
+    end,
   },
 
   {

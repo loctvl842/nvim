@@ -1,6 +1,7 @@
 local LazyUtil = require("lazy.core.util")
 
 ---@class Util: LazyUtilCore
+---@field buffer beastvim.util.buffer
 ---@field cmp beastvim.util.cmp
 ---@field format beastvim.util.format
 ---@field lsp beastvim.util.lsp

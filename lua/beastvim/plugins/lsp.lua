@@ -4,7 +4,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     branch = "master",
-    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    event = "LazyFile",
     dependencies = {
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
