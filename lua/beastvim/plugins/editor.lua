@@ -214,7 +214,7 @@ return {
     dependencies = { "kevinhwang91/promise-async", event = "BufReadPost" },
     opts = {
       provider_selector = function()
-        return { "treesitter", "indent" }
+        return { "lsp", "indent" }
       end,
       fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
         local newVirtText = {}
@@ -298,11 +298,6 @@ return {
   {
     "luukvbaal/statuscol.nvim",
     event = { "VimEnter" }, -- Enter when on Vim startup to setup folding correctly (Avoid number in fold column)
-    commit = (function()
-      if vim.fn.has("nvim-0.9") == 1 then
-        return "483b9a596dfd63d541db1aa51ee6ee9a1441c4cc"
-      end
-    end)(),
     config = function()
       local builtin = require("statuscol.builtin")
       require("statuscol").setup({
@@ -311,20 +306,13 @@ return {
         segments = {
           {
             -- line number
-            text = { " ", builtin.lnumfunc },
+            text = { builtin.lnumfunc, " " },
             condition = { true, builtin.not_empty },
             click = "v:lua.ScLa",
           },
           { text = { "%s" }, click = "v:lua.ScSa" }, -- Sign
           { text = { builtin.foldfunc, " " }, click = "v:lua.ScFa" }, -- Fold
         },
-      })
-      vim.api.nvim_create_autocmd({ "BufEnter" }, {
-        callback = function()
-          if vim.bo.filetype == "neo-tree" then
-            vim.opt_local.statuscolumn = ""
-          end
-        end,
       })
     end,
   },
