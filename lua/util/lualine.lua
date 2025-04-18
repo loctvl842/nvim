@@ -62,26 +62,42 @@ local function trunc(trunc_width, trunc_len, hide_width, no_ellipsis)
 end
 
 local modecolor = {
-  n = colors.red,
-  i = colors.blue,
-  v = colors.maroon,
-  [""] = colors.maroon,
-  V = colors.red,
-  c = colors.yellow,
-  no = colors.red,
-  s = colors.yellow,
-  S = colors.yellow,
-  [""] = colors.yellow,
-  ic = colors.yellow,
-  R = colors.green,
-  Rv = colors.maroon,
-  cv = colors.red,
-  ce = colors.red,
-  r = colors.sky,
-  rm = colors.sky,
+  ["n"] = colors.red,
+  ["no"] = colors.red,
+  ["nov"] = colors.red,
+  ["noV"] = colors.red,
+  ["no\22"] = colors.red,
+  ["niI"] = colors.red,
+  ["niR"] = colors.red,
+  ["niV"] = colors.red,
+  ["nt"] = colors.red,
+  ["ntT"] = colors.red,
+  ["v"] = colors.maroon,
+  ["vs"] = colors.maroon,
+  ["V"] = colors.maroon,
+  ["Vs"] = colors.maroon,
+  ["\22"] = colors.maroon,
+  ["\22s"] = colors.maroon,
+  ["s"] = colors.yellow,
+  ["S"] = colors.yellow,
+  ["\19"] = colors.yellow,
+  ["i"] = colors.blue,
+  ["ic"] = colors.blue,
+  ["ix"] = colors.blue,
+  ["r"] = colors.green,
+  ["R"] = colors.green,
+  ["Rc"] = colors.green,
+  ["Rx"] = colors.green,
+  ["Rv"] = colors.green,
+  ["Rvc"] = colors.green,
+  ["Rvx"] = colors.green,
+  ["c"] = colors.sky,
+  ["cv"] = colors.sky,
+  ["ce"] = colors.sky,
+  ["rm"] = colors.sky,
   ["r?"] = colors.sky,
   ["!"] = colors.red,
-  t = colors.pink,
+  ["t"] = colors.pink,
 }
 
 M.theme = {
@@ -185,8 +201,13 @@ M.components.modes = function()
   return {
     "mode",
     color = function()
-      local mode_color = modecolor
-      return { bg = mode_color[vim.fn.mode()], fg = colors.mantle, gui = "bold" }
+      local current_mode = vim.api.nvim_get_mode().mode
+      local current_mode_color = modecolor[current_mode] or colors.blue -- fallback to blue if mode not found
+      return {
+        bg = current_mode_color,
+        fg = colors.mantle,
+        gui = "bold",
+      }
     end,
     -- separator = { left = "", right = "" },
     separator = M.config.separator_icon,

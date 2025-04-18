@@ -80,78 +80,74 @@ return {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     config = function()
-      local function setup()
-        CoreUtil.lualine.setup({
-          float = true,
-          separator = "bubble", -- bubble | triangle
-          ---@type any
-          theme = "auto", -- nil combine with separator "bubble" and float
-          colorful = true,
-          separators_enabled = true,
-          separator_icon = { left = "", right = " " },
-          thin_separator_icon = { left = "", right = " " },
-        })
-        local cpn = CoreUtil.lualine.components
-        require("lualine").setup({
-          options = {
-            theme = CoreUtil.lualine.theme,
-            icons_enabled = true,
-            disabled_filetypes = {
-              statusline = {},
-              winbar = { "neo-tree" },
-              "alpha",
-              "dashboard",
-              "man",
-              "manconf",
-            },
-            ignore_focus = {},
-            always_divide_middle = true,
-            globalstatus = true,
-            refresh = {
-              statusline = 1000,
-              tabline = 1000,
-              winbar = 100,
-            },
+      CoreUtil.lualine.setup({
+        float = true,
+        separator = "bubble", -- bubble | triangle
+        ---@type any
+        theme = "auto", -- nil combine with separator "bubble" and float
+        colorful = true,
+        separators_enabled = true,
+        separator_icon = { left = "", right = " " },
+        thin_separator_icon = { left = "", right = " " },
+      })
+      local cpn = CoreUtil.lualine.components
+      require("lualine").setup({
+        options = {
+          theme = CoreUtil.lualine.theme,
+          icons_enabled = true,
+          disabled_filetypes = {
+            statusline = {},
+            winbar = { "neo-tree" },
+            "alpha",
+            "dashboard",
+            "man",
+            "manconf",
           },
-          sections = {
-            lualine_a = {
-              cpn.modes(),
-            },
-            lualine_b = {
-              cpn.space(),
-            },
-            lualine_c = {
-              cpn.project(),
-              cpn.filetype(),
-              cpn.space(),
-              cpn.branch(),
-              cpn.diff(),
-              cpn.space(),
-              cpn.location(),
-            },
-            lualine_x = {
-              cpn.space(),
-            },
-            lualine_y = { cpn.macro(), cpn.space() },
-            lualine_z = {
-              cpn.dia(),
-              cpn.lsp(),
-            },
+          ignore_focus = {},
+          always_divide_middle = true,
+          globalstatus = true,
+          refresh = {
+            statusline = 100,
+            tabline = 1000,
+            winbar = 100,
           },
-          inactive_sections = {
-            lualine_a = {},
-            lualine_b = {},
-            lualine_c = { "filename" },
-            lualine_x = { "location" },
-            lualine_y = {},
-            lualine_z = {},
+        },
+        sections = {
+          lualine_a = {
+            cpn.modes(),
           },
-          tabline = {},
-          extensions = {},
-        })
-      end
-
-      setup()
+          lualine_b = {
+            cpn.space(),
+          },
+          lualine_c = {
+            cpn.project(),
+            cpn.filetype(),
+            cpn.space(),
+            cpn.branch(),
+            cpn.diff(),
+            cpn.space(),
+            cpn.location(),
+          },
+          lualine_x = {
+            cpn.space(),
+          },
+          lualine_y = { cpn.macro(), cpn.space() },
+          lualine_z = {
+            cpn.dia(),
+            -- cpn.lsp(),
+          },
+        },
+        inactive_sections = {
+          lualine_a = {},
+          lualine_b = {},
+          lualine_c = { "filename" },
+          lualine_x = { "location" },
+          lualine_y = {},
+          lualine_z = {},
+        },
+        tabline = {},
+        extensions = {},
+      })
     end,
   },
 

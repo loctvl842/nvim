@@ -2,11 +2,11 @@ return {
   {
     "yetone/avante.nvim",
     event = "VeryLazy",
-    lazy = false,
     version = false, -- Set this to "*" to always pull the latest release version, or set it to false to update to the latest code changes.
     opts = {
       -- Default to use Claude 3.5 Sonnet as default provider
       provider = "claude",
+      auto_suggestions_provider = "claude",
       claude = {
         endpoint = "https://api.anthropic.com",
         model = "claude-3-5-sonnet-20241022", -- your desired model (or use gpt-4o, etc.)
@@ -21,6 +21,14 @@ return {
         max_tokens = 4096,
         -- reasoning_effort = "high" -- only supported for reasoning models (o1, etc.)
       },
+      ---@type AvanteSupportedProvider
+      gemini = {
+        endpoint = "https://generativelanguage.googleapis.com/v1beta/models",
+        model = "gemini-2.0-flash",
+        timeout = 60000, -- Timeout in milliseconds
+        temperature = 0,
+        max_tokens = 8192,
+      },
       ---Specify the special dual_boost mode
       ---1. enabled: Whether to enable dual_boost mode. Default to false.
       ---2. first_provider: The first provider to generate response. Default to "openai".
@@ -32,13 +40,13 @@ return {
       --- Then use the response from the first_provider as provider1_output and the response from the second_provider as provider2_output.
       --- Finally, avante will generate a response based on the prompt and the two reference outputs, with the default Provider as normal.
       ---Note: This is an experimental feature and may not work as expected.
-      dual_boost = {
-        enabled = true,
-        first_provider = "openai",
-        second_provider = "claude",
-        prompt = "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
-        timeout = 120000, -- Timeout in milliseconds
-      },
+      -- dual_boost = {
+      --   enabled = true,
+      --   first_provider = "openai",
+      --   second_provider = "gemini",
+      --   prompt = "Based on the two reference outputs below, generate a response that incorporates elements from both but reflects your own judgment and unique perspective. Do not provide any explanation, just give the response directly. Reference Output 1: [{{provider1_output}}], Reference Output 2: [{{provider2_output}}]",
+      --   timeout = 120000, -- Timeout in milliseconds
+      -- },
       -- Local RAG
       -- rag_service = {
       --   enabled = true, -- Enables the RAG service
