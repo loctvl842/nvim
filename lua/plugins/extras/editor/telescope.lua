@@ -8,32 +8,32 @@ return {
     version = false,
     keys = {
       -- Buffer
-      {
-        "<leader>bl",
-        "<cmd>lua require('telescope.builtin').buffers()<cr>",
-        desc = "Buffer list",
-      },
-      {
-        "<leader>bs",
-        "<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<cr>",
-        desc = "Buffer Search",
-      },
-      {
-        "<leader>bS",
-        "<cmd>lua require('telescope.builtin').treesitter()<cr>",
-        desc = "Buffer Symbols",
-      },
+      -- {
+      --   "<leader>bl",
+      --   "<cmd>lua require('telescope.builtin').buffers()<cr>",
+      --   desc = "Buffer list",
+      -- },
+      -- {
+      --   "<leader>bs",
+      --   "<cmd>lua require('telescope.builtin').current_buffer_fuzzy_find()<cr>",
+      --   desc = "Buffer Search",
+      -- },
+      -- {
+      --   "<leader>bS",
+      --   "<cmd>lua require('telescope.builtin').treesitter()<cr>",
+      --   desc = "Buffer Symbols",
+      -- },
       -- Find
-      {
-        "<leader>ff",
-        function()
-          require("telescope.builtin").find_files({
-            hidden = true,
-            search_dirs = { "/media/procore", "~/github.com", "~/.config/nvim", "/etc/dotfiles" },
-          })
-        end,
-        desc = "Find files",
-      },
+      -- {
+      --   "<leader>ff",
+      --   function()
+      --     require("telescope.builtin").find_files({
+      --       hidden = true,
+      --       search_dirs = { "/media/procore", "~/github.com", "~/.config/nvim", "/etc/dotfiles" },
+      --     })
+      --   end,
+      --   desc = "Find files",
+      -- },
       -- Help
       { "<leader>h", "", desc = "+help" },
       {
@@ -41,50 +41,50 @@ return {
         "<cmd>Inspect<CR>",
         desc = "Inspect Element",
       },
-      {
-        "<leader>ha",
-        "<cmd>lua require('telescope.builtin').autocommands()<CR>",
-        desc = "Display Autocommands",
-      },
-      {
-        "<leader>hh",
-        "<cmd>lua require('telescope.builtin').highlights()<CR>",
-        desc = "Display Highlights",
-      },
-      {
-        "<leader>hc",
-        "<cmd>lua require('telescope.builtin').commands()<CR>",
-        desc = "Display Commands",
-      },
-      {
-        "<leader>hk",
-        "<cmd>lua require('telescope.builtin').keymaps()<CR>",
-        desc = "Display Keymaps",
-      },
-      {
-        "<leader>hm",
-        "<cmd>Noice telescope<CR>",
-        desc = "Display Messages",
-      },
-      {
-        "<leader>ho",
-        "<cmd>lua require('telescope.builtin').vim_options()<CR>",
-        desc = "Display Options",
-      },
-      {
-        "<leader>hv",
-        "<cmd>lua require('telescope.builtin').treesitter()<CR>",
-        desc = "Display Buffer Variables",
-      },
-      -- Search
-      {
-        "<leader>sp",
-        function()
-          CoreUtil.telescope.live_grep()
-        end,
-        "Search Project",
-      },
-      { "<leader>si", "<cmd>IconPickerInsert<cr>", "Search Icon" },
+      -- {
+      --   "<leader>ha",
+      --   "<cmd>lua require('telescope.builtin').autocommands()<CR>",
+      --   desc = "Display Autocommands",
+      -- },
+      -- {
+      --   "<leader>hh",
+      --   "<cmd>lua require('telescope.builtin').highlights()<CR>",
+      --   desc = "Display Highlights",
+      -- },
+      -- {
+      --   "<leader>hc",
+      --   "<cmd>lua require('telescope.builtin').commands()<CR>",
+      --   desc = "Display Commands",
+      -- },
+      -- {
+      --   "<leader>hk",
+      --   "<cmd>lua require('telescope.builtin').keymaps()<CR>",
+      --   desc = "Display Keymaps",
+      -- },
+      -- {
+      --   "<leader>hm",
+      --   "<cmd>Noice telescope<CR>",
+      --   desc = "Display Messages",
+      -- },
+      -- {
+      --   "<leader>ho",
+      --   "<cmd>lua require('telescope.builtin').vim_options()<CR>",
+      --   desc = "Display Options",
+      -- },
+      -- {
+      --   "<leader>hv",
+      --   "<cmd>lua require('telescope.builtin').treesitter()<CR>",
+      --   desc = "Display Buffer Variables",
+      -- },
+      -- -- Search
+      -- {
+      --   "<leader>sp",
+      --   function()
+      --     CoreUtil.telescope.live_grep()
+      --   end,
+      --   "Search Project",
+      -- },
+      -- { "<leader>si", "<cmd>IconPickerInsert<cr>", "Search Icon" },
     },
     opts = function()
       return {
@@ -246,18 +246,18 @@ return {
     end,
   },
 
-  {
-    "neovim/nvim-lspconfig",
-    opts = function()
-      local Keys = require("plugins.lsp.keymaps").get()
-      local telescope = require("telescope.builtin")
-      -- stylua: ignore
-      vim.list_extend(Keys, {
-        { "gd", function() telescope.lsp_definitions({ reuse_win = true }) end, desc = "Goto Definition", has = "definition" },
-        { "gr", "<cmd>Telescope lsp_references<cr>", desc = "References", nowait = true },
-        { "gI", function() telescope.lsp_implementations({ reuse_win = true }) end, desc = "Goto Implementation" },
-        { "gy", function() telescope.lsp_type_definitions({ reuse_win = true }) end, desc = "Goto T[y]pe Definition" },
-      })
-    end,
-  },
+  -- {
+  --   "neovim/nvim-lspconfig",
+  --   opts = function()
+  --     local Keys = require("plugins.lsp.keymaps").get()
+  --     local telescope = require("telescope.builtin")
+  --     -- stylua: ignore
+  --     vim.list_extend(Keys, {
+  --       { "gd", function() telescope.lsp_definitions({ reuse_win = true }) end, desc = "Goto Definition", has = "definition" },
+  --       { "gr", "<cmd>Telescope lsp_references<cr>", desc = "References", nowait = true },
+  --       { "gI", function() telescope.lsp_implementations({ reuse_win = true }) end, desc = "Goto Implementation" },
+  --       { "gy", function() telescope.lsp_type_definitions({ reuse_win = true }) end, desc = "Goto T[y]pe Definition" },
+  --     })
+  --   end,
+  -- },
 }

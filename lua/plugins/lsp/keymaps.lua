@@ -15,10 +15,10 @@ function M.get()
   -- stylua: ignore
   M._keys = {
     { "<leader>cl", "<cmd>LspInfo<cr>",                       desc = "Lsp Info" },
-    { "gd",         telescope.lsp_definitions,                desc = "Goto Definition" },
-    { "gr",         telescope.lsp_references,                 desc = "References",                 nowait = true },
-    { "gI",         telescope.lsp_implementations,            desc = "Goto Implementation" },
-    { "gy",         telescope.lsp_type_definitions,           desc = "Goto T[y]pe Definition" },
+    -- { "gd",         telescope.lsp_definitions,                desc = "Goto Definition" },
+    -- { "gr",         telescope.lsp_references,                 desc = "References",                 nowait = true },
+    -- { "gI",         telescope.lsp_implementations,            desc = "Goto Implementation" },
+    -- { "gy",         telescope.lsp_type_definitions,           desc = "Goto T[y]pe Definition" },
     { "gD",         vim.lsp.buf.declaration,                  desc = "Goto Declaration" },
     { "K",          vim.lsp.buf.hover,                        desc = "Hover" },
     { "gK",         vim.lsp.buf.signature_help,               desc = "Signature Help",             has = "signatureHelp" },

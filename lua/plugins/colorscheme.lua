@@ -201,6 +201,12 @@ return {
             BufferLineIndicatorSelected = { fg = colors.red },
             BufferLineFill = { bg = colors.crust },
 
+            -- Snacks Picker
+            SnacksPickerBorder = { bg = colors.mantle, fg = colors.mantle },
+            SnacksPickerTitle = { bg = colors.mantle, fg = colors.text },
+            SnacksPickerInput = { bg = "#2c3047", fg = colors.text },
+            SnacksPickerInputBorder = { bg = "#2c3047", fg = "#2c3047" },
+
             -- Golang
             ["@lsp.type.namespace.go"] = { fg = colors.peach },
             ["@lsp.type.function.go"] = { fg = colors.blue, italic = true },
