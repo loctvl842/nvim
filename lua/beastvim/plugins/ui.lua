@@ -6,7 +6,8 @@ return {
   { "MunifTanjim/nui.nvim", verison = false, branch = "main", lazy = true },
 
   -- icons
-  { "nvim-tree/nvim-web-devicons", lazy = true },
+  -- Latest version is buggy due to some deprecated vim api calls
+  { "nvim-tree/nvim-web-devicons", version = false, lazy = true },
 
   -- Statusline
   {
@@ -49,6 +50,7 @@ return {
       local monokai_opts = Util.plugin.opts("monokai-pro.nvim")
       return {
         options = {
+          buffer_close_icon = "󰅖",
           diagnostics = "nvim_lsp", -- | "nvim_lsp" | "coc",
           -- separator_style = "", -- | "thick" | "thin" | "slope" | { 'any', 'any' },
           separator_style = { "", "" }, -- | "thick" | "thin" | { 'any', 'any' },
@@ -115,6 +117,12 @@ return {
       exclude_filetypes = { "gitcommit", "Trouble", "toggleterm" },
       show_modified = false,
       kinds = Icons.kinds,
+      symbols = {
+        ---Entry separator.
+        ---
+        ---@type string
+        separator = "",
+      },
     },
   },
 

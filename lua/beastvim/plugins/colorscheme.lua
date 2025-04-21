@@ -6,9 +6,9 @@ return {
     opts = {
       transparent_background = false,
       devicons = true,
-      filter = "spectrum", -- classic | octagon | pro | machine | ristretto | spectrum
+      filter = "pro", -- classic | octagon | pro | machine | ristretto | spectrum
       day_night = {
-        enable = true,
+        enable = false,
         day_filter = "pro",
         night_filter = "spectrum",
       },
@@ -16,7 +16,7 @@ return {
       background_clear = {
         "nvim-tree",
         -- "neo-tree",
-        "bufferline",
+        -- "bufferline",
         "telescope",
         "toggleterm",
       },

@@ -20,7 +20,7 @@ return {
     opts = {
       servers = {
         ts_ls = {
-          enabled = true,
+          enabled = false,
         },
         vtsls = {
           opts = {
