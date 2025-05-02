@@ -14,12 +14,34 @@ local M = setmetatable({}, {
 ---@alias BeastRootSpec string|string[]|BeastRootFn
 
 ---@type BeastRootSpec[]
-M.spec = { { ".git", "lua" }, "cwd" }
+M.spec = { "lsp", { ".git", "lua" }, "cwd" }
 
 M.detectors = {}
 
 function M.detectors.cwd()
   return vim.uv.cwd()
+end
+
+function M.detectors.lsp(buf)
+  local bufpath = M.bufpath(buf)
+  if not bufpath then
+    return {}
+  end
+  local roots = {} ---@type string[]
+  local clients = Util.lsp.get_clients({ bufnr = buf })
+  for _, client in pairs(clients) do
+    local workspace = client.config.workspace_folders
+    for _, ws in pairs(workspace or {}) do
+      roots[#roots + 1] = vim.uri_to_fname(ws.uri)
+    end
+    if client.root_dir then
+      roots[#roots + 1] = client.root_dir
+    end
+  end
+  return vim.tbl_filter(function(path)
+    path = Util.norm(path)
+    return path and bufpath:find(path, 1, true) == 1
+  end, roots)
 end
 
 ---@module "M.detectors"
