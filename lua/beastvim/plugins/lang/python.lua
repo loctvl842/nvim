@@ -1,10 +1,13 @@
 local root_spec = {
-  "pyproject.toml",
-  "setup.py",
-  "setup.cfg",
-  "requirements.txt",
-  "Pipfile",
-  "pyrightconfig.json",
+  "lsp",
+  {
+    "pyproject.toml",
+    "setup.py",
+    "setup.cfg",
+    "requirements.txt",
+    "Pipfile",
+    "pyrightconfig.json",
+  },
 }
 
 vim.list_extend(root_spec, vim.g.root_spec)
