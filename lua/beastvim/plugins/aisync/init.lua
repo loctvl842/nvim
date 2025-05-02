@@ -7,7 +7,7 @@
 
 return {
   { import = "beastvim.plugins.aisync.copilot", enabled = true },
-  { import = "beastvim.plugins.aisync.codeium", enabled = true },
+  { import = "beastvim.plugins.aisync.codeium", enabled = false },
   { import = "beastvim.plugins.aisync.supermaven", enabled = true },
   {
     "saghen/blink.cmp",
