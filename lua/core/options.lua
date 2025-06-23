@@ -3,6 +3,11 @@ vim.g.loaded_netrwPlugin = 1
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+if vim.g.vscode then
+  vim.o.cmdheight = 1
+  return
+end
+
 vim.g.autoformat = true
 
 -- if the completion engine supports the AI source,

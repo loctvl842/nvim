@@ -4,7 +4,7 @@ return {
   -- LSP Configuration
 
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     cmd = "Mason",
     keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
     build = ":MasonUpdate",
@@ -46,8 +46,8 @@ return {
     branch = "master",
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     dependencies = {
-      "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
+      "mason-org/mason.nvim",
+      { "mason-org/mason-lspconfig.nvim", config = function() end },
       "someone-stole-my-name/yaml-companion.nvim",
       "b0o/schemastore.nvim",
     },
@@ -215,10 +215,6 @@ return {
 
       -- merge configuration for all language servers
       local servers = opts.servers
-      -- local servers = vim.tbl_deep_extend("force", opts.servers, require("config.lsp.servers").servers)
-      -- opts.setup = vim.tbl_deep_extend("force", opts.setup, require("config.lsp.servers").setup)
-
-      -- local servers = opts.servers
       local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
       local has_blink, blink = pcall(require, "blink.cmp")
       local capabilities = vim.tbl_deep_extend(
@@ -230,10 +226,24 @@ return {
         opts.capabilities or {}
       )
 
-      local function setup(server)
+      -- get all the servers that are available through mason-lspconfig
+      local have_mason, mlsp = pcall(require, "mason-lspconfig")
+      local all_mslp_servers = {}
+      if have_mason and vim.fn.has("nvim-0.11") == 1 then
+        all_mslp_servers = vim.tbl_keys(require("mason-lspconfig").get_mappings().lspconfig_to_package)
+      elseif have_mason then
+        all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
+      end
+
+      local exclude_automatic_enable = {} ---@type string[]
+
+      local function configure(server)
         local server_opts = vim.tbl_deep_extend("force", {
           capabilities = vim.deepcopy(capabilities),
         }, servers[server] or {})
+        if server_opts.enabled == false then
+          return
+        end
 
         if opts.setup[server] then
           if opts.setup[server](server, server_opts) then
@@ -244,14 +254,14 @@ return {
             return
           end
         end
-        require("lspconfig")[server].setup(server_opts)
-      end
+        vim.lsp.config(server, server_opts)
 
-      -- get all the servers that are available through mason-lspconfig
-      local have_mason, mlsp = pcall(require, "mason-lspconfig")
-      local all_mslp_servers = {}
-      if have_mason then
-        all_mslp_servers = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
+        -- manually enable if mason=false or if this is a server that cannot be installed with mason-lspconfig
+        if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
+          vim.lsp.enable(server)
+          return true
+        end
+        return false
       end
 
       local ensure_installed = {} ---@type string[]
@@ -260,8 +270,8 @@ return {
           server_opts = server_opts == true and {} or server_opts
           if server_opts.enabled ~= false then
             -- run manual setup if mason=false or if this is a server that cannot be installed with mason-lspconfig
-            if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
-              setup(server)
+            if configure(server) then
+              exclude_automatic_enable[#exclude_automatic_enable + 1] = server
             else
               ensure_installed[#ensure_installed + 1] = server
             end
@@ -270,14 +280,19 @@ return {
       end
 
       if have_mason then
-        mlsp.setup({
+        local setup_config = {
           ensure_installed = vim.tbl_deep_extend(
             "force",
             ensure_installed,
             CoreUtil.opts("mason-lspconfig.nvim").ensure_installed or {}
           ),
-          handlers = { setup },
-        })
+        }
+
+        setup_config.automatic_enable = {
+          exclude = exclude_automatic_enable,
+        }
+
+        mlsp.setup(setup_config)
       end
 
       if CoreUtil.lsp.is_enabled("denols") and CoreUtil.lsp.is_enabled("vtsls") then

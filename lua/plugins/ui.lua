@@ -134,7 +134,7 @@ return {
           lualine_y = { cpn.macro(), cpn.space() },
           lualine_z = {
             cpn.dia(),
-            -- cpn.lsp(),
+            cpn.lsp(),
           },
         },
         inactive_sections = {

@@ -135,6 +135,7 @@ return {
       { "<leader>fB", function() Snacks.picker.buffers({ hidden = true, nofile = true, layout = default }) end, desc = "Buffers (all)" },
       { "<leader>fc", CoreUtil.pick.config_files({ layout = default }), desc = "Find Config File" },
       { "<leader>ff", CoreUtil.pick("files", { layout = default }), desc = "Find Files (Root Dir)" },
+      { "<leader>pf", CoreUtil.pick("files", { layout = default }), desc = "Find Files (Root Dir)" },
 
       { "<leader>fF", CoreUtil.pick("files", { root = false, layout = default }), desc = "Find Files (cwd)" },
       { "<leader>fg", function() Snacks.picker.git_files({ layout = default }) end, desc = "Find Files (git-files)" },

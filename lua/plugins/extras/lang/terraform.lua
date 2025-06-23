@@ -13,7 +13,7 @@ return {
   },
   -- ensure terraform tools are installed
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     opts = { ensure_installed = { "tflint" } },
   },
   {

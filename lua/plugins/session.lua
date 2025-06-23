@@ -48,13 +48,13 @@ return {
         discover,
         desc = "Discover Projects",
       },
-      {
-        "<leader>pf",
-        function()
-          require("telescope.builtin").find_files({ hidden = true })
-        end,
-        desc = "Discover Files",
-      },
+      -- {
+      --   "<leader>pf",
+      --   function()
+      --     require("telescope.builtin").find_files({ hidden = true })
+      --   end,
+      --   desc = "Discover Files",
+      -- },
     },
     opts = {
       projects = { -- define project roots

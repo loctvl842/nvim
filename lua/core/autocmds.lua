@@ -6,6 +6,10 @@ function augroup(name)
   return vim.api.nvim_create_augroup("user_" .. name, { clear = true })
 end
 
+if vim.g.vscode then
+  return
+end
+
 -- Highlight on yank
 vim.api.nvim_create_autocmd({ "TextYankPost" }, {
   group = augroup("highlight_yank"),

@@ -11,6 +11,11 @@ if not vim.uv.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(vim.env.LAZY or lazypath)
 
+-- Handle controlling plugin enablement within vscode
+if vim.g.vscode then
+  require("core.vscode")
+end
+
 -- load lazy
 require("lazy").setup({
   spec = {
@@ -56,3 +61,5 @@ require("lazy").setup({
     },
   },
 })
+
+vim.o.verbose = 0

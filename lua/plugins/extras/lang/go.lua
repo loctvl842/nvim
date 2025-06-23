@@ -24,9 +24,9 @@ return {
                 compositeLiteralFields = false,
                 compositeLiteralTypes = false,
                 constantValues = false,
-                functionTypeParameters = true,
+                functionTypeParameters = false,
                 parameterNames = true,
-                rangeVariableTypes = false,
+                rangeVariableTypes = true,
               },
               analyses = {
                 fieldalignment = true,
@@ -69,7 +69,7 @@ return {
 
   -- Ensure Go tools are installed
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     opts = { ensure_installed = { "goimports", "gofumpt" } },
   },
   {
@@ -86,7 +86,7 @@ return {
     optional = true,
     dependencies = {
       {
-        "williamboman/mason.nvim",
+        "mason-org/mason.nvim",
         opts = { ensure_installed = { "delve" } },
       },
       {

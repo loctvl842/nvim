@@ -5,6 +5,9 @@ _G.CoreUtil = require("util")
 vim.api.nvim_create_autocmd("User", {
   pattern = "VeryLazy",
   callback = function()
+    if vim.g.vscode then
+      return
+    end
     CoreUtil.load("autocmds")
     CoreUtil.load("keymaps")
 

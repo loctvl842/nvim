@@ -201,15 +201,37 @@ M.components.modes = function()
   return {
     "mode",
     color = function()
-      local current_mode = vim.api.nvim_get_mode().mode
-      local current_mode_color = modecolor[current_mode] or colors.blue -- fallback to blue if mode not found
+      -- Protected call to get the current mode
+      local ok, mode_info = pcall(vim.api.nvim_get_mode)
+      if not ok then
+        return { bg = colors.blue, fg = colors.mantle, gui = "bold" }
+      end
+
+      local current_mode = mode_info.mode
+
+      -- Ensure we have valid colors
+      if not colors or not colors.mantle then
+        return { bg = "#89b4fa", fg = "#1e1e2e", gui = "bold" } -- Fallback hardcoded colors
+      end
+
+      -- Get mode color with validation
+      local current_mode_color = modecolor[current_mode]
+      if not current_mode_color then
+        -- vim.schedule(function()
+        --   vim.notify(
+        --     string.format("lualine: Unrecognized mode '%s', falling back to default", current_mode),
+        --     vim.log.levels.DEBUG
+        --   )
+        -- end)
+        current_mode_color = colors.blue
+      end
+
       return {
         bg = current_mode_color,
         fg = colors.mantle,
         gui = "bold",
       }
     end,
-    -- separator = { left = "", right = "" },
     separator = M.config.separator_icon,
     fmt = trunc(80, 12, nil, true),
   }

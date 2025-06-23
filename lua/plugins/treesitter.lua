@@ -15,10 +15,17 @@ return {
       require("nvim-treesitter.query_predicates")
     end,
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
+    keys = {
+      { "<c-space>", desc = "Increment Selection" },
+      { "<bs>", desc = "Decrement Selection", mode = "x" },
+    },
     opts_extend = { "ensure_installed" },
     ---@type TSConfig
     ---@diagnostic disable-next-line: missing-fields
     opts = {
+      highlight = { enable = true },
+      -- indent = { enable = true, disable = { "yaml", "python", "html", "ruby" } },
+      indent = { enable = true },
       ensure_installed = {
         "bash",
         "cmake",
@@ -39,6 +46,7 @@ return {
         "query",
         "regex",
         "ruby",
+        "toml",
         "tsx",
         "typescript",
         "terraform",
@@ -49,8 +57,6 @@ return {
         "graphql",
         "capnp",
       },
-      highlight = { enable = true },
-      indent = { enable = true, disable = { "yaml", "python", "html", "ruby" } },
       incremental_selection = {
         enable = true,
         keymaps = {
