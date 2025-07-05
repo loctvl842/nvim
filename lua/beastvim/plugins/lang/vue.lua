@@ -20,9 +20,8 @@ return {
             format = {
               enabled = false,
             },
-          }
+          },
         },
-        vtsls = {},
       },
     },
   },

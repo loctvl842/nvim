@@ -19,9 +19,6 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        ts_ls = {
-          enabled = false,
-        },
         vtsls = {
           opts = {
             -- explicitly add default filetypes, so that we can extend
@@ -114,7 +111,11 @@ return {
               },
             },
           },
+          keys = {
+            { "<leader>lo", Util.lsp.action["source.organizeImports"], desc = "Organize Imports" },
+          },
         },
+        eslint = {},
       },
     },
   },
