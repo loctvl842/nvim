@@ -7,9 +7,21 @@ NEOVIM_INSTALL_DIR="$HOME/.config/nvim/neovim"
 # Fetch Neovim releases using curl and parse JSON with jq
 RELEASES=$(curl -s "https://api.github.com/repos/$NEOVIM_REPO/releases" | jq -r '.[].tag_name')
 
-# Display releases using fzf for interactive selection
-echo "Select a Neovim release:"
-SELECTED_RELEASE=$(echo "$RELEASES" | fzf --reverse)
+# Fallback if API returns nothing (rate limited or error)
+if [ -z "$RELEASES" ]; then
+    echo "⚠️ Failed to fetch releases (possibly rate-limited). Falling back to 'stable'..."
+    SELECTED_RELEASE="stable"
+else
+    # Display releases using fzf for interactive selection
+    echo "Select a Neovim release:"
+    SELECTED_RELEASE=$(echo "$RELEASES" | fzf --reverse)
+
+    # If user cancels fzf, fallback to stable
+    if [ -z "$SELECTED_RELEASE" ]; then
+        echo "⚠️ No selection made. Falling back to 'stable'..."
+        SELECTED_RELEASE="stable"
+    fi
+fi
 
 # Fetch the actual commit SHA associated with the selected release tag
 # This gets the actual release commit, not just the branch it was created from
