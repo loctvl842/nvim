@@ -21,6 +21,13 @@ Before setting up this Neovim configuration, ensure that the following dependenc
 - cmake
 - jq
 
+## Tools
+
+Image Previews for pickers
+
+- viu (for MacOS)
+- ueberzug (for Linux)
+
 ## Installation
 
 Running the following script if you want to install Neovim at a specific version:
