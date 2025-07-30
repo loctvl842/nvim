@@ -34,8 +34,9 @@ function M.get()
     { "K", vim.lsp.buf.hover, desc = "Hover" },
     { "<c-k>", vim.lsp.buf.signature_help, mode = "i", desc = "Signature Help" },
     { "gl", vim.diagnostic.open_float, desc = "Show diagnostics" },
-    { "[d", vim.diagnostic.goto_prev, desc = "Prev Diagnostic" },
-    { "]d", vim.diagnostic.goto_next, desc = "Next Diagnostic" },
+    -- stylua: ignore
+    { "[d", function() vim.diagnostic.jump({count=-1, float=true}) end, desc = "Prev Diagnostic" },
+    { "]d", function() vim.diagnostic.jump({count=1, float=true}) end, desc = "Next Diagnostic" },
     { "<leader>lq", "<cmd>lua vim.diagnostic.setloclist()<CR>", desc = "Quickfix" },
   }
 

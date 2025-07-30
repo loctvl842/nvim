@@ -66,6 +66,8 @@ return {
   -- Show context of the current function
   {
     "nvim-treesitter/nvim-treesitter-context",
+    -- This commit is for fzf-lua 0.7.1
+    commit = "6daca3ad780f045550b820f262002f35175a6c04",
     event = "VeryLazy",
     enabled = true,
     opts = { mode = "cursor", max_lines = 1, zindex = 20 },

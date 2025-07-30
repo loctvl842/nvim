@@ -149,7 +149,6 @@ return {
         enabled = true,
         keymap = {
           ["<CR>"] = { "fallback" },
-          preset = "enter",
           ["<C-y>"] = { "select_and_accept" },
         }, -- Inherits from top level `keymap` config when not set
         ---@type function|blink.cmp.CmdlineSourceConfigPartial

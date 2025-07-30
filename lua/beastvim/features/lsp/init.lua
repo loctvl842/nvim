@@ -115,7 +115,7 @@ function M.setup(opts)
     lspconfig[server].setup(server_opts)
   end
 
-  local available = vim.tbl_keys(require("mason-lspconfig.mappings.server").lspconfig_to_package)
+  local available = require("mason-lspconfig").get_available_servers()
 
   local ensure_installed = {}
   for server, server_opts in pairs(servers) do
@@ -130,8 +130,11 @@ function M.setup(opts)
     end
   end
 
-  require("mason-lspconfig").setup({ ensure_installed = ensure_installed })
-  require("mason-lspconfig").setup_handlers({ setup })
+  require("mason-lspconfig").setup({
+    ensure_installed = ensure_installed,
+    automatic_enable = true,
+    handlers = { setup },
+  })
 end
 
 return M
