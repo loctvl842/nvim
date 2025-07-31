@@ -101,7 +101,6 @@ function M.setup(opts)
       -- If root_dir is string or list of strings
       local lsp_utils = require("lspconfig/util")
       if type(server_opts.root_dir) == "string" then
-        print("vaicalon", server_opts.root_dir)
         server_opts.root_dir = lsp_utils.root_pattern(server_opts.root_dir)
       end
       if type(server_opts.root_dir) == "table" then
@@ -112,7 +111,14 @@ function M.setup(opts)
       server_opts.root_dir = nil
     end
 
-    lspconfig[server].setup(server_opts)
+    local nvim_version = vim.version()
+    local is_nvim_011_or_newer = nvim_version.major > 0 or (nvim_version.major == 0 and nvim_version.minor >= 11)
+    if is_nvim_011_or_newer then
+      vim.lsp.config(server, server_opts)
+      vim.lsp.enable(server)
+    else
+      lspconfig[server].setup(server_opts)
+    end
   end
 
   local available = require("mason-lspconfig").get_available_servers()
@@ -121,11 +127,11 @@ function M.setup(opts)
   for server, server_opts in pairs(servers) do
     if server_opts then
       if server_opts.enabled ~= false then
-        if not vim.tbl_contains(available, server) then
-          setup(server)
-        else
+        if vim.tbl_contains(available, server) then
           ensure_installed[#ensure_installed + 1] = server
         end
+        setup(server)
+      else
       end
     end
   end
@@ -133,7 +139,6 @@ function M.setup(opts)
   require("mason-lspconfig").setup({
     ensure_installed = ensure_installed,
     automatic_enable = true,
-    handlers = { setup },
   })
 end
 

@@ -24,6 +24,7 @@ return {
             -- explicitly add default filetypes, so that we can extend
             -- them in related extras
             filetypes = {
+              "vue",
               "javascript",
               "javascriptreact",
               "javascript.jsx",
