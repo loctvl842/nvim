@@ -1,5 +1,29 @@
 # Changelog
 
+## [3.0.0](https://github.com/loctvl842/nvim/compare/v2.3.0...v3.0.0) (2025-08-03)
+
+
+### ⚠ BREAKING CHANGES
+
+* migrate from nvim-lspconfig to native LSP configuration
+* migrate from nvim-lspconfig to native LSP configuration
+
+### Features
+
+* **editor:** Enhance UI ([6f6d774](https://github.com/loctvl842/nvim/commit/6f6d774ebe4b1a16b4a307fc912343881112e7b8))
+* **install-nvim.sh:** select build type first ([47fb88f](https://github.com/loctvl842/nvim/commit/47fb88f9a35d861e75424097542c65fb80b25833))
+* **keymaps:** Add ctrl+tab to switch buffers ([861d3f5](https://github.com/loctvl842/nvim/commit/861d3f5784f7a81c86ec601ab7b7e9623f8824a4))
+* migrate from nvim-lspconfig to native LSP configuration ([58d019f](https://github.com/loctvl842/nvim/commit/58d019f19e7c174ed8f628c9716ee68ff85d5f55))
+* migrate from nvim-lspconfig to native LSP configuration ([c1ba1c2](https://github.com/loctvl842/nvim/commit/c1ba1c2adc237edcd4f14cbb78b409686d745c82))
+
+
+### Bug Fixes
+
+* add trouble ([7ebdc54](https://github.com/loctvl842/nvim/commit/7ebdc54317eac0f2a4056cdc99aba8947b810a18))
+* **colorscheme - Switch:** Upgrade devicons ([2f44c94](https://github.com/loctvl842/nvim/commit/2f44c946a30773b3d395f0593d8a6320d31dbcf6))
+* **lsp - document_highlight:** no need to config ([daf53b5](https://github.com/loctvl842/nvim/commit/daf53b56b22dd371f92f480a8fcee9e3fa1fd49e))
+* **lsp:** cannot override root_pattern ([7f4d3f9](https://github.com/loctvl842/nvim/commit/7f4d3f90bc68734ecebd2ce00cbcc9ae0f3230f1))
+
 ## [2.3.0](https://github.com/loctvl842/nvim/compare/v2.2.1...v2.3.0) (2024-11-29)
 
 
