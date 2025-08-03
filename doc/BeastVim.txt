@@ -1,11 +1,12 @@
-*BeastVim.txt*        For Neovim >= 0.8.0        Last change: 2024 November 29
+*BeastVim.txt*         For Neovim >= 0.8.0         Last change: 2025 August 03
 
 ==============================================================================
 Table of Contents                                 *BeastVim-table-of-contents*
 
 1. BeastVim                                                |BeastVim-beastvim|
-  - Installation                              |BeastVim-beastvim-installation|
   - Prerequisites                            |BeastVim-beastvim-prerequisites|
+  - Tools                                            |BeastVim-beastvim-tools|
+  - Installation                              |BeastVim-beastvim-installation|
 2. Links                                                      |BeastVim-links|
 
 ==============================================================================
@@ -14,22 +15,12 @@ Table of Contents                                 *BeastVim-table-of-contents*
 _My Beast_
 
 
-  **Neovim version:** Requires **v0.9.5** or higher
+  **Neovim version:** Requires **v0.11.0** or higher
 
   **Warning:** This configuration is for personal use and evolves frequently. It
   references a lot from LazyVim <https://www.lazyvim.org/>, which is a better
   option for those starting out. Proceed with caution if you’re looking for a
   more stable setup.
-
-INSTALLATION                                  *BeastVim-beastvim-installation*
-
-Running the following script if you want to install Neovim at a specific
-version:
-
->sh
-    ~/.config/nvim/install-nvim.sh
-<
-
 
 PREREQUISITES                                *BeastVim-beastvim-prerequisites*
 
@@ -41,11 +32,26 @@ dependencies are installed on your system:
 - unzip <https://linux.die.net/man/1/unzip> (Required for installing language packs)
 - npm (node) <https://www.npmjs.com/get-npm>
 - pass <https://www.passwordstore.org/>
+- fzf
+- cmake
+- jq
 
-You can install these dependencies on Arch Linux using the following command:
+
+TOOLS                                                *BeastVim-beastvim-tools*
+
+Image Previews for pickers
+
+- viu (for MacOS)
+- ueberzug (for Linux)
+
+
+INSTALLATION                                  *BeastVim-beastvim-installation*
+
+Running the following script if you want to install Neovim at a specific
+version:
 
 >sh
-    sudo pacman -S ripgrep xclip unzip npm pass
+    ~/.config/nvim/install-nvim.sh
 <
 
 
