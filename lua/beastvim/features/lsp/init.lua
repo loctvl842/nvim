@@ -57,7 +57,7 @@ function M.setup(opts)
       if mason_bin then
         server_config.cmd[1] = mason_bin
       else
-        Util.warn("Could not find basedpyright via Mason")
+        Util.warn(string.format("LSP server %s not found", server_name))
       end
     end
     vim.lsp.config(server_name, server_config)
