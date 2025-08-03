@@ -48,31 +48,31 @@ end
 
 ---Error notification
 ---@param msg string
----@param opts? NotifyOpts
+---@param opts? NotifyOptions
 function M.error(msg, opts)
   M.notify(msg, "ERROR", opts)
 end
 
 ---Warn notification
 ---@param msg string
----@param opts? NotifyOpts
+---@param opts? NotifyOptions
 function M.warn(msg, opts)
   M.notify(msg, "WARN", opts)
 end
 
 ---Info notification
 ---@param msg string
----@param opts? NotifyOpts
+---@param opts? NotifyOptions
 function M.info(msg, opts)
   M.notify(msg, "INFO", opts)
 end
 
----@alias NotifyOpts {lang?:string, title?:string, level?:number, once?:boolean, stacktrace?:boolean, stacklevel?:number}
+---@alias NotifyOptions {lang?:string, title?:string, level?:number, once?:boolean, stacktrace?:boolean, stacklevel?:number}
 ---
 ---A Notifier
 --- @param msg string
 --- @param level "DEBUG" |"INFO" | "WARN" | "ERROR" | number
---- @param opts? NotifyOpts
+--- @param opts? NotifyOptions
 function M.notify(msg, level, opts)
   opts = opts or {}
   level = vim.log.levels[level:upper()]

@@ -67,7 +67,7 @@ return {
             {
               "gD",
               function()
-                local params = vim.lsp.util.make_position_params()
+                local params = vim.lsp.util.make_position_params(0, 'utf-8')
                 Util.lsp.execute({
                   command = "typescript.goToSourceDefinition",
                   arguments = { params.textDocument.uri, params.position },
