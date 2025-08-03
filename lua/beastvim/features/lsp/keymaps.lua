@@ -1,12 +1,9 @@
 ---@class beastvim.features.lsp.keymaps
-local M = setmetatable({}, {
-  __call = function(m, ...)
-    return m.attach(...)
-  end,
-})
+local M = {}
 
 ---@type LazyKeysLspSpec[]|nil
 M._keys = nil
+M._servers = nil
 
 ---@alias LazyKeysLspSpec LazyKeysSpec|{has?:string|string[], cond?:fun():boolean}
 ---@alias LazyKeysLsp LazyKeys|{has?:string|string[], cond?:fun():boolean}
@@ -36,6 +33,7 @@ function M.get()
     { "gl", vim.diagnostic.open_float, desc = "Show diagnostics" },
     -- stylua: ignore
     { "[d", function() vim.diagnostic.jump({count=-1, float=true}) end, desc = "Prev Diagnostic" },
+    -- stylua: ignore
     { "]d", function() vim.diagnostic.jump({count=1, float=true}) end, desc = "Next Diagnostic" },
     { "<leader>lq", "<cmd>lua vim.diagnostic.setloclist()<CR>", desc = "Quickfix" },
   }
@@ -48,11 +46,11 @@ function M.resolve(bufnr)
   local Keys = require("lazy.core.handler.keys")
   local spec = M.get()
 
-  ---@type LspOptions
-  local opts = Util.plugin.opts("nvim-lspconfig")
+  ---@type LspOpts
+  local opts = Util.plugin.opts("mason")
   local clients = Util.lsp.get_clients({ bufnr = bufnr })
   for _, client in ipairs(clients) do
-    local maps = opts.servers[client.name] and opts.servers[client.name].keys or {}
+    local maps = M._servers[client.name] and M._servers[client.name].keys or {}
     vim.list_extend(spec, maps)
   end
   return Keys.resolve(spec)
@@ -69,6 +67,11 @@ function M.attach(_, bufnr)
     opts.buffer = bufnr
     vim.keymap.set(keys.mode or "n", keys.lhs, keys.rhs, opts)
   end
+end
+
+function M.setup(servers)
+  M._servers = servers
+  Util.lsp.on_attach(M.attach)
 end
 
 return M

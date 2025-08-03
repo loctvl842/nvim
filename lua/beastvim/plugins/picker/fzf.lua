@@ -108,22 +108,22 @@ return {
         fzf_opts = {
           ["--no-scrollbar"] = true,
         },
-        -- defaults = {
-        --   -- formatter = "path.filename_first",
-        --   formatter = "path.dirname_first",
-        -- },
-        -- previewers = {
-        --   builtin = {
-        --     extensions = {
-        --       ["png"] = img_previewer,
-        --       ["jpg"] = img_previewer,
-        --       ["jpeg"] = img_previewer,
-        --       ["gif"] = img_previewer,
-        --       ["webp"] = img_previewer,
-        --     },
-        --     ueberzug_scaler = "fit_contain",
-        --   },
-        -- },
+        defaults = {
+          -- formatter = "path.filename_first",
+          formatter = "path.dirname_first",
+        },
+        previewers = {
+          builtin = {
+            extensions = {
+              ["png"] = img_previewer,
+              ["jpg"] = img_previewer,
+              ["jpeg"] = img_previewer,
+              ["gif"] = img_previewer,
+              ["webp"] = img_previewer,
+            },
+            ueberzug_scaler = "fit_contain",
+          },
+        },
         -- ui_select = ,
         winopts = {
           width = 0.8,
@@ -218,7 +218,7 @@ return {
   },
 
   {
-    "neovim/nvim-lspconfig",
+    "mason-org/mason.nvim",
     opts = function()
       local Keys = require("beastvim.features.lsp.keymaps").get()
       -- stylua: ignore

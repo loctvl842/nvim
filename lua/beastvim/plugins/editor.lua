@@ -1,5 +1,3 @@
-local Icons = require("beastvim.config").icons
-
 return {
   {
     "folke/which-key.nvim",
@@ -148,19 +146,19 @@ return {
     event = "LazyFile",
     opts = {
       signs = {
-        add = { text = Icons.gitsigns.add },
-        change = { text = Icons.gitsigns.change },
-        delete = { text = Icons.gitsigns.delete },
-        topdelhfe = { text = Icons.gitsigns.topdelete },
-        changedelete = { text = Icons.gitsigns.changedelete },
-        untracked = { text = Icons.gitsigns.untracked },
+        add = { text = Icon.gitsigns.add },
+        change = { text = Icon.gitsigns.change },
+        delete = { text = Icon.gitsigns.delete },
+        topdelhfe = { text = Icon.gitsigns.topdelete },
+        changedelete = { text = Icon.gitsigns.changedelete },
+        untracked = { text = Icon.gitsigns.untracked },
       },
       signs_staged = {
-        add = { text = Icons.gitsigns.add },
-        change = { text = Icons.gitsigns.change },
-        delete = { text = Icons.gitsigns.delete },
-        topdelete = { text = Icons.gitsigns.topdelete },
-        changedelete = { text = Icons.gitsigns.changedelete },
+        add = { text = Icon.gitsigns.add },
+        change = { text = Icon.gitsigns.change },
+        delete = { text = Icon.gitsigns.delete },
+        topdelete = { text = Icon.gitsigns.topdelete },
+        changedelete = { text = Icon.gitsigns.changedelete },
       },
       current_line_blame = true,
       current_line_blame_opts = {
@@ -210,6 +208,9 @@ return {
   -- Fold
   {
     "kevinhwang91/nvim-ufo",
+    -- Latest version doesn't work with Neovim 0.11.3 due to treesitter
+    -- https://github.com/kevinhwang91/nvim-ufo/issues/309
+    commit = "5b75cf5",
     event = "LazyFile",
     dependencies = { "kevinhwang91/promise-async", event = "BufReadPost" },
     opts = {
@@ -315,13 +316,5 @@ return {
         },
       })
     end,
-  },
-
-  {
-    "moll/vim-bbye",
-    event = { "BufRead" },
-    keys = {
-      { "<leader>d", "<cmd>Bdelete!<cr>", desc = "Close Buffer" },
-    },
   },
 }

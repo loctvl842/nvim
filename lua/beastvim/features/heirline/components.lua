@@ -1,4 +1,3 @@
-local Icons = require("beastvim.config").icons
 local conditions = require("heirline.conditions")
 local config = require("beastvim.features.heirline.config")
 
@@ -96,25 +95,25 @@ M.diagnostic = function(sep_type)
       hl = { bg = (config.float and sep_type == "fill") and "float_bg" or nil },
       {
         provider = function(self)
-          return Icons.diagnostics.error .. " " .. self.diagnostics[vim.diagnostic.severity.ERROR] .. " "
+          return Icon.diagnostics.error .. " " .. self.diagnostics[vim.diagnostic.severity.ERROR] .. " "
         end,
         hl = { fg = "red" },
       },
       {
         provider = function(self)
-          return Icons.diagnostics.warn .. " " .. self.diagnostics[vim.diagnostic.severity.WARN] .. " "
+          return Icon.diagnostics.warn .. " " .. self.diagnostics[vim.diagnostic.severity.WARN] .. " "
         end,
         hl = { fg = "yellow" },
       },
       {
         provider = function(self)
-          return Icons.diagnostics.info .. " " .. self.diagnostics[vim.diagnostic.severity.INFO] .. " "
+          return Icon.diagnostics.info .. " " .. self.diagnostics[vim.diagnostic.severity.INFO] .. " "
         end,
         hl = { fg = "blue" },
       },
       {
         provider = function(self)
-          return Icons.diagnostics.hint .. " " .. self.diagnostics[vim.diagnostic.severity.HINT]
+          return Icon.diagnostics.hint .. " " .. self.diagnostics[vim.diagnostic.severity.HINT]
         end,
         hl = { fg = "green" },
       },
@@ -150,11 +149,11 @@ M.aisync = function(sources, sep_type)
         local s = status(source)
         if s then
           local colors = {
-            ok = Icons.colors.brain[source],
+            ok = Icon.colors.brain[source],
             pending = Util.theme.highlight("Whitespace").fg,
             error = Util.theme.highlight("DiagnosticError").fg,
           }
-          self.text = { text = Icons.brain[source], color = colors[s] }
+          self.text = { text = Icon.brain[source], color = colors[s] }
         end
       end,
       {

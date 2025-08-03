@@ -1,22 +1,35 @@
-local Icons = require("beastvim.config").icons
-
 return {
   {
-    "neovim/nvim-lspconfig",
-    branch = "master",
+    "mason-org/mason.nvim",
+    cmd = "Mason",
+    build = ":MasonUpdate",
     event = "LazyFile",
-    dependencies = {
-      "williamboman/mason.nvim",
-      "williamboman/mason-lspconfig.nvim",
-    },
-    ---@type LspOptions
+    opts_extend = { "ensure_installed", "lsp" },
     opts = {
+      ensure_installed = {
+        "stylua",
+        "luacheck",
+        "lua-language-server",
+      },
       servers = {
-        html = {},
-        lua_ls = {
-          opts = {
+        -- Configuration for each LSP server (pass to `vim.lsp.config`)
+        ["lua-language-server"] = {
+          -- enabled
+          -- keys
+          config = {
+            cmd = { "lua-language-server" },
+            filetypes = { "lua" },
+            root_markers = { "lazy-lock.json", "stylua.toml", ".luacheckrc" },
             settings = {
               Lua = {
+                runtime = {
+                  -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+                  version = "LuaJIT",
+                },
+                diagnostics = {
+                  -- Get the language server to recognize the `vim` global
+                  globals = { "vim", "require" },
+                },
                 workspace = {
                   checkThirdParty = false,
                 },
@@ -42,58 +55,21 @@ return {
           },
         },
       },
+      -- Global capabilities for all LSP servers
       capabilities = {
         textDocument = {
           foldingRange = { dynamicRegistration = false, lineFoldingOnly = true },
-          completion = {
-            completionItem = {
-              documentationFormat = { "markdown", "plaintext" },
-              snippetSupport = true,
-              preselectSupport = true,
-              insertReplaceSupport = true,
-              labelDetailsSupport = true,
-              deprecatedSupport = true,
-              commitCharactersSupport = true,
-              tagSupport = { valueSet = { 1 } },
-              resolveSupport = {
-                properties = {
-                  "documentation",
-                  "detail",
-                  "additionalTextEdits",
-                },
-              },
-            },
-          },
         },
-      },
-      diagnostics = { enabled = true },
-      inlay_hints = { enabled = true },
-      codelens = { enabled = true },
-    },
-    config = function(_, opts)
-      require("beastvim.features.lsp").setup(opts)
-    end,
-  },
-
-  {
-    "williamboman/mason.nvim",
-    cmd = "Mason",
-    build = ":MasonUpdate",
-    opts_extend = { "ensure_installed" },
-    opts = {
-      ensure_installed = {
-        "stylua",
-        "luacheck",
       },
       ui = {
         icons = {
-          package_pending = Icons.mason.pending,
-          package_installed = Icons.mason.installed,
-          package_uninstalled = Icons.mason.uninstalled,
+          package_pending = Icon.mason.pending,
+          package_installed = Icon.mason.installed,
+          package_uninstalled = Icon.mason.uninstalled,
         },
       },
     },
-    ---@param opts MasonSettings | {ensure_installed: string[]}
+    ---@param opts MasonSettings | {ensure_installed: string[], lsp: table}
     config = function(_, opts)
       require("mason").setup(opts)
       local mr = require("mason-registry")
@@ -108,13 +84,14 @@ return {
       end)
 
       mr.refresh(function()
-        for _, tool in ipairs(opts.ensure_installed) do
+        for _, tool in ipairs(opts.ensure_installed or {}) do
           local p = mr.get_package(tool)
           if not p:is_installed() then
             p:install()
           end
         end
       end)
+      require("beastvim.features.lsp").setup(opts)
     end,
   },
 }

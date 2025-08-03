@@ -1,6 +1,3 @@
-local Icons = require("beastvim.config").icons
-local Logos = require("beastvim.config").logos
-
 return {
   -- UI components
   { "MunifTanjim/nui.nvim", verison = false, branch = "main", lazy = true },
@@ -13,7 +10,6 @@ return {
   {
     "rebelot/heirline.nvim",
     event = { "VimEnter", "BufReadPost", "BufNewFile" },
-    -- lazy = true,
     opts = function()
       local monokai_opts = Util.plugin.opts("monokai-pro.nvim")
       return {
@@ -116,7 +112,7 @@ return {
       include_buftypes = { "" },
       exclude_filetypes = { "gitcommit", "Trouble", "toggleterm" },
       show_modified = false,
-      kinds = Icons.kinds,
+      kinds = Icon.kinds,
       symbols = {
         ---Entry separator.
         ---
@@ -244,7 +240,7 @@ return {
     opts = {
       dashboard = {
         preset = {
-          header = Logos(),
+          header = require("beastvim.config.logos")(),
 
           -- stylua: ignore
           keys = {

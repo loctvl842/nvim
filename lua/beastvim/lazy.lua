@@ -18,7 +18,6 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
   spec = {
     { import = "beastvim.plugins" },
-    { import = "beastvim.features.fzf", enabled = true },
   },
   defaults = {
     lazy = true,

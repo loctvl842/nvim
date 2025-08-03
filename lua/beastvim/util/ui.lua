@@ -1,5 +1,3 @@
-local Icons = require("beastvim.config").icons
-
 ---@class beastvim.util.ui
 local M = {}
 
@@ -9,7 +7,7 @@ local M = {}
 --- @param opts? BorderIcons
 function M.borderchars(style, order, opts)
   order = order or "t-r-b-l-tl-tr-br-bl"
-  local border_icons = Icons.borders
+  local border_icons = Icon.borders
   --- @type BorderIcons
   local border = vim.tbl_deep_extend("force", border_icons[style or "empty"], opts or {})
 
@@ -45,14 +43,14 @@ function M.borderchars(style, order, opts)
   local direction = extract_directions()
   while direction do
     if mappings[direction] == nil then
-      Util.notify(string.format("Invalid direction '%s'", direction), "ERROR")
+      Util.error(string.format("Invalid direction '%s'", direction))
     end
     borderchars[#borderchars + 1] = border[mappings[direction]]
     direction = extract_directions()
   end
 
   if #borderchars ~= 8 then
-    Util.notify(string.format("Invalid order '%s'", order), "ERROR")
+    Util.error(string.format("Invalid order '%s'", order))
   end
 
   return borderchars

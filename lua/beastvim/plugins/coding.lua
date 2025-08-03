@@ -1,48 +1,6 @@
-local Icons = require("beastvim.config").icons
-
 return {
-  -- auto pairs
-  {
-    "echasnovski/mini.pairs",
-    event = "VeryLazy",
-    opts = {
-      modes = { insert = true, command = true, terminal = false },
-      -- skip autopair when next character is one of these
-      skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
-      -- skip autopair when the cursor is inside these treesitter nodes
-      skip_ts = { "string" },
-      -- skip autopair when next character is closing pair
-      -- and there are more closing pairs than opening pairs
-      skip_unbalanced = true,
-      -- better deal with markdown code blocks
-      markdown = true,
-    },
-  },
-
-  {
-    "folke/ts-comments.nvim",
-    event = "VeryLazy",
-    opts = {},
-  },
-
-  {
-    "L3MON4D3/LuaSnip",
-    dependencies = {
-      "rafamadriz/friendly-snippets",
-      config = function()
-        require("luasnip.loaders.from_vscode").lazy_load()
-        require("luasnip.loaders.from_snipmate").lazy_load()
-      end,
-    },
-    opts = {
-      history = true,
-      delete_check_events = "TextChanged",
-    },
-  },
-
   {
     "saghen/blink.cmp",
-    enabled = true,
     event = { "InsertEnter", "CmdlineEnter" },
     version = "*",
     opts_extend = {
@@ -76,7 +34,7 @@ return {
         -- set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
         -- adjusts spacing to ensure icons are aligned
         nerd_font_variant = "mono",
-        kind_icons = Icons.kinds,
+        kind_icons = Icon.kinds,
       },
       completion = {
         keyword = {
@@ -114,10 +72,10 @@ return {
               kind_icon = {
                 ellipsis = false,
                 text = function(ctx)
-                  local brain_kind = Icons.brain[ctx.source_name]
+                  local brain_kind = Icon.brain[ctx.source_name]
                   if brain_kind then
                     local hl_gr = Util.string.capitalize("BlinkCmpKind" .. Util.string.capitalize(ctx.source_name))
-                    vim.api.nvim_set_hl(0, hl_gr, { fg = Icons.colors.brain[ctx.source_name] })
+                    vim.api.nvim_set_hl(0, hl_gr, { fg = Icon.colors.brain[ctx.source_name] })
                     return brain_kind .. ctx.icon_gap
                   end
                   return ctx.kind_icon .. ctx.icon_gap
@@ -258,6 +216,45 @@ return {
         { path = "${3rd}/luv/library", words = { "vim%.uv" } },
         { path = "snacks.nvim", words = { "Snacks" } },
       },
+    },
+  },
+
+  -- auto pairs
+  {
+    "echasnovski/mini.pairs",
+    event = "VeryLazy",
+    opts = {
+      modes = { insert = true, command = true, terminal = false },
+      -- skip autopair when next character is one of these
+      skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
+      -- skip autopair when the cursor is inside these treesitter nodes
+      skip_ts = { "string" },
+      -- skip autopair when next character is closing pair
+      -- and there are more closing pairs than opening pairs
+      skip_unbalanced = true,
+      -- better deal with markdown code blocks
+      markdown = true,
+    },
+  },
+
+  {
+    "folke/ts-comments.nvim",
+    event = "VeryLazy",
+    opts = {},
+  },
+
+  {
+    "L3MON4D3/LuaSnip",
+    dependencies = {
+      "rafamadriz/friendly-snippets",
+      config = function()
+        require("luasnip.loaders.from_vscode").lazy_load()
+        require("luasnip.loaders.from_snipmate").lazy_load()
+      end,
+    },
+    opts = {
+      history = true,
+      delete_check_events = "TextChanged",
     },
   },
 }

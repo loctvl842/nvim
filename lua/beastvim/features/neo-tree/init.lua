@@ -1,5 +1,3 @@
-local Icons = require("beastvim.config").icons
-
 local opts = {
   close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
   popup_border_style = Util.ui.borderchars("thick", "tl-t-tr-r-br-b-bl-l"),
@@ -47,8 +45,8 @@ local opts = {
       default = " ",
     },
     modified = { symbol = "" },
-    git_status = { symbols = Icons.git },
-    diagnostics = { symbols = Icons.diagnostics },
+    git_status = { symbols = Icon.git },
+    diagnostics = { symbols = Icon.diagnostics },
   },
   window = {
     width = 40,

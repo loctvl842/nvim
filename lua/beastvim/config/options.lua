@@ -70,6 +70,7 @@ opt.spelllang = { "en", "vi" }
 -- use fold
 opt.foldlevelstart = 99
 opt.foldlevel = 99
+opt.foldmethod = "manual"
 opt.foldenable = true
 opt.foldcolumn = "1"
 opt.fillchars = {
@@ -80,7 +81,7 @@ opt.fillchars = {
   diff = "╱",
   eob = " ",
 }
-opt.formatexpr = "v:lua.require'lazyvim.util'.format.formatexpr()"
+opt.formatexpr = "v:lua.require'beastvim.util'.format.formatexpr()"
 opt.formatoptions = "jcroqlnt" -- tcqj
 opt.grepformat = "%f:%l:%c:%m"
 -- session

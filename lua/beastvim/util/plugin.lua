@@ -3,6 +3,11 @@ local M = {}
 
 M.lazy_file_events = { "BufReadPost", "BufNewFile", "BufWritePre" }
 
+---@param name string
+function M.get_plugin(name)
+  return require("lazy.core.config").spec.plugins[name]
+end
+
 function M.lazy_file()
   -- Add support for the LazyFile event
   local Event = require("lazy.core.handler.event")

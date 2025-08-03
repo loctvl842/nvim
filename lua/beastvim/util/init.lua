@@ -1,10 +1,11 @@
 local LazyUtil = require("lazy.core.util")
 
----@class Util: LazyUtilCore
+---@class Util: LazyUtilCore -- from lazy.nvim
 ---@field buffer beastvim.util.buffer
 ---@field cmp beastvim.util.cmp
 ---@field format beastvim.util.format
 ---@field lsp beastvim.util.lsp
+---@field mason beastvim.util.mason
 ---@field pick beastvim.util.pick
 ---@field plugin beastvim.util.plugin
 ---@field root beastvim.util.root
@@ -33,10 +34,45 @@ function M.augroup(group)
   return vim.api.nvim_create_augroup("BeastVim" .. "-" .. group, { clear = true })
 end
 
+---@param fn fun() The function to try
+---@param opts {msg?: string, on_error?: fun(err: string)}
+function M.try(fn, opts)
+  local ok, result = xpcall(fn, function(error)
+    local msg = (opts and opts.msg or "") .. (opts and opts.msg and "\n\n" or "") .. error
+    local handler = opts and opts.on_error or M.error
+    handler(msg)
+    return error
+  end)
+  return ok and result or nil
+end
+
+---Error notification
+---@param msg string
+---@param opts? NotifyOpts
+function M.error(msg, opts)
+  M.notify(msg, "ERROR", opts)
+end
+
+---Warn notification
+---@param msg string
+---@param opts? NotifyOpts
+function M.warn(msg, opts)
+  M.notify(msg, "WARN", opts)
+end
+
+---Info notification
+---@param msg string
+---@param opts? NotifyOpts
+function M.info(msg, opts)
+  M.notify(msg, "INFO", opts)
+end
+
+---@alias NotifyOpts {lang?:string, title?:string, level?:number, once?:boolean, stacktrace?:boolean, stacklevel?:number}
+---
 ---A Notifier
 --- @param msg string
 --- @param level "DEBUG" |"INFO" | "WARN" | "ERROR" | number
---- @param opts? table
+--- @param opts? NotifyOpts
 function M.notify(msg, level, opts)
   opts = opts or {}
   level = vim.log.levels[level:upper()]
@@ -52,60 +88,6 @@ function M.notify(msg, level, opts)
   vim.schedule(function()
     vim.notify(msg, level, nopts)
   end)
-end
-
-for _, level in ipairs({ "ERROR", "WARN", "INFO" }) do
-  M[level] = function(msg)
-    M.notify(msg, level, { title = "BeastVim", timeout = 1000 })
-  end
-end
-
----@param fn fun() The function to try
----@param opts {msg?: string, on_error?: fun(err: string)}
-function M.try(fn, opts)
-  local ok, result = xpcall(fn, function(error)
-    local msg = (opts and opts.msg or "") .. (opts and opts.msg and "\n\n" or "") .. error
-    local handler = opts and opts.on_error or M.error
-    handler(msg)
-    return error
-  end)
-  return ok and result or nil
-end
-
---- Reference: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/util/init.lua#L149
--- Wrapper around vim.keymap.set that will
--- not create a keymap if a lazy key handler exists.
--- It will also set `silent` to true by default.
-function M.safe_keymap_set(mode, lhs, rhs, opts)
-  local keys = require("lazy.core.handler").handlers.keys
-  ---@cast keys LazyKeysHandler
-  local modes = type(mode) == "string" and { mode } or mode
-
-  ---@param m string
-  modes = vim.tbl_filter(function(m)
-    return not (keys.have and keys:have(lhs, m))
-  end, modes)
-
-  -- do not create the keymap if a lazy keys handler exists
-  if #modes > 0 then
-    opts = opts or {}
-    opts.silent = opts.silent ~= false
-    if opts.remap and not vim.g.vscode then
-      ---@diagnostic disable-next-line: no-unknown
-      opts.remap = nil
-    end
-    vim.keymap.set(modes, lhs, rhs, opts)
-  end
-end
-
----@param fn fun()
-function M.on_very_lazy(fn)
-  vim.api.nvim_create_autocmd("User", {
-    pattern = "VeryLazy",
-    callback = function()
-      fn()
-    end,
-  })
 end
 
 ---@param feature string
@@ -151,14 +133,30 @@ function M.lazy_notify()
   timer:start(500, 0, replay)
 end
 
----@param name string
-function M.get_plugin(name)
-  return require("lazy.core.config").spec.plugins[name]
-end
+--- Reference: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/util/init.lua#L149
+-- Wrapper around vim.keymap.set that will
+-- not create a keymap if a lazy key handler exists.
+-- It will also set `silent` to true by default.
+function M.safe_keymap_set(mode, lhs, rhs, opts)
+  local keys = require("lazy.core.handler").handlers.keys
+  ---@cast keys LazyKeysHandler
+  local modes = type(mode) == "string" and { mode } or mode
 
----@param plugin string
-function M.has(plugin)
-  return M.get_plugin(plugin) ~= nil
+  ---@param m string
+  modes = vim.tbl_filter(function(m)
+    return not (keys.have and keys:have(lhs, m))
+  end, modes)
+
+  -- do not create the keymap if a lazy keys handler exists
+  if #modes > 0 then
+    opts = opts or {}
+    opts.silent = opts.silent ~= false
+    if opts.remap and not vim.g.vscode then
+      ---@diagnostic disable-next-line: no-unknown
+      opts.remap = nil
+    end
+    vim.keymap.set(modes, lhs, rhs, opts)
+  end
 end
 
 ---@generic T
@@ -176,26 +174,14 @@ function M.dedup(list)
   return ret
 end
 
---- Reference: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/util/init.lua#L250C1-L251C1
---- Gets a path to a package in the Mason registry.
---- Prefer this to `get_package`, since the package might not always be
---- available yet and trigger errors.
----@param pkg string
----@param path? string
----@param opts? { warn?: boolean }
-function M.get_pkg_path(pkg, path, opts)
-  pcall(require, "mason") -- make sure Mason is loaded. Will fail when generating docs
-  local root = vim.env.MASON or (vim.fn.stdpath("data") .. "/mason")
-  opts = opts or {}
-  opts.warn = opts.warn == nil and true or opts.warn
-  path = path or ""
-  local ret = root .. "/packages/" .. pkg .. "/" .. path
-  if opts.warn and not vim.loop.fs_stat(ret) and not require("lazy.core.config").headless() then
-    M.warn(
-      ("Mason package path not found for **%s**:\n- `%s`\nYou may need to force update the package."):format(pkg, path)
-    )
-  end
-  return ret
+---@param fn fun()
+function M.on_very_lazy(fn)
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "VeryLazy",
+    callback = function()
+      fn()
+    end,
+  })
 end
 
 --- This extends a deeply nested list with a key in a table

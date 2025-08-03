@@ -1,16 +1,8 @@
-local Icons = require("beastvim.config").icons
-
 ---@class LspDiagnosticsOptions
 ---@field enabled boolean
 
 ---@class beastvim.features.lsp.diagnostics
 local M = {}
-
-setmetatable(M, {
-  __call = function(m, ...)
-    return m.setup(...)
-  end,
-})
 
 local function on()
   M.enabled = true
@@ -32,10 +24,10 @@ local function on()
     },
     signs = {
       text = {
-        [vim.diagnostic.severity.ERROR] = Icons.diagnostics.error,
-        [vim.diagnostic.severity.WARN] = Icons.diagnostics.warn,
-        [vim.diagnostic.severity.HINT] = Icons.diagnostics.hint,
-        [vim.diagnostic.severity.INFO] = Icons.diagnostics.info,
+        [vim.diagnostic.severity.ERROR] = Icon.diagnostics.error,
+        [vim.diagnostic.severity.WARN] = Icon.diagnostics.warn,
+        [vim.diagnostic.severity.HINT] = Icon.diagnostics.hint,
+        [vim.diagnostic.severity.INFO] = Icon.diagnostics.info,
       },
     },
   })
@@ -51,8 +43,9 @@ local function off()
   })
 end
 
----@param opts LspDiagnosticsOptions
+---@param opts? LspDiagnosticsOptions
 function M.setup(opts)
+  opts = opts or {}
   M.toggle(opts.enabled)
 
   local map = Util.safe_keymap_set
