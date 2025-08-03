@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/loctvl842/nvim/compare/v3.0.0...v3.1.0) (2025-08-03)
+
+
+### Features
+
+* upgrade monokai-pro and fix type annotation consistency                                                                                                                                                           │ ([37f6f16](https://github.com/loctvl842/nvim/commit/37f6f167c51971dc07dbd9056e9dda172392e75d))
+
 ## [3.0.0](https://github.com/loctvl842/nvim/compare/v2.3.0...v3.0.0) (2025-08-03)
 
 
