@@ -13,7 +13,8 @@ return {
       },
       servers = {
         -- Configuration for each LSP server (pass to `vim.lsp.config`)
-        ["lua-language-server"] = {
+        -- Used `lua_ls` instead of `lua-language-server` to be compatible with lazydev.nvim
+        ["lua_ls"] = {
           -- enabled
           -- keys
           config = {
@@ -26,10 +27,10 @@ return {
                   -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
                   version = "LuaJIT",
                 },
-                diagnostics = {
-                  -- Get the language server to recognize the `vim` global
-                  globals = { "vim", "require" },
-                },
+                -- diagnostics = {
+                --   -- Get the language server to recognize the `vim` global
+                --   globals = { "vim", "require" },
+                -- },
                 workspace = {
                   checkThirdParty = false,
                 },

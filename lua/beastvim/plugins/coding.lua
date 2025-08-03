@@ -109,7 +109,6 @@ return {
           ["<CR>"] = { "fallback" },
           ["<C-y>"] = { "select_and_accept" },
         }, -- Inherits from top level `keymap` config when not set
-        ---@type function|blink.cmp.CmdlineSourceConfigPartial
         sources = function()
           local type = vim.fn.getcmdtype()
           -- Search forward and backward

@@ -317,4 +317,12 @@ return {
       })
     end,
   },
+
+  {
+    "folke/trouble.nvim",
+    event = "LazyFile",
+    keys = {
+      { "<leader>cs", false },
+    },
+  },
 }
