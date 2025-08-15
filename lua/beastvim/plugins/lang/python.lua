@@ -51,6 +51,30 @@ return {
                 },
               },
             },
+            on_attach = function(client, _)
+              -- `ruff_lsp` does not support hover as well as `pyright`
+              client.server_capabilities.hoverProvider = true
+            end,
+          },
+        },
+        ruff = {
+          config = {
+            cmd = { "ruff", "server" },
+            filetypes = { "python" },
+            root_markers = { "pyproject.toml", "ruff.toml", ".ruff.toml", ".git" },
+            cmd_env = { RUFF_TRACE = "messages" },
+            init_options = {
+              settings = {
+                logLevel = "error",
+              },
+            },
+          },
+          keys = {
+            {
+              "<leader>lo",
+              Util.lsp.action["source.organizeImports"],
+              desc = "Organize Imports",
+            },
           },
         },
       },

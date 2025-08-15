@@ -6,15 +6,8 @@
 ]]
 
 return {
+  -- FIXME: Broken when enabled=false
   { import = "beastvim.plugins.aisync.copilot", enabled = true },
   { import = "beastvim.plugins.aisync.codeium", enabled = false },
   { import = "beastvim.plugins.aisync.supermaven", enabled = true },
-  {
-    "saghen/blink.cmp",
-    opts = {
-      sources = {
-        compat = { "codeium", "copilot", "supermaven" },
-      },
-    },
-  },
 }

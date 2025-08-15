@@ -41,4 +41,11 @@ return {
       },
     },
   },
+
+  {
+    "saghen/blink.cmp",
+    opts = function(_, opts)
+      opts.sources.compat = vim.list_extend(opts.sources.compat or {}, { "supermaven" })
+    end,
+  },
 }

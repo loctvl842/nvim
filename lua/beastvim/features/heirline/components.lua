@@ -123,35 +123,49 @@ M.diagnostic = function(sep_type)
   }
 end
 
+---Status of the source
+---@param name string The name of the source
+---@return "idle"|"loading"|"completed"|"unconfigured"?
+local function aisync_status(name)
+  local sources = require("blink.cmp.sources.lib")
+  local blink_config = require("blink.cmp.config")
+  if sources.providers[name] == nil and blink_config.sources.providers[name] == nil then
+    return nil
+  end
+  local provider = sources.get_provider_by_id(name)
+
+  if provider and provider.list then
+    local list = provider.list or {}
+    if list.has_completed then
+      return "completed"
+    else
+      return "loading"
+    end
+  end
+  return "idle"
+end
+
 ---@param sep_type? HeirlineSeparatorType
 M.aisync = function(sources, sep_type)
   sep_type = sep_type or "fill"
-
-  local cmp_source = false
-  ---Status of the source
-  ---@param name string The name of the source
-  ---@return "ok"|"pending"|"error"?
-  local function status(name)
-    return "ok"
-  end
 
   local final = {}
 
   for i, source in ipairs(sources) do
     table.insert(final, {
       condition = function()
-        if status(source) then
+        if aisync_status(source) then
           return true
         end
         return false
       end,
       init = function(self)
-        local s = status(source)
+        local s = aisync_status(source)
         if s then
           local colors = {
-            ok = Icon.colors.brain[source],
-            pending = Util.theme.highlight("Whitespace").fg,
-            error = Util.theme.highlight("DiagnosticError").fg,
+            completed = Icon.colors.brain[source],
+            loading = Util.theme.highlight("LazyButton").fg,
+            idle = Util.theme.highlight("LazyButton").bg,
           }
           self.text = { text = Icon.brain[source], color = colors[s] }
         end
@@ -172,7 +186,7 @@ M.aisync = function(sources, sep_type)
 
   return {
     condition = function()
-      return Util.table.any(sources, status)
+      return Util.table.any(sources, aisync_status)
     end,
     M.space,
     M.sep_left(sep_type),

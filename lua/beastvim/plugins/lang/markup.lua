@@ -1,5 +1,10 @@
 return {
   {
+    "nvim-treesitter/nvim-treesitter",
+    opts = { ensure_installed = { "html", "css" } },
+  },
+
+  {
     "loctvl842/emmet-vim",
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     init = function()
