@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.1](https://github.com/loctvl842/nvim/compare/v3.1.0...v3.1.1) (2025-08-15)
+
+
+### Bug Fixes
+
+* improve aisync heirline component implementation ([cca5f1a](https://github.com/loctvl842/nvim/commit/cca5f1a69aed84dba03b19903b4e02812b19f0bc))
+
 ## [3.1.0](https://github.com/loctvl842/nvim/compare/v3.0.0...v3.1.0) (2025-08-03)
 
 
