@@ -210,7 +210,6 @@ return {
   {
     "stevearc/dressing.nvim",
     opts = function(_, opts)
-      ---@type TelescopeThemeOpts
       local theme_opts = { layout = "cursor" }
       opts.select = opts.select or {}
       opts.select.fzf_lua = Util.pick.theme(theme_opts)

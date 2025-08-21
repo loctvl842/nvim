@@ -69,7 +69,7 @@ function M.open(command, opts)
   M.picker.open(command, opts)
 end
 
----@param opts? beastvim.util.pick.ThemeOpts
+---@param opts? table<string,any>
 function M.theme(opts)
   if M.picker == nil then
     Util.warn("No picker set, use `Util.register` to set one")

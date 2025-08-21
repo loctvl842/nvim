@@ -5,4 +5,5 @@ return {
   { import = "beastvim.plugins.lang.typescript", enabled = true },
   { import = "beastvim.plugins.lang.vue", enabled = true },
   { import = "beastvim.plugins.lang.docker", enabled = true },
+  { import = "beastvim.plugins.lang.nginx", enabled = true },
 }
