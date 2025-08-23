@@ -10,6 +10,7 @@ return {
       lint.linters_by_ft = vim.tbl_deep_extend("force", lint.linters_by_ft or {}, {
         c = { "clangtidy", "cppcheck" },
         cpp = { "clangtidy", "cppcheck" },
+        h = {"clangtidy", "cppcheck"},
       })
 
       -- Hardening cppcheck (se installato via OS)
