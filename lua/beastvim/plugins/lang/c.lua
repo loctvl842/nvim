@@ -8,6 +8,7 @@ return {
     opts = function(_, opts)
       opts.ensure_installed =
         vim.list_extend(opts.ensure_installed or {}, { "clangd", "clang-format", "cpplint", "cppcheck" })
+
     end,
   },
   {
@@ -19,6 +20,7 @@ return {
             cmd = { "clangd" },
             filetypes = { "c", "cpp", "objc", "objcpp" },
             root_markers = { ".clangd", ".clang-tidy", ".clang-format", "compile_commands.json", "compile_flags.txt", ".git" },
+
           },
         },
       },

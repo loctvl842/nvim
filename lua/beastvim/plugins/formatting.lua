@@ -49,6 +49,8 @@ return {
           lua = { "stylua" },
           fish = { "fish_indent" },
           sh = { "shfmt" },
+          c = { "clang-format" },
+          cpp = { "clang-format" },
         },
         -- The options you set here will be merged with the builtin formatters.
         -- You can also define any custom formatters here.
