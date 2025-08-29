@@ -5,9 +5,20 @@
                                         -- Aisync --
 ]]
 
+local cond = function()
+  local disabled_folders = { "algorithms" }
+  local current_file = vim.fn.expand("%:p")
+
+  for _, folder in ipairs(disabled_folders) do
+    if current_file:find(folder) then
+      return false
+    end
+  end
+  return true
+end
+
 return {
-  -- FIXME: Broken when enabled=false
-  { import = "beastvim.plugins.aisync.copilot", enabled = true },
+  { import = "beastvim.plugins.aisync.copilot", cond = cond },
   { import = "beastvim.plugins.aisync.codeium", enabled = false },
-  { import = "beastvim.plugins.aisync.supermaven", enabled = true },
+  { import = "beastvim.plugins.aisync.supermaven", cond = cond },
 }
