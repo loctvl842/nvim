@@ -1,16 +1,13 @@
 local root_spec = {
-  "lsp",
-  {
-    "pyproject.toml",
-    "setup.py",
-    "setup.cfg",
-    "requirements.txt",
-    "Pipfile",
-    "pyrightconfig.json",
-  },
+  "pyproject.toml",
+  "setup.py",
+  "setup.cfg",
+  "requirements.txt",
+  "Pipfile",
+  "pyrightconfig.json",
 }
 
-vim.list_extend(root_spec, vim.g.root_spec)
+vim.list_extend(vim.g.root_spec, root_spec)
 vim.g.root_spec = root_spec
 
 return {
@@ -32,7 +29,7 @@ return {
           enabled = true,
           config = {
             cmd = { "basedpyright-langserver", "--stdio" },
-            filetypes = { "python" },
+            filetypes = { "python", "toml" },
             root_markers = {
               ".git",
               "pyproject.toml",
