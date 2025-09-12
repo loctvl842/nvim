@@ -40,6 +40,7 @@ opt.termguicolors = true -- set term gui colors (most terminals support this)
 opt.timeoutlen = 100 -- time to wait for a mapped sequence to complete (in milliseconds)
 -- opt.undofile = true                         -- enable persistent undo
 opt.updatetime = 500 -- faster completion (4000ms default)
+opt.fixendofline = true -- Always add newline at end of file
 opt.wildmode = "longest:full,full" -- Command-line completion mode
 opt.writebackup = false -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
 opt.expandtab = true -- convert tabs to spaces
