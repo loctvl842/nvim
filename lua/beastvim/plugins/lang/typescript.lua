@@ -1,7 +1,7 @@
 local root_spec = {
   "package*json",
 }
-vim.list_extend(root_spec, vim.g.root_spec)
+vim.list_extend(vim.g.root_spec, root_spec)
 vim.g.root_spec = root_spec
 
 return {
