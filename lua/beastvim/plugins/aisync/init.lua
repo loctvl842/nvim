@@ -6,6 +6,10 @@
 ]]
 
 local cond = function()
+  if vim.g.vscode then
+    -- Use VSCode's AI extensions
+    return false
+  end
   local disabled_folders = { "algorithms" }
   local current_file = vim.fn.expand("%:p")
 
