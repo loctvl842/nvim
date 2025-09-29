@@ -129,3 +129,12 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     vim.opt_local.softtabstop = 4
   end,
 })
+
+-- Set filetype to 'sh' for files containing '.env' in their name
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  group = Util.augroup("env_filetype"),
+  pattern = { "*.env*" },
+  callback = function()
+    vim.bo.filetype = "sh"
+  end,
+})
