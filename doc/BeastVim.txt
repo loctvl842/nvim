@@ -1,4 +1,4 @@
-*BeastVim.txt*        For Neovim >= 0.8.0       Last change: 2025 September 14
+*BeastVim.txt*        For Neovim >= 0.8.0       Last change: 2025 September 29
 
 ==============================================================================
 Table of Contents                                 *BeastVim-table-of-contents*
@@ -88,7 +88,7 @@ SETUP VSCODE-NEOVIM ~
 <
 
 
-2. **VSCode Settings** - Add to your `settings.json`
+2. **VSCode Settings** - Add to your `settings.json`:
 
 >json
     {
@@ -108,7 +108,7 @@ SETUP VSCODE-NEOVIM ~
 <
 
 
-3. **MacOSKey Repeat Fix**
+3. **MacOS Key Repeat Fix**
 
 >sh
     defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
@@ -153,8 +153,9 @@ VSCODE KEYMAPS ~
 ENABLED PLUGINS FOR VSCODE ~
 
 The VSCode integration automatically enables only compatible plugins: -
-**Core**lazy.nvim, snacks.nvim, plenary.nvim - **Text Editing**nvim-treesitter,
-nvim-ts-autotag - **UI Plugins**Disabled (VSCode handles the UI)
+**Core**: lazy.nvim, snacks.nvim, plenary.nvim - **Text Editing**:
+nvim-treesitter, nvim-ts-autotag - **UI Plugins**: Disabled (VSCode handles the
+UI)
 
 ==============================================================================
 2. Links                                                      *BeastVim-links*
