@@ -1,11 +1,10 @@
 local root_spec = {
-  "lsp",
+  -- "lsp",
   {
     "*.sln",
     "*.csproj",
     "omnisharp.json",
     "function.json",
-    ".git",
   },
 }
 

@@ -212,7 +212,8 @@ function M.get(opts)
   if opts and opts.normalize then
     return ret
   end
-  return Util.is_win() and ret:gsub("\\", "/") or ret
+  local x = Util.is_win() and ret:gsub("\\", "/") or ret
+  return x
 end
 
 return M
