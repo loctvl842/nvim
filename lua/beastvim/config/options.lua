@@ -3,7 +3,7 @@
 -- * the name of a detector function like `lsp` or `cwd`
 -- * a pattern or array of patterns like `.git` or `lua`.
 -- * a function with signature `function(buf) -> string|string[]`
-vim.g.root_spec = { { ".git", "lua" }, "cwd" }
+vim.g.root_spec = { "lsp", { ".git", "lua" }, "cwd" }
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
@@ -37,9 +37,10 @@ opt.splitright = true -- force all vertical splits to go to the right of current
 -- opt.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
 opt.swapfile = false -- creates a swapfile
 opt.termguicolors = true -- set term gui colors (most terminals support this)
-opt.timeoutlen = 100 -- time to wait for a mapped sequence to complete (in milliseconds)
+opt.timeoutlen = vim.g.vscode and 1000 or 100 -- Lower than default (1000) to quickly trigger which-key
 -- opt.undofile = true                         -- enable persistent undo
 opt.updatetime = 500 -- faster completion (4000ms default)
+opt.fixendofline = false -- Always add newline at end of file
 opt.wildmode = "longest:full,full" -- Command-line completion mode
 opt.writebackup = false -- if a file is being edited by another program (or was written to file while editing with another program), it is not allowed to be edited
 opt.expandtab = true -- convert tabs to spaces

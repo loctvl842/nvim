@@ -8,7 +8,7 @@ return {
         presets = { operators = false, motions = false },
       },
       delay = function(ctx)
-        return ctx.plugin and 0 or 100
+        return ctx.plugin and 0 or 50
       end,
       win = {
         padding = { 1, 2 }, -- extra window padding [top/bottom, right/left]
@@ -142,9 +142,10 @@ return {
   },
 
   {
-    "lewis6991/gitsigns.nvim",
+    "loctvl842/gitsigns.nvim",
     event = "LazyFile",
     opts = {
+      context_size = 3,
       signs = {
         add = { text = Icon.gitsigns.add },
         change = { text = Icon.gitsigns.change },

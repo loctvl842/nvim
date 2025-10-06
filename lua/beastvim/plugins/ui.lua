@@ -397,19 +397,35 @@ return {
     event = { "BufReadPost", "BufNewFile", "BufWritePre" },
     desc = "Highlight colors in your code. Also includes Tailwind CSS support.",
     opts = function()
-      local hi = require("mini.hipatterns")
       return {
         highlighters = {
-          -- Highlight standalone 'FIXME', 'HACK', 'TODO', 'NOTE'
           fixme = { pattern = "%f[%w]()FIXME()%f[%W]", group = "MiniHipatternsFixme" },
           hack = { pattern = "%f[%w]()HACK()%f[%W]", group = "MiniHipatternsHack" },
           todo = { pattern = "%f[%w]()TODO()%f[%W]", group = "MiniHipatternsTodo" },
           note = { pattern = "%f[%w]()NOTE()%f[%W]", group = "MiniHipatternsNote" },
           wip = { pattern = "%f[%w]()WIP()%f[%W]", group = "MiniHipatternsWip" },
-          -- Highlight hex color strings (`#rrggbb`) using that color
-          hex_color = hi.gen_highlighter.hex_color({ priority = 2000 }),
         },
       }
+    end,
+  },
+
+  -- Highlight hex color strings (`#rrggbb`), rgb, rgba, hsl using that color
+  {
+    "ImmanuelHaffner/pigmentor.nvim",
+    event = { "BufReadPost", "BufNewFile", "BufWritePre" },
+    config = function()
+      require("pigmentor").setup({
+        display = {
+          style = "highlight",
+          highlight = {
+            inverted = true,
+            padding = {
+              left = 0,
+              right = 0,
+            },
+          },
+        },
+      })
     end,
   },
 }
