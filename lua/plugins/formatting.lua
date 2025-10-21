@@ -75,8 +75,8 @@ return {
               "--stdin-file-path",
               "$FILENAME",
               "--indent-style=space",
-              "--line-width=120",
-              "--quote-style=single",
+              "--line-width=100",
+              "--javascript-formatter-quote-style=single",
             },
           },
           stylua = {

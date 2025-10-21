@@ -418,7 +418,8 @@ return {
     ---@module 'edgy'
     ---@param opts Edgy.Config
     opts = function(_, opts)
-      for _, pos in ipairs({ "top", "bottom", "left", "right" }) do
+      -- Exclude left and right for any ai terminals
+      for _, pos in ipairs({ "top", "bottom" }) do
         opts[pos] = opts[pos] or {}
         table.insert(opts[pos], {
           ft = "snacks_terminal",
