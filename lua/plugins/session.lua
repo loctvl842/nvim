@@ -1,5 +1,9 @@
+-- Use preserved session utilities from CoreUtil
+local session_utils = require("plugins.session-utils")
+
 local function history()
-  CoreUtil.session.save_session()
+  -- Use preserved session save functionality
+  session_utils.save_session()
   local timer = vim.uv.new_timer()
   timer:start(
     100,
@@ -11,7 +15,8 @@ local function history()
 end
 
 local function discover()
-  CoreUtil.session.save_session()
+  -- Use preserved session save functionality
+  session_utils.save_session()
   local timer = vim.uv.new_timer()
   timer:start(
     100,
@@ -65,7 +70,7 @@ return {
         "/etc/dotfiles",
       },
       picker = {
-        type = "snacks_picker_list",
+        type = "telescope", -- Use telescope for now, can change to snacks later
       },
       last_session_on_startup = false,
       dashboard_mode = true,
