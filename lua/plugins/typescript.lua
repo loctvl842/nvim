@@ -4,6 +4,16 @@
 return {
   -- Neotest configuration with custom adapters
   {
+    "marilari88/neotest-vitest",
+    event = "VeryLazy",
+    branch = "main",
+  },
+  {
+    "nvim-neotest/neotest-jest",
+    event = "VeryLazy",
+    branch = "main",
+  },
+  {
     "nvim-neotest/neotest",
     dependencies = {
       "marilari88/neotest-vitest",
@@ -184,6 +194,15 @@ return {
   {
     "mfussenegger/nvim-dap",
     optional = true,
+    dependencies = {
+      {
+        "mason-org/mason.nvim",
+        opts = function(_, opts)
+          opts.ensure_installed = opts.ensure_installed or {}
+          table.insert(opts.ensure_installed, "js-debug-adapter")
+        end,
+      },
+    },
     opts = function()
       local dap = require("dap")
       if not dap.adapters["pwa-node"] then

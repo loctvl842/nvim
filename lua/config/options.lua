@@ -10,6 +10,9 @@ vim.g.loaded_netrwPlugin = 1
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
+-- Set the default picker
+vim.g.lazyvim_picker = "snacks"
+
 if vim.g.vscode then
   vim.o.cmdheight = 1
   return
@@ -38,8 +41,8 @@ opt.cmdheight = 0 -- more space in the neovim command line for displaying messag
 opt.conceallevel = 0 -- Hide * markup for bold and italic, but not markers with substitutions
 opt.cursorline = true -- highlight the current line
 opt.fillchars = {
-  foldopen = "",
-  foldclose = "",
+  foldopen = "",
+  foldclose = "",
   fold = " ",
   foldsep = " ",
   diff = "╱",
@@ -128,3 +131,4 @@ vim.cmd([[set foldopen-=hor]]) -- disable open fold with `l`
 if vim.g.neovide then
   vim.g.neovide_scale_factor = 1
 end
+

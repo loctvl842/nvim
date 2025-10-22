@@ -1,69 +1,7 @@
 -- Snacks picker overrides - preserves custom configurations
 -- Custom layouts and keybindings for enhanced picker experience
-
----@type snacks.picker.layout.Config
-local default = {
-  layout = {
-    backdrop = false, -- No backdrop for a more integrated look
-    border = "top", -- No borders around the entire picker
-    width = 0.8, -- 80% of the screen width
-    height = 0.9, -- 90% of the screen height
-    title = "{title} {live} {flags}",
-
-    -- Box arrangement (vertical split with list on left, preview on right)
-    box = "horizontal",
-    {
-      box = "vertical",
-      {
-        win = "list", -- Results list
-        title = " Results ",
-        title_pos = "center",
-        border = "none", -- Rounded border just for the list
-      },
-      {
-        win = "input",
-        height = 1,
-        -- Add vertical padding on the top and bottom of the input
-        border = "vpad",
-      },
-    },
-    {
-      win = "preview", -- Preview window
-      title = "{preview:Preview}",
-      width = 0.5, -- 45% of layout width
-      border = "none",
-    },
-  },
-}
-
----@type snacks.picker.layout.Config
-local default_small = {
-  layout = {
-    backdrop = false, -- No backdrop for a more integrated look
-    border = "top", -- No borders around the entire picker
-    width = 0.5, -- 50% of the screen width
-    height = 0.4, -- 40% of the screen height
-    title = "{title} {live} {flags}",
-
-    -- Box arrangement (vertical split with list on left, preview on right)
-    box = "horizontal",
-    {
-      {
-        win = "input",
-        height = 1,
-        -- Add vertical padding on the top and bottom of the input
-        border = "vpad",
-      },
-      box = "vertical",
-      {
-        win = "list", -- Results list
-        title = " Results ",
-        title_pos = "center",
-        border = "none", -- Rounded border just for the list
-      },
-    },
-  },
-}
+local picker = require("util.picker")
+local default = picker.layout.default
 
 return {
   {
@@ -79,8 +17,25 @@ return {
                 "toggle_cwd",
                 mode = { "n", "i" },
               },
+              ["<c-g>"] = {
+                "close",
+                mode = { "n", "i" },
+              },
+            },
+            list = {
+              keys = {
+                ["<C-g>"] = {
+                  "close",
+                  mode = { "n", "i" },
+                },
+              },
             },
           },
+          preview = {
+            keys = {
+              ["<c-g>"] = "close",
+            }
+          }
         },
         actions = {
           ---@param p snacks.Picker
@@ -105,19 +60,19 @@ return {
     keys = {
       -- Custom picker keybindings with preserved layouts
       { "<leader>,", function() Snacks.picker.buffers({ layout = default }) end, desc = "Buffers" },
-      { "<leader>/", function() LazyVim.pick("live_grep")() end, desc = "Grep (Root Dir)" },
+      { "<leader>/", function() picker.pick("live_grep")() end, desc = "Grep (Root Dir)" },
       { "<leader>:", function() Snacks.picker.command_history() end, desc = "Command History" },
       { "<leader>n", function() Snacks.picker.notifications() end, desc = "Notification History" },
 
       -- find
       { "<leader>fb", function() Snacks.picker.buffers({ layout = default }) end, desc = "Buffers" },
       { "<leader>fB", function() Snacks.picker.buffers({ hidden = true, nofile = true, layout = default }) end, desc = "Buffers (all)" },
-      { "<leader>fc", function() LazyVim.pick.config_files({ layout = default })() end, desc = "Find Config File" },
-      { "<leader>ff", function() LazyVim.pick("files", { layout = default })() end, desc = "Find Files (Root Dir)" },
-      { "<leader>pf", function() LazyVim.pick("files", { layout = default })() end, desc = "Find Files (Root Dir)" },
-      { "<leader>fF", function() LazyVim.pick("files", { root = false, layout = default })() end, desc = "Find Files (cwd)" },
+      { "<leader>fc", function() picker.pick.config_files({ layout = default })() end, desc = "Find Config File" },
+      { "<leader>ff", function() picker.pick("files")() end, desc = "Find Files (Root Dir)" },
+      { "<leader>pf", function() picker.pick("files")() end, desc = "Find Files (Root Dir)" },
+      { "<leader>fF", function() picker.pick("files", { root = false })() end, desc = "Find Files (cwd)" },
       { "<leader>fg", function() Snacks.picker.git_files({ layout = default }) end, desc = "Find Files (git-files)" },
-      { "<leader>fr", function() LazyVim.pick("oldfiles", { layout = default })() end, desc = "Recent" },
+      { "<leader>fr", function() picker.pick("oldfiles")() end, desc = "Recent" },
       { "<leader>fR", function() Snacks.picker.recent({ filter = { cwd = true }, layout = default }) end, desc = "Recent (cwd)" },
 
       -- git
@@ -158,6 +113,44 @@ return {
       -- ui
       { "<leader>uC", function() Snacks.picker.colorschemes({ layout = default }) end, desc = "Colorschemes" },
     },
+  },
+  {
+    "folke/snacks.nvim",
+    opts = function(_, opts)
+      if LazyVim.has("trouble.nvim") then
+        return vim.tbl_deep_extend("force", opts or {}, {
+          picker = {
+            actions = {
+              trouble_open = function(...)
+                return require("trouble.sources.snacks").actions.trouble_open.action(...)
+              end,
+            },
+            win = {
+              input = {
+                keys = {
+                  ["<a-t>"] = {
+                    "trouble_open",
+                    mode = { "n", "i" },
+                  },
+                  ["<C-g>"] = {
+                    "close",
+                    mode = { "n", "i" },
+                  },
+                },
+              },
+              list = {
+                keys = {
+                  ["<C-g>"] = {
+                    "close",
+                    mode = { "n", "i" },
+                  },
+                },
+              },
+            },
+          },
+        })
+      end
+    end,
   },
 
   -- LSP Integration with custom layouts

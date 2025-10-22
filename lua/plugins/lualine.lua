@@ -149,7 +149,7 @@ M.components.filetype = function()
     "filetype",
     icons_enabled = false,
     color = { bg = colors.surface0, fg = colors.blue, gui = "bold,italic" },
-    separator = { right = "" },
+    separator = { right = M.config.separator_icon.right },
     fmt = trunc(80, 3, 80, true),
   }
 end
@@ -340,11 +340,11 @@ end
 M.setup = function(opts)
   local config = vim.tbl_deep_extend("force", {}, default, opts or {})
   if config.float and config.separator == "bubble" then
-    config.separator_icon = { left = "", right = "" }
-    config.thin_separator_icon = { left = "", right = "" }
+    config.separator_icon = { left = "", right = "" }
+    config.thin_separator_icon = { left = "", right = "" }
   elseif config.float and type == "triangle" then
-    config.separator_icon = { left = "█", right = "█" }
-    config.thin_separator_icon = { left = " ", right = " " }
+    config.separator_icon = { left = "█", right = "█" }
+    config.thin_separator_icon = { left = " ", right = " " }
   end
   M.config = config
 end
@@ -367,6 +367,7 @@ return {
       })
 
       -- Your existing lualine setup
+      local cpn = M.components
       require("lualine").setup({
         options = {
           theme = M.theme,
@@ -376,19 +377,22 @@ return {
           globalstatus = vim.o.laststatus == 3,
         },
         sections = {
-          lualine_a = { M.components.modes() },
-          lualine_b = { M.components.project() },
+          lualine_a = { cpn.modes() },
+          lualine_b = { cpn.space() },
           lualine_c = {
-            M.components.dia(),
-            M.components.macro(),
+            cpn.project(),
+            cpn.filetype(),
+            cpn.space(),
+            cpn.branch(),
+            cpn.diff(),
+            cpn.space(),
+            cpn.location(),
           },
           lualine_x = {
-            M.components.lsp(),
-            M.components.diff(),
-            M.components.branch(),
+            cpn.space(),
           },
-          lualine_y = { M.components.filetype() },
-          lualine_z = { M.components.location() },
+          lualine_y = { cpn.macro(), cpn.space() },
+          lualine_z = { cpn.dia(), cpn.lsp() },
         },
         inactive_sections = {
           lualine_a = {},

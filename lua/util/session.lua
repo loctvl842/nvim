@@ -1,5 +1,21 @@
+-- LazyVim-compatible version of your session management functionality
+
 ---@class util.session
 local M = {}
+
+--- Get buffer options for the specified buffer. Defaults to the current buffer.
+--- @param buf integer
+---@return table<string,string>
+local function get_buffer_options(buf)
+  buf = buf or 0
+  return {
+    bufname = vim.api.nvim_buf_get_name(buf),
+    filetype = vim.api.nvim_get_option_value("filetype", { buf = buf }),
+    bufhidden = vim.api.nvim_get_option_value("bufhidden", { buf = buf }),
+    buftype = vim.api.nvim_get_option_value("buftype", { buf = buf }),
+    buflisted = vim.api.nvim_get_option_value("buflisted", { buf = buf }),
+  }
+end
 
 --- Checks if the provided buffer is a restorable buffer
 ---@param buffer number
@@ -21,7 +37,7 @@ local function is_restorable(buffer)
     "dap-repl",
   }
 
-  local options = CoreUtil.get_buffer_options(buffer)
+  local options = get_buffer_options(buffer)
 
   if vim.tbl_contains(restorable_filetypes, options.filetype) then
     return true
@@ -62,8 +78,6 @@ M.save_session = function()
   end
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
     -- Don't save while there's any 'nofile' buffer open.
-    -- vim.print(require("util").get_buffer_options(buf))
-    -- vim.print(CoreUtil.get_buffer_options(buffer))
     if
       vim.api.nvim_get_option_value("buftype", { buf = buf }) == "nofile"
       and vim.api.nvim_get_option_value("buftype", { buf = buf }) == "prompt"

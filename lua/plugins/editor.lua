@@ -4,7 +4,7 @@ return {
     event = "VeryLazy",
     opts_extend = { "spec" },
     opts = {
-      -- preset = "modern",
+      preset = "classic",
       win = {
         border = "none", -- none, single, double, shadow
         height = { min = 10, max = 25 }, -- min and max height of the columns

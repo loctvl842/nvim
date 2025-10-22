@@ -1,111 +1,146 @@
 return {
   {
-    "nvimdev/dashboard-nvim",
-    event = "VimEnter",
-    dependencies = { { "nvim-tree/nvim-web-devicons" } },
+    "akinsho/bufferline.nvim",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
+    event = "VeryLazy",
+    keys = {
+      { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
+      { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete Non-Pinned Buffers" },
+      { "<leader>bO", function() Snacks.bufdelete.other() end, desc = "Delete Other Buffers" },
+      { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
+      { "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
+      { "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
+      { "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
+      { "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
+      { "[B", "<cmd>BufferLineMovePrev<cr>", desc = "Move buffer prev" },
+      { "]B", "<cmd>BufferLineMoveNext<cr>", desc = "Move buffer next" },
+    },
     opts = {
-      theme = "doom",
-      hide = {
-        statusline = 0,
-        tabline = 0,
-        winbar = 0,
-      },
-      shortcut = {
-        { desc = "󰚰 Update", group = "@property", action = "Lazy update", key = "u" },
-      },
-      config = {
-        week_header = {
-          enable = true,
-        },
-        -- header = logo.days_of_week.generate(),
-        center = {
+      options = {
+        -- stylua: ignore
+        separator_style = "thin",
+        diagnostics_indicator = function(count, _, _, _)
+          if count > 9 then
+            return "9+"
+          end
+          return tostring(count)
+        end,
+        always_show_bufferline = true,
+        custom_filter = function(buf_number)
+          if vim.bo[buf_number].filetype == "snacks_dashboard" then
+            return false
+          end
+          return true
+        end,
+        buffer_close_icon = "",
+        modified_icon = "",
+        close_icon = "",
+        left_trunc_marker = "",
+        right_trunc_marker = "",
+        offsets = {
           {
-            icon = "   ",
-            icon_hl = "DashboardRecent",
-            desc = "Recent Files                                    ",
-            -- desc_hi = "String",
-            key = "r",
-            key_hl = "DashboardRecent",
-            action = "Telescope oldfiles",
-          },
-          {
-            icon = "   ",
-            icon_hl = "DashboardSession",
-            desc = "Last Session",
-            -- desc_hi = "String",
-            key = "s",
-            key_hl = "DashboardSession",
-            action = "NeovimProjectLoadRecent",
-          },
-          {
-            icon = "   ",
-            icon_hl = "DashboardProject",
-            desc = "Find Project",
-            -- desc_hi = "String",
-            key = "p",
-            key_hl = "DashboardProject",
-            action = "Telescope neovim-project history",
-          },
-          {
-            icon = "   ",
-            icon_hl = "DashboardConfiguration",
-            desc = "Configuration",
-            -- desc_hi = "String",
-            key = "i",
-            key_hl = "DashboardConfiguration",
-            action = "edit $MYVIMRC",
-          },
-          {
-            icon = "󰤄   ",
-            icon_hl = "DashboardLazy",
-            desc = "Lazy",
-            -- desc_hi = "String",
-            key = "l",
-            key_hl = "DashboardLazy",
-            action = "Lazy",
-          },
-          {
-            icon = "   ",
-            icon_hl = "DashboardServer",
-            desc = "Mason",
-            -- desc_hi = "String",
-            key = "m",
-            key_hl = "DashboardServer",
-            action = "Mason",
-          },
-          {
-            icon = "   ",
-            icon_hl = "DashboardQuit",
-            desc = "Quit Neovim",
-            -- desc_hi = "String",
-            key = "q",
-            key_hl = "DashboardQuit",
-            action = "qa",
+            filetype = "neo-tree",
+            text = "EXPLORER",
+            padding = 0,
+            text_align = "center",
+            highlight = "Directory",
           },
         },
-        footer = {
-          "⚡ Neovim loaded",
-        }, --your footer
       },
     },
-    config = function(_, opts)
-      local dashboard = require("dashboard")
+  },
 
-      if vim.o.filetype == "lazy" then
-        vim.cmd.close()
-      end
+  -- Dashboard configuration using snacks.nvim
+  {
+    "folke/snacks.nvim",
+    keys = {
+      { "<leader>0", function() Snacks.dashboard() end, desc = "Dashboard" },
+    },
+    opts = {
+      dashboard = {
+        enabled = true,
+        sections = {
+          { section = "header" },
+          { section = "keys", gap = 1, padding = 1 },
+          {
+            section = "startup",
+          },
+        },
+        preset = {
+          keys = {
+            { icon = "   ", key = "r", desc = "Recent Files", action = ":lua LazyVim.pick('oldfiles')()" },
+            { icon = "   ", key = "s", desc = "Last Session", action = ":NeovimProjectLoadRecent" },
+            { icon = "   ", key = "p", desc = "Find Project", action = ":Telescope neovim-project history" },
+            { icon = "   ", key = "c", desc = "Config", action = ":lua LazyVim.pick.config_files()()" },
+            { icon = "󰤄   ", key = "l", desc = "Lazy", action = ":Lazy" },
+            { icon =  "   ", key = "m", desc = "Mason", action = ":Mason" },
+            { icon = "   ", key = "q", desc = "Quit", action = ":qa" },
+          },
+          header = [[
+███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
+████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
+██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
+██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║
+██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║
+╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝]],
+        },
+      },
+    },
+  },
 
-      vim.api.nvim_create_autocmd("User", {
-        pattern = "LazyVimStarted",
-        callback = function()
-          local stats = require("lazy").stats()
-          local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-          opts.config.footer = {
-            "⚡ Neovim loaded " .. stats.count .. " plugins in " .. ms .. "ms",
-          }
-          dashboard.setup(opts)
-        end,
-      })
-    end,
+  {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    opts = {
+      cmdline = {
+        view = "cmdline",
+        format = {
+          cmdline = { icon = "  " },
+          search_down = { icon = "  󰄼" },
+          search_up = { icon = "  " },
+          lua = { icon = "  " },
+        },
+      },
+      lsp = {
+        progress = { enabled = true },
+        hover = { enabled = false },
+        signature = { enabled = false },
+        -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.stylize_markdown"] = true,
+          ["cmp.entry.get_documentation"] = true,
+        },
+      },
+      presets = {
+        command_palette = true,
+        long_message_to_split = true,
+        lsp_doc_border = true,
+      },
+      routes = {
+        {
+          filter = {
+            event = "msg_show",
+            any = {
+              { find = "%d+ lines yanked" },
+              { find = "%d+ fewer lines" },
+              { find = "%d+ change" },
+              { find = "%d+ line less" },
+              { find = "%d+ fewer lines" },
+              { find = "%d+ more lines" },
+              { find = '".+" %d+L, %d+B' },
+              { find = '".+" %d Lines --%d--' },
+              { find = "%d+L, %d+B" },
+              { find = "; after #%d+" },
+              { find = "; before #%d+" },
+            },
+          },
+          -- opts = { skip = true },
+          view = "mini",
+        },
+      },
+    },
   },
 }

@@ -33,7 +33,7 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.coding.neogen" },
 
     -- Editor Extras
-    { import = "lazyvim.plugins.extras.editor.telescope" },
+    -- { import = "lazyvim.plugins.extras.editor.telescope" },
 
     -- Language Extras
     { import = "lazyvim.plugins.extras.lang.go" },
