@@ -2,11 +2,7 @@
 -- Sidekick and Copilot setup with your custom keybindings
 
 return {
-  -- Import LazyVim AI extras as base
-  { import = "lazyvim.plugins.extras.ai.copilot" },
-  { import = "lazyvim.plugins.extras.ai.sidekick" },
-
-  -- Override Sidekick configuration
+  -- Override Sidekick configuration (LazyVim AI extras imported in lazy.lua)
   {
     "folke/sidekick.nvim",
     opts = function(_, opts)

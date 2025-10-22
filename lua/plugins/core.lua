@@ -13,6 +13,5 @@ return {
       },
     },
   },
-  -- Disable LazyVim's default lualine since you have custom
-  { "nvim-lualine/lualine.nvim", enabled = false },
+  -- LazyVim's lualine will be overridden by our custom lua/plugins/lualine.lua
 }
