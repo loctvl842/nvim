@@ -112,9 +112,6 @@ opt.foldtext = ""
 -- Session options
 opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp" }
 
--- Status column (using Snacks statuscolumn)
-opt.statuscolumn = [[%!v:lua.require'snacks.statuscolumn'.get()]]
-
 -- Format options
 opt.formatoptions = "jcroqlnt"
 

@@ -60,7 +60,13 @@ require("lazy").setup({
     { import = "lazyvim.plugins.extras.dap.core" },
 
     -- Import your custom plugins
-    { import = "plugins" },
+    { import = "plugins.core" },
+    { import = "plugins.editor" },
+    { import = "plugins.ui" },
+    { import = "plugins.coding" },
+    { import = "plugins.lang" },
+    { import = "plugins.testing" },
+    { import = "plugins.ai" },
   },
   defaults = {
     lazy = false,

@@ -37,12 +37,14 @@ local default = {
 ---@field modes fun(): table
 ---@field macro fun(): table
 ---@field dia fun(): table
+---@field date fun(): table
 ---@field lsp fun(): table
 
 ---@class util.lualine
----@field setup fun(opts: LualineConfig): void
+---@field setup fun(opts: LualineConfig): nil
 ---@field components LualineComponents
 ---@field config LualineConfig
+---@type util.lualine
 local M = { components = {}, config = default }
 
 local colors = require("catppuccin.palettes").get_palette("macchiato")
@@ -138,7 +140,6 @@ M.components.project = function()
       return getProject()
     end,
     color = { bg = colors.blue, fg = colors.mantle, gui = "bold" },
-    -- separator = { left = "", right = "" },
     separator = M.config.separator_icon,
     fmt = trunc(80, 12, nil, true),
   }
@@ -157,9 +158,8 @@ end
 M.components.branch = function()
   return {
     "branch",
-    icon = "",
+    icon = "",
     color = { bg = colors.green, fg = colors.mantle, gui = "bold" },
-    -- separator = { left = "", right = "" },
     separator = M.config.separator_icon,
     fmt = trunc(80, 12, 80, true),
   }
@@ -169,7 +169,7 @@ M.components.location = function()
   return {
     "location",
     color = { bg = colors.yellow, fg = colors.mantle, gui = "bold" },
-    fmt = function(_str)
+    fmt = function()
       local line = vim.fn.line(".")
       local line_length = string.len(tostring(line))
       local col = vim.fn.virtcol(".")
@@ -178,8 +178,7 @@ M.components.location = function()
       local format_trunc = trunc(80, 6, nil, true)
       return format_trunc(location)
     end,
-    -- separator = { left = "", right = "" },
-    separator = M.config.separator_icon,
+    separator = { left = M.config.separator_icon.left },
   }
 end
 
@@ -187,9 +186,8 @@ M.components.diff = function()
   return {
     "diff",
     color = { bg = colors.surface0, fg = colors.mantle, gui = "bold" },
-    -- separator = { left = "", right = "" },
     separator = M.config.separator_icon,
-    symbols = { added = "󰐖  ", modified = "  ", removed = "  " },
+    symbols = { added = "󰐖  ", modified = "  ", removed = "  " },
 
     diff_color = {
       added = { fg = colors.green },
@@ -236,9 +234,23 @@ M.components.modes = function()
 end
 
 M.components.macro = function()
+  local noice_ok, noice = pcall(require, "noice")
+  if not noice_ok then
+    return {
+      function()
+        return ""
+      end,
+      cond = function()
+        return false
+      end,
+      color = { fg = colors.red, bg = colors.mantle, gui = "italic,bold" },
+    }
+  end
+
+  -- stylua: ignore
   return {
-    require("noice").api.status.mode.get,
-    cond = require("noice").api.status.mode.has,
+    function() return require("noice").api.status.mode.get() end,
+    cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
     color = { fg = colors.red, bg = colors.mantle, gui = "italic,bold" },
     fmt = trunc(80, 12, 80, true),
   }
@@ -248,7 +260,7 @@ M.components.dia = function()
   return {
     "diagnostics",
     sources = { "nvim_diagnostic" },
-    symbols = { error = " ", warn = " ", info = " ", hint = " " },
+    symbols = { error = " ", warn = " ", info = " ", hint = " " },
     diagnostics_color = {
       error = { fg = colors.red },
       warn = { fg = colors.yellow },
@@ -261,79 +273,13 @@ M.components.dia = function()
   }
 end
 
-local function getLspName()
-  local bufnr = vim.api.nvim_get_current_buf()
-  local buf_clients = vim.lsp.get_clients({ bufnr = bufnr })
-  local buf_ft = vim.bo.filetype
-  if next(buf_clients) == nil then
-    return "  No servers"
-  end
-  ---@type table<string, string>
-  local buf_client_names = {}
-
-  for _, client in pairs(buf_clients) do
-    if client.name ~= "null-ls" or client.name ~= "copilot" then
-      table.insert(buf_client_names, client.name)
-    end
-  end
-
-  local lint_s, lint = pcall(require, "lint")
-  if lint_s then
-    for ft_k, ft_v in pairs(lint.linters_by_ft) do
-      if type(ft_v) == "table" then
-        for _, linter in ipairs(ft_v) do
-          if buf_ft == ft_k then
-            table.insert(buf_client_names, linter)
-          end
-        end
-      elseif type(ft_v) == "string" then
-        if buf_ft == ft_k then
-          table.insert(buf_client_names, ft_v)
-        end
-      end
-    end
-  end
-
-  local ok, conform = pcall(require, "conform")
-  if ok then
-    local formatters = table.concat(conform.list_formatters_for_buffer(), " ")
-    for formatter in formatters:gmatch("%w+") do
-      if formatter then
-        table.insert(buf_client_names, formatter)
-      end
-    end
-  end
-
-  ---@type table<string,boolean>
-  local hash = {}
-  ---@type table<string,string>
-  local unique_client_names = {}
-
-  for _, v in ipairs(buf_client_names) do
-    if v ~= "copilot" and not hash[v] then
-      ---@type string
-      unique_client_names[#unique_client_names + 1] = v
-      hash[v] = true
-    end
-  end
-  local language_servers = table.concat(unique_client_names, ", ")
-
-  if #language_servers < 1 then
-    return "  No servers"
-  end
-
-  return "  " .. language_servers
-end
-
-M.components.lsp = function()
+M.components.date = function()
   return {
     function()
-      return getLspName()
+      return " " .. os.date("%R")
     end,
-    -- separator = { left = "", right = "" },
+    color = { bg = colors.red, fg = colors.mantle, gui = "bold,italic" },
     separator = M.config.separator_icon,
-    color = { bg = colors.maroon, fg = colors.mantle, gui = "italic,bold" },
-    fmt = trunc(80, 12, nil, true),
   }
 end
 
@@ -342,7 +288,7 @@ M.setup = function(opts)
   if config.float and config.separator == "bubble" then
     config.separator_icon = { left = "", right = "" }
     config.thin_separator_icon = { left = "", right = "" }
-  elseif config.float and type == "triangle" then
+  elseif config.float and config.separator == "triangle" then
     config.separator_icon = { left = "█", right = "█" }
     config.thin_separator_icon = { left = " ", right = " " }
   end
@@ -373,7 +319,7 @@ return {
           theme = M.theme,
           component_separators = { left = "", right = "" },
           section_separators = M.config.separators_enabled and M.config.separator_icon or { left = "", right = "" },
-          disabled_filetypes = { statusline = { "dashboard", "alpha", "starter" } },
+          disabled_filetypes = { statusline = { "dashboard", "snacks_dashboard", "alpha", "starter" } },
           globalstatus = vim.o.laststatus == 3,
         },
         sections = {
@@ -386,13 +332,12 @@ return {
             cpn.branch(),
             cpn.diff(),
             cpn.space(),
-            cpn.location(),
           },
           lualine_x = {
             cpn.space(),
           },
           lualine_y = { cpn.macro(), cpn.space() },
-          lualine_z = { cpn.dia(), cpn.lsp() },
+          lualine_z = { cpn.dia(), cpn.location(), cpn.date() },
         },
         inactive_sections = {
           lualine_a = {},

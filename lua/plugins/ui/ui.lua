@@ -8,8 +8,20 @@ return {
     keys = {
       { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
       { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete Non-Pinned Buffers" },
-      { "<leader>bO", function() Snacks.bufdelete.other() end, desc = "Delete Other Buffers" },
-      { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
+      {
+        "<leader>bO",
+        function()
+          Snacks.bufdelete.other()
+        end,
+        desc = "Delete Other Buffers",
+      },
+      {
+        "<leader>bd",
+        function()
+          Snacks.bufdelete()
+        end,
+        desc = "Delete Buffer",
+      },
       { "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
       { "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
       { "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
@@ -55,9 +67,6 @@ return {
   -- Dashboard configuration using snacks.nvim
   {
     "folke/snacks.nvim",
-    keys = {
-      { "<leader>0", function() Snacks.dashboard() end, desc = "Dashboard" },
-    },
     opts = {
       dashboard = {
         enabled = true,
@@ -75,7 +84,7 @@ return {
             { icon = "   ", key = "p", desc = "Find Project", action = ":Telescope neovim-project history" },
             { icon = "   ", key = "c", desc = "Config", action = ":lua LazyVim.pick.config_files()()" },
             { icon = "󰤄   ", key = "l", desc = "Lazy", action = ":Lazy" },
-            { icon =  "   ", key = "m", desc = "Mason", action = ":Mason" },
+            { icon = "   ", key = "m", desc = "Mason", action = ":Mason" },
             { icon = "   ", key = "q", desc = "Quit", action = ":qa" },
           },
           header = [[
@@ -140,6 +149,16 @@ return {
           -- opts = { skip = true },
           view = "mini",
         },
+      },
+    },
+  },
+  {
+    "folke/snacks.nvim",
+    ---@type snacks.Config
+    opts = {
+      statuscolumn = {
+        enabled = true,
+        -- left = { "mark", "sign", "git" }
       },
     },
   },
