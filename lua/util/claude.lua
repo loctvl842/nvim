@@ -15,8 +15,9 @@ local CLAUDE_PROJECTS_DIR = os.getenv("HOME") .. "/.claude/projects/"
 ---@param root_dir string The project root directory path
 ---@return string The Claude project directory name
 local function get_claude_project_dir_name(root_dir)
-  local project_path_slug = root_dir:gsub("[/.]", "-")
-  return CLAUDE_PROJECTS_DIR .. project_path_slug
+  -- Replace '/' with '-' and remove leading slash to avoid double dash at start
+  local project_path_slug = root_dir:gsub("^/", ""):gsub("/", "-"):gsub("%.", "-")
+  return CLAUDE_PROJECTS_DIR .. "-" .. project_path_slug
 end
 
 ---Read session metadata from a Claude JSONL session file
@@ -32,25 +33,39 @@ local function read_session_metadata(file_path)
   local message_count = 0
   local last_timestamp = nil
   local git_branch = nil
+  local first_session_message = nil
 
   for line in file:lines() do
     local ok, data = pcall(vim.json.decode, line)
     if ok and data then
-      if data.type == "summary" and data.summary then
-        metadata.summary = data.summary
-      end
-
+      -- Get git branch from first occurrence
       if data.gitBranch and not git_branch then
         git_branch = data.gitBranch
       end
 
-      if data.type == "user" or data.type == "assistant" then
+      -- Count non-sidechain user and assistant messages
+      if (data.type == "user" or data.type == "assistant") and not data.isSidechain then
         message_count = message_count + 1
         if data.timestamp then
           last_timestamp = data.timestamp
         end
       end
 
+      -- Find the first session-starting user message with precise criteria
+      if
+        not first_session_message
+        and (data.parentUuid == nil or data.parentUuid == vim.NIL)
+        and data.isSidechain == false
+        and data.type == "user"
+        and data.message
+        and data.message.role == "user"
+        and data.message.content
+        and type(data.message.content) == "string"
+      then
+        first_session_message = data.message.content
+      end
+
+      -- Get session ID
       if data.sessionId and not metadata.session_id then
         metadata.session_id = data.sessionId
       end
@@ -58,6 +73,19 @@ local function read_session_metadata(file_path)
   end
 
   file:close()
+
+  -- Only include sessions that have a first session message
+  if not first_session_message or first_session_message == "" then
+    return nil
+  end
+
+  -- Clean up and truncate the first user message for display
+  local clean_message = tostring(first_session_message):gsub("\n", " "):gsub("%s+", " ")
+  if #clean_message > 80 then
+    metadata.title = clean_message:sub(1, 77) .. "..."
+  else
+    metadata.title = clean_message
+  end
 
   metadata.git_branch = git_branch
   metadata.message_count = message_count
@@ -69,7 +97,7 @@ end
 ---Retrieve a list of Claude sessions for the current project
 ---@param root_dir string The project root directory path
 ---@return ClaudeSession[] Array of session objects
-local function get_project_sessions(root_dir)
+function M.get_project_sessions(root_dir)
   local project_dir = get_claude_project_dir_name(root_dir)
   local sessions = {}
 
@@ -89,12 +117,11 @@ local function get_project_sessions(root_dir)
       local file_path = project_dir .. "/" .. name
       local metadata = read_session_metadata(file_path)
 
-      if metadata and metadata.summary and metadata.summary ~= "" then
-        local file_stat = uv.fs_stat(file_path)
-        local file_mtime = file_stat and file_stat.mtime.sec or os.time()
+      if metadata and metadata.title then
+        local timestamp = nil
 
-        local timestamp = file_mtime
-        local timestamp_str = metadata.last_timestamp or metadata.timestamp
+        -- Try to parse the actual last timestamp from the session
+        local timestamp_str = metadata.last_timestamp
         if timestamp_str then
           local year, month, day, hour, min, sec = timestamp_str:match("(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)")
           if year then
@@ -106,7 +133,9 @@ local function get_project_sessions(root_dir)
             local sec_num = tonumber(sec)
 
             if year_num and month_num and day_num and hour_num and min_num and sec_num then
-              timestamp = os.time({
+              -- The timestamp is in UTC, but os.time treats it as local time
+              -- We need to convert from UTC to local time
+              local utc_time = os.time({
                 year = year_num,
                 month = month_num,
                 day = day_num,
@@ -114,13 +143,28 @@ local function get_project_sessions(root_dir)
                 min = min_num,
                 sec = sec_num,
               })
+
+              -- Get the timezone offset in seconds
+              local now = os.time()
+              local utc_date = os.date("!*t", now) --[[@as osdate?]]
+              local utc_now = utc_date and os.time(utc_date) or now
+              local tz_offset = os.difftime(now, utc_now)
+
+              -- Adjust the UTC timestamp to local time
+              timestamp = utc_time + tz_offset
             end
           end
         end
 
+        -- Only fall back to file mtime if we couldn't parse the session timestamp
+        if not timestamp then
+          local file_stat = uv.fs_stat(file_path)
+          timestamp = file_stat and file_stat.mtime.sec or os.time()
+        end
+
         table.insert(sessions, {
           id = session_id,
-          name = metadata.summary,
+          name = metadata.title,
           timestamp = timestamp,
           git_branch = metadata.git_branch,
           message_count = metadata.message_count,
@@ -174,7 +218,7 @@ function M.session_picker()
     return
   end
 
-  local sessions = get_project_sessions(root_dir)
+  local sessions = M.get_project_sessions(root_dir)
 
   if vim.tbl_isempty(sessions) then
     vim.notify("No Claude sessions found for this project.", vim.log.levels.INFO)
@@ -265,9 +309,8 @@ function M.session_picker()
 
   ---Custom format function for Claude sessions
   ---@param item snacks.picker.Item
-  ---@param picker snacks.Picker
   ---@return snacks.picker.Highlight[]
-  local function claude_session_format(item, picker)
+  local function claude_session_format(item)
     local ret = {} ---@type snacks.picker.Highlight[]
     local session = item.session
 
