@@ -2,26 +2,28 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     branch = "main",
-    build = ":TSUpdate",
-    -- event =  "VeryLazy",
-    lazy = vim.fn.argc(-1) == 0, -- load treesitter early when opening a file from the cmdline
-    init = function(plugin)
-      -- PERF: add nvim-treesitter queries to the rtp and it's custom query predicates early
-      -- This is needed because a bunch of plugins no longer `require("nvim-treesitter")`, which
-      -- no longer trigger the **nvim-treesitter** module to be loaded in time.
-      -- Luckily, the only things that those plugins need are the custom queries, which we make available
-      -- during startup.
-      require("lazy.core.loader").add_to_rtp(plugin)
-      -- require("nvim-treesitter.query_predicates")
+    version = false, -- last release is way too old and doesn't work on Windows
+    build = function()
+      local TS = require("nvim-treesitter")
+      if not TS.get_installed then
+        LazyVim.error("Please restart Neovim and run `:TSUpdate` to use the `nvim-treesitter` **main** branch.")
+        return
+      end
+      -- make sure we're using the latest treesitter util
+      package.loaded["lazyvim.util.treesitter"] = nil
+      LazyVim.treesitter.build(function()
+        TS.update(nil, { summary = true })
+      end)
     end,
-    cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
+    event = { "LazyFile", "VeryLazy" },
+    cmd = { "TSUpdate", "TSInstall", "TSLog", "TSUninstall" },
+    opts_extend = { "ensure_installed" },
     keys = {
       { "<c-space>", desc = "Increment Selection" },
       { "<bs>", desc = "Decrement Selection", mode = "x" },
     },
-    opts_extend = { "ensure_installed" },
-    ---@type TSConfig
-    ---@diagnostic disable-next-line: missing-fields
+    ---@alias lazyvim.TSFeat { enable?: boolean, disable?: string[] }
+    ---@class lazyvim.TSConfig: TSConfig    opts = {
     opts = {
       highlight = { enable = true },
       -- indent = { enable = true, disable = { "yaml", "python", "html", "ruby" } },
@@ -92,13 +94,6 @@ return {
         },
       },
     },
-    ---@param opts TSConfig
-    config = function(_, opts)
-      if type(opts.ensure_installed) == "table" then
-        opts.ensure_installed = LazyVim.dedup(opts.ensure_installed)
-      end
-      require("nvim-treesitter.configs").setup(opts)
-    end,
   },
 
   {

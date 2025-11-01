@@ -13,6 +13,7 @@ init.lua → core.lazy → {core modules + plugins}
 ```
 
 ### Entry Point & Bootstrap
+
 - **`init.lua`**: Simple entry point requiring `core.lazy`
 - **`core/lazy.lua`**: Main bootstrap setting up Lazy.nvim package manager
 - **Global Utility**: `_G.CoreUtil` loaded globally from `util` module
@@ -65,9 +66,11 @@ init.lua → core.lazy → {core modules + plugins}
 ## 🔧 Plugin Categories & Key Features
 
 ### Core Plugins
+
 - **Snacks.nvim**: Multi-purpose plugin providing notifications, terminal, toggles, debug tools
 
 ### UI & Interface
+
 - **Custom Lualine**: Complete reimplementation with Catppuccin theming, bubble separators
 - **Bufferline**: Tabbed buffer management with Snacks integration
 - **Dashboard**: Startup screen with project navigation
@@ -77,6 +80,7 @@ init.lua → core.lazy → {core modules + plugins}
 - **Scrollbar**: Visual scrollbar with git integration
 
 ### Editor Enhancement
+
 - **Neo-tree**: File explorer with multi-source support (files, git, buffers, diagnostics)
 - **Flash**: Enhanced navigation and jumping
 - **Which-key**: Keymap discovery with organized groups
@@ -86,6 +90,7 @@ init.lua → core.lazy → {core modules + plugins}
 - **Grug-far**: Search and replace across files
 
 ### AI Integration (Primary Focus)
+
 - **Sidekick.nvim**: Active AI assistant with CLI integration
   - Next Edit Suggestions (NES) with Copilot LSP
   - Multi-tool support with selection interface
@@ -94,6 +99,7 @@ init.lua → core.lazy → {core modules + plugins}
 - **Claude Code**: Commented out (previously active)
 
 ### LSP & Completion
+
 - **Mason**: LSP server, formatter, and linter management
 - **nvim-lspconfig**: Core LSP setup with extensive customization
 - **Blink.cmp**: Modern completion engine
@@ -102,13 +108,16 @@ init.lua → core.lazy → {core modules + plugins}
   - Enhanced snippet handling
 
 ### Language Support
+
 - **Treesitter**: Syntax highlighting and text objects
 - **Language-specific configs**: Go, TypeScript, Java, Ruby, Terraform, Nix, etc.
 
 ## 🛠️ Custom Utilities Deep Dive
 
 ### CoreUtil Module (`util/init.lua`)
+
 Central utility module with lazy-loading and LazyUtil integration:
+
 - Plugin management utilities (`has`, `get_plugin`, `opts`)
 - Lazy loading helpers (`on_load`, `on_very_lazy`)
 - Safe keymap setting to avoid conflicts
@@ -116,14 +125,18 @@ Central utility module with lazy-loading and LazyUtil integration:
 - Notification wrapper with custom titles
 
 ### Formatting System (`util/format.lua`)
+
 Sophisticated formatting architecture:
+
 - Multiple formatter registration and priority system
 - Per-buffer and global format toggling
 - Formatter resolution with conflict handling
 - Integration with LSP and external formatters (conform.nvim)
 
 ### LSP Utilities (`util/lsp.lua`)
+
 Enhanced LSP capabilities:
+
 - Dynamic capability detection and registration
 - Method support tracking with autocmds
 - Custom formatter integration
@@ -131,14 +144,18 @@ Enhanced LSP capabilities:
 - LSP action shortcuts
 
 ### Root Detection (`util/root.lua`)
+
 Intelligent project root detection:
+
 - Multi-strategy detection: LSP workspace, git, file patterns, cwd
 - Caching for performance
 - Buffer-specific root resolution
 - Git root fallback
 
 ### Lualine Customization (`util/lualine.lua`)
+
 Complete statusline reimplementation:
+
 - Catppuccin Macchiato color integration
 - Mode-based dynamic coloring
 - Custom components: project name, file type, git branch, location, diagnostics, LSP status
@@ -146,7 +163,9 @@ Complete statusline reimplementation:
 - Responsive truncation for narrow windows
 
 ### Completion Utilities (`util/cmp.lua`)
+
 Advanced completion features:
+
 - Native snippet support with error handling
 - Snippet preview and fixing
 - Auto-bracket insertion for functions
@@ -156,25 +175,30 @@ Advanced completion features:
 ## 🎯 Key Features & Innovations
 
 ### VSCode Integration
+
 Comprehensive VSCode-Neovim compatibility layer (`core/vscode.lua`):
+
 - Full keymap translation maintaining LazyVim-like bindings
 - Plugin filtering for VSCode environment
 - Action wrappers for VSCode commands
 - Organized keymaps by category (AI, buffer, code, debug, file, git, etc.)
 
 ### Smart Project Management
+
 - Multi-strategy root detection (LSP workspace > git > patterns > cwd)
 - Project-based sessions with auto-save/restore
 - Dashboard integration with recent projects
 - Root-aware terminal and file operations
 
 ### AI Workflow Integration
+
 - Sidekick as primary AI with NES (Next Edit Suggestions)
 - Tab completion that cycles through: snippets → AI suggestions → fallback
 - Visual selection sending to AI tools
 - File and project context integration
 
 ### Performance Optimizations
+
 - Lazy loading with careful event management
 - Memoized utility functions with weak references
 - Efficient plugin loading strategies
@@ -184,6 +208,7 @@ Comprehensive VSCode-Neovim compatibility layer (`core/vscode.lua`):
 ## ⚙️ Configuration Highlights
 
 ### Global Settings
+
 ```lua
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
@@ -193,6 +218,7 @@ vim.g.root_spec = { { ".git", "lua" }, "lsp", "cwd" }
 ```
 
 ### Key Keymaps
+
 - **Leader**: `<Space>`
 - **AI**: `<leader>a*` - Sidekick integration
 - **Files**: `<leader>f*` - File operations
@@ -203,6 +229,7 @@ vim.g.root_spec = { { ".git", "lua" }, "lsp", "cwd" }
 - **Terminal**: `<C-/>` - Floating terminal
 
 ### Recent Changes (Git Status)
+
 - **Modified**: lazy-lock.json, editor.lua, copilot.lua, formatting.lua, lsp/init.lua, util/lsp.lua
 - **Deleted**: avante.lua, copilot-chat.lua, goose.lua (consolidated to Sidekick)
 - **New**: claude.lua (commented), sidekick.lua (active)
@@ -221,6 +248,7 @@ vim.g.root_spec = { { ".git", "lua" }, "lsp", "cwd" }
 ## 🔄 Development Workflow
 
 This configuration is optimized for:
+
 - **Multi-language development** with LSP support
 - **AI-assisted coding** with Sidekick and Copilot
 - **Git-centric workflows** with visual indicators and hunk operations
@@ -229,6 +257,7 @@ This configuration is optimized for:
 - **Performance-conscious usage** with lazy loading and caching
 
 ## 📊 Statistics
+
 - **52 Lua files** with modular organization
 - **Heavy LazyVim customization** with maintained compatibility
 - **Active AI tooling** migration to modern solutions
@@ -237,3 +266,4 @@ This configuration is optimized for:
 ---
 
 *This configuration represents a mature, well-architected Neovim setup balancing functionality, performance, and maintainability while providing extensive customization beyond typical LazyVim installations.*
+

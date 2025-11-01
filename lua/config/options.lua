@@ -6,6 +6,9 @@
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
+-- Disable check order (extras are imported first in plugins/init.lua)
+vim.g.lazyvim_check_order = false
+
 -- Leader keys (already set by LazyVim but included for clarity)
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
@@ -128,4 +131,3 @@ vim.cmd([[set foldopen-=hor]]) -- disable open fold with `l`
 if vim.g.neovide then
   vim.g.neovide_scale_factor = 1
 end
-

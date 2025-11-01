@@ -10,6 +10,9 @@ return {
         -- Make sure nix-ls is installed via nixos
         nil_ls = { mason = false },
         stylua = { mason = false },
+        helm_ls = { mason = false },
+        chrome_debug_adapter = { mason = false },
+        marksman = { mason = false },
       },
     },
   },

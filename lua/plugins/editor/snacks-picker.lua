@@ -69,7 +69,7 @@ return {
       {
         "<leader>/",
         function()
-          picker.pick("live_grep")()
+          picker.pick("live_grep")
         end,
         desc = "Grep (Root Dir)",
       },
@@ -106,28 +106,28 @@ return {
       {
         "<leader>fc",
         function()
-          picker.pick.config_files({ layout = default })()
+          picker.pick.config_files({ layout = default })
         end,
         desc = "Find Config File",
       },
       {
         "<leader>ff",
         function()
-          picker.pick("files")()
+          picker.pick("files")
         end,
         desc = "Find Files (Root Dir)",
       },
       {
         "<leader>pf",
         function()
-          picker.pick("files")()
+          picker.pick("files")
         end,
         desc = "Find Files (Root Dir)",
       },
       {
         "<leader>fF",
         function()
-          picker.pick("files", { root = false })()
+          picker.pick("files", { root = false })
         end,
         desc = "Find Files (cwd)",
       },
@@ -141,7 +141,7 @@ return {
       {
         "<leader>fr",
         function()
-          picker.pick("oldfiles")()
+          picker.pick("oldfiles")
         end,
         desc = "Recent",
       },
@@ -151,6 +151,13 @@ return {
           Snacks.picker.recent({ filter = { cwd = true }, layout = default })
         end,
         desc = "Recent (cwd)",
+      },
+      {
+        "<leader>pt",
+        function()
+          require("util.tmux").pick_session()
+        end,
+        desc = "Pick Tmux Sessions",
       },
 
       -- git
@@ -423,87 +430,90 @@ return {
   -- LSP Integration with custom layouts
   {
     "neovim/nvim-lspconfig",
-    opts = function()
-      local keys = require("lazyvim.plugins.lsp.keymaps").get()
-      vim.list_extend(keys, {
-        {
-          "gd",
-          function()
-            Snacks.picker.lsp_definitions({ layout = default })
-          end,
-          desc = "Goto Definition",
-          has = "definition",
+    opts = {
+      servers = {
+        ["*"] = {
+          keys = {
+            {
+              "gd",
+              function()
+                Snacks.picker.lsp_definitions({ layout = default })
+              end,
+              desc = "Goto Definition",
+              has = "definition",
+            },
+            {
+              "gr",
+              function()
+                Snacks.picker.lsp_references({ layout = default })
+              end,
+              nowait = true,
+              desc = "References",
+            },
+            {
+              "gI",
+              function()
+                Snacks.picker.lsp_implementations({ layout = default })
+              end,
+              desc = "Goto Implementation",
+            },
+            {
+              "gy",
+              function()
+                Snacks.picker.lsp_type_definitions({ layout = default })
+              end,
+              desc = "Goto T[y]pe Definition",
+            },
+            {
+              "<leader>cd",
+              function()
+                Snacks.picker.lsp_definitions({ layout = default })
+              end,
+              desc = "Goto Definition",
+              has = "definition",
+            },
+            {
+              "<leader>cR",
+              function()
+                Snacks.picker.lsp_references({ layout = default })
+              end,
+              nowait = true,
+              desc = "References",
+            },
+            {
+              "<leader>cI",
+              function()
+                Snacks.picker.lsp_implementations({ layout = default })
+              end,
+              desc = "Goto Implementation",
+            },
+            {
+              "<leader>cy",
+              function()
+                Snacks.picker.lsp_type_definitions({ layout = default })
+              end,
+              desc = "Goto T[y]pe Definition",
+            },
+            {
+              "<leader>ss",
+              function()
+                Snacks.picker.lsp_symbols({ layout = default })
+              end,
+              desc = "LSP Symbols",
+              has = "documentSymbol",
+            },
+            {
+              "<leader>sS",
+              function()
+                Snacks.picker.lsp_workspace_symbols({ layout = default })
+              end,
+              desc = "LSP Workspace Symbols",
+              has = "workspace/symbols",
+            },
+          },
         },
-        {
-          "gr",
-          function()
-            Snacks.picker.lsp_references({ layout = default })
-          end,
-          nowait = true,
-          desc = "References",
-        },
-        {
-          "gI",
-          function()
-            Snacks.picker.lsp_implementations({ layout = default })
-          end,
-          desc = "Goto Implementation",
-        },
-        {
-          "gy",
-          function()
-            Snacks.picker.lsp_type_definitions({ layout = default })
-          end,
-          desc = "Goto T[y]pe Definition",
-        },
-        {
-          "<leader>cd",
-          function()
-            Snacks.picker.lsp_definitions({ layout = default })
-          end,
-          desc = "Goto Definition",
-          has = "definition",
-        },
-        {
-          "<leader>cR",
-          function()
-            Snacks.picker.lsp_references({ layout = default })
-          end,
-          nowait = true,
-          desc = "References",
-        },
-        {
-          "<leader>cI",
-          function()
-            Snacks.picker.lsp_implementations({ layout = default })
-          end,
-          desc = "Goto Implementation",
-        },
-        {
-          "<leader>cy",
-          function()
-            Snacks.picker.lsp_type_definitions({ layout = default })
-          end,
-          desc = "Goto T[y]pe Definition",
-        },
-        {
-          "<leader>ss",
-          function()
-            Snacks.picker.lsp_symbols({ layout = default })
-          end,
-          desc = "LSP Symbols",
-          has = "documentSymbol",
-        },
-        {
-          "<leader>sS",
-          function()
-            Snacks.picker.lsp_workspace_symbols({ layout = default })
-          end,
-          desc = "LSP Workspace Symbols",
-          has = "workspace/symbols",
-        },
-      })
-    end,
+      },
+    },
   },
 
   -- Todo comments integration

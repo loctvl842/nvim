@@ -202,3 +202,10 @@ vim.api.nvim_create_autocmd({ "ExitPre" }, {
     require("plugins.session-utils").save_session()
   end,
 })
+
+----------------------------- Tmux Sessions -----------------------------
+
+-- Tmux session switcher keybinding
+vim.keymap.set("n", "<leader>pt", function()
+  require("util.tmux").pick_session()
+end, { desc = "Pick Tmux Sessions" })

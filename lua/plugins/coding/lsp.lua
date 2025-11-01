@@ -15,6 +15,19 @@ return {
     end,
   },
 
+  {
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        ["*"] = {
+          keys = {
+            { "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", has = "definition" },
+          },
+        },
+      },
+    },
+  },
+
   -- Override LSP configuration with custom settings
   {
     "neovim/nvim-lspconfig",
@@ -66,21 +79,25 @@ return {
       opts.document_highlight.enabled = true
 
       -- Add workspace file operations capabilities
-      opts.capabilities = opts.capabilities or {}
-      opts.capabilities.workspace = opts.capabilities.workspace or {}
-      opts.capabilities.workspace.fileOperations = {
-        didRename = true,
-        willRename = true,
-      }
+      -- opts.capabilities = opts.capabilities or {}
+      -- opts.capabilities.workspace = opts.capabilities.workspace or {}
+      -- opts.capabilities.workspace.fileOperations = {
+      --   didRename = true,
+      --   willRename = true,
+      -- }
 
       return opts
     end,
     keys = {
       -- Add custom LSP keymaps that were in the original configuration
-      { "<leader>fS", function()
-        LazyVim.format({ force = true })
-        vim.cmd("silent! write")
-      end, desc = "Format and Save" },
+      {
+        "<leader>fS",
+        function()
+          LazyVim.format({ force = true })
+          vim.cmd("silent! write")
+        end,
+        desc = "Format and Save",
+      },
     },
   },
 
@@ -95,3 +112,4 @@ return {
   { "someone-stole-my-name/yaml-companion.nvim", lazy = true },
   { "b0o/schemastore.nvim", lazy = true },
 }
+

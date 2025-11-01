@@ -49,7 +49,6 @@ function M.has_parser(ctx)
   return ok and parser and parser ~= vim.NIL
 end
 
--- Use LazyVim's memoize function (was CoreUtil.memoize in backup)
 M.has_config = LazyVim.memoize(M.has_config)
 M.has_parser = LazyVim.memoize(M.has_parser)
 
@@ -74,7 +73,7 @@ return {
       opts.formatters = opts.formatters or {}
       opts.formatters.prettier = {
         condition = function(_, ctx)
-          return M.has_parser(ctx) and M.has_config(ctx)
+          return M.has_parser(ctx) and M.has_config(ctx) or true
         end,
       }
     end,

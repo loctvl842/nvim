@@ -130,11 +130,6 @@ return {
       buffers = {
         show_unloaded = true,
       },
-      git_status = {
-        window = {
-          position = "left",
-        },
-      },
     },
     config = function(_, opts)
       local function on_move(data)

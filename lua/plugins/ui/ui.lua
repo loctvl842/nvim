@@ -46,11 +46,11 @@ return {
           end
           return true
         end,
-        buffer_close_icon = "",
-        modified_icon = "",
-        close_icon = "",
-        left_trunc_marker = "",
-        right_trunc_marker = "",
+        buffer_close_icon = "󰅗",
+        modified_icon = "󱗜",
+        close_icon = "󰅗",
+        left_trunc_marker = "󰧘",
+        right_trunc_marker = "󰧚",
         offsets = {
           {
             filetype = "neo-tree",
