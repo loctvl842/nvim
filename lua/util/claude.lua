@@ -137,6 +137,33 @@ local function get_project_sessions(root_dir)
   return sessions
 end
 
+---Calculate relative time string from timestamp
+---@param timestamp number Unix timestamp
+---@return string Relative time string like "2 hours ago"
+local function get_relative_time(timestamp)
+  local now = os.time()
+  local diff = now - timestamp
+
+  if diff < 60 then
+    return "just now"
+  elseif diff < 3600 then
+    local minutes = math.floor(diff / 60)
+    return minutes == 1 and "1 min ago" or minutes .. " mins ago"
+  elseif diff < 86400 then
+    local hours = math.floor(diff / 3600)
+    return hours == 1 and "1 hour ago" or hours .. " hours ago"
+  elseif diff < 604800 then
+    local days = math.floor(diff / 86400)
+    return days == 1 and "1 day ago" or days .. " days ago"
+  elseif diff < 2629800 then
+    local weeks = math.floor(diff / 604800)
+    return weeks == 1 and "1 week ago" or weeks .. " weeks ago"
+  else
+    local months = math.floor(diff / 2629800)
+    return months == 1 and "1 month ago" or months .. " months ago"
+  end
+end
+
 ---Open a picker to browse and resume Claude sessions for the current project
 ---Uses Snacks.nvim picker to display available Claude sessions with metadata preview
 ---When a session is selected, it launches Sidekick.nvim with Claude resuming that specific session
@@ -169,9 +196,8 @@ function M.session_picker()
       idx = i,
       file = summary_preview,
       session = session,
-      last_used = "1 min ago",
+      last_used = get_relative_time(session.timestamp),
     }
-    item.text = Snacks.picker.util.text(item, { "last_used", "name" })
     table.insert(items, item)
   end
 
@@ -237,19 +263,48 @@ function M.session_picker()
   local picker_util = require("util.picker")
   local default_layout = picker_util.layout.default
 
+  ---Custom format function for Claude sessions
+  ---@param item snacks.picker.Item
+  ---@param picker snacks.Picker
+  ---@return snacks.picker.Highlight[]
+  local function claude_session_format(item, picker)
+    local ret = {} ---@type snacks.picker.Highlight[]
+    local session = item.session
+
+    if not session then
+      return { { item.text or "Unknown Session", "Normal" } }
+    end
+
+    -- Last used time
+    ret[#ret + 1] = { item.last_used, "SnacksPickerTime" }
+    ret[#ret + 1] = { " " }
+
+    -- Session name/summary (main text)
+    ret[#ret + 1] = { item.name, "SnacksPickerTitle" }
+    ret[#ret + 1] = { " " }
+
+    -- Message count if available
+    if session.message_count then
+      ret[#ret + 1] = { tostring(session.message_count), "SnacksPickerCount" }
+      ret[#ret + 1] = { " msgs", "SnacksPickerDesc" }
+      ret[#ret + 1] = { " " }
+    end
+
+    -- Git branch if available
+    if session.git_branch then
+      ret[#ret + 1] = { "[", "SnacksPickerDelim" }
+      ret[#ret + 1] = { session.git_branch, "SnacksPickerGitBranch" }
+      ret[#ret + 1] = { "]", "SnacksPickerDelim" }
+    end
+
+    return ret
+  end
+
   Snacks.picker.pick({
     items = items,
     layout = default_layout,
     win = { title = "Resume Claude Session" },
-    ---@param item snacks.picker.Item
-    ---@param picker snacks.Picker
-    ---@return snacks.picker.Highlight[]
-    format = function(item, picker)
-      return {
-        { text = item.text, hl = "Identifier" },
-        { text = " (" .. item.last_used .. ")", hl = "Comment" },
-      }
-    end,
+    format = claude_session_format,
     preview = claude_preview,
     confirm = function(picker, item)
       if not item or not item.id then
