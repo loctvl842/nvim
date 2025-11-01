@@ -1,0 +1,305 @@
+local M = {}
+local uv = vim.uv
+
+---@class ClaudeSession
+---@field id string
+---@field name string
+---@field timestamp number
+---@field git_branch string?
+---@field message_count number?
+---@field last_timestamp string?
+
+local CLAUDE_PROJECTS_DIR = os.getenv("HOME") .. "/.claude/projects/"
+
+---Convert a project path to Claude CLI's directory naming convention
+---@param root_dir string The project root directory path
+---@return string The Claude project directory name
+local function get_claude_project_dir_name(root_dir)
+  local project_path_slug = root_dir:gsub("[/.]", "-")
+  return CLAUDE_PROJECTS_DIR .. project_path_slug
+end
+
+---Read session metadata from a Claude JSONL session file
+---@param file_path string Path to the session JSONL file
+---@return table? Session metadata or nil if file cannot be read
+local function read_session_metadata(file_path)
+  local file = io.open(file_path, "r")
+  if not file then
+    return nil
+  end
+
+  local metadata = {}
+  local message_count = 0
+  local last_timestamp = nil
+  local git_branch = nil
+
+  for line in file:lines() do
+    local ok, data = pcall(vim.json.decode, line)
+    if ok and data then
+      if data.type == "summary" and data.summary then
+        metadata.summary = data.summary
+      end
+
+      if data.gitBranch and not git_branch then
+        git_branch = data.gitBranch
+      end
+
+      if data.type == "user" or data.type == "assistant" then
+        message_count = message_count + 1
+        if data.timestamp then
+          last_timestamp = data.timestamp
+        end
+      end
+
+      if data.sessionId and not metadata.session_id then
+        metadata.session_id = data.sessionId
+      end
+    end
+  end
+
+  file:close()
+
+  metadata.git_branch = git_branch
+  metadata.message_count = message_count
+  metadata.last_timestamp = last_timestamp
+
+  return metadata
+end
+
+---Retrieve a list of Claude sessions for the current project
+---@param root_dir string The project root directory path
+---@return ClaudeSession[] Array of session objects
+local function get_project_sessions(root_dir)
+  local project_dir = get_claude_project_dir_name(root_dir)
+  local sessions = {}
+
+  local stat = uv.fs_stat(project_dir)
+  if not stat or stat.type ~= "directory" then
+    return sessions
+  end
+
+  local ok, dir_iter = pcall(vim.fs.dir, project_dir)
+  if not ok then
+    return sessions
+  end
+
+  for name, type in dir_iter do
+    if type == "file" and name:match("%.jsonl$") then
+      local session_id = name:match("^([^%.]+)")
+      local file_path = project_dir .. "/" .. name
+      local metadata = read_session_metadata(file_path)
+
+      if metadata and metadata.summary and metadata.summary ~= "" then
+        local file_stat = uv.fs_stat(file_path)
+        local file_mtime = file_stat and file_stat.mtime.sec or os.time()
+
+        local timestamp = file_mtime
+        local timestamp_str = metadata.last_timestamp or metadata.timestamp
+        if timestamp_str then
+          local year, month, day, hour, min, sec = timestamp_str:match("(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)")
+          if year then
+            local year_num = tonumber(year)
+            local month_num = tonumber(month)
+            local day_num = tonumber(day)
+            local hour_num = tonumber(hour)
+            local min_num = tonumber(min)
+            local sec_num = tonumber(sec)
+
+            if year_num and month_num and day_num and hour_num and min_num and sec_num then
+              timestamp = os.time({
+                year = year_num,
+                month = month_num,
+                day = day_num,
+                hour = hour_num,
+                min = min_num,
+                sec = sec_num,
+              })
+            end
+          end
+        end
+
+        table.insert(sessions, {
+          id = session_id,
+          name = metadata.summary,
+          timestamp = timestamp,
+          git_branch = metadata.git_branch,
+          message_count = metadata.message_count,
+          last_timestamp = metadata.last_timestamp,
+        })
+      end
+    end
+  end
+
+  table.sort(sessions, function(a, b)
+    return a.timestamp > b.timestamp
+  end)
+
+  return sessions
+end
+
+---Open a picker to browse and resume Claude sessions for the current project
+---Uses Snacks.nvim picker to display available Claude sessions with metadata preview
+---When a session is selected, it launches Sidekick.nvim with Claude resuming that specific session
+function M.session_picker()
+  local root_dir = LazyVim.root.cwd()
+  if not root_dir then
+    vim.notify("Not inside a project. Cannot list Claude sessions.", vim.log.levels.WARN)
+    return
+  end
+
+  local sessions = get_project_sessions(root_dir)
+
+  if vim.tbl_isempty(sessions) then
+    vim.notify("No Claude sessions found for this project.", vim.log.levels.INFO)
+    return
+  end
+
+  local items = {}
+  for i, session in ipairs(sessions) do
+    local summary_preview = session.name
+    if #summary_preview > 60 then
+      summary_preview = summary_preview:sub(1, 57) .. "..."
+    end
+
+    ---@type snacks.picker.finder.Item
+    local item = {
+      text = summary_preview,
+      name = summary_preview,
+      id = session.id,
+      idx = i,
+      file = summary_preview,
+      session = session,
+      last_used = "1 min ago",
+    }
+    item.text = Snacks.picker.util.text(item, { "last_used", "name" })
+    table.insert(items, item)
+  end
+
+  ---@param ctx snacks.picker.preview.ctx
+  local function claude_preview(ctx)
+    local session = ctx.item.session
+    if not session then
+      ctx.preview:notify("No session data available", "warn")
+      return false
+    end
+
+    ctx.preview:reset()
+    local lines = {}
+
+    table.insert(lines, "# " .. session.name)
+    table.insert(lines, "")
+    table.insert(lines, "**Session ID:** " .. session.id)
+
+    if session.git_branch then
+      table.insert(lines, "**Git Branch:** " .. session.git_branch)
+    end
+
+    if session.message_count then
+      table.insert(lines, "**Messages:** " .. session.message_count)
+    end
+
+    if session.last_timestamp then
+      local year, month, day, hour, min, sec = session.last_timestamp:match("(%d+)%-(%d+)%-(%d+)T(%d+):(%d+):(%d+)")
+      if year then
+        local year_num = tonumber(year)
+        local month_num = tonumber(month)
+        local day_num = tonumber(day)
+        local hour_num = tonumber(hour)
+        local min_num = tonumber(min)
+        local sec_num = tonumber(sec)
+
+        if year_num and month_num and day_num and hour_num and min_num and sec_num then
+          local formatted_time = os.date(
+            "%B %d, %Y at %I:%M %p",
+            os.time({
+              year = year_num,
+              month = month_num,
+              day = day_num,
+              hour = hour_num,
+              min = min_num,
+              sec = sec_num,
+            })
+          )
+          table.insert(lines, "**Last Activity:** " .. formatted_time)
+        end
+      end
+    end
+
+    table.insert(lines, "")
+    table.insert(lines, "Press Enter to resume this session")
+
+    ctx.preview:set_lines(lines)
+    ctx.preview:highlight({ ft = "markdown" })
+
+    return true
+  end
+
+  local picker_util = require("util.picker")
+  local default_layout = picker_util.layout.default
+
+  Snacks.picker.pick({
+    items = items,
+    layout = default_layout,
+    win = { title = "Resume Claude Session" },
+    ---@param item snacks.picker.Item
+    ---@param picker snacks.Picker
+    ---@return snacks.picker.Highlight[]
+    format = function(item, picker)
+      return {
+        { text = item.text, hl = "Identifier" },
+        { text = " (" .. item.last_used .. ")", hl = "Comment" },
+      }
+    end,
+    preview = claude_preview,
+    confirm = function(picker, item)
+      if not item or not item.id then
+        vim.notify("No session selected", vim.log.levels.WARN)
+        return
+      end
+
+      picker:close()
+
+      -- Load required Sidekick modules
+      local ok_config, Config = pcall(require, "sidekick.config")
+      if not ok_config then
+        vim.notify("Sidekick.nvim config not available", vim.log.levels.ERROR)
+        return
+      end
+
+      local ok_state, State = pcall(require, "sidekick.cli.state")
+      if not ok_state then
+        vim.notify("Sidekick.nvim state module not available", vim.log.levels.ERROR)
+        return
+      end
+
+      local ok_session, Session = pcall(require, "sidekick.cli.session")
+      if not ok_session then
+        vim.notify("Sidekick.nvim session module not available", vim.log.levels.ERROR)
+        return
+      end
+
+      -- Ensure session backends are registered before creating sessions
+      Session.setup()
+
+      -- Create a custom Claude tool with the resume command
+      local claude_tool = Config.get_tool("claude")
+      local resume_tool = claude_tool:clone({
+        cmd = vim.list_extend(vim.deepcopy(claude_tool.cmd), { "--resume", item.id }),
+      })
+
+      -- Create a new Sidekick session with the resume command
+      -- The cwd is crucial for Claude to find the correct session files
+      local resume_session = Session.new({
+        tool = resume_tool,
+        cwd = LazyVim.root.cwd(),
+        id = "claude_resume_" .. item.id:gsub("-", "_"), -- Ensure valid session ID
+      })
+
+      -- Convert session to state and attach to launch the terminal
+      local resume_state = State.get_state(resume_session)
+      State.attach(resume_state, { show = true, focus = true })
+    end,
+  })
+end
+
+return M
