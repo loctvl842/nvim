@@ -149,6 +149,8 @@ vim.api.nvim_create_autocmd("User", {
       })
     end)
 
+    vim.keymap.set("n", "/", [[<cmd>lua require('vscode').action('actions.find')<cr>]])
+
     -- LSP keymaps
     vim.keymap.set("n", "gd", [[<cmd>lua require('vscode').action('editor.action.revealDefinition')<cr>]])
     vim.keymap.set("n", "gD", [[<cmd>lua require('vscode').action('editor.action.revealDeclaration')<cr>]])
