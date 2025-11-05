@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.2.0](https://github.com/loctvl842/nvim/compare/v3.1.1...v3.2.0) (2025-11-05)
+
+
+### Features
+
+* gitsigns with context ([24df031](https://github.com/loctvl842/nvim/commit/24df03152f3d9072e09a2f6ffe28e9e099fca2d0))
+
+
+### Bug Fixes
+
+* fix end of line like vscode default ([364b746](https://github.com/loctvl842/nvim/commit/364b7463a9ced8f031df72aa612403f0a75e5f2f))
+* python root detection ([c39cb88](https://github.com/loctvl842/nvim/commit/c39cb88e683af01e396e4525dba45e38f0e78a23))
+* typescript root inspect ([2237edb](https://github.com/loctvl842/nvim/commit/2237edbae07a02373fdc54dc9c41716ef09f9c16))
+
 ## [3.1.1](https://github.com/loctvl842/nvim/compare/v3.1.0...v3.1.1) (2025-08-15)
 
 
