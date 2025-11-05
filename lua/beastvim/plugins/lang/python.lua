@@ -77,4 +77,25 @@ return {
       },
     },
   },
+  {
+    "stevearc/conform.nvim",
+    opts = {
+      formatters_by_ft = {
+        ["python"] = { "ruff_format" },
+      },
+      formatters = {
+        ruff_format = {
+          args = {
+            "format",
+            "--line-length",
+            "120",
+            "--force-exclude",
+            "--stdin-filename",
+            "$FILENAME",
+            "-",
+          },
+        },
+      },
+    },
+  },
 }

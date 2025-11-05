@@ -5,7 +5,7 @@ NEOVIM_REPO="neovim/neovim"
 NEOVIM_INSTALL_DIR="$HOME/.config/nvim/neovim"
 
 # Fetch Neovim releases using curl and parse JSON with jq
-RELEASES=$(curl -s "https://api.github.com/repos/$NEOVIM_REPO/releases" | jq -r '.[].tag_name')
+RELEASES=$(gh release list --repo "$NEOVIM_REPO" --limit 100 | tail -n +2 | awk '{print $3}')
 
 # Fallback if API returns nothing (rate limited or error)
 if [ -z "$RELEASES" ]; then

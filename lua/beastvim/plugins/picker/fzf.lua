@@ -130,6 +130,11 @@ return {
           height = 0.8,
           row = 0.5,
           col = 0.5,
+          -- FIX: Disable treesitter highlighting due to Neovim 0.12+ API changes
+          -- Error: vim.treesitter.highlighter._on_line/._on_win no longer exist
+          -- Location: ~/.local/share/nvim/lazy/fzf-lua/lua/fzf-lua/win.lua:30
+          -- TODO: Re-enable when fzf-lua updates for new treesitter API
+          treesitter = false,
           title_flags = false, -- uncomment to disable title flags (hidden, ignore next to title name 'Files', 'Greps')
           border = Util.ui.borderchars("rounded", "tl-t-tr-r-br-b-bl-l"),
           preview = {
@@ -139,8 +144,9 @@ return {
         },
         files = {
           cwd_prompt = false,
-          -- https://github.com/sharkdp/fd
-          cmd = "fd --type f --hidden --exclude .git --follow",
+          -- Hybrid approach: git ls-files in git repos (respects force-added files + .gitignore), falls back to fd in non-git repos
+          -- Always includes .env files even if in .gitignore (using fd -I to ignore .gitignore rules)
+          cmd = "(git rev-parse --is-inside-work-tree &>/dev/null && (git ls-files --cached --others --exclude-standard; fd -H -I -t f '^\\.env' 2>/dev/null) | awk '!seen[$0]++') || fd --type f --hidden --exclude .git",
           actions = {
             ["alt-i"] = { actions.toggle_ignore },
             ["alt-h"] = { actions.toggle_hidden },
