@@ -30,11 +30,17 @@ local default = {
 ---@class LualineComponents
 ---@field space fun(): table
 ---@field project fun(): table
----@field filetype fun(): table
----@field branch fun(): table
+---@field filetype fun(separator?: LualineSeparator): table
+---@field filename fun(separator?: LualineSeparator): table
+---@field upper_left_triangle fun(fg: string, bg: string): table
+---@field upper_right_triangle fun(fg: string, bg: string): table
+---@field lower_left_triangle fun(fg: string, bg: string): table
+---@field lower_right_triangle fun(fg: string, bg: string): table
+---@field branch fun(separator?: LualineSeparator): table
+---@field git_icon fun(separator?: LualineSeparator): table
 ---@field location fun(): table
----@field diff fun(): table
----@field modes fun(): table
+---@field diff fun(separator?: LualineSeparator): table
+---@field modes fun(separator?: LualineSeparator): table
 ---@field macro fun(): table
 ---@field dia fun(): table
 ---@field date fun(): table
@@ -102,7 +108,7 @@ local modecolor = {
   ["rm"] = colors.sky,
   ["r?"] = colors.sky,
   ["!"] = colors.red,
-  ["t"] = colors.pink,
+  ["t"] = colors.red,
 }
 
 M.theme = {
@@ -120,8 +126,10 @@ M.theme = {
 M.components.space = function()
   return {
     function()
-      return " "
+      return ""
     end,
+    draw_empty = true,
+    separator = { left = "", right = "" },
     color = { bg = colors.mantle, fg = colors.blue },
   }
 end
@@ -141,26 +149,49 @@ M.components.project = function()
     end,
     color = { bg = colors.blue, fg = colors.mantle, gui = "bold" },
     separator = M.config.separator_icon,
-    fmt = trunc(80, 12, nil, true),
+    fmt = trunc(80, 20, nil, true),
   }
 end
 
-M.components.filetype = function()
+M.components.filetype = function(separator_icon)
   return {
     "filetype",
     icons_enabled = false,
-    color = { bg = colors.surface0, fg = colors.blue, gui = "bold,italic" },
-    separator = { right = M.config.separator_icon.right },
+    color = { bg = colors.blue, fg = colors.mantle, gui = "bold,italic" },
+    separator = separator_icon or M.config.separator_icon,
     fmt = trunc(80, 3, 80, true),
   }
 end
 
-M.components.branch = function()
+M.components.filename = function(separator_icon)
+  return {
+    "filename",
+    file_status = false,
+    newfile_status = false,
+
+    color = { bg = colors.surface0, fg = colors.blue, gui = "bold" },
+    separator = separator_icon or M.config.separator_icon,
+    fmt = trunc(80, 30, nil, true),
+  }
+end
+
+M.components.git_icon = function(separator_icon)
+  return {
+    function()
+      return ""
+    end,
+    color = { bg = colors.red, fg = colors.mantle, gui = "bold" },
+    separator = separator_icon or M.config.separator_icon,
+    fmt = trunc(80, 12, 80, true),
+  }
+end
+
+M.components.branch = function(separator_icon)
   return {
     "branch",
-    icon = "",
-    color = { bg = colors.green, fg = colors.mantle, gui = "bold" },
-    separator = M.config.separator_icon,
+    icon = "",
+    color = { bg = colors.surface0, fg = colors.red, gui = "bold" },
+    separator = separator_icon or M.config.separator_icon,
     fmt = trunc(80, 12, 80, true),
   }
 end
@@ -182,11 +213,11 @@ M.components.location = function()
   }
 end
 
-M.components.diff = function()
+M.components.diff = function(separator_icon)
   return {
     "diff",
     color = { bg = colors.surface0, fg = colors.mantle, gui = "bold" },
-    separator = M.config.separator_icon,
+    separator = separator_icon or M.config.separator_icon,
     symbols = { added = "󰐖  ", modified = "  ", removed = "  " },
 
     diff_color = {
@@ -199,7 +230,8 @@ M.components.diff = function()
   }
 end
 
-M.components.modes = function()
+M.components.modes = function(separator_icon)
+  local separator = separator_icon or M.config.separator_icon
   return {
     "mode",
     color = function()
@@ -228,7 +260,7 @@ M.components.modes = function()
         gui = "bold",
       }
     end,
-    separator = M.config.separator_icon,
+    separator = separator,
     fmt = trunc(80, 12, nil, true),
   }
 end
@@ -304,7 +336,7 @@ return {
       -- Setup your custom lualine
       M.setup({
         float = true,
-        separator = "bubble",
+        separator = "disabled",
         theme = "auto",
         colorful = true,
         separators_enabled = true,
@@ -323,26 +355,32 @@ return {
           globalstatus = vim.o.laststatus == 3,
         },
         sections = {
-          lualine_a = { cpn.modes() },
-          lualine_b = { cpn.space() },
+          lualine_a = { cpn.modes({ left = "", right = "" }) },
+          lualine_b = { },
           lualine_c = {
-            cpn.project(),
-            cpn.filetype(),
+            cpn.filename({ right = "" }),
             cpn.space(),
-            cpn.branch(),
-            cpn.diff(),
+            cpn.filetype({ left = "", right = "" }),
+            cpn.dia(),
             cpn.space(),
           },
           lualine_x = {
             cpn.space(),
           },
           lualine_y = { cpn.macro(), cpn.space() },
-          lualine_z = { cpn.dia(), cpn.location(), cpn.date() },
+          lualine_z = {
+            cpn.diff({ left = "", right = "" }),
+            cpn.space(),
+            cpn.git_icon({ left = "", right = "" }),
+            cpn.branch({ left = "" }),
+            -- cpn.space(),
+            -- cpn.location(),
+          },
         },
         inactive_sections = {
           lualine_a = {},
           lualine_b = {},
-          lualine_c = { "filename" },
+          lualine_c = { },
           lualine_x = { "location" },
           lualine_y = {},
           lualine_z = {},

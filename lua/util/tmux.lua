@@ -7,7 +7,7 @@ function M.get_sessions()
   local sessions = {}
 
   -- Check if tmux is available
-  local tmux_check = vim.fn.system("which tmux")
+  vim.fn.system("which tmux")
   if vim.v.shell_error ~= 0 then
     vim.notify("tmux is not available", vim.log.levels.ERROR)
     return sessions
@@ -125,19 +125,73 @@ local function format_session_preview(session)
   table.insert(lines, "└─────────────────────────┘")
 
   -- Add some spacing
-  for i = 1, 5 do
+  for _ = 1, 5 do
     table.insert(lines, "")
   end
 
   return lines
 end
 
+--- Custom format function for tmux session picker
+---@param item table The item to format
+---@return snacks.picker.Highlight[] Array of highlight elements
+local function tmux_session_format(item)
+  local ret = {} ---@type snacks.picker.Highlight[]
+  local session = item.session
+
+  -- Status indicator with appropriate highlight
+  local status_icon = session.attached and "●" or "○"
+  local status_hl = session.attached and "SnacksPickerIconOn" or "SnacksPickerIconOff"
+  ret[#ret + 1] = { status_icon, status_hl }
+  ret[#ret + 1] = { " " }
+
+  -- Session name (main text)
+  ret[#ret + 1] = { session.name, "SnacksPickerTitle" }
+  ret[#ret + 1] = { " " }
+
+  -- Windows count
+  ret[#ret + 1] = { tostring(session.windows), "SnacksPickerCount" }
+  ret[#ret + 1] = { "w", "SnacksPickerIcon" }
+  ret[#ret + 1] = { " " }
+
+  -- Panes count
+  ret[#ret + 1] = { tostring(session.pane_count), "SnacksPickerCount" }
+  ret[#ret + 1] = { "p", "SnacksPickerIcon" }
+
+  -- Add multiple clients indicator if applicable
+  if session.many_attached then
+    ret[#ret + 1] = { " " }
+    ret[#ret + 1] = { "⚡", "SnacksPickerSpecial" }
+  end
+
+  return ret
+end
+
 --- Create tmux session picker using Snacks.nvim
-function M.pick_session()
-  local sessions = M.get_sessions()
+---@param filter_attached? boolean|nil Filter to show only attached (true), unattached (false), or all (nil)
+function M.pick_session(filter_attached)
+  local all_sessions = M.get_sessions()
+
+  if #all_sessions == 0 then
+    vim.notify("No tmux sessions found", vim.log.levels.WARN)
+    return
+  end
+
+  -- Apply filtering if specified
+  local sessions = {}
+  if filter_attached == nil then
+    sessions = all_sessions
+  else
+    for _, session in ipairs(all_sessions) do
+      if session.attached == filter_attached then
+        table.insert(sessions, session)
+      end
+    end
+  end
 
   if #sessions == 0 then
-    vim.notify("No tmux sessions found", vim.log.levels.WARN)
+    local filter_msg = filter_attached and "attached" or "unattached"
+    vim.notify(string.format("No %s tmux sessions found", filter_msg), vim.log.levels.WARN)
     return
   end
 
@@ -149,7 +203,7 @@ function M.pick_session()
   local items = {}
   for _, session in ipairs(sessions) do
     table.insert(items, {
-      text = session.display,
+      text = session.display, -- Fallback for non-custom format
       file = session.name, -- This might be used by preview system
       path = session.name, -- Alternative field name
       session = session, -- Keep full session data for actions
@@ -160,26 +214,43 @@ function M.pick_session()
   Snacks.picker.pick({
     items = items,
     layout = default_layout,
-    preview = function(item, ctx)
-      -- Debug information
-      vim.notify("Preview called with item: " .. vim.inspect(item), vim.log.levels.DEBUG)
-
-      if not item then
-        return "No item selected"
+    format = tmux_session_format,
+    preview = function(ctx)
+      local session = ctx.item.session
+      if not session then
+        ctx.preview:notify("No session data available", "warn")
+        return false
       end
 
-      if not item.session then
-        return "No session data in item:\n" .. vim.inspect(item)
-      end
+      ctx.preview:reset()
+      local lines = format_session_preview(session)
 
-      -- Return the formatted preview lines as a single string
-      return table.concat(format_session_preview(item.session), "\n")
+      ctx.preview:set_lines(lines)
+
+      return true
+    end,
+    confirm = function(picker, item)
+      if item and item.session then
+        picker:close()
+        M.switch_session(item.session.name)
+      end
     end,
     actions = {
-      default = function(item)
-        if item and item.session then
-          M.switch_session(item.session.name)
-        end
+      -- Add toggle actions for filtering
+      ["ctrl-a"] = function(_, picker_ctx)
+        -- Toggle to show only attached sessions
+        picker_ctx.picker:close()
+        M.pick_session(true)
+      end,
+      ["ctrl-u"] = function(_, picker_ctx)
+        -- Toggle to show only unattached sessions
+        picker_ctx.picker:close()
+        M.pick_session(false)
+      end,
+      ["ctrl-r"] = function(_, picker_ctx)
+        -- Reset to show all sessions
+        picker_ctx.picker:close()
+        M.pick_session(nil)
       end,
     },
   })
