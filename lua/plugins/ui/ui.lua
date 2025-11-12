@@ -60,6 +60,7 @@ return {
             highlight = "Directory",
           },
         },
+        get_element_icon = function() return "" end,
       },
     },
   },

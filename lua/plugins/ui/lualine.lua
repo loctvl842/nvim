@@ -157,6 +157,7 @@ M.components.filetype = function(separator_icon)
   return {
     "filetype",
     icons_enabled = false,
+    colored = false,
     color = { bg = colors.blue, fg = colors.mantle, gui = "bold,italic" },
     separator = separator_icon or M.config.separator_icon,
     fmt = trunc(80, 3, 80, true),
@@ -356,10 +357,8 @@ return {
         },
         sections = {
           lualine_a = { cpn.modes({ left = "", right = "" }) },
-          lualine_b = { },
+          lualine_b = { cpn.space() },
           lualine_c = {
-            cpn.filename({ right = "" }),
-            cpn.space(),
             cpn.filetype({ left = "", right = "" }),
             cpn.dia(),
             cpn.space(),

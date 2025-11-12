@@ -13,6 +13,7 @@ return {
         helm_ls = { mason = false },
         chrome_debug_adapter = { mason = false },
         marksman = { mason = false },
+        delve = { mason = false },
       },
     },
   },
